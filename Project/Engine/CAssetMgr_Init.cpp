@@ -228,44 +228,32 @@ void CAssetMgr::CreateEngineMaterial()
 
 void CAssetMgr::CreateEngineSprite()
 {
-	/*Ptr<CSprite> pSprite = nullptr;
+	//Ptr<CSprite> pSprite = nullptr;
 
-	Vec2 LeftTopPixel = Vec2(0.f, 520.f);
-	Vec2 SlicePixel = Vec2(120.f, 130.f);
-	int FrmCount = 10;
+	//Vec2 LeftTopPixel = Vec2(0.f, 520.f);
+	//Vec2 SlicePixel = Vec2(120.f, 130.f);
+	//int FrmCount = 10;
 
-	for (int i = 0; i < FrmCount; ++i)
-	{
-		pSprite = new CSprite;
-		pSprite->SetAtlasTex(CAssetMgr::GetInst()->FindAsset<CTexture>(L"Link"));
-		pSprite->SetLeftTop(LeftTopPixel + Vec2(120.f * i, 0.f));
-		pSprite->SetSlice(SlicePixel);
-		pSprite->SetBackground(Vec2(300.f, 300.f));
+	//for (int i = 0; i < FrmCount; ++i)
+	//{
+	//	pSprite = new CSprite;
+	//	pSprite->SetAtlasTex(CAssetMgr::GetInst()->FindAsset<CTexture>(L"Link"));
+	//	pSprite->SetLeftTop(LeftTopPixel + Vec2(120.f * i, 0.f));
+	//	pSprite->SetSlice(SlicePixel);
+	//	pSprite->SetBackground(Vec2(300.f, 300.f));
 
-		if (i == 4)
-		{
-			pSprite->SetOffset(Vec2(50.f, 0.f));
-		}
+	//	if (i == 4)
+	//	{
+	//		pSprite->SetOffset(Vec2(50.f, 0.f));
+	//	}
 
-		wchar_t szName[255] = {};
-		swprintf_s(szName, 255, L"LinkSprite_%d", i);
+	//	wchar_t szName[255] = {};
+	//	swprintf_s(szName, 255, L"LinkSprite_%d", i);
 
-		AddAsset(szName, pSprite.Get());
-	}
+	//	AddAsset(szName, pSprite.Get());
+	//}
 
-
-	Ptr<CFlipbook> pFlipbook = new CFlipbook;
-
-	for (int i = 0; i < FrmCount; ++i)
-	{
-		wchar_t szName[255] = {};
-		swprintf_s(szName, 255, L"LinkSprite_%d", i);
-		pFlipbook->AddScene(FindAsset<CSprite>(szName));
-	}
-
-	AddAsset(L"LinkFlipbook", pFlipbook.Get());*/
-
-	//// Tile Sprite
+	// Tile Sprite
 	//Ptr<CTexture> pAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"Tile", L"Texture\\TILE.bmp");
 
 	//for (int Row = 0; Row < 6; ++Row)
@@ -284,4 +272,50 @@ void CAssetMgr::CreateEngineSprite()
 	//		AddAsset(szName, pSprite.Get());
 	//	}
 	//}
+
+
+	// 플립북 에셋 등록
+	Ptr<CFlipbook> pFlipbook = new CFlipbook;
+	for (int i = 0; i < 8; ++i)
+	{
+		wchar_t key[255] = {};
+		wchar_t path[255] = {};
+		swprintf_s(key, 255, L"Spr_SNB_Idle_%d", i + 1);
+		swprintf_s(path, 255, L"Texture2D\\Spr_SNB_Idle (lp) (%d).png", i + 1);
+		pFlipbook->AddScene<CTexture>(CAssetMgr::GetInst()->Load<CTexture>(key, path));
+	}
+	AddAsset(L"SNB_Idle_Flipbook", pFlipbook.Get());
+
+	pFlipbook = new CFlipbook;
+	for (int i = 0; i < 8; ++i)
+	{
+		wchar_t key[255] = {};
+		wchar_t path[255] = {};
+		swprintf_s(key, 255, L"Spr_SNBArm_Idle_%d", i + 1);
+		swprintf_s(path, 255, L"Texture2D\\Spr_SNBArm_Idle (%d).png", i + 1);
+		pFlipbook->AddScene<CTexture>(CAssetMgr::GetInst()->Load<CTexture>(key, path));
+	}
+	AddAsset(L"SNBArm_Idle_Flipbook", pFlipbook.Get());
+
+	pFlipbook = new CFlipbook;
+	for (int i = 0; i < 20; ++i)
+	{
+		wchar_t key[255] = {};
+		wchar_t path[255] = {};
+		swprintf_s(key, 255, L"Spr_SNB_Running_%d", i + 1);
+		swprintf_s(path, 255, L"Texture2D\\Spr_SNB_Running (lp) (%d).png", i + 1);
+		pFlipbook->AddScene<CTexture>(CAssetMgr::GetInst()->Load<CTexture>(key, path));
+	}
+	AddAsset(L"SNB_Running_Flipbook", pFlipbook.Get());
+
+	pFlipbook = new CFlipbook;
+	for (int i = 0; i < 20; ++i)
+	{
+		wchar_t key[255] = {};
+		wchar_t path[255] = {};
+		swprintf_s(key, 255, L"Spr_SNBArm_Running_%d", i + 1);
+		swprintf_s(path, 255, L"Texture2D\\Spr_SNBArm_Running (lp) (%d).png", i + 1);
+		pFlipbook->AddScene<CTexture>(CAssetMgr::GetInst()->Load<CTexture>(key, path));
+	}
+	AddAsset(L"SNBArm_Running_Flipbook", pFlipbook.Get());
 }

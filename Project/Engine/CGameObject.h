@@ -35,6 +35,7 @@ public:
     CGameObject* GetParent() const { return m_Parent; }
     const vector<CGameObject*>& GetChild() const { return m_vecChild; } // 자식 오브젝트
     const vector<CScript*>& GetScripts() { return m_vecScript; }
+    int GetLayerIdx() { return m_LayerIdx; }
 
     class CTransform* Transform() { return (CTransform*)GetComponent(TRANSFORM); }
     class CCamera* Camera() { return (CCamera*)GetComponent(CAMERA); }

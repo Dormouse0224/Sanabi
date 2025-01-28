@@ -65,19 +65,8 @@ void CLevelMgr::Init()
 	pObject->Transform()->SetRelativeScale(100.f, 100.f, 1.f);
 
 	pObject->FlipbookRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-
-	Ptr<CFlipbook> pFlipbook = new CFlipbook;
-	for (int i = 0; i < 20; ++i)
-	{
-		wchar_t key[255] = {};
-		wchar_t path[255] = {};
-		swprintf_s(key, 255, L"SNB_IdleRand1_%d", i + 1);
-		swprintf_s(path, 255, L"Texture2D\\Spr_SNB_IdleRand1 (%d).png", i + 1);
-		pFlipbook->AddScene<CTexture>(CAssetMgr::GetInst()->Load<CTexture>(key, path));
-
-	}
-	pObject->FlipbookRender()->AddFlipbook(0, pFlipbook);
-	pObject->FlipbookRender()->Play(0, 10, true);
+	pObject->FlipbookRender()->AddFlipbook(0, CAssetMgr::GetInst()->FindAsset<CFlipbook>(L"SNB_Idle_Flipbook"));
+	pObject->FlipbookRender()->AddFlipbook(1, CAssetMgr::GetInst()->FindAsset<CFlipbook>(L"SNB_Running_Flipbook"));
 
 	pObject->Collider2D()->SetScale(Vec2(0.3f, 0.5f));
 	pObject->Collider2D()->SetOffset(Vec2(0.f, -0.04f));
@@ -98,19 +87,8 @@ void CLevelMgr::Init()
 	pChild->Collider2D()->SetScale(Vec2(0.15f, 0.33f));
 
 	pChild->FlipbookRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	//pChild->FlipbookRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SNBArm_Mtrl"));
-
-	pFlipbook = new CFlipbook;
-	for (int i = 0; i < 20; ++i)
-	{
-		wchar_t key[255] = {};
-		wchar_t path[255] = {};
-		swprintf_s(key, 255, L"SNBArm_IdleRand1_%d", i + 1);
-		swprintf_s(path, 255, L"Texture2D\\Spr_SNBArm_IdleRand1 (%d).png", i + 1);
-		pFlipbook->AddScene<CTexture>(CAssetMgr::GetInst()->Load<CTexture>(key, path));
-	}
-	pChild->FlipbookRender()->AddFlipbook(0, pFlipbook);
-	pChild->FlipbookRender()->Play(0, 10, true);
+	pChild->FlipbookRender()->AddFlipbook(0, CAssetMgr::GetInst()->FindAsset<CFlipbook>(L"SNBArm_Idle_Flipbook"));
+	pChild->FlipbookRender()->AddFlipbook(1, CAssetMgr::GetInst()->FindAsset<CFlipbook>(L"SNBArm_Running_Flipbook"));
 
 	// 부모 자식 연결
 	pObject->AddChild(pChild);
@@ -156,10 +134,10 @@ void CLevelMgr::Init()
 	pObject->Collider2D()->SetScale(Vec2(0.8f, 0.2f));
 	pObject->Collider2D()->SetOffset(Vec2(0.f, -0.23f));
 
-	m_CurLevel->AddGameObject(pObject, 5, true);
+	m_CurLevel->AddGameObject(pObject, 4, true);
 
 	// 충돌 레이어 지정
-	CCollisionMgr::GetInst()->CollisionLayerCheck(3, 5);
+	CCollisionMgr::GetInst()->CollisionLayerCheck(3, 4);
 	//CCollisionMgr::GetInst()->CollisionLayerCheck(4, 5);
 	//CCollisionMgr::GetInst()->CollisionLayerCheck(3, 6);
 
