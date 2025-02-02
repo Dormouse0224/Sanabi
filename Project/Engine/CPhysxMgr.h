@@ -2,6 +2,7 @@
 
 class CGameObject;
 class CGraphicShader;
+class CSimulationEvent;
 
 //struct tActorData
 //{
@@ -30,7 +31,11 @@ private:
 	// 시뮬레이션 대상 관리 컨테이너
 	map<CGameObject*, PxActor*>	m_mapActors;
 
+	// 디버그용 셰이더
 	Ptr<CGraphicShader>			m_Shader;
+
+	// 충돌 이벤트 처리 객체
+	CSimulationEvent*			m_EventCallback;
 
 public:
 	void Init();

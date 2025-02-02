@@ -8,6 +8,7 @@
 #include "CDevice.h"
 #include "CGraphicShader.h"
 #include "CConstBuffer.h"
+#include "CSimulationEvent.h"
 
 CPhysxMgr::CPhysxMgr()
     : m_Dispatcher(nullptr)
@@ -23,6 +24,8 @@ CPhysxMgr::~CPhysxMgr()
     m_Physics->release();
     m_Dispatcher->release();
     m_Foundation->release();
+
+    delete m_EventCallback;
 }
 
 void CPhysxMgr::Init()
@@ -41,9 +44,14 @@ void CPhysxMgr::Init()
     sceneDesc.filterShader = PxDefaultSimulationFilterShader;
     m_Scene = m_Physics->createScene(sceneDesc);
 
+    // 디버그 렌더링 목록
     m_Scene->setVisualizationParameter(PxVisualizationParameter::eSCALE, 1.0f);
     m_Scene->setVisualizationParameter(PxVisualizationParameter::eBODY_AXES, 10.0f);
     m_Scene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_SHAPES, 1.0f);
+
+    // 충돌 이벤트 콜백 등록
+    m_EventCallback = new CSimulationEvent;
+    m_Scene->setSimulationEventCallback(m_EventCallback);
 
 
     // physx 디버그용 셰이더 컴파일
@@ -135,6 +143,10 @@ void CPhysxMgr::AddDynamicActor(CGameObject* _Object, PxVec3 _Scale, PxVec3 _Off
     PxMaterial* pMaterial = m_Physics->createMaterial(0.f, 0.f, 0.f);
     pMaterial->setRestitutionCombineMode(PxCombineMode::eMIN);
     PxShape* shape = m_Physics->createShape(PxBoxGeometry(_Scale), *pMaterial);
+    shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
+    PxFilterData filterData;
+    filterData.word0 = 1; // 충돌을 허용하는 값으로 설정
+    shape->setSimulationFilterData(filterData);
     shape->setLocalPose(PxTransform(_Offset));
     PxTransform Trans(PxVec3(_Object->Transform()->GetRelativePos().x, _Object->Transform()->GetRelativePos().y, _Object->Transform()->GetRelativePos().z));
 
@@ -161,6 +173,10 @@ void CPhysxMgr::AddStaticActor(CGameObject* _Object, PxVec3 _Scale, PxVec3 _Offs
     // 마찰계수, 탄성계수, 모양 설정 및 좌표 가져오기
     PxMaterial* pMaterial = m_Physics->createMaterial(0.f, 0.f, 0.f);
     PxShape* shape = m_Physics->createShape(PxBoxGeometry(_Scale), *pMaterial);
+    shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
+    PxFilterData filterData;
+    filterData.word0 = 2; // 충돌을 허용하는 값으로 설정
+    shape->setSimulationFilterData(filterData);
     shape->setLocalPose(PxTransform(_Offset));
     PxTransform Trans(PxVec3(_Object->Transform()->GetRelativePos().x, _Object->Transform()->GetRelativePos().y, _Object->Transform()->GetRelativePos().z));
 
