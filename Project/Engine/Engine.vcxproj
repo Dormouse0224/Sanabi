@@ -71,15 +71,15 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)External\Library\$(ProjectName)\</OutDir>
+    <OutDir>$(SolutionDir)External\lib\$(ProjectName)\</OutDir>
     <TargetName>$(ProjectName)_d</TargetName>
-    <ExternalIncludePath>$(SolutionDir)External\include\;$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>$(SolutionDir)External\Library\;$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>$(SolutionDir)External\include\physx\;$(SolutionDir)External\include\;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>$(SolutionDir)External\lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)External\Library\$(ProjectName)\</OutDir>
-    <ExternalIncludePath>$(SolutionDir)External\include\;$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>$(SolutionDir)External\Library\;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)External\lib\$(ProjectName)\</OutDir>
+    <ExternalIncludePath>$(SolutionDir)External\include\physx\;$(SolutionDir)External\include\;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>$(SolutionDir)External\lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -157,7 +157,9 @@
     <ClInclude Include="CFlipbookRender.h" />
     <ClInclude Include="CParticleRender.h" />
     <ClInclude Include="CParticleTickCS.h" />
+    <ClInclude Include="CPhysxMgr.h" />
     <ClInclude Include="CSetColorCS.h" />
+    <ClInclude Include="CSimulationEvent.h" />
     <ClInclude Include="CSprite.h" />
     <ClInclude Include="CSpriteRender.h" />
     <ClInclude Include="CStructuredBuffer.h" />
@@ -235,6 +237,7 @@
     <ClCompile Include="CParticleRender.cpp" />
     <ClCompile Include="CParticleTickCS.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
+    <ClCompile Include="CPhysxMgr.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CRenderComponent.cpp" />
     <ClCompile Include="CRenderMgr.cpp" />
@@ -242,6 +245,7 @@
     <ClCompile Include="CScript.cpp" />
     <ClCompile Include="CSetColorCS.cpp" />
     <ClCompile Include="CShader.cpp" />
+    <ClCompile Include="CSimulationEvent.cpp" />
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="CSpriteRender.cpp" />
     <ClCompile Include="CStructuredBuffer.cpp" />
@@ -282,6 +286,12 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="particle.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="PhysxDebug.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>

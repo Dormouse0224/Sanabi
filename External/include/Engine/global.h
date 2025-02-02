@@ -34,6 +34,30 @@ using namespace DirectX::SimpleMath;
 #pragma comment(lib, "DirectXTex/DirectXTex.lib")
 #endif
 
+
+#include <physx/PxPhysicsAPI.h>
+#ifdef _DEBUG
+#pragma comment(lib, "physx/debug/LowLevel_static_64.lib")
+#pragma comment(lib, "physx/debug/LowLevelAABB_static_64.lib")
+#pragma comment(lib, "physx/debug/LowLevelDynamics_static_64.lib")
+#pragma comment(lib, "physx/debug/PhysX_64.lib")
+#pragma comment(lib, "physx/debug/PhysXCharacterKinematic_static_64.lib")
+#pragma comment(lib, "physx/debug/PhysXCommon_64.lib")
+#pragma comment(lib, "physx/debug/PhysXCooking_64.lib")
+#pragma comment(lib, "physx/debug/PhysXExtensions_static_64.lib")
+#pragma comment(lib, "physx/debug/PhysXFoundation_64.lib")
+#pragma comment(lib, "physx/debug/PhysXPvdSDK_static_64.lib")
+#pragma comment(lib, "physx/debug/PhysXTask_static_64.lib")
+#pragma comment(lib, "physx/debug/PhysXVehicle_static_64.lib")
+#pragma comment(lib, "physx/debug/PhysXVehicle2_static_64.lib")
+#pragma comment(lib, "physx/debug/SceneQuery_static_64.lib")
+#pragma comment(lib, "physx/debug/SimulationController_static_64.lib")
+#else
+#pragma comment(lib, "physx/PhysX_64.lib")
+#endif
+using namespace physx;
+
+
 // Visual Leak Detector 라이브러리 링크 (디버그에서만 적용)
 #include <VLD/vld.h>
 

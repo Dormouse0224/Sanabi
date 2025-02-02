@@ -154,6 +154,9 @@
     <Filter Include="HLSL\03. Compute\SetColor">
       <UniqueIdentifier>{212108d4-10e0-4e43-b88b-801f30d76eec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Manager\Physx">
+      <UniqueIdentifier>{9efee060-e300-4765-86b8-4e0f87fb0a0a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CEngine.h">
@@ -315,6 +318,12 @@
     <ClInclude Include="CSetColorCS.h">
       <Filter>HLSL\03. Compute\SetColor</Filter>
     </ClInclude>
+    <ClInclude Include="CPhysxMgr.h">
+      <Filter>04.Manager\Physx</Filter>
+    </ClInclude>
+    <ClInclude Include="CSimulationEvent.h">
+      <Filter>04.Manager\Physx</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CEngine.cpp">
@@ -455,6 +464,12 @@
     <ClCompile Include="CSetColorCS.cpp">
       <Filter>HLSL\03. Compute\SetColor</Filter>
     </ClCompile>
+    <ClCompile Include="CPhysxMgr.cpp">
+      <Filter>04.Manager\Physx</Filter>
+    </ClCompile>
+    <ClCompile Include="CSimulationEvent.cpp">
+      <Filter>04.Manager\Physx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -491,6 +506,9 @@
     </FxCompile>
     <FxCompile Include="SetColor.fx">
       <Filter>HLSL\03. Compute\SetColor</Filter>
+    </FxCompile>
+    <FxCompile Include="PhysxDebug.fx">
+      <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

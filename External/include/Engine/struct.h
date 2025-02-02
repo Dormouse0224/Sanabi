@@ -92,6 +92,7 @@ struct tTransform
 	Matrix	matProj;
 
 	Matrix	matWV;
+	Matrix	matVP;
 	Matrix	matWVP;
 };
 extern tTransform g_Trans;

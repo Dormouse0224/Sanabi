@@ -92,6 +92,7 @@ void CTransform::Binding()
 
 	g_Trans.matWorld = m_matWorld;
 	g_Trans.matWV = g_Trans.matWorld * g_Trans.matView;
+	g_Trans.matVP = g_Trans.matView * g_Trans.matProj;
 	g_Trans.matWVP = g_Trans.matWV * g_Trans.matProj;
 
 	pTransformBuffer->SetData(&g_Trans, sizeof(tTransform));

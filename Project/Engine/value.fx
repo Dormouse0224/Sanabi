@@ -12,6 +12,7 @@ cbuffer TRANSFORM : register(b0)
     row_major matrix g_matProj;
     
     row_major matrix g_matWV;
+    row_major matrix g_matVP;
     row_major matrix g_matWVP;
 }
 

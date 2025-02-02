@@ -190,4 +190,5 @@ void CGraphicShader::Binding()
 	CONTEXT->RSSetState(CDevice::GetInst()->GetRSState(m_RSType).Get());
 	CONTEXT->OMSetDepthStencilState(CDevice::GetInst()->GetDSState(m_DSType).Get(), 0);
 	CONTEXT->OMSetBlendState(CDevice::GetInst()->GetBSState(m_BSType).Get(), nullptr, 0xffffffff);
+
 }

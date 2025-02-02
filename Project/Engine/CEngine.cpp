@@ -10,6 +10,7 @@
 #include "CRenderMgr.h"
 #include "CCollisionMgr.h"
 #include "CTaskMgr.h"
+#include "CPhysxMgr.h"
 
 CEngine::CEngine()
     : m_hInst(nullptr)
@@ -44,6 +45,7 @@ int CEngine::Init(HINSTANCE _Inst, UINT _Width, UINT _Height)
     CKeyMgr::GetInst()->Init();
     CTimeMgr::GetInst()->Init();
     CAssetMgr::GetInst()->Init();
+    CPhysxMgr::GetInst()->Init();
     CLevelMgr::GetInst()->Init();
     CRenderMgr::GetInst()->Init();
 
@@ -61,6 +63,9 @@ void CEngine::Progress()
 
     // Collision Check
     CCollisionMgr::GetInst()->Tick();
+
+    // physx simulate
+    CPhysxMgr::GetInst()->Tick();
 
     // Render
     CRenderMgr::GetInst()->Tick();

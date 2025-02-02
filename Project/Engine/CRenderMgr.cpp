@@ -10,6 +10,7 @@
 #include "CRenderComponent.h"
 
 #include "CTimeMgr.h"
+#include "CPhysxMgr.h"
 
 CRenderMgr::CRenderMgr()
 {
@@ -45,6 +46,9 @@ void CRenderMgr::Tick()
 
 	// Debug Rendering
 	DebugRender();
+
+	// Physx Rendering
+	CPhysxMgr::GetInst()->Render();
 
 	// 윈도우 화면에 송출
 	CDevice::GetInst()->Present();
