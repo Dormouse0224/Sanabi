@@ -69,7 +69,7 @@ void CParticleRender::FinalTick()
 
 	m_TickCS->SetSpawnBuffer(m_SpawnBuffer);
 	m_TickCS->SetParticleBuffer(m_ParticleBuffer);
-	m_TickCS->Execute();
+	m_TickCS->Excute();
 }
 
 void CParticleRender::Render()

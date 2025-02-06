@@ -32,34 +32,37 @@ void CPlayerScript::Tick()
 	Vec3 vPos = pTrans->GetRelativePos();
 
 
-	PxRigidDynamic* pBody = (PxRigidDynamic*)(CPhysxMgr::GetInst()->FindRigidBody(GetOwner()));
 	// 키입력에 따라서 사각형이 움직이도록 한다.
-	if (KEY_PRESSED(Keyboard::LEFT))
+	if (KEY_TAP(Keyboard::LEFT))
 	{
-		pBody->addForce(PxVec3(-100.f, 0.f, 0.f), PxForceMode::eACCELERATION);
+		PxRigidDynamic* pBody = (PxRigidDynamic*)(CPhysxMgr::GetInst()->FindActor(GetOwner()));
+		pBody->addForce(PxVec3(-100.f, 0.f, 0.f), PxForceMode::eVELOCITY_CHANGE);
 	}
-	if (KEY_PRESSED(Keyboard::RIGHT))
+	if (KEY_TAP(Keyboard::RIGHT))
 	{
-		pBody->addForce(PxVec3(100.f, 0.f, 0.f), PxForceMode::eACCELERATION);
+		PxRigidDynamic* pBody = (PxRigidDynamic*)(CPhysxMgr::GetInst()->FindActor(GetOwner()));
+		pBody->addForce(PxVec3(100.f, 0.f, 0.f), PxForceMode::eVELOCITY_CHANGE);
 	}
 	if (KEY_RELEASED(Keyboard::LEFT))
 	{
-		pBody->addForce(PxVec3(100.f, 0.f, 0.f), PxForceMode::eFORCE);
+		PxRigidDynamic* pBody = (PxRigidDynamic*)(CPhysxMgr::GetInst()->FindActor(GetOwner()));
+		pBody->addForce(PxVec3(100.f, 0.f, 0.f), PxForceMode::eVELOCITY_CHANGE);
 	}
 	if (KEY_RELEASED(Keyboard::RIGHT))
 	{
-		pBody->addForce(PxVec3(-100.f, 0.f, 0.f), PxForceMode::eFORCE);
+		PxRigidDynamic* pBody = (PxRigidDynamic*)(CPhysxMgr::GetInst()->FindActor(GetOwner()));
+		pBody->addForce(PxVec3(-100.f, 0.f, 0.f), PxForceMode::eVELOCITY_CHANGE);
 	}
 	if (KEY_TAP(Keyboard::SPACE))
 	{
-		pBody->addForce(PxVec3(0.f, 200.f, 0.f), PxForceMode::eVELOCITY_CHANGE);
+		PxRigidDynamic* pBody = (PxRigidDynamic*)(CPhysxMgr::GetInst()->FindActor(GetOwner()));
+		pBody->addForce(PxVec3(0.f, 150.f, 0.f), PxForceMode::eVELOCITY_CHANGE);
 
 	}
 	//if (KEY_PRESSED(Keyboard::UP))
 	//	vPos.y += 100.f * DT;
 	//if (KEY_PRESSED(Keyboard::DOWN))
 	//	vPos.y -= 100.f * DT;
-
 
 
 	// 상태 애니메이션

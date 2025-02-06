@@ -11,7 +11,7 @@ class CGameObject :
     public CEntity
 {
 private:
-    CComponent*             m_Com[(UINT)COMPONENT_TYPE::COMPONENT_END];
+    CComponent*             m_Com[COMPONENT_END];
     vector<CScript*>        m_vecScript;
     CRenderComponent*       m_RenderCom; // ·»´õ¸µ ÄÄÆ÷³ÍÆ® Æ÷ÀÎÅÍ
 
@@ -24,7 +24,7 @@ private:
 
 
 public:
-    CComponent* GetComponent(COMPONENT_TYPE _Type) { return m_Com[(UINT)_Type]; }
+    CComponent* GetComponent(COMPONENT_TYPE _Type) { return m_Com[_Type]; }
     CRenderComponent* GetRenderComponent() { return m_RenderCom; }
     void AddComponent(CComponent* _Component);
 
@@ -37,15 +37,15 @@ public:
     const vector<CScript*>& GetScripts() { return m_vecScript; }
     int GetLayerIdx() { return m_LayerIdx; }
 
-    class CTransform* Transform() { return (CTransform*)GetComponent(COMPONENT_TYPE::TRANSFORM); }
-    class CCamera* Camera() { return (CCamera*)GetComponent(COMPONENT_TYPE::CAMERA); }
-    class CCollider2D* Collider2D() { return (CCollider2D*)GetComponent(COMPONENT_TYPE::COLLIDER2D); }
-    class CPhysxActor* PhysxActor() { return (CPhysxActor*)GetComponent(COMPONENT_TYPE::PHYSXACTOR); }
-    class CMeshRender* MeshRender() { return (CMeshRender*)GetComponent(COMPONENT_TYPE::MESHRENDER); }
-    class CSpriteRender* SpriteRender() { return (CSpriteRender*)GetComponent(COMPONENT_TYPE::SPRITERENDER); }
-    class CFlipbookRender* FlipbookRender() { return (CFlipbookRender*)GetComponent(COMPONENT_TYPE::FLIPBOOKRENDER); }
-    class CTileRender* TileRender() { return (CTileRender*)GetComponent(COMPONENT_TYPE::TILERENDER); }
-    class CParticleRender* ParticleRender() { return (CParticleRender*)GetComponent(COMPONENT_TYPE::PARTICLERENDER); }
+    class CTransform* Transform() { return (CTransform*)GetComponent(TRANSFORM); }
+    class CCamera* Camera() { return (CCamera*)GetComponent(CAMERA); }
+    class CCollider2D* Collider2D() { return (CCollider2D*)GetComponent(COLLIDER2D); }
+
+    class CMeshRender* MeshRender() { return (CMeshRender*)GetComponent(MESHRENDER); }
+    class CSpriteRender* SpriteRender() { return (CSpriteRender*)GetComponent(SPRITERENDER); }
+    class CFlipbookRender* FlipbookRender() { return (CFlipbookRender*)GetComponent(FLIPBOOKRENDER); }
+    class CTileRender* TileRender() { return (CTileRender*)GetComponent(TILERENDER); }
+    class CParticleRender* ParticleRender() { return (CParticleRender*)GetComponent(PARTICLERENDER); }
 
     void Destroy();
 

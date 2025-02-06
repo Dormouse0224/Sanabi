@@ -13,37 +13,38 @@ class CSimulationEvent;
 class CPhysxMgr
 	: public Singleton<CPhysxMgr>
 {
-	friend class CPhysxActor;
 public:
 	SINGLE(CPhysxMgr);
 
 private:
 	// 초기화 데이터
-	PxDefaultAllocator					m_DefaultAllocatorCallback;
-	PxDefaultErrorCallback				m_DefaultErrorCallback;
-	PxDefaultCpuDispatcher*				m_Dispatcher;
-	PxTolerancesScale					m_ToleranceScale;
+	PxDefaultAllocator			m_DefaultAllocatorCallback;
+	PxDefaultErrorCallback		m_DefaultErrorCallback;
+	PxDefaultCpuDispatcher*		m_Dispatcher;
+	PxTolerancesScale			m_ToleranceScale;
 
-	PxFoundation*						m_Foundation;
-	PxPhysics*							m_Physics;
+	PxFoundation*				m_Foundation;
+	PxPhysics*					m_Physics;
 
-	PxScene*							m_Scene;
+	PxScene*					m_Scene;
 
 	// 시뮬레이션 대상 관리 컨테이너
-	map<CGameObject*, PxRigidActor*>	m_mapRigidBody;
+	map<CGameObject*, PxActor*>	m_mapActors;
 
 	// 디버그용 셰이더
-	Ptr<CGraphicShader>					m_Shader;
+	Ptr<CGraphicShader>			m_Shader;
 
 	// 충돌 이벤트 처리 객체
-	CSimulationEvent*					m_EventCallback;
+	CSimulationEvent*			m_EventCallback;
 
 public:
 	void Init();
 	void Tick();
 	void Render();
 
-	PxRigidActor* FindRigidBody(CGameObject* _Object);
+	void AddDynamicActor(CGameObject* _Object, PxVec3 _Scale = PxVec3(1.f), PxVec3 _Offset = PxVec3(0.f));
+	void AddStaticActor(CGameObject* _Object, PxVec3 _Scale = PxVec3(1.f), PxVec3 _Offset = PxVec3(0.f));
+	PxActor* FindActor(CGameObject* _Object);
 
 };
 

@@ -74,7 +74,7 @@ int CComputeShader::CreateComputeShader(const wstring& _RelativePath, const stri
 	return S_OK;
 }
 
-int CComputeShader::Execute()
+int CComputeShader::Excute()
 {
 	if (FAILED(Binding()))
 	{

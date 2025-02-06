@@ -46,12 +46,11 @@ enum class BS_TYPE
 	END,
 };
 
-enum class COMPONENT_TYPE
+enum COMPONENT_TYPE
 {
 	TRANSFORM,
 	COLLIDER2D,
 	COLLIDER3D,
-	PHYSXACTOR,
 	CAMERA,
 	BOUNDINGBOX,
 
@@ -151,11 +150,4 @@ enum class TASK_TYPE
 	CREATE_OBJECT,
 	DELETE_OBJECT,
 	CHANGE_LEVEL,
-};
-
-enum FILTER_LAYER
-{
-	ePLAYER				= (1<<0),
-	eLANDSCAPE			= (1<<1),
-	eMONSTER			= (1<<2),
 };

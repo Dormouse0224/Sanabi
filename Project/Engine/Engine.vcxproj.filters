@@ -157,9 +157,6 @@
     <Filter Include="04.Manager\Physx">
       <UniqueIdentifier>{9efee060-e300-4765-86b8-4e0f87fb0a0a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="07. Component\PhysxCollider">
-      <UniqueIdentifier>{89926b5f-3481-43a2-bc0c-4ccf2e845f97}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CEngine.h">
@@ -327,9 +324,6 @@
     <ClInclude Include="CSimulationEvent.h">
       <Filter>04.Manager\Physx</Filter>
     </ClInclude>
-    <ClInclude Include="CPhysxActor.h">
-      <Filter>07. Component\PhysxCollider</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CEngine.cpp">
@@ -475,9 +469,6 @@
     </ClCompile>
     <ClCompile Include="CSimulationEvent.cpp">
       <Filter>04.Manager\Physx</Filter>
-    </ClCompile>
-    <ClCompile Include="CPhysxActor.cpp">
-      <Filter>07. Component\PhysxCollider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

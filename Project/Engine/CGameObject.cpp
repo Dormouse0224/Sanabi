@@ -20,7 +20,7 @@ CGameObject::CGameObject()
 
 CGameObject::~CGameObject()
 {
-	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::COMPONENT_END; ++i)
+	for (UINT i = 0; i < COMPONENT_END; ++i)
 	{
 		if (nullptr != m_Com[i])
 			delete m_Com[i];
@@ -33,15 +33,15 @@ void CGameObject::AddComponent(CComponent* _Component)
 {
 	COMPONENT_TYPE Type = _Component->GetType();
 
-	if (Type == COMPONENT_TYPE::SCRIPT)
+	if (Type == SCRIPT)
 	{
 		m_vecScript.push_back((CScript*)_Component);
 	}
 	else
 	{
 		// 이미 가지고 있는 컴포넌트인 경우
-		assert(!m_Com[(UINT)Type]);
-		m_Com[(UINT)Type] = _Component;
+		assert(!m_Com[Type]);
+		m_Com[Type] = _Component;
 
 		if (dynamic_cast<CRenderComponent*>(_Component))
 		{
@@ -58,7 +58,7 @@ void CGameObject::AddComponent(CComponent* _Component)
 
 void CGameObject::Begin()
 {
-	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::COMPONENT_END; ++i)
+	for (UINT i = 0; i < COMPONENT_END; ++i)
 	{
 		if (nullptr != m_Com[i])
 			m_Com[i]->Begin();
@@ -77,7 +77,7 @@ void CGameObject::Begin()
 
 void CGameObject::Tick()
 {
-	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::COMPONENT_END; ++i)
+	for (UINT i = 0; i < COMPONENT_END; ++i)
 	{
 		if (nullptr != m_Com[i])
 			m_Com[i]->Tick();
@@ -97,7 +97,7 @@ void CGameObject::Tick()
 
 void CGameObject::FinalTick()
 {
-	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::COMPONENT_END; ++i)
+	for (UINT i = 0; i < COMPONENT_END; ++i)
 	{
 		if (nullptr != m_Com[i])
 			m_Com[i]->FinalTick();
