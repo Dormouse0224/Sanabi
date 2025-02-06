@@ -6,7 +6,7 @@
 
 
 CTransform::CTransform()
-	: CComponent(TRANSFORM)
+	: CComponent(COMPONENT_TYPE::TRANSFORM)
 	, m_RelativeScale(Vec3(1.f, 1.f, 1.f))
 	, m_IndependentScale(false)
 {

@@ -24,7 +24,7 @@ protected:
     int CreateComputeShader(const wstring& _RelativePath, const string& _FuncName);
 
 public:
-    int Excute();
+    int Execute();
 
 private:
     virtual int Binding() = 0;

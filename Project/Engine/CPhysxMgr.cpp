@@ -10,6 +10,30 @@
 #include "CConstBuffer.h"
 #include "CSimulationEvent.h"
 
+
+PxFilterFlags FilterShaderExample(
+    PxFilterObjectAttributes attributes0, PxFilterData filterData0,
+    PxFilterObjectAttributes attributes1, PxFilterData filterData1,
+    PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize)
+{
+    // let triggers through
+    if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
+    {
+        pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
+        return PxFilterFlag::eDEFAULT;
+    }
+    // generate contacts for all that were not filtered above
+    pairFlags = PxPairFlag::eCONTACT_DEFAULT;
+
+    // trigger the contact callback for pairs (A,B) where
+    // the filtermask of A contains the ID of B and vice versa.
+    if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+        pairFlags |= PxPairFlag::eNOTIFY_TOUCH_FOUND;
+
+    return PxFilterFlag::eDEFAULT;
+}
+
+
 CPhysxMgr::CPhysxMgr()
     : m_Dispatcher(nullptr)
     , m_Foundation(nullptr)
@@ -34,14 +58,14 @@ void CPhysxMgr::Init()
     m_Foundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_DefaultAllocatorCallback, m_DefaultErrorCallback);
     if (!m_Foundation) throw("PxCreateFoundation failed!");
     m_ToleranceScale.length = 1.f;
-    m_ToleranceScale.speed = 0.1f;
+    m_ToleranceScale.speed = 10.f;
     m_Physics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_Foundation, m_ToleranceScale);
 
     PxSceneDesc sceneDesc(m_Physics->getTolerancesScale());
-    sceneDesc.gravity = PxVec3(0.f, -200.f, 0.f);
+    sceneDesc.gravity = PxVec3(0.f, -400.f, 0.f);
     m_Dispatcher = PxDefaultCpuDispatcherCreate(2);
     sceneDesc.cpuDispatcher = m_Dispatcher;
-    sceneDesc.filterShader = PxDefaultSimulationFilterShader;
+    sceneDesc.filterShader = FilterShaderExample;
     m_Scene = m_Physics->createScene(sceneDesc);
 
     // 디버그 렌더링 목록
@@ -52,7 +76,6 @@ void CPhysxMgr::Init()
     // 충돌 이벤트 콜백 등록
     m_EventCallback = new CSimulationEvent;
     m_Scene->setSimulationEventCallback(m_EventCallback);
-
 
     // physx 디버그용 셰이더 컴파일
     m_Shader = new CGraphicShader;
@@ -69,11 +92,17 @@ void CPhysxMgr::Init()
 void CPhysxMgr::Tick()
 {
     // 물리 시뮬레이션 실행
-    m_Scene->simulate(DT);
+    float DeltaTime = DT;
+    float LowerLimit = 1.f / 30.f;
+    if (DeltaTime > LowerLimit)
+        DeltaTime = LowerLimit;
+    m_Scene->simulate(DeltaTime);
     m_Scene->fetchResults(true);
 
+
     // 시뮬레이션 후 모든 동적 강체 액터 반환, 좌표 업데이트
-    vector<PxActor*> vecDynamicActor(m_mapActors.size(), nullptr);
+    PxU32 DACount = m_Scene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC);
+    vector<PxActor*> vecDynamicActor(DACount, nullptr);
     m_Scene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC, vecDynamicActor.data(), vecDynamicActor.size());
 
     for (int i = 0; i < vecDynamicActor.size(); ++i)
@@ -137,67 +166,14 @@ void CPhysxMgr::Render()
     CONTEXT->Draw(vecVtx.size(), 0);
 }
 
-void CPhysxMgr::AddDynamicActor(CGameObject* _Object, PxVec3 _Scale, PxVec3 _Offset)
+
+
+
+PxRigidActor* CPhysxMgr::FindRigidBody(CGameObject* _Object)
 {
-    // 마찰계수, 탄성계수, 모양 설정 및 좌표 가져오기
-    PxMaterial* pMaterial = m_Physics->createMaterial(0.f, 0.f, 0.f);
-    pMaterial->setRestitutionCombineMode(PxCombineMode::eMIN);
-    PxShape* shape = m_Physics->createShape(PxBoxGeometry(_Scale), *pMaterial);
-    shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
-    PxFilterData filterData;
-    filterData.word0 = 1; // 충돌을 허용하는 값으로 설정
-    shape->setSimulationFilterData(filterData);
-    shape->setLocalPose(PxTransform(_Offset));
-    PxTransform Trans(PxVec3(_Object->Transform()->GetRelativePos().x, _Object->Transform()->GetRelativePos().y, _Object->Transform()->GetRelativePos().z));
+    map<CGameObject*, PxRigidActor*>::iterator iter = m_mapRigidBody.find(_Object);
 
-    // 강체 생성, 씬에 액터 등록
-    PxRigidDynamic* pBody = m_Physics->createRigidDynamic(Trans);
-    pBody->attachShape(*shape);
-    pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Z, true);       // Z축 이동 잠금
-    pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);      // X축 회전 잠금
-    pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, true);      // Y축 회전 잠금
-    pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);      // Z축 회전 잠금
-    pBody->userData = _Object;
-    PxRigidBodyExt::setMassAndUpdateInertia(*pBody, 100.f);
-    //PxRigidBodyExt::updateMassAndInertia(*pBody, 0.1f);
-    m_Scene->addActor(*pBody);
-
-    // 오브젝트를 시뮬레이션 액터 목록에 추가
-    m_mapActors.insert(make_pair(_Object, pBody));
-
-    shape->release();
-}
-
-void CPhysxMgr::AddStaticActor(CGameObject* _Object, PxVec3 _Scale, PxVec3 _Offset)
-{
-    // 마찰계수, 탄성계수, 모양 설정 및 좌표 가져오기
-    PxMaterial* pMaterial = m_Physics->createMaterial(0.f, 0.f, 0.f);
-    PxShape* shape = m_Physics->createShape(PxBoxGeometry(_Scale), *pMaterial);
-    shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
-    PxFilterData filterData;
-    filterData.word0 = 2; // 충돌을 허용하는 값으로 설정
-    shape->setSimulationFilterData(filterData);
-    shape->setLocalPose(PxTransform(_Offset));
-    PxTransform Trans(PxVec3(_Object->Transform()->GetRelativePos().x, _Object->Transform()->GetRelativePos().y, _Object->Transform()->GetRelativePos().z));
-
-    PxRigidStatic* pBody = m_Physics->createRigidStatic(Trans);
-    pBody->attachShape(*shape);
-    pBody->userData = _Object;
-    m_Scene->addActor(*pBody);
-
-    // 오브젝트를 시뮬레이션 액터 목록에 추가
-    //m_mapActors.insert(make_pair(_Object, pBody));
-
-    shape->release();
-}
-
-
-
-PxActor* CPhysxMgr::FindActor(CGameObject* _Object)
-{
-    map<CGameObject*, PxActor*>::iterator iter = m_mapActors.find(_Object);
-
-    if (iter == m_mapActors.end())
+    if (iter == m_mapRigidBody.end())
         return nullptr;
 
     return iter->second;
