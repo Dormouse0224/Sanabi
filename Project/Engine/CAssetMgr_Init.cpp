@@ -144,18 +144,18 @@ void CAssetMgr::CreateEngineTexture()
 	// ==============
 	// 텍스쳐 로딩하기
 	// ==============
-	Ptr<CTexture> pTex = new CTexture;
-	wstring strPath = CPathMgr::GetContentPath();
-	pTex->Load(strPath + L"Texture2D\\Spr_SNB_IdleRand1 (1).png");
-	AddAsset(L"SNB", pTex.Get());
+	//Ptr<CTexture> pTex = new CTexture;
+	//wstring strPath = CPathMgr::GetContentPath();
+	//pTex->Load(strPath + L"Texture2D\\Spr_SNB_IdleRand1 (1).png");
+	//AddAsset(L"SNB", pTex.Get());
 
-	pTex = new CTexture;
-	pTex->Load(strPath + L"Texture2D\\Spr_SNBArm_IdleRand1 (1).png");
-	AddAsset(L"SNBArm", pTex.Get());
+	//pTex = new CTexture;
+	//pTex->Load(strPath + L"Texture2D\\Spr_SNBArm_IdleRand1 (1).png");
+	//AddAsset(L"SNBArm", pTex.Get());
 
-	pTex = new CTexture;
-	pTex->Load(strPath + L"Texture2D\\Spr_CargoPlatform_Idle (lp) (1).png");
-	AddAsset(L"CargoPlatform", pTex.Get());
+	//pTex = new CTexture;
+	//pTex->Load(strPath + L"Texture2D\\Spr_CargoPlatform_Idle (lp) (1).png");
+	//AddAsset(L"CargoPlatform", pTex.Get());
 }
 
 void CAssetMgr::CreateEngineGraphicShader()
@@ -210,17 +210,17 @@ void CAssetMgr::CreateEngineMaterial()
 
 	Ptr<CMaterial> pMtrl = new CMaterial;
 	pMtrl->SetShader(FindAsset<CGraphicShader>(L"Std2DShader"));
-	pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"SNB"));
+	pMtrl->SetTexParam(TEX_0, Load<CTexture>(L"Texture2D\\Spr_SNB_IdleRand1 (1).png"));
 	AddAsset(L"SNB_Mtrl", pMtrl.Get());
 
 	pMtrl = new CMaterial;
 	pMtrl->SetShader(FindAsset<CGraphicShader>(L"Std2DShader"));
-	pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"SNBArm"));
+	pMtrl->SetTexParam(TEX_0, Load<CTexture>(L"Texture2D\\Spr_SNBArm_IdleRand1 (1).png"));
 	AddAsset(L"SNBArm_Mtrl", pMtrl.Get());
 
 	pMtrl = new CMaterial;
 	pMtrl->SetShader(FindAsset<CGraphicShader>(L"Std2DShader"));
-	pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"CargoPlatform"));
+	pMtrl->SetTexParam(TEX_0, Load<CTexture>(L"Texture2D\\Spr_CargoPlatform_Idle (lp) (1).png"));
 	AddAsset(L"CargoPlatform_Mtrl", pMtrl.Get());
 
 }
@@ -278,44 +278,36 @@ void CAssetMgr::CreateEngineSprite()
 	Ptr<CFlipbook> pFlipbook = new CFlipbook;
 	for (int i = 0; i < 8; ++i)
 	{
-		wchar_t key[255] = {};
 		wchar_t path[255] = {};
-		swprintf_s(key, 255, L"Spr_SNB_Idle_%d", i + 1);
 		swprintf_s(path, 255, L"Texture2D\\Spr_SNB_Idle (lp) (%d).png", i + 1);
-		pFlipbook->AddScene<CTexture>(CAssetMgr::GetInst()->Load<CTexture>(key, path));
+		pFlipbook->AddScene<CTexture>(CAssetMgr::GetInst()->Load<CTexture>(path));
 	}
 	AddAsset(L"SNB_Idle_Flipbook", pFlipbook.Get());
 
 	pFlipbook = new CFlipbook;
 	for (int i = 0; i < 8; ++i)
 	{
-		wchar_t key[255] = {};
 		wchar_t path[255] = {};
-		swprintf_s(key, 255, L"Spr_SNBArm_Idle_%d", i + 1);
 		swprintf_s(path, 255, L"Texture2D\\Spr_SNBArm_Idle (%d).png", i + 1);
-		pFlipbook->AddScene<CTexture>(CAssetMgr::GetInst()->Load<CTexture>(key, path));
+		pFlipbook->AddScene<CTexture>(CAssetMgr::GetInst()->Load<CTexture>(path));
 	}
 	AddAsset(L"SNBArm_Idle_Flipbook", pFlipbook.Get());
 
 	pFlipbook = new CFlipbook;
 	for (int i = 0; i < 20; ++i)
 	{
-		wchar_t key[255] = {};
 		wchar_t path[255] = {};
-		swprintf_s(key, 255, L"Spr_SNB_Running_%d", i + 1);
 		swprintf_s(path, 255, L"Texture2D\\Spr_SNB_Running (lp) (%d).png", i + 1);
-		pFlipbook->AddScene<CTexture>(CAssetMgr::GetInst()->Load<CTexture>(key, path));
+		pFlipbook->AddScene<CTexture>(CAssetMgr::GetInst()->Load<CTexture>(path));
 	}
 	AddAsset(L"SNB_Running_Flipbook", pFlipbook.Get());
 
 	pFlipbook = new CFlipbook;
 	for (int i = 0; i < 20; ++i)
 	{
-		wchar_t key[255] = {};
 		wchar_t path[255] = {};
-		swprintf_s(key, 255, L"Spr_SNBArm_Running_%d", i + 1);
 		swprintf_s(path, 255, L"Texture2D\\Spr_SNBArm_Running (lp) (%d).png", i + 1);
-		pFlipbook->AddScene<CTexture>(CAssetMgr::GetInst()->Load<CTexture>(key, path));
+		pFlipbook->AddScene<CTexture>(CAssetMgr::GetInst()->Load<CTexture>(path));
 	}
 	AddAsset(L"SNBArm_Running_Flipbook", pFlipbook.Get());
 }

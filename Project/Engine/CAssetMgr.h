@@ -24,10 +24,10 @@ public:
 	void AddAsset(const wstring& _Key, Ptr<CAsset> _Asset);
 
 	template<typename T>
-	Ptr<T> FindAsset(const wstring& _Key);
+	Ptr<T> FindAsset(const wstring& _RelativePath);
 
 	template<typename T>
-	Ptr<T> Load(const wstring& _Key, const wstring& _RelativePath);
+	Ptr<T> Load(const wstring& _RelativePath);
 
 	// _BindFlag : D3D11_BIND_FLAG
 	Ptr<CTexture> CreateTexture(const wstring& _Key, UINT _Width, UINT _Height, DXGI_FORMAT _Format, UINT _BindFlag, D3D11_USAGE _Usage = D3D11_USAGE_DEFAULT);
@@ -53,11 +53,11 @@ ASSET_TYPE GetAssetType()
 }
 
 template<typename T>
-inline Ptr<T> CAssetMgr::FindAsset(const wstring& _Key)
+inline Ptr<T> CAssetMgr::FindAsset(const wstring& _RelativePath)
 {
 	ASSET_TYPE Type = GetAssetType<T>();
 
-	map<wstring, Ptr<CAsset>>::iterator iter = m_mapAsset[Type].find(_Key);
+	map<wstring, Ptr<CAsset>>::iterator iter = m_mapAsset[Type].find(_RelativePath);
 
 	if (iter == m_mapAsset[Type].end())
 		return nullptr;
@@ -66,9 +66,9 @@ inline Ptr<T> CAssetMgr::FindAsset(const wstring& _Key)
 }
 
 template<typename T>
-inline Ptr<T> CAssetMgr::Load(const wstring& _Key, const wstring& _RelativePath)
+inline Ptr<T> CAssetMgr::Load(const wstring& _RelativePath)
 {
-	Ptr<T> pAsset = FindAsset<T>(_Key);
+	Ptr<T> pAsset = FindAsset<T>(_RelativePath);
 
 	if (nullptr != pAsset)
 		return pAsset;
@@ -82,7 +82,7 @@ inline Ptr<T> CAssetMgr::Load(const wstring& _Key, const wstring& _RelativePath)
 		return nullptr;
 	}
 
-	AddAsset(_Key, pAsset.Get());
+	AddAsset(_RelativePath, pAsset.Get());
 
 
 	return pAsset;

@@ -34,6 +34,7 @@ public:
 
     CGameObject* GetParent() const { return m_Parent; }
     const vector<CGameObject*>& GetChild() const { return m_vecChild; } // 자식 오브젝트
+    CGameObject* FindChild(wstring _Name);
     const vector<CScript*>& GetScripts() { return m_vecScript; }
     int GetLayerIdx() { return m_LayerIdx; }
 

@@ -15,7 +15,7 @@ CPhysxActor::~CPhysxActor()
 
 }
 
-void CPhysxActor::SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag, float _Density, bool _DisableGravity)
+void CPhysxActor::SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag, float _Density, bool _DisableGravity, PxVec3 _InitVel)
 {
     m_Density = _Density;
 
@@ -27,14 +27,15 @@ void CPhysxActor::SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag, float _Density,
         // 강체 생성, 씬에 액터 등록
         PxRigidDynamic* pBody = CPhysxMgr::GetInst()->m_Physics->createRigidDynamic(Trans);
         pBody->userData = GetOwner();
-        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_X, _LockFlag & LINEAR_X);       // Z축 이동 잠금
-        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Y, _LockFlag & LINEAR_Y);       // Z축 이동 잠금
+        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_X, _LockFlag & LINEAR_X);       // X축 이동 잠금
+        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Y, _LockFlag & LINEAR_Y);       // Y축 이동 잠금
         pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Z, _LockFlag & LINEAR_Z);       // Z축 이동 잠금
-        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, _LockFlag & ANGULAR_X);      // X축 회전 잠금
-        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, _LockFlag & ANGULAR_Y);      // Y축 회전 잠금
-        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, _LockFlag & ANGULAR_Z);      // Z축 회전 잠금
+        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, _LockFlag & ANGULAR_X);     // X축 회전 잠금
+        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, _LockFlag & ANGULAR_Y);     // Y축 회전 잠금
+        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, _LockFlag & ANGULAR_Z);     // Z축 회전 잠금
         pBody->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_CCD, true);
         pBody->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, _DisableGravity);
+        pBody->setLinearVelocity(_InitVel);
         CPhysxMgr::GetInst()->m_Scene->addActor(*pBody);
 
         //if (_Type == RIGID_TYPE::KINEMATIC)

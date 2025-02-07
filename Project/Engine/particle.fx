@@ -84,7 +84,7 @@ void GS_Particle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _Stream)
 float4 PS_Particle(GS_OUT _in) : SV_Target
 {
     float4 vColor = g_tex_0.Sample(g_sam_0, _in.vUV);
-    vColor.rgb *= float3(2.f, 1.f, 1.f);
+    vColor.rgb *= float3(1.f, 1.f, 1.f);
     return vColor;
 }
 

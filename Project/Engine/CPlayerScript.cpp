@@ -14,6 +14,8 @@
 #include "CCollider2D.h"
 #include "CMeshRender.h"
 #include "CFlipbookRender.h"
+#include "CParticleRender.h"
+#include "CGameObject.h"
 
 CPlayerScript::CPlayerScript()
 	: m_Idle(false)
@@ -53,7 +55,7 @@ void CPlayerScript::Tick()
 	if (KEY_TAP(Keyboard::SPACE))
 	{
 		pBody->addForce(PxVec3(0.f, 200.f, 0.f), PxForceMode::eVELOCITY_CHANGE);
-
+		GetOwner()->FindChild(L"ParticleChild")->ParticleRender()->SetActiveState(true);
 	}
 	//if (KEY_PRESSED(Keyboard::UP))
 	//	vPos.y += 100.f * DT;

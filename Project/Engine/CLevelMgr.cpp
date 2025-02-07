@@ -70,7 +70,7 @@ void CLevelMgr::Init()
 	pObject->FlipbookRender()->AddFlipbook(0, CAssetMgr::GetInst()->FindAsset<CFlipbook>(L"SNB_Idle_Flipbook"));
 	pObject->FlipbookRender()->AddFlipbook(1, CAssetMgr::GetInst()->FindAsset<CFlipbook>(L"SNB_Running_Flipbook"));
 
-	pObject->PhysxActor()->SetRigidBody(RIGID_TYPE::DYNAMIC, LINEAR_Z | ANGULAR_X | ANGULAR_Y);
+	pObject->PhysxActor()->SetRigidBody(RIGID_TYPE::DYNAMIC, LINEAR_Z | ANGULAR_ALL);
 	COLLIDER_DESC desc;
 	desc.Restitution - -1.f;
 	desc.ShapeFlag = PxShapeFlag::eSIMULATION_SHAPE;
@@ -100,6 +100,32 @@ void CLevelMgr::Init()
 	// 부모 자식 연결
 	pObject->AddChild(pChild);
 
+	pChild->Transform()->SetIndependentScale(true);
+	pChild->Transform()->SetRelativePos(0.f, 0.f, -1.f);
+	pChild->Transform()->SetRelativeScale(100.f, 100.f, 1.f);
+
+
+	pChild = new CGameObject;
+	pChild->SetName(L"ParticleChild");
+	pChild->AddComponent(new CTransform);
+	pChild->AddComponent(new CParticleRender);
+
+	pChild->ParticleRender()->SetParticleTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture2D\\Default-Particle.png"));
+	pChild->ParticleRender()->SetSpawnRate(0.f);
+	pChild->ParticleRender()->SetSpawnCount(10);
+	pChild->ParticleRender()->SetSpawnShape(0);
+	pChild->ParticleRender()->SetSpawnShapeScale(Vec3(100.f, 100.f, 0.f));
+	pChild->ParticleRender()->SetMinScale(Vec3(1.f));
+	pChild->ParticleRender()->SetMaxScale(Vec3(5.f));
+	pChild->ParticleRender()->SetMinSpeed(2.f);
+	pChild->ParticleRender()->SetMaxSpeed(5.f);
+	pChild->ParticleRender()->SetMinLife(2.f);
+	pChild->ParticleRender()->SetMaxLife(2.f);
+	pChild->ParticleRender()->SetSpaceType(1);
+
+	// 부모 자식 연결
+	pObject->AddChild(pChild);
+
 	// 레벨에 부모 오브젝트만 추가
 	m_CurLevel->AddGameObject(pObject, 3, true);
 
@@ -108,24 +134,31 @@ void CLevelMgr::Init()
 	// Particle
 	// ========
 
-	//pObject = new CGameObject;
-	//pObject->SetName(L"Particle");
-	//pObject->AddComponent(new CTransform);
-	//pObject->AddComponent(new CParticleRender);
+	pObject = new CGameObject;
+	pObject->SetName(L"Particle_Fireworks");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CParticleRender);
 
-	//pObject->Transform()->SetRelativePos(0.f, 300.f, 100.f);
-	//pObject->Transform()->SetRelativeScale(300.f, 300.f, 1.f);
+	pObject->Transform()->SetRelativePos(300.f, 50.f, 100.f);
+	pObject->Transform()->SetRelativeScale(1.f, 1.f, 1.f);
 
-	//pObject->ParticleRender()->SetSpawnRate(1.f);
-	//pObject->ParticleRender()->SetSpawnCount(4);
-	//pObject->ParticleRender()->SetSpawnShape(0);
-	//pObject->ParticleRender()->SetSpawnShapeScale(Vec3(100.f, 100.f, 0.f));
-	//pObject->ParticleRender()->SetMinLife(2.f);
-	//pObject->ParticleRender()->SetMaxLife(2.f);
-	//pObject->ParticleRender()->SetSpaceType(1);
+	pObject->ParticleRender()->SetParticleTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture2D\\Ambient_Circle.png"));
+	pObject->ParticleRender()->SetSpawnRate(10.f);
+	pObject->ParticleRender()->SetSpawnCount(2);
+	pObject->ParticleRender()->SetSpawnShape(0);
+	pObject->ParticleRender()->SetSpawnShapeScale(Vec3(100.f, 100.f, 0.f));
+	pObject->ParticleRender()->SetMinScale(Vec3(1.f));
+	pObject->ParticleRender()->SetMaxScale(Vec3(5.f));
+	pObject->ParticleRender()->SetMinSpeed(2.f);
+	pObject->ParticleRender()->SetMaxSpeed(5.f);
+	pObject->ParticleRender()->SetMinLife(2.f);
+	pObject->ParticleRender()->SetMaxLife(2.f);
+	pObject->ParticleRender()->SetSpaceType(1);
+	pObject->ParticleRender()->SetActiveState(true);
+	pObject->ParticleRender()->SetGravityState(false);
 
-	// 오브젝트를 0번 레이어에 추가
-	//m_CurLevel->AddGameObject(pObject, 0, false);
+	//오브젝트를 0번 레이어에 추가
+	m_CurLevel->AddGameObject(pObject, 0, false);
 
 
 	// ========
@@ -148,7 +181,7 @@ void CLevelMgr::Init()
 	desc.ShapeFlag = PxShapeFlag::eSIMULATION_SHAPE;
 	desc.FilterLayer_Self = FILTER_LAYER::eLANDSCAPE;
 	desc.FilterLayer_Other = FILTER_LAYER::ePLAYER;
-	pObject->PhysxActor()->AddCollider(desc, PxVec3(80.f, 10.f, 5.f), PxVec3(0.f, -20.f, 0.f));
+	pObject->PhysxActor()->AddCollider(desc, PxVec3(80.f, 10.f, 10.f), PxVec3(0.f, -20.f, 0.f));
 
 	m_CurLevel->AddGameObject(pObject, 4, true);
 
@@ -159,7 +192,7 @@ void CLevelMgr::Init()
 	pObject->AddComponent(new CMeshRender);
 	pObject->AddComponent(new CPhysxActor);
 
-	pObject->Transform()->SetRelativePos(100.f, -20.f, 101.f);
+	pObject->Transform()->SetRelativePos(300.f, -20.f, 101.f);
 	pObject->Transform()->SetRelativeScale(200.f, 100.f, 1.f);
 
 	pObject->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
@@ -169,7 +202,7 @@ void CLevelMgr::Init()
 	desc.ShapeFlag = PxShapeFlag::eSIMULATION_SHAPE;
 	desc.FilterLayer_Self = FILTER_LAYER::eLANDSCAPE;
 	desc.FilterLayer_Other = FILTER_LAYER::ePLAYER;
-	pObject->PhysxActor()->AddCollider(desc, PxVec3(80.f, 10.f, 5.f), PxVec3(0.f, -20.f, 0.f));
+	pObject->PhysxActor()->AddCollider(desc, PxVec3(80.f, 10.f, 60.f), PxVec3(0.f, -20.f, 0.f));
 
 	m_CurLevel->AddGameObject(pObject, 4, true);
 
@@ -180,7 +213,7 @@ void CLevelMgr::Init()
 	pObject->AddComponent(new CMeshRender);
 	pObject->AddComponent(new CPhysxActor);
 
-	pObject->Transform()->SetRelativePos(-100.f, -80.f, 101.f);
+	pObject->Transform()->SetRelativePos(-300.f, -80.f, 101.f);
 	pObject->Transform()->SetRelativeScale(200.f, 100.f, 1.f);
 
 	pObject->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
@@ -190,7 +223,7 @@ void CLevelMgr::Init()
 	desc.ShapeFlag = PxShapeFlag::eSIMULATION_SHAPE;
 	desc.FilterLayer_Self = FILTER_LAYER::eLANDSCAPE;
 	desc.FilterLayer_Other = FILTER_LAYER::ePLAYER;
-	pObject->PhysxActor()->AddCollider(desc, PxVec3(80.f, 10.f, 5.f), PxVec3(0.f, -20.f, 0.f));
+	pObject->PhysxActor()->AddCollider(desc, PxVec3(80.f, 10.f, 10.f), PxVec3(0.f, -20.f, 0.f));
 
 	m_CurLevel->AddGameObject(pObject, 4, true);
 

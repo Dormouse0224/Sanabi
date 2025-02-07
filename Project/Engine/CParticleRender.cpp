@@ -15,6 +15,9 @@ CParticleRender::CParticleRender()
 	, m_Module{}
 	, m_AccTime(0.f)
 	, m_ModuleChanged(true)
+	, m_ParticleTex(nullptr)
+	, m_Active(false)
+	, m_Gravity(true)
 {
 	m_SpawnBuffer = new CStructuredBuffer;
 	m_SpawnBuffer->Create(sizeof(tSpawnCount), 1, SB_TYPE::SRV_UAV, true);
@@ -83,7 +86,7 @@ void CParticleRender::FinalTick()
 	m_TickCS->SetSpawnBuffer(m_SpawnBuffer);
 	m_TickCS->SetParticleBuffer(m_ParticleBuffer);
 	m_TickCS->SetModuleBuffer(m_ModuleBuffer);
-	m_TickCS->SetNoiseTex(CAssetMgr::GetInst()->Load<CTexture>(L"Noise\\noise_03.jpg", L"Noise\\noise_03.jpg"));
+	m_TickCS->SetNoiseTex(CAssetMgr::GetInst()->Load<CTexture>(L"Noise\\noise_03.jpg"));
 
 	// 파티클 컴퓨트 셰이더 Tick 수행
 	m_TickCS->Execute();
@@ -104,13 +107,14 @@ void CParticleRender::FinalTick()
 				pParticle->Transform()->SetRelativePos(vecParticle[i].LocalPos.x, vecParticle[i].LocalPos.y, vecParticle[i].LocalPos.z - 3);
 				pParticle->Transform()->SetRelativeScale(10.f, 10.f, 1.f);
 
-				pParticle->PhysxActor()->SetRigidBody(RIGID_TYPE::DYNAMIC, LINEAR_Z | ANGULAR_X | ANGULAR_Y);
+				PxVec3 InitVel(vecParticle[i].Velocity.x, vecParticle[i].Velocity.y, vecParticle[i].Velocity.z);
+				pParticle->PhysxActor()->SetRigidBody(RIGID_TYPE::DYNAMIC, NONE, 0.01f, !m_Gravity, InitVel);
 				COLLIDER_DESC desc;
 				desc.Restitution - 0.f;
 				desc.ShapeFlag = PxShapeFlag::eSIMULATION_SHAPE;
 				desc.FilterLayer_Self = FILTER_LAYER::ePARTICLE;
 				desc.FilterLayer_Other = FILTER_LAYER::eLANDSCAPE;
-				pParticle->PhysxActor()->AddCollider(desc, PxVec3(5.f, 5.f, 1.f), PxVec3(0.f, 0.f, 0.f));
+				pParticle->PhysxActor()->AddCollider(desc, PxVec3(1.f, 1.f, 1.f), PxVec3(0.f, 0.f, 0.f));
 
 				vecParticle[i].EntityID = pParticle->GetID();
 				m_mapParticleObj.insert(make_pair(pParticle->GetID(), pParticle));
@@ -156,7 +160,7 @@ void CParticleRender::Render()
 	// 모듈 버퍼 바인딩
 	m_ModuleBuffer->Binding(21);
 
-	GetMaterial()->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"Particle", L"Texture2D\\Ambient_Circle.png"));
+	GetMaterial()->SetTexParam(TEX_0, m_ParticleTex);
 	GetMaterial()->SetScalarParam(VEC4_0, Transform()->GetWorldPos());
 
 	// 재질 및 쉐이더 바인딩
@@ -211,15 +215,26 @@ void CParticleRender::CreateMtrl()
 
 void CParticleRender::CalcSpawnCount()
 {
-	m_AccTime += DT;
-	float Term = 1.f / m_Module.SpawnRate;
-
-	if (Term < m_AccTime)
+	if (m_Active)
 	{
-		m_AccTime -= Term;
-
-		tSpawnCount count = {};
-		count.SpawnCount = m_SpawnCount;
-		m_SpawnBuffer->SetData(&count);
+		if (m_Module.SpawnRate == 0)
+		{
+			m_Active = false;
+			tSpawnCount count = {};
+			count.SpawnCount = m_SpawnCount;
+			m_SpawnBuffer->SetData(&count);
+		}
+		else
+		{
+			m_AccTime += DT;
+			float Term = 1.f / m_Module.SpawnRate;
+			if (Term < m_AccTime)
+			{
+				m_AccTime -= Term;
+				tSpawnCount count = {};
+				count.SpawnCount = m_SpawnCount;
+				m_SpawnBuffer->SetData(&count);
+			}
+		}
 	}
 }

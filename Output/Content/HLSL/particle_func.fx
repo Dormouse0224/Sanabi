@@ -33,6 +33,12 @@ void ParticleInit(inout tParticle _Particle, in tParticleModule _Module
         // 랜덤 범위를 -0.5 ~ 0.5f 로 변경 후, 스폰영역 크기를 곱해서 위치값을 구한다.
         float3 vSpanwPos = (vRandom - 0.5f) * _Module.SpawnShapeScale;
         _Particle.LocalPos.xyz = vSpanwPos;
+        
+        // 구 좌표계 기준 랜덤한 단위벡터를 구한 뒤 속력을 곱하여 최종 속도 계산.
+        float3 vSpawnVel = float3(sin(vRandom.y * PI) * cos(vRandom.x * 4.f * PI), sin(vRandom.y * PI) * sin(vRandom.x * 4.f * PI), cos(vRandom.y * PI));
+        float vSpeed = vRandom.z * (_Module.MaxSpeed - _Module.MinSpeed) + _Module.MinSpeed;
+        _Particle.Velocity.xyz = vSpawnVel * 100.f;
+
     }
     
     // Sphere

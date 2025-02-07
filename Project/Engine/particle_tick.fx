@@ -58,6 +58,11 @@ void CS_ParticleTick(int3 _ID : SV_DispatchThreadID)
             return;
         }
         
+        // Local 타입 파티클인 경우 위치 직접 조작
+        if (g_Module[0].SpaceType == 0)
+        {
+            g_Buffer[_ID.x].LocalPos += g_Buffer[_ID.x].Velocity * 0.01f;
+        }
         
     }
 }

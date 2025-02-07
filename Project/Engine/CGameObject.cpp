@@ -135,6 +135,16 @@ void CGameObject::AddChild(CGameObject* _Child)
 	m_vecChild.push_back(_Child);
 }
 
+CGameObject* CGameObject::FindChild(wstring _Name)
+{
+	for (int i = 0; i < m_vecChild.size(); ++i)
+	{
+		if (m_vecChild[i]->GetName() == _Name)
+			return m_vecChild[i];
+	}
+	return nullptr;
+}
+
 
 #include "CTaskMgr.h"
 void CGameObject::Destroy()
