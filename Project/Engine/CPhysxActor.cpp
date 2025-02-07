@@ -5,6 +5,7 @@
 
 CPhysxActor::CPhysxActor()
     : CComponent(COMPONENT_TYPE::PHYSXACTOR)
+    , m_Density(1.f)
 {
 
 }
@@ -14,8 +15,10 @@ CPhysxActor::~CPhysxActor()
 
 }
 
-void CPhysxActor::SetRigidBody(RIGID_TYPE _Type, PxReal _Mass)
+void CPhysxActor::SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag, float _Density, bool _DisableGravity)
 {
+    m_Density = _Density;
+
     // 오브젝트 좌표 가져오기
     PxTransform Trans(PxVec3(GetOwner()->Transform()->GetRelativePos().x, GetOwner()->Transform()->GetRelativePos().y, GetOwner()->Transform()->GetRelativePos().z));
 
@@ -24,15 +27,18 @@ void CPhysxActor::SetRigidBody(RIGID_TYPE _Type, PxReal _Mass)
         // 강체 생성, 씬에 액터 등록
         PxRigidDynamic* pBody = CPhysxMgr::GetInst()->m_Physics->createRigidDynamic(Trans);
         pBody->userData = GetOwner();
-        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Z, true);       // Z축 이동 잠금
-        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);      // X축 회전 잠금
-        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, true);      // Y축 회전 잠금
-        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);      // Z축 회전 잠금
-        PxRigidBodyExt::setMassAndUpdateInertia(*pBody, _Mass);
+        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_X, _LockFlag & LINEAR_X);       // Z축 이동 잠금
+        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Y, _LockFlag & LINEAR_Y);       // Z축 이동 잠금
+        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Z, _LockFlag & LINEAR_Z);       // Z축 이동 잠금
+        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, _LockFlag & ANGULAR_X);      // X축 회전 잠금
+        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, _LockFlag & ANGULAR_Y);      // Y축 회전 잠금
+        pBody->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, _LockFlag & ANGULAR_Z);      // Z축 회전 잠금
+        pBody->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_CCD, true);
+        pBody->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, _DisableGravity);
         CPhysxMgr::GetInst()->m_Scene->addActor(*pBody);
 
-        if (_Type == RIGID_TYPE::KINEMATIC)
-            pBody->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
+        //if (_Type == RIGID_TYPE::KINEMATIC)
+            //pBody->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
 
         // 오브젝트를 시뮬레이션 강체 목록에 추가
         CPhysxMgr::GetInst()->m_mapRigidBody.insert(make_pair(GetOwner(), pBody));
@@ -71,4 +77,9 @@ void CPhysxActor::AddCollider(COLLIDER_DESC _desc, PxVec3 _Scale, PxVec3 _Offset
 
     // 강체에 충돌체 추가
     Body->attachShape(*shape);
+
+    if (PxConcreteType::eRIGID_DYNAMIC == Body->getConcreteType())
+    {
+        PxRigidBodyExt::updateMassAndInertia(*(PxRigidBody*)Body, m_Density);
+    }
 }

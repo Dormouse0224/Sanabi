@@ -44,6 +44,6 @@ public:
 	void Render();
 
 	PxRigidActor* FindRigidBody(CGameObject* _Object);
-
+	void RemoveRigidBody(CGameObject* _Object);
 };
 

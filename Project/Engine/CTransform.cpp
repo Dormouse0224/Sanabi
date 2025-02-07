@@ -8,6 +8,7 @@
 CTransform::CTransform()
 	: CComponent(COMPONENT_TYPE::TRANSFORM)
 	, m_RelativeScale(Vec3(1.f, 1.f, 1.f))
+	, m_RelativeRot(Vec4(0.f, 0.f, 0.f, 1.f))
 	, m_IndependentScale(false)
 {
 	m_RelativeDir[(UINT)DIR::RIGHT] = Vec3(1.f, 0.f, 0.f);
@@ -29,6 +30,7 @@ void CTransform::FinalTick()
 	Matrix matRotation = XMMatrixRotationX(m_RelativeRot.x);
 	matRotation *= XMMatrixRotationY(m_RelativeRot.y);
 	matRotation *= XMMatrixRotationZ(m_RelativeRot.z);
+	//Matrix matRotation = XMMatrixRotationQuaternion(m_RelativeRot);
 
 	// Translation
 	Matrix matTrans = XMMatrixTranslation(m_RelativePos.x, m_RelativePos.y, m_RelativePos.z);
@@ -117,19 +119,21 @@ Vec3 CTransform::GetWorldScale()
 	return vWorldScale;
 }
 
-Vec3 CTransform::GetRelativeRotation()
+Vec4 CTransform::GetRelativeRotation()
 {
-	Vec3 vRotation = (m_RelativeRot / XM_PI) * 180.f;
+	Vec4 vRotation = (m_RelativeRot / XM_PI) * 180.f;
 	return vRotation;
 }
 
-void CTransform::SetRelativeRotation(Vec3 _Rotation)
+void CTransform::SetRelativeRotation(Vec4 _Rotation)
 {
 	m_RelativeRot = (_Rotation / 180.f) * XM_PI;
+	//m_RelativeRot = _Rotation;
+	//m_RelativeRot.Normalize();
 }
 
 void CTransform::SetRelativeRotation(float _x, float _y, float _z)
 {
-	m_RelativeRot = (Vec3(_x, _y, _z) / 180.f) * XM_PI;
+	m_RelativeRot = Vec4(Vec3(_x, _y, _z) / 180.f * XM_PI, 1.f);
+	//m_RelativeRot = XMQuaternionRotationRollPitchYaw(_x / 180.f * XM_PI, _y / 180.f * XM_PI, _z / 180.f * XM_PI);
 }
-

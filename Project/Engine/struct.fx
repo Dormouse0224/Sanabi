@@ -18,7 +18,11 @@ struct tParticle
     float NormalizedAge; // 전체 수명 대비, 현재 Age 비율. 자신의 Age 를 Life 대비 정규화 한 값
 
     int Active; // 파티클 활성화 여부
-    int padding[3]; // 파티클 구조체 크기를 16 배수로 맞추기 위한 패딩 바이트
+    int PrevActive; // 이전 프레임에서 파티클 활성화 여부
+    
+	uint EntityID;
+    
+    int padding; // 파티클 구조체 크기를 16 배수로 맞추기 위한 패딩 바이트
 };
 
 // SpawnCount
@@ -28,7 +32,28 @@ struct tSpawnCount
     float3 vPadding;
 };
 
-
+// Particle Module
+struct tParticleModule
+{
+    // Spawn Module
+    float SpawnRate; // 초당 파티클 생성량
+    float4 StartColor; // 초기 파티클 색상
+    float4 EndColor; // 파티클 최종 색상
+    float3 MinScale; // 생성 시 최소 크기
+    float3 MaxScale; // 생성 시 최대 크기
+    float MinSpeed; // 생성 시 최소 속력
+    float MaxSpeed; // 생성 시 최대 속력
+    float MinLife; // 생성 시 최소 주기
+    float MaxLife; // 생성 시 최대 주기
+    int SpawnShape; // 0 : Box, 1 : Sphere
+    float3 SpawnShapeScale;
+    int SpaceType; // 0 : Local, 1 : World
+            
+    // 추가 데이터
+    float3 ObjectWorldPos;
+    
+    int padding;
+};
 
 
 

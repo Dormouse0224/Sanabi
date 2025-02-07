@@ -15,7 +15,7 @@ void CSimulationEvent::onSleep(PxActor** actors, PxU32 count)
 
 void CSimulationEvent::onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs)
 {
-    pairHeader.actors[0];
+    pairHeader.actors[0]->userData;
 }
 
 void CSimulationEvent::onTrigger(PxTriggerPair* pairs, PxU32 count)

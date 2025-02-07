@@ -192,6 +192,9 @@ void CDevice::CreateConstBuffer()
 
     m_ConstBuffer[(UINT)CB_TYPE::MATERIAL] = new CConstBuffer;
     m_ConstBuffer[(UINT)CB_TYPE::MATERIAL]->Create(CB_TYPE::MATERIAL, sizeof(tMtrlConst));
+
+    m_ConstBuffer[(UINT)CB_TYPE::GLOBAL] = new CConstBuffer;
+    m_ConstBuffer[(UINT)CB_TYPE::GLOBAL]->Create(CB_TYPE::GLOBAL, sizeof(tGlobal));
 }
 
 void CDevice::CreateRasterizerState()

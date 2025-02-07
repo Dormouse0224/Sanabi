@@ -21,7 +21,7 @@ private:
 	ComPtr<ID3D11Texture2D>			m_DepthStencilTarget;	// 깊이가 그려질 타겟
 	ComPtr<ID3D11DepthStencilView>	m_DSV;					// GPU 리소스를 전달하는 역할
 
-	CConstBuffer* m_ConstBuffer[(UINT)CB_TYPE::END];
+	CConstBuffer*					m_ConstBuffer[(UINT)CB_TYPE::END];
 
 	ComPtr<ID3D11RasterizerState>   m_RSState[(UINT)RS_TYPE::END];
 	ComPtr<ID3D11DepthStencilState>	m_DSState[(UINT)DS_TYPE::END];

@@ -81,7 +81,7 @@ void CMaterial::SetScalarParam(SCALAR_PARAM _Param, const T& _Data)
     case VEC4_2:
     case VEC4_3:
     {
-        if constexpr (std::is_same_v<T, Vec4>)
+        if constexpr (std::is_same_v<T, Vec4> || std::is_same_v<T, Vec3>)
         {
             m_Const.v4Arr[_Param - VEC4_0] = _Data;
             bInput = true;

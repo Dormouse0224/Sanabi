@@ -3,7 +3,10 @@
 
 #include "value.fx"
 
+#define OBJECT_POS g_vec4_0
+
 StructuredBuffer<tParticle> m_Buffer : register(t20);
+StructuredBuffer<tParticleModule> m_Module : register(t21);
 
 struct VS_IN
 {
@@ -40,8 +43,15 @@ void GS_Particle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _Stream)
         
     GS_OUT output[4] = { (GS_OUT) 0.f, (GS_OUT) 0.f, (GS_OUT) 0.f, (GS_OUT) 0.f };
     
-    float3 vViewPos = mul(float4(m_Buffer[InstID].WorldPos.xyz, 1.f), g_matView).xyz;
-    //float3 vViewPos = m_Buffer[InstID].WorldPos.xyz;
+    float3 vWorldPos = m_Buffer[InstID].LocalPos;
+    
+    // Local 공간계일 경우에만
+    if (0 == m_Module[0].SpaceType)
+    {
+        vWorldPos += m_Module[0].ObjectWorldPos;
+    }
+       
+    float3 vViewPos = mul(float4(vWorldPos, 1.f), g_matView).xyz;
     
     float3 vScale = m_Buffer[InstID].WorldScale.xyz;
     

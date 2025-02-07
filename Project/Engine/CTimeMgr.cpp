@@ -49,4 +49,9 @@ void CTimeMgr::Tick()
 		m_FPS = 0;
 		m_Time -= 1.f;
 	}
+
+	// 전역 상수 데이터 갱신
+	g_global.g_DT = m_DT;
+	g_global.g_EngineDT = m_DT;
+	g_global.g_AccTime += m_DT;
 }

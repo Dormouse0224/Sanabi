@@ -36,7 +36,7 @@ public:
     // ComputeShader, u 레지스터
     void Binding_CS_UAV(UINT _RegisterNum);
 
-    void Clear_CS_SRV();
+    void Clear_CS_SRV(int _RegisterNum);
     void Clear_CS_UAV();
 
 

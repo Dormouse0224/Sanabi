@@ -5,38 +5,25 @@
 #include "CStructuredBuffer.h"
 #include "CTransform.h"
 #include "CTimeMgr.h"
+#include "CPhysxActor.h"
+#include "CPhysxMgr.h"
 
 CParticleRender::CParticleRender()
 	: CRenderComponent(COMPONENT_TYPE::PARTICLERENDER)
 	, m_ParticleBuffer(nullptr)
-	, m_MaxParticle(500)
+	, m_MaxParticle(1000)
 	, m_Module{}
 	, m_AccTime(0.f)
+	, m_ModuleChanged(true)
 {
 	m_SpawnBuffer = new CStructuredBuffer;
 	m_SpawnBuffer->Create(sizeof(tSpawnCount), 1, SB_TYPE::SRV_UAV, true);
 
-	// 파티클 초기위치 세팅
-	tParticle arrParticle[500] = {};
-	float Radius = 200.f;
-
-	float fTheta = 0.f;
-	for (int i = 0; i < 500; ++i)
-	{
-		arrParticle[i].WorldPos = Vec3(Radius * cosf(fTheta), Radius * sinf(fTheta), 0.f);
-		arrParticle[i].WorldScale = Vec3(10.f, 10.f, 1.f);
-
-		arrParticle[i].Velocity = arrParticle[i].WorldPos;
-		arrParticle[i].Velocity.Normalize();
-		arrParticle[i].Velocity *= 500;
-
-		arrParticle[i].Active = false;
-
-		fTheta += XM_2PI / 500;
-	}
+	m_ModuleBuffer = new CStructuredBuffer;
+	m_ModuleBuffer->Create(sizeof(tParticleModule), 1, SB_TYPE::SRV_ONLY, true);
 
 	m_ParticleBuffer = new CStructuredBuffer;
-	m_ParticleBuffer->Create(sizeof(tParticle), m_MaxParticle, SB_TYPE::SRV_UAV, false, arrParticle);
+	m_ParticleBuffer->Create(sizeof(tParticle), m_MaxParticle, SB_TYPE::SRV_UAV, true);
 
 	CreateMtrl();
 
@@ -60,26 +47,117 @@ CParticleRender::~CParticleRender()
 
 	if (nullptr != m_SpawnBuffer)
 		delete m_SpawnBuffer;
+
+	if (nullptr != m_ModuleBuffer)
+		delete m_ModuleBuffer;
+
+	if (!m_mapParticleObj.empty())
+	{
+		for (map<UINT, CGameObject*>::iterator iter = m_mapParticleObj.begin(); iter != m_mapParticleObj.end();)
+		{
+			delete iter->second;
+			iter = m_mapParticleObj.erase(iter);
+		}
+	}
 }
 
 void CParticleRender::FinalTick()
 {
+	//Vec3 vPos = Transform()->GetRelativePos();
+	//vPos.x -= DT * 100.f;
+	//Transform()->SetRelativePos(vPos);
+
+	m_ModuleChanged = true;
+	m_Module.ObjectWorldPos = Transform()->GetWorldPos();
+
 	// 이번 프레임 파티클 활성화 개수 계산
 	CalcSpawnCount();
 
+	// 파티클 모듈 변경점 반영
+	if (m_ModuleChanged)
+	{
+		m_ModuleChanged = false;
+		m_ModuleBuffer->SetData(&m_Module);
+	}
+
 	m_TickCS->SetSpawnBuffer(m_SpawnBuffer);
 	m_TickCS->SetParticleBuffer(m_ParticleBuffer);
+	m_TickCS->SetModuleBuffer(m_ModuleBuffer);
+	m_TickCS->SetNoiseTex(CAssetMgr::GetInst()->Load<CTexture>(L"Noise\\noise_03.jpg", L"Noise\\noise_03.jpg"));
+
+	// 파티클 컴퓨트 셰이더 Tick 수행
 	m_TickCS->Execute();
+
+	vector<tParticle> vecParticle = {};
+	vecParticle.resize(m_ParticleBuffer->GetElementCount());
+	m_ParticleBuffer->GetData(vecParticle.data());
+	for (int i = 0; i < vecParticle.size(); ++i)
+	{
+		if (m_Module.SpaceType == 1)
+		{
+			if (vecParticle[i].Active == true && vecParticle[i].PrevActive == false)
+			{
+				CGameObject* pParticle = new CGameObject;
+				pParticle->AddComponent(new CTransform);
+				pParticle->AddComponent(new CPhysxActor);
+				
+				pParticle->Transform()->SetRelativePos(vecParticle[i].LocalPos.x, vecParticle[i].LocalPos.y, vecParticle[i].LocalPos.z - 3);
+				pParticle->Transform()->SetRelativeScale(10.f, 10.f, 1.f);
+
+				pParticle->PhysxActor()->SetRigidBody(RIGID_TYPE::DYNAMIC, LINEAR_Z | ANGULAR_X | ANGULAR_Y);
+				COLLIDER_DESC desc;
+				desc.Restitution - 0.f;
+				desc.ShapeFlag = PxShapeFlag::eSIMULATION_SHAPE;
+				desc.FilterLayer_Self = FILTER_LAYER::ePARTICLE;
+				desc.FilterLayer_Other = FILTER_LAYER::eLANDSCAPE;
+				pParticle->PhysxActor()->AddCollider(desc, PxVec3(5.f, 5.f, 1.f), PxVec3(0.f, 0.f, 0.f));
+
+				vecParticle[i].EntityID = pParticle->GetID();
+				m_mapParticleObj.insert(make_pair(pParticle->GetID(), pParticle));
+			}
+			else if (vecParticle[i].Active == false && vecParticle[i].PrevActive == true)
+			{
+				map<UINT, CGameObject*>::iterator iter = m_mapParticleObj.find(vecParticle[i].EntityID);
+				CGameObject* pParticle = iter->second;
+				if (pParticle)
+				{
+					CPhysxMgr::GetInst()->RemoveRigidBody(pParticle);
+					delete pParticle;
+					pParticle = nullptr;
+				}
+				m_mapParticleObj.erase(iter);
+			}
+		}
+	}
+	m_ParticleBuffer->SetData(vecParticle.data());
 }
 
 void CParticleRender::Render()
 {
 	Transform()->Binding();
 
+	vector<tParticle> vecParticle = {};
+	vecParticle.resize(m_ParticleBuffer->GetElementCount());
+	m_ParticleBuffer->GetData(vecParticle.data());
+	for (int i = 0; i < vecParticle.size(); ++i)
+	{
+		map<UINT, CGameObject*>::iterator iter = m_mapParticleObj.find(vecParticle[i].EntityID);
+		if (iter != m_mapParticleObj.end())
+		{
+			vecParticle[i].LocalPos = iter->second->Transform()->GetRelativePos();
+		}
+	}
+	m_ParticleBuffer->SetData(vecParticle.data());
+
+
+
 	// 파티클 버퍼 바인딩
 	m_ParticleBuffer->Binding(20);
+	// 모듈 버퍼 바인딩
+	m_ModuleBuffer->Binding(21);
 
-	GetMaterial()->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"Particle", L"Texture2D\\Ambient_Circle #220141.png"));
+	GetMaterial()->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"Particle", L"Texture2D\\Ambient_Circle.png"));
+	GetMaterial()->SetScalarParam(VEC4_0, Transform()->GetWorldPos());
 
 	// 재질 및 쉐이더 바인딩
 	GetMaterial()->Binding();
@@ -89,6 +167,8 @@ void CParticleRender::Render()
 
 	// 파티클 버퍼 Clear
 	m_ParticleBuffer->Clear(20);
+	// 모듈버퍼 Clear
+	m_ModuleBuffer->Clear(21);
 }
 
 void CParticleRender::CreateMtrl()
@@ -139,7 +219,7 @@ void CParticleRender::CalcSpawnCount()
 		m_AccTime -= Term;
 
 		tSpawnCount count = {};
-		count.SpawnCount = 1;
+		count.SpawnCount = m_SpawnCount;
 		m_SpawnBuffer->SetData(&count);
 	}
 }

@@ -19,6 +19,19 @@ enum class RIGID_TYPE
     STATIC,
 };
 
+enum LOCK_FLAG
+{
+    LINEAR_X    = (1<<0),
+    LINEAR_Y    = (1<<1),
+    LINEAR_Z    = (1<<2),
+    ANGULAR_X   = (1<<3),
+    ANGULAR_Y   = (1<<4),
+    ANGULAR_Z   = (1<<5),
+
+    LINEAR_ALL  = LINEAR_X | LINEAR_Y | LINEAR_Z,
+    ANGULAR_ALL = ANGULAR_X | ANGULAR_Y | ANGULAR_Z,
+};
+
 class CPhysxActor :
     public CComponent
 {
@@ -27,6 +40,7 @@ public:
     ~CPhysxActor();
 
 private:
+    float m_Density;
 
 public:
     virtual void Begin() {};
@@ -35,7 +49,7 @@ public:
     CLONE(CPhysxActor);
 
 public:
-    void SetRigidBody(RIGID_TYPE _Type, PxReal _Mass = 1.f);
+    void SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag = 0, float _Density = 1.f, bool _DisableGravity = false);
     void AddCollider(COLLIDER_DESC _desc, PxVec3 _Scale = PxVec3(1.f), PxVec3 _Offset = PxVec3(0.f));
 
 };

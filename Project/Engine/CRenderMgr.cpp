@@ -41,6 +41,12 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Priority)
 
 void CRenderMgr::Tick()
 {
+	// GlobalData Binding
+	static CConstBuffer* pGlobal = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL);
+	pGlobal->SetData(&g_global, sizeof(tGlobal));
+	pGlobal->Binding();
+	pGlobal->Binding_CS();
+
 	// Main Rendering	
 	Render();
 

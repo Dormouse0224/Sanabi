@@ -42,6 +42,15 @@ cbuffer MATERIAL : register(b1)
     row_major Matrix g_mat_1;
     row_major Matrix g_mat_2;
     row_major Matrix g_mat_3;
+    
+    int g_btex_0;
+    int g_btex_1;
+    int g_btex_2;
+    int g_btex_3;
+    int g_btex_4;
+    int g_btex_5;
+    
+    int2 g_padding;
 }
 
 cbuffer GLOBAL : register(b2)

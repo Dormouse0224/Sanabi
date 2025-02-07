@@ -70,11 +70,9 @@ void CLevelMgr::Init()
 	pObject->FlipbookRender()->AddFlipbook(0, CAssetMgr::GetInst()->FindAsset<CFlipbook>(L"SNB_Idle_Flipbook"));
 	pObject->FlipbookRender()->AddFlipbook(1, CAssetMgr::GetInst()->FindAsset<CFlipbook>(L"SNB_Running_Flipbook"));
 
-	pObject->PhysxActor()->SetRigidBody(RIGID_TYPE::DYNAMIC, 10.f);
+	pObject->PhysxActor()->SetRigidBody(RIGID_TYPE::DYNAMIC, LINEAR_Z | ANGULAR_X | ANGULAR_Y);
 	COLLIDER_DESC desc;
-	desc.DynamicFriction = 0.5f;
-	desc.StaticFriction = 0.5f;
-	desc.Restitution - -0.1f;
+	desc.Restitution - -1.f;
 	desc.ShapeFlag = PxShapeFlag::eSIMULATION_SHAPE;
 	desc.FilterLayer_Self = FILTER_LAYER::ePLAYER;
 	desc.FilterLayer_Other = FILTER_LAYER::eLANDSCAPE;
@@ -118,9 +116,15 @@ void CLevelMgr::Init()
 	//pObject->Transform()->SetRelativePos(0.f, 300.f, 100.f);
 	//pObject->Transform()->SetRelativeScale(300.f, 300.f, 1.f);
 
-	//pObject->ParticleRender()->SetSpawnRate(10.f);
+	//pObject->ParticleRender()->SetSpawnRate(1.f);
+	//pObject->ParticleRender()->SetSpawnCount(4);
+	//pObject->ParticleRender()->SetSpawnShape(0);
+	//pObject->ParticleRender()->SetSpawnShapeScale(Vec3(100.f, 100.f, 0.f));
+	//pObject->ParticleRender()->SetMinLife(2.f);
+	//pObject->ParticleRender()->SetMaxLife(2.f);
+	//pObject->ParticleRender()->SetSpaceType(1);
 
-	//// 오브젝트를 0번 레이어에 추가
+	// 오브젝트를 0번 레이어에 추가
 	//m_CurLevel->AddGameObject(pObject, 0, false);
 
 
@@ -152,8 +156,8 @@ void CLevelMgr::Init()
 	pObject = new CGameObject;
 	pObject->SetName(L"Platform_2");
 	pObject->AddComponent(new CTransform);
-	//pObject->AddComponent(new CCollider2D);
 	pObject->AddComponent(new CMeshRender);
+	pObject->AddComponent(new CPhysxActor);
 
 	pObject->Transform()->SetRelativePos(100.f, -20.f, 101.f);
 	pObject->Transform()->SetRelativeScale(200.f, 100.f, 1.f);
@@ -161,10 +165,11 @@ void CLevelMgr::Init()
 	pObject->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CargoPlatform_Mtrl"));
 
-	//pObject->Collider2D()->SetScale(Vec2(0.8f, 0.2f));
-	//pObject->Collider2D()->SetOffset(Vec2(0.f, -0.23f));
-
-	//CPhysxMgr::GetInst()->AddDynamicActor(pObject, PxVec3(80.f, 10.f, 5.f), PxVec3(0.f, -20.f, 0.f));
+	pObject->PhysxActor()->SetRigidBody(RIGID_TYPE::STATIC);
+	desc.ShapeFlag = PxShapeFlag::eSIMULATION_SHAPE;
+	desc.FilterLayer_Self = FILTER_LAYER::eLANDSCAPE;
+	desc.FilterLayer_Other = FILTER_LAYER::ePLAYER;
+	pObject->PhysxActor()->AddCollider(desc, PxVec3(80.f, 10.f, 5.f), PxVec3(0.f, -20.f, 0.f));
 
 	m_CurLevel->AddGameObject(pObject, 4, true);
 
@@ -172,8 +177,8 @@ void CLevelMgr::Init()
 	pObject = new CGameObject;
 	pObject->SetName(L"Platform_2");
 	pObject->AddComponent(new CTransform);
-	//pObject->AddComponent(new CCollider2D);
 	pObject->AddComponent(new CMeshRender);
+	pObject->AddComponent(new CPhysxActor);
 
 	pObject->Transform()->SetRelativePos(-100.f, -80.f, 101.f);
 	pObject->Transform()->SetRelativeScale(200.f, 100.f, 1.f);
@@ -181,10 +186,11 @@ void CLevelMgr::Init()
 	pObject->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CargoPlatform_Mtrl"));
 
-	//pObject->Collider2D()->SetScale(Vec2(0.8f, 0.2f));
-	//pObject->Collider2D()->SetOffset(Vec2(0.f, -0.23f));
-
-	//CPhysxMgr::GetInst()->AddStaticActor(pObject, PxVec3(80.f, 10.f, 5.f), PxVec3(0.f, -20.f, 0.f));
+	pObject->PhysxActor()->SetRigidBody(RIGID_TYPE::STATIC);
+	desc.ShapeFlag = PxShapeFlag::eSIMULATION_SHAPE;
+	desc.FilterLayer_Self = FILTER_LAYER::eLANDSCAPE;
+	desc.FilterLayer_Other = FILTER_LAYER::ePLAYER;
+	pObject->PhysxActor()->AddCollider(desc, PxVec3(80.f, 10.f, 5.f), PxVec3(0.f, -20.f, 0.f));
 
 	m_CurLevel->AddGameObject(pObject, 4, true);
 

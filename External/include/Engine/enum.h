@@ -158,4 +158,5 @@ enum FILTER_LAYER
 	ePLAYER				= (1<<0),
 	eLANDSCAPE			= (1<<1),
 	eMONSTER			= (1<<2),
+	ePARTICLE			= (1<<3),
 };

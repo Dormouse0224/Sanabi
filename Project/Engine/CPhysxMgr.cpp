@@ -25,6 +25,8 @@ PxFilterFlags FilterShaderExample(
     // generate contacts for all that were not filtered above
     pairFlags = PxPairFlag::eCONTACT_DEFAULT;
 
+    pairFlags |= PxPairFlag::eDETECT_CCD_CONTACT;
+
     // trigger the contact callback for pairs (A,B) where
     // the filtermask of A contains the ID of B and vice versa.
     if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
@@ -58,7 +60,7 @@ void CPhysxMgr::Init()
     m_Foundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_DefaultAllocatorCallback, m_DefaultErrorCallback);
     if (!m_Foundation) throw("PxCreateFoundation failed!");
     m_ToleranceScale.length = 1.f;
-    m_ToleranceScale.speed = 10.f;
+    m_ToleranceScale.speed = 0.1f;
     m_Physics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_Foundation, m_ToleranceScale);
 
     PxSceneDesc sceneDesc(m_Physics->getTolerancesScale());
@@ -66,6 +68,7 @@ void CPhysxMgr::Init()
     m_Dispatcher = PxDefaultCpuDispatcherCreate(2);
     sceneDesc.cpuDispatcher = m_Dispatcher;
     sceneDesc.filterShader = FilterShaderExample;
+    sceneDesc.flags |= PxSceneFlag::eENABLE_CCD;
     m_Scene = m_Physics->createScene(sceneDesc);
 
     // 디버그 렌더링 목록
@@ -109,6 +112,7 @@ void CPhysxMgr::Tick()
     {
         CGameObject* pObject = (CGameObject*)(vecDynamicActor[i]->userData);
         PxVec3 Trans = ((PxRigidDynamic*)(vecDynamicActor[i]))->getGlobalPose().p;
+        PxQuat Rot = ((PxRigidDynamic*)(vecDynamicActor[i]))->getGlobalPose().q;
         pObject->Transform()->SetRelativePos(Trans.x, Trans.y, Trans.z);
     }
 }
@@ -177,4 +181,15 @@ PxRigidActor* CPhysxMgr::FindRigidBody(CGameObject* _Object)
         return nullptr;
 
     return iter->second;
+}
+
+void CPhysxMgr::RemoveRigidBody(CGameObject* _Object)
+{
+    map<CGameObject*, PxRigidActor*>::iterator iter = m_mapRigidBody.find(_Object);
+    PxActor* pActor = iter->second;
+    m_Scene->removeActor(*pActor);
+    pActor->release();
+    pActor = nullptr;
+
+    m_mapRigidBody.erase(iter);
 }

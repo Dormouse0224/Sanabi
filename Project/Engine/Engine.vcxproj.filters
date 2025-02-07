@@ -519,5 +519,8 @@
     <FxCompile Include="PhysxDebug.fx">
       <Filter>HLSL</Filter>
     </FxCompile>
+    <FxCompile Include="particle_func.fx">
+      <Filter>HLSL\03. Compute\ParticleTick</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
