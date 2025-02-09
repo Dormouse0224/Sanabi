@@ -53,11 +53,11 @@ ASSET_TYPE GetAssetType()
 }
 
 template<typename T>
-inline Ptr<T> CAssetMgr::FindAsset(const wstring& _RelativePath)
+inline Ptr<T> CAssetMgr::FindAsset(const wstring& _Key)
 {
 	ASSET_TYPE Type = GetAssetType<T>();
 
-	map<wstring, Ptr<CAsset>>::iterator iter = m_mapAsset[Type].find(_RelativePath);
+	map<wstring, Ptr<CAsset>>::iterator iter = m_mapAsset[Type].find(_Key);
 
 	if (iter == m_mapAsset[Type].end())
 		return nullptr;

@@ -54,8 +54,23 @@ void CLevelMgr::Init()
 
 	m_CurLevel->AddGameObject(pCamObj, 0, false);
 
-	// Parent Object
+	// 배경 오브젝트
 	CGameObject* pObject = new CGameObject;
+	pObject->SetName(L"Background");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+
+	pObject->Transform()->SetRelativePos(0.f, 0.f, 300.f);
+	pObject->Transform()->SetRelativeScale(1000.f, 1000.f, 1.f);
+
+	pObject->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	pObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Background_Mtrl"));
+
+	m_CurLevel->AddGameObject(pObject, 1, true);
+
+
+	// Parent Object
+	pObject = new CGameObject;
 	pObject->SetName(L"Parent");
 
 	pObject->AddComponent(new CTransform);
@@ -110,17 +125,21 @@ void CLevelMgr::Init()
 	pChild->AddComponent(new CTransform);
 	pChild->AddComponent(new CParticleRender);
 
-	pChild->ParticleRender()->SetParticleTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture2D\\Default-Particle.png"));
+	pChild->ParticleRender()->SetParticleTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture2D\\TX_HitFlash_0.png"));
+	pChild->ParticleRender()->SetStartColor(Vec4(1.f, 0.f, 0.f, 1.f));
+	pChild->ParticleRender()->SetEndColor(Vec4(1.f, 0.f, 0.f, 0.f));
 	pChild->ParticleRender()->SetSpawnRate(0.f);
 	pChild->ParticleRender()->SetSpawnCount(10);
 	pChild->ParticleRender()->SetSpawnShape(0);
 	pChild->ParticleRender()->SetSpawnShapeScale(Vec3(100.f, 100.f, 0.f));
-	pChild->ParticleRender()->SetMinScale(Vec3(1.f));
-	pChild->ParticleRender()->SetMaxScale(Vec3(5.f));
-	pChild->ParticleRender()->SetMinSpeed(2.f);
-	pChild->ParticleRender()->SetMaxSpeed(5.f);
+	pChild->ParticleRender()->SetSpawnDir(Vec3(0.f, 1.f, 0.f));
+	pChild->ParticleRender()->SetSpawnDirRandomize(0.2f);
+	pChild->ParticleRender()->SetMinScale(Vec3(10.f));
+	pChild->ParticleRender()->SetMaxScale(Vec3(30.f));
+	pChild->ParticleRender()->SetMinSpeed(200.f);
+	pChild->ParticleRender()->SetMaxSpeed(500.f);
 	pChild->ParticleRender()->SetMinLife(2.f);
-	pChild->ParticleRender()->SetMaxLife(2.f);
+	pChild->ParticleRender()->SetMaxLife(4.f);
 	pChild->ParticleRender()->SetSpaceType(1);
 
 	// 부모 자식 연결
@@ -135,27 +154,62 @@ void CLevelMgr::Init()
 	// ========
 
 	pObject = new CGameObject;
-	pObject->SetName(L"Particle_Fireworks");
+	pObject->SetName(L"Particle_Bubble");
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CParticleRender);
 
 	pObject->Transform()->SetRelativePos(300.f, 50.f, 100.f);
-	pObject->Transform()->SetRelativeScale(1.f, 1.f, 1.f);
+	pObject->Transform()->SetRelativeScale(10.f, 10.f, 1.f);
 
 	pObject->ParticleRender()->SetParticleTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture2D\\Ambient_Circle.png"));
+	pObject->ParticleRender()->SetStartColor(Vec4(0.f, 1.f, 0.f, 1.f));
+	pObject->ParticleRender()->SetEndColor(Vec4(0.f, 1.f, 0.f, 0.f));
 	pObject->ParticleRender()->SetSpawnRate(10.f);
 	pObject->ParticleRender()->SetSpawnCount(2);
 	pObject->ParticleRender()->SetSpawnShape(0);
-	pObject->ParticleRender()->SetSpawnShapeScale(Vec3(100.f, 100.f, 0.f));
-	pObject->ParticleRender()->SetMinScale(Vec3(1.f));
-	pObject->ParticleRender()->SetMaxScale(Vec3(5.f));
-	pObject->ParticleRender()->SetMinSpeed(2.f);
-	pObject->ParticleRender()->SetMaxSpeed(5.f);
-	pObject->ParticleRender()->SetMinLife(2.f);
-	pObject->ParticleRender()->SetMaxLife(2.f);
+	pObject->ParticleRender()->SetSpawnShapeScale(Vec3(50.f, 50.f, 0.f));
+	pObject->ParticleRender()->SetSpawnDir(Vec3(1.f, 0.f, 0.f));
+	pObject->ParticleRender()->SetSpawnDirRandomize(1.f);
+	pObject->ParticleRender()->SetMinScale(Vec3(5.f));
+	pObject->ParticleRender()->SetMaxScale(Vec3(50.f));
+	pObject->ParticleRender()->SetMinSpeed(50.f);
+	pObject->ParticleRender()->SetMaxSpeed(100.f);
+	pObject->ParticleRender()->SetMinLife(5.f);
+	pObject->ParticleRender()->SetMaxLife(10.f);
 	pObject->ParticleRender()->SetSpaceType(1);
 	pObject->ParticleRender()->SetActiveState(true);
 	pObject->ParticleRender()->SetGravityState(false);
+
+
+	//오브젝트를 0번 레이어에 추가
+	m_CurLevel->AddGameObject(pObject, 0, false);
+
+
+	pObject = new CGameObject;
+	pObject->SetName(L"Particle_Rain");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CParticleRender);
+
+	pObject->Transform()->SetRelativePos(100.f, 300.f, 100.f);
+	pObject->Transform()->SetRelativeScale(10.f, 10.f, 1.f);
+
+	pObject->ParticleRender()->SetParticleTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture2D\\Sprsheet_RainParticle_5x1.png"));
+	pObject->ParticleRender()->SetStartColor(Vec4(1.f, 1.f, 1.f, 1.f));
+	pObject->ParticleRender()->SetEndColor(Vec4(1.f, 1.f, 1.f, 1.f));
+	pObject->ParticleRender()->SetSpawnRate(10.f);
+	pObject->ParticleRender()->SetSpawnCount(2);
+	pObject->ParticleRender()->SetSpawnShape(0);
+	pObject->ParticleRender()->SetSpawnShapeScale(Vec3(1500.f, 0.f, 0.f));
+	pObject->ParticleRender()->SetSpawnDir(Vec3(2.f, -4.f, 0.f));
+	pObject->ParticleRender()->SetSpawnDirRandomize(0.f);
+	pObject->ParticleRender()->SetMinScale(Vec3(50.f));
+	pObject->ParticleRender()->SetMaxScale(Vec3(100.f));
+	pObject->ParticleRender()->SetMinSpeed(200.f);
+	pObject->ParticleRender()->SetMaxSpeed(300.f);
+	pObject->ParticleRender()->SetMinLife(3.f);
+	pObject->ParticleRender()->SetMaxLife(5.f);
+	pObject->ParticleRender()->SetSpaceType(0);
+	pObject->ParticleRender()->SetActiveState(true);
 
 	//오브젝트를 0번 레이어에 추가
 	m_CurLevel->AddGameObject(pObject, 0, false);

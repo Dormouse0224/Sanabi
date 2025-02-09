@@ -125,15 +125,15 @@ Vec4 CTransform::GetRelativeRotation()
 	return vRotation;
 }
 
-void CTransform::SetRelativeRotation(Vec4 _Rotation)
+void CTransform::SetRelativeRotation(Vec4 _RotationRad)
 {
-	m_RelativeRot = (_Rotation / 180.f) * XM_PI;
+	m_RelativeRot = (_RotationRad / 180.f) * XM_PI;
 	//m_RelativeRot = _Rotation;
 	//m_RelativeRot.Normalize();
 }
 
-void CTransform::SetRelativeRotation(float _x, float _y, float _z)
+void CTransform::SetRelativeRotation(float _xRad, float _yRad, float _zRad)
 {
-	m_RelativeRot = Vec4(Vec3(_x, _y, _z) / 180.f * XM_PI, 1.f);
+	m_RelativeRot = Vec4(Vec3(_xRad, _yRad, _zRad) / 180.f * XM_PI, 1.f);
 	//m_RelativeRot = XMQuaternionRotationRollPitchYaw(_x / 180.f * XM_PI, _y / 180.f * XM_PI, _z / 180.f * XM_PI);
 }

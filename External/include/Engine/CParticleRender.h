@@ -42,6 +42,8 @@ public:
     // 0 : Box, 1 : Sphere
     void SetSpawnShape(int _Shape) { m_Module.SpawnShape = _Shape; m_ModuleChanged = true; }
     void SetSpawnShapeScale(Vec3 _Scale) { m_Module.SpawnShapeScale = _Scale; m_ModuleChanged = true; }
+    void SetSpawnDir(Vec3 _Dir) { m_Module.SpawnDir = _Dir; m_ModuleChanged = true; }
+    void SetSpawnDirRandomize(float _Randomize) { m_Module.SpawnDirRandomize = _Randomize; m_ModuleChanged = true; }
     // 0 : Local, 1 : World;
     void SetSpaceType(int _Type) { m_Module.SpaceType = _Type; m_ModuleChanged = true; }
     void SetActiveState(bool _b) { m_Active = _b; }

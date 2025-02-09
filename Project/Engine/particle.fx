@@ -28,6 +28,7 @@ VS_OUT VS_Particle(VS_IN _in)
 
 struct GS_OUT
 {
+    float4 vColor : COLOR;
     float4 vPosition : SV_Position;
     float2 vUV : TEXCOORD;
 };
@@ -69,6 +70,12 @@ void GS_Particle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _Stream)
     output[1].vUV = float2(1.f, 0.f);
     output[2].vUV = float2(1.f, 1.f);
     output[3].vUV = float2(0.f, 1.f);
+    
+    float4 Color = (m_Module[0].EndColor - m_Module[0].StartColor) * (m_Buffer[InstID].Age / m_Buffer[InstID].Life) + m_Module[0].StartColor;
+    output[0].vColor = Color;
+    output[1].vColor = Color;
+    output[2].vColor = Color;
+    output[3].vColor = Color;
         
     _Stream.Append(output[0]);
     _Stream.Append(output[1]);
@@ -79,12 +86,13 @@ void GS_Particle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _Stream)
     _Stream.Append(output[2]);
     _Stream.Append(output[3]);
     _Stream.RestartStrip();
+    
 }
 
 float4 PS_Particle(GS_OUT _in) : SV_Target
 {
     float4 vColor = g_tex_0.Sample(g_sam_0, _in.vUV);
-    vColor.rgb *= float3(1.f, 1.f, 1.f);
+    vColor *= _in.vColor;
     return vColor;
 }
 

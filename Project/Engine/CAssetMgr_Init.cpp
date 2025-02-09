@@ -223,6 +223,10 @@ void CAssetMgr::CreateEngineMaterial()
 	pMtrl->SetTexParam(TEX_0, Load<CTexture>(L"Texture2D\\Spr_CargoPlatform_Idle (lp) (1).png"));
 	AddAsset(L"CargoPlatform_Mtrl", pMtrl.Get());
 
+	pMtrl = new CMaterial;
+	pMtrl->SetShader(FindAsset<CGraphicShader>(L"Std2DShader"));
+	pMtrl->SetTexParam(TEX_0, Load<CTexture>(L"Texture2D\\Chap2_Mid_A01.png"));
+	AddAsset(L"Background_Mtrl", pMtrl.Get());
 }
 
 

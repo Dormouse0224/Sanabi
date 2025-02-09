@@ -81,6 +81,8 @@ struct tParticleModule
 	float	MaxLife;			// 생성 시 최대 주기
 	int		SpawnShape;			// 0 : Box, 1 : Sphere
 	Vec3	SpawnShapeScale;
+	Vec3	SpawnDir;
+	float	SpawnDirRandomize;	// 0 ~ 1, 방향 랜덤화 비율
 	int		SpaceType;			// 0 : Local, 1 : World
 
 	// 추가 데이터
