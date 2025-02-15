@@ -60,7 +60,7 @@ void CPhysxMgr::Init()
     m_Foundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_DefaultAllocatorCallback, m_DefaultErrorCallback);
     if (!m_Foundation) throw("PxCreateFoundation failed!");
     m_ToleranceScale.length = 1.f;
-    m_ToleranceScale.speed = 0.1f;
+    m_ToleranceScale.speed = 400.f;
     m_Physics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_Foundation, m_ToleranceScale);
 
     PxSceneDesc sceneDesc(m_Physics->getTolerancesScale());

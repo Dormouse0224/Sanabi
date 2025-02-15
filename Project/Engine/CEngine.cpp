@@ -87,7 +87,7 @@ int CEngine::CreateMainWindow()
 
     // 입력된 해상도에 맞는 윈도우 크기 설정
     RECT rt = { 0, 0, (int)m_vResolution.x, (int)m_vResolution.y };
-    AdjustWindowRect(&rt, WS_EX_OVERLAPPEDWINDOW, !!GetMenu(m_hMainWnd));
+    AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, !!GetMenu(m_hMainWnd));
     SetWindowPos(m_hMainWnd, nullptr, 0, 0, rt.right - rt.left, rt.bottom - rt.top, 0);
 
     return S_OK;

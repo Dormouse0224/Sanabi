@@ -1,6 +1,7 @@
 #pragma once
 
 class CConstBuffer;
+class CTexture;
 
 class CDevice
 	: public Singleton<CDevice>
@@ -15,11 +16,9 @@ private:
 
 	ComPtr<IDXGISwapChain>			m_SwapChain;			// Window 화면에 렌더링
 
-	ComPtr<ID3D11Texture2D>			m_RenderTarget;			// 그려질 타겟	
-	ComPtr<ID3D11RenderTargetView>	m_RTV;					// GPU 리소스를 전달하는 역할
+	Ptr<CTexture>					m_RenderTarget;			// 그려질 타겟
 
-	ComPtr<ID3D11Texture2D>			m_DepthStencilTarget;	// 깊이가 그려질 타겟
-	ComPtr<ID3D11DepthStencilView>	m_DSV;					// GPU 리소스를 전달하는 역할
+	Ptr<CTexture>					m_DepthStencil;			// 깊이가 그려질 타겟
 
 	CConstBuffer*					m_ConstBuffer[(UINT)CB_TYPE::END];
 

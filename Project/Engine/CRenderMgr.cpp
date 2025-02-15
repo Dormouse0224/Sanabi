@@ -41,6 +41,12 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Priority)
 
 void CRenderMgr::Tick()
 {
+	// 출력 렌더타겟 및 출력 깊이타겟 설정
+	Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTarget");
+	Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencil");
+	CONTEXT->OMSetRenderTargets(1, pRTTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
+
+
 	// GlobalData Binding
 	static CConstBuffer* pGlobal = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL);
 	pGlobal->SetData(&g_global, sizeof(tGlobal));
@@ -55,9 +61,6 @@ void CRenderMgr::Tick()
 
 	// Physx Rendering
 	CPhysxMgr::GetInst()->Render();
-
-	// 윈도우 화면에 송출
-	CDevice::GetInst()->Present();
 }
 
 void CRenderMgr::Render()

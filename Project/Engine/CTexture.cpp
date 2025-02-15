@@ -174,6 +174,49 @@ int CTexture::Create(UINT _Width, UINT _Height, DXGI_FORMAT _format
 
 }
 
+int CTexture::Create(ComPtr<ID3D11Texture2D> _Tex2D)
+{
+	m_Tex2D = _Tex2D;
+
+	_Tex2D->GetDesc(&m_Desc);
+
+	if (m_Desc.BindFlags & D3D11_BIND_DEPTH_STENCIL)
+	{
+		if (FAILED(DEVICE->CreateDepthStencilView(m_Tex2D.Get(), nullptr, m_DSV.GetAddressOf())))
+		{
+			return E_FAIL;
+		}
+	}
+
+	else
+	{
+		if (m_Desc.BindFlags & D3D11_BIND_RENDER_TARGET)
+		{
+			if (FAILED(DEVICE->CreateRenderTargetView(m_Tex2D.Get(), nullptr, m_RTV.GetAddressOf())))
+			{
+				return E_FAIL;
+			}
+		}
+
+		if (m_Desc.BindFlags & D3D11_BIND_SHADER_RESOURCE)
+		{
+			if (FAILED(DEVICE->CreateShaderResourceView(m_Tex2D.Get(), nullptr, m_SRV.GetAddressOf())))
+			{
+				return E_FAIL;
+			}
+		}
+
+		if (m_Desc.BindFlags & D3D11_BIND_UNORDERED_ACCESS)
+		{
+			if (FAILED(DEVICE->CreateUnorderedAccessView(m_Tex2D.Get(), nullptr, m_UAV.GetAddressOf())))
+			{
+				return E_FAIL;
+			}
+		}
+	}
+
+}
+
 
 int CTexture::Save(const wstring& _FilePath)
 {

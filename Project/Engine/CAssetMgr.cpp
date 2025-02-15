@@ -44,3 +44,21 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _Key, UINT _Width, UINT _H
 	return pTex;
 }
 
+Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _Key, ComPtr<ID3D11Texture2D> _Tex2D)
+{
+	Ptr<CTexture> pTex = FindAsset<CTexture>(_Key);
+	if (nullptr != pTex)
+		return pTex;
+
+	pTex = new CTexture;
+	if (FAILED(pTex->Create(_Tex2D)))
+	{
+		MessageBox(nullptr, _Key.c_str(), L"텍스쳐 생성 실패", MB_OK);
+		return nullptr;
+	}
+
+	AddAsset(_Key, pTex.Get());
+
+	return pTex;
+}
+

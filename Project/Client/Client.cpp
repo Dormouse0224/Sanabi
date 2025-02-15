@@ -1,18 +1,10 @@
-﻿// Client.cpp : 애플리케이션에 대한 진입점을 정의합니다.
+﻿#include "pch.h"
+// Client.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
-#include "framework.h"
 #include "Client.h"
-
-#include <Engine/global.h>
-#include <Engine/CEngine.h>
-
-#ifndef _DEBUG
-#pragma comment(lib, "Engine//Engine")
-#else
-#pragma comment(lib, "Engine//Engine_d")
-#endif
-
+#include "CImguiMgr.h"
+#include "Engine/CDevice.h"
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -46,6 +38,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return 0;
     }
 
+    CImguiMgr::GetInst()->Init();
+    
+
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
 
@@ -69,6 +64,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         {
             // Progress
             CEngine::GetInst()->Progress();
+
+            // Imgui progress & Render additional window
+            CImguiMgr::GetInst()->Progress();
+
+            // 윈도우 화면에 송출
+            CDevice::GetInst()->Present();
         }
     }
 
@@ -87,8 +88,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
+        return true;
+
     switch (message)
     {
     case WM_COMMAND:
@@ -107,6 +114,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_DESTROY:
         PostQuitMessage(0);
+        break;
+    case WM_DPICHANGED:
+        if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DpiEnableScaleViewports)
+        {
+            //const int dpi = HIWORD(wParam);
+            //printf("WM_DPICHANGED to %d (%.0f%%)\n", dpi, (float)dpi / 96.0f * 100.0f);
+            const RECT* suggested_rect = (RECT*)lParam;
+            ::SetWindowPos(hWnd, nullptr, suggested_rect->left, suggested_rect->top, suggested_rect->right - suggested_rect->left, suggested_rect->bottom - suggested_rect->top, SWP_NOZORDER | SWP_NOACTIVATE);
+        }
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
