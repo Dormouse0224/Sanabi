@@ -155,6 +155,8 @@
     <ClInclude Include="assets.h" />
     <ClInclude Include="CFlipbook.h" />
     <ClInclude Include="CFlipbookRender.h" />
+    <ClInclude Include="CImguiMgr.h" />
+    <ClInclude Include="CImguiObject.h" />
     <ClInclude Include="CParticleRender.h" />
     <ClInclude Include="CParticleTickCS.h" />
     <ClInclude Include="CPhysxActor.h" />
@@ -165,6 +167,14 @@
     <ClInclude Include="CSpriteRender.h" />
     <ClInclude Include="CStructuredBuffer.h" />
     <ClInclude Include="CTileRender.h" />
+    <ClInclude Include="imgui\imconfig.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="imgui\imgui_impl_win32.h" />
+    <ClInclude Include="imgui\imgui_internal.h" />
+    <ClInclude Include="imgui\imstb_rectpack.h" />
+    <ClInclude Include="imgui\imstb_textedit.h" />
+    <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Ptr.h" />
     <ClInclude Include="CAsset.h" />
     <ClInclude Include="CAssetMgr.h" />
@@ -227,6 +237,8 @@
     <ClCompile Include="CFlipbookRender.cpp" />
     <ClCompile Include="CGameObject.cpp" />
     <ClCompile Include="CGraphicShader.cpp" />
+    <ClCompile Include="CImguiMgr.cpp" />
+    <ClCompile Include="CImguiObject.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CLayer.cpp" />
     <ClCompile Include="CLevel.cpp" />
@@ -258,6 +270,13 @@
     <ClCompile Include="CTransform.cpp" />
     <ClCompile Include="extern.cpp" />
     <ClCompile Include="func.cpp" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_demo.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="imgui\imgui_tables.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

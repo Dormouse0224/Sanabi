@@ -3,8 +3,8 @@
 //
 
 #include "Client.h"
-#include "CImguiMgr.h"
 #include "Engine/CDevice.h"
+#include "Engine/CImguiMgr.h"
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -38,9 +38,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return 0;
     }
 
-    CImguiMgr::GetInst()->Init();
-    
-
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
 
@@ -65,9 +62,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             // Progress
             CEngine::GetInst()->Progress();
 
-            // Imgui progress & Render additional window
-            CImguiMgr::GetInst()->Progress();
-
             // 윈도우 화면에 송출
             CDevice::GetInst()->Present();
         }
@@ -88,6 +82,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 

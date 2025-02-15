@@ -34,7 +34,7 @@ using namespace DirectX::SimpleMath;
 #pragma comment(lib, "DirectXTex/DirectXTex.lib")
 #endif
 
-
+// PhysX 라이브러리 링크
 #include <physx/PxPhysicsAPI.h>
 #ifdef _DEBUG
 #pragma comment(lib, "physx/debug/LowLevel_static_64.lib")
@@ -56,6 +56,7 @@ using namespace DirectX::SimpleMath;
 #pragma comment(lib, "physx/PhysX_64.lib")
 #endif
 using namespace physx;
+
 
 
 // Visual Leak Detector 라이브러리 링크 (디버그에서만 적용)

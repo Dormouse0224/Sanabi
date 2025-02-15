@@ -11,6 +11,7 @@
 #include "CCollisionMgr.h"
 #include "CTaskMgr.h"
 #include "CPhysxMgr.h"
+#include "CImguiMgr.h"
 
 CEngine::CEngine()
     : m_hInst(nullptr)
@@ -48,6 +49,7 @@ int CEngine::Init(HINSTANCE _Inst, UINT _Width, UINT _Height)
     CPhysxMgr::GetInst()->Init();
     CLevelMgr::GetInst()->Init();
     CRenderMgr::GetInst()->Init();
+    CImguiMgr::GetInst()->Init();
 
     return S_OK;
 }
@@ -72,6 +74,10 @@ void CEngine::Progress()
 
     // Task
     CTaskMgr::GetInst()->Tick();
+
+    // Imgui progress & Render additional window
+    CImguiMgr::GetInst()->Progress();
+
 }
 
 int CEngine::CreateMainWindow()
