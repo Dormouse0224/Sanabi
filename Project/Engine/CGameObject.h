@@ -10,6 +10,13 @@ class CScript;
 class CGameObject :
     public CEntity
 {
+    friend class CLayer;
+    friend class CTaskMgr;
+public:
+    CGameObject();
+    ~CGameObject();
+    CLONE(CGameObject);
+
 private:
     CComponent*             m_Com[(UINT)COMPONENT_TYPE::COMPONENT_END];
     vector<CScript*>        m_vecScript;
@@ -56,13 +63,5 @@ public:
     void FinalTick();
     void Render();
 
-public:
-    CLONE(CGameObject);
-public:
-    CGameObject();
-    ~CGameObject();
-
-    friend class CLayer;
-    friend class CTaskMgr;
 };
 

@@ -27,6 +27,8 @@ void CTaskMgr::Tick()
 	// =========
 	// Task Ã³¸®
 	// =========
+	m_LevelUpdated = false;
+
 	CLevel* pLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 	for (size_t i = 0; i < m_vecTask.size(); ++i)
 	{
@@ -36,28 +38,41 @@ void CTaskMgr::Tick()
 		{
 		case TASK_TYPE::CREATE_OBJECT:
 		{
-			CGameObject* pNew = (CGameObject*)task.Param0;
+			m_LevelUpdated = true;
+			CGameObject* pNewObj = (CGameObject*)task.Param0;
 			int LayerIdx = (int)task.Param1;
-			pLevel->AddGameObject(pNew, LayerIdx, false);
+			pLevel->AddGameObject(pNewObj, LayerIdx, false);
 		}
 			break;
 		case TASK_TYPE::DELETE_OBJECT:
 		{
-			CGameObject* pObj = (CGameObject*)task.Param0;
+			m_LevelUpdated = true;
+			CGameObject* pDelObj = (CGameObject*)task.Param0;
 
-			if (!pObj->m_Dead)
+			if (!pDelObj->m_Dead)
 			{
-				pObj->m_Dead = true;
-				m_vecGC.push_back(pObj);
+				pDelObj->m_Dead = true;
+				m_vecGC.push_back(pDelObj);
 			}
 		}
 			break;
 		case TASK_TYPE::CHANGE_LEVEL:
-
+		{
+			m_LevelUpdated = true;
+		}
 			break;
 
 		}
 	}
 
 	m_vecTask.clear();
+}
+
+void CTaskMgr::AddTask(TASK_TYPE _Type, DWORD_PTR _Param0, DWORD_PTR _Param1)
+{
+	tTask task = {};
+	task.Type = _Type;
+	task.Param0 = _Param0;
+	task.Param1 = _Param1;
+	m_vecTask.push_back(task);
 }

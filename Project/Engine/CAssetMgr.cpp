@@ -13,11 +13,11 @@ CAssetMgr::~CAssetMgr()
 
 }
 
-void CAssetMgr::AddAsset(const wstring& _Key, Ptr<CAsset> _Asset)
+void CAssetMgr::AddAsset(const wstring& _Key, AssetPtr<CAsset> _Asset)
 {
 	ASSET_TYPE Type = _Asset->GetType();
 
-	map<wstring, Ptr<CAsset>>::iterator iter = m_mapAsset[Type].find(_Key);
+	map<wstring, AssetPtr<CAsset>>::iterator iter = m_mapAsset[Type].find(_Key);
 
 	assert(iter == m_mapAsset[Type].end());
 
@@ -25,10 +25,10 @@ void CAssetMgr::AddAsset(const wstring& _Key, Ptr<CAsset> _Asset)
 	m_mapAsset[Type].insert(make_pair(_Key, _Asset));
 }
 
-Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _Key, UINT _Width, UINT _Height
+AssetPtr<CTexture> CAssetMgr::CreateTexture(const wstring& _Key, UINT _Width, UINT _Height
 	, DXGI_FORMAT _Format, UINT _BindFlag, D3D11_USAGE _Usage)
 {
-	Ptr<CTexture> pTex = FindAsset<CTexture>(_Key);
+	AssetPtr<CTexture> pTex = FindAsset<CTexture>(_Key);
 	if (nullptr != pTex)
 		return pTex;
 
@@ -44,9 +44,9 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _Key, UINT _Width, UINT _H
 	return pTex;
 }
 
-Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _Key, ComPtr<ID3D11Texture2D> _Tex2D)
+AssetPtr<CTexture> CAssetMgr::CreateTexture(const wstring& _Key, ComPtr<ID3D11Texture2D> _Tex2D)
 {
-	Ptr<CTexture> pTex = FindAsset<CTexture>(_Key);
+	AssetPtr<CTexture> pTex = FindAsset<CTexture>(_Key);
 	if (nullptr != pTex)
 		return pTex;
 

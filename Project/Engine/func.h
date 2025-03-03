@@ -8,8 +8,6 @@ void DrawDebugCircle(Vec4 _Color, Vec3 _WorldPos, float _Radius, Vec3 _WorldRota
 
 
 
-
-
 template<typename T>
 void Delete_Vec(vector<T*>& _vec)
 {

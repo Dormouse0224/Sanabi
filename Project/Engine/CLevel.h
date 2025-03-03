@@ -8,6 +8,11 @@ class CGameObject;
 class CLevel :
     public CEntity
 {
+public:
+    CLevel();
+    ~CLevel();
+    CLONE(CLevel);
+
 private:
     CLayer* m_Layer[MAX_LAYER];
 
@@ -23,12 +28,5 @@ public:
 
 public:
     void AddGameObject(CGameObject* _Object, int _LayerIdx, bool _bChildMove);
-
-public:
-    CLONE(CLevel);
-
-public:
-    CLevel();
-    ~CLevel();
 };
 

@@ -7,12 +7,17 @@
 
 struct tTileInfo
 {
-    Ptr<CSprite>    Sprite;
+    AssetPtr<CSprite>    Sprite;
 };
 
 class CTileRender :
     public CRenderComponent
 {
+public:
+    CTileRender();
+    ~CTileRender();
+    CLONE(CTileRender);
+
 private:
     UINT                m_Col;          // ї­
     UINT                m_Row;          // За
@@ -24,7 +29,7 @@ private:
 public:
     void SetColRow(UINT _Col, UINT _Row);
     void SetTileSize(Vec2 _TileSize);
-    void SetSprite(UINT _Col, UINT _Row, Ptr<CSprite> _Sprite);
+    void SetSprite(UINT _Col, UINT _Row, AssetPtr<CSprite> _Sprite);
 
 public:
     virtual void FinalTick() override;
@@ -33,13 +38,9 @@ public:
 private:
     void CreateTileRenderMtrl();
     void UpdateBuffer();
-    Ptr<CTexture> GetAtlasTex();
+    AssetPtr<CTexture> GetAtlasTex();
 
 
 
-public:
-    CLONE(CTileRender);
-    CTileRender();
-    ~CTileRender();
 };
 

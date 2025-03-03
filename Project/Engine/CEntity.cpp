@@ -1,15 +1,21 @@
 #include "pch.h"
 #include "CEntity.h"
 
-UINT CEntity::g_NextId = 0;
+UINT CEntity::g_NextID = 0;
 
 CEntity::CEntity()
-	: m_ID(g_NextId++)
+	: m_ID(g_NextID++)
+{
+}
+
+CEntity::CEntity(wstring _Name)
+	: m_Name(_Name)
+	, m_ID(g_NextID++)
 {
 }
 
 CEntity::CEntity(const CEntity& _Origin)
-	: m_ID(g_NextId++)
+	: m_ID(g_NextID++)
 	, m_Name(_Origin.m_Name)
 {
 }

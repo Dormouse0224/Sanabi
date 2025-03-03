@@ -6,12 +6,16 @@
 class CSpriteRender :
     public CRenderComponent
 {
-private:
-    Ptr<CSprite>    m_Sprite;
+public:
+    CSpriteRender();
+    ~CSpriteRender();
+    CLONE(CSpriteRender);
 
+private:
+    AssetPtr<CSprite>    m_Sprite;
 
 public:
-    void SetSprite(Ptr<CSprite> _Sprite) { m_Sprite = _Sprite; }
+    void SetSprite(AssetPtr<CSprite> _Sprite) { m_Sprite = _Sprite; }
 
 
 private:
@@ -21,9 +25,5 @@ public:
     virtual void FinalTick() override;
     virtual void Render() override;
 
-public:
-    CLONE(CSpriteRender);
-    CSpriteRender();
-    ~CSpriteRender();
 };
 

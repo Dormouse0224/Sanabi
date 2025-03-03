@@ -57,8 +57,6 @@ using namespace DirectX::SimpleMath;
 #endif
 using namespace physx;
 
-
-
 // Visual Leak Detector 라이브러리 링크 (디버그에서만 적용)
 #include <VLD/vld.h>
 
@@ -67,6 +65,8 @@ using namespace physx;
 #include <list>
 #include <string>
 
+
+// 기본 프로젝트 헤더
 using namespace std;
 
 #include "define.h"
@@ -76,3 +76,4 @@ using namespace std;
 #include "func.h"
 
 #include "Ptr.h"
+

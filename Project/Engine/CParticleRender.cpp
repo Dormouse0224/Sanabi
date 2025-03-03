@@ -31,7 +31,7 @@ CParticleRender::CParticleRender()
 	CreateMtrl();
 
 	// 파티클 Tick 컴퓨트 쉐이더
-	Ptr<CComputeShader> pCS = CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"ParticleTickCS");
+	AssetPtr<CComputeShader> pCS = CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"ParticleTickCS");
 
 	if (nullptr == pCS)
 	{
@@ -66,9 +66,6 @@ CParticleRender::~CParticleRender()
 
 void CParticleRender::FinalTick()
 {
-	//Vec3 vPos = Transform()->GetRelativePos();
-	//vPos.x -= DT * 100.f;
-	//Transform()->SetRelativePos(vPos);
 
 	m_ModuleChanged = true;
 	m_Module.ObjectWorldPos = Transform()->GetWorldPos();
@@ -183,7 +180,7 @@ void CParticleRender::CreateMtrl()
 	if (nullptr != GetMaterial())
 		return;
 
-	Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleMtrl");
+	AssetPtr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleMtrl");
 	if (nullptr != pMtrl)
 	{
 		SetMaterial(pMtrl);
@@ -191,7 +188,7 @@ void CParticleRender::CreateMtrl()
 	}
 
 	// 파티클 렌더링 쉐이더 및 재질
-	Ptr<CGraphicShader> pShader = new CGraphicShader;
+	AssetPtr<CGraphicShader> pShader = new CGraphicShader;
 	pShader->SetName(L"ParticleRenderShader");
 
 	pShader->CreateVertexShader(L"HLSL\\particle.fx", "VS_Particle");

@@ -12,6 +12,11 @@ enum SB_TYPE
 class CStructuredBuffer :
     public CEntity
 {
+public:
+    CStructuredBuffer();
+    ~CStructuredBuffer();
+    CLONE(CStructuredBuffer);
+
 private:
     ComPtr<ID3D11Buffer>                m_SB;       // 메인 버퍼
     ComPtr<ID3D11Buffer>                m_SB_Write; // 쓰기 버퍼
@@ -50,9 +55,5 @@ public:
     void Clear_CS_UAV();
 
 
-public:
-    CLONE(CStructuredBuffer);
-    CStructuredBuffer();
-    ~CStructuredBuffer();
 };
 

@@ -4,6 +4,11 @@
 class CMesh :
     public CAsset
 {
+public:
+    CMesh();
+    ~CMesh();
+    CLONE_DISABLE(CMesh);
+
 private:
     ComPtr<ID3D11Buffer>		m_VB;
     D3D11_BUFFER_DESC           m_VBDesc;
@@ -27,9 +32,5 @@ private:
 public:
     virtual int Save(const wstring& _FilePath) { return S_OK; }
     virtual int Load(const wstring& _FilePath) { return S_OK; }
-    CLONE_DISABLE(CMesh);
-public:
-    CMesh();
-    ~CMesh();
 };
 

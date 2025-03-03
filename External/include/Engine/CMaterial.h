@@ -7,30 +7,31 @@
 class CMaterial :
     public CAsset
 {
+public:
+    CMaterial();
+    ~CMaterial();
+    CLONE(CMaterial);
+
 private:
-    Ptr<CGraphicShader> m_Shader;
-    Ptr<CTexture>       m_arrTex[TEX_PARAM::TEX_END];
+    AssetPtr<CGraphicShader> m_Shader;
+    AssetPtr<CTexture>       m_arrTex[TEX_PARAM::TEX_END];
     tMtrlConst          m_Const;
 
 
 public:
-    void SetShader(Ptr<CGraphicShader> _Shader) { m_Shader = _Shader; }
-    Ptr<CGraphicShader> GetShader() { return m_Shader; }
+    void SetShader(AssetPtr<CGraphicShader> _Shader) { m_Shader = _Shader; }
+    AssetPtr<CGraphicShader> GetShader() { return m_Shader; }
 
     template<typename T>
     void SetScalarParam(SCALAR_PARAM _Param, const T& _Data);
 
-    void SetTexParam(TEX_PARAM _Param, const Ptr<CTexture>& _Tex);
+    void SetTexParam(TEX_PARAM _Param, const AssetPtr<CTexture>& _Tex);
 
     void Binding();
 
 
     virtual int Save(const wstring& _FilePath) { return S_OK; };
     virtual int Load(const wstring& _FilePath) { return S_OK; };
-public:
-    CLONE(CMaterial);
-    CMaterial();
-    ~CMaterial();
 };
 
 template<typename T>

@@ -60,9 +60,11 @@ void CLayer::AddGameObject(CGameObject* _Parent, bool _bChildMove)
 
 	while (!queue.empty())
 	{
+		// 큐에서 가장 앞의 오브젝트를 추출
 		CGameObject* pObject = queue.front();
 		queue.pop_front();
 
+		// 추출한 오브젝트의 자식이 존재하는 경우, 큐의 뒤에 자식을 추가
 		const vector<CGameObject*>& vecChild = pObject->GetChild();
 		for (size_t i = 0; i < vecChild.size(); ++i)
 		{

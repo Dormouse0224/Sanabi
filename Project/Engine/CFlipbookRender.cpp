@@ -65,8 +65,8 @@ void CFlipbookRender::Render()
 	if (m_CurFlipbook->GetSceneType() == SceneType::SPRITE)
 	{
 		// 현재 진행중인 프레임 스프라이트를 출력
-		Ptr<CSprite> pCurSprite = m_CurFlipbook->GetScene<CSprite>(m_SceneIdx);
-		Ptr<CTexture> pAtlas = pCurSprite->GetAtlasTex();
+		AssetPtr<CSprite> pCurSprite = m_CurFlipbook->GetScene<CSprite>(m_SceneIdx);
+		AssetPtr<CTexture> pAtlas = pCurSprite->GetAtlasTex();
 		Vec2 vLeftTop = pCurSprite->GetLeftTop();
 		Vec2 vSlice = pCurSprite->GetSlice();
 		Vec2 vBackground = pCurSprite->GetBackground();
@@ -91,7 +91,7 @@ void CFlipbookRender::Render()
 	}
 	else if (m_CurFlipbook->GetSceneType() == SceneType::TEXTURE)
 	{
-		Ptr<CTexture> pCurTex = m_CurFlipbook->GetScene<CTexture>(m_SceneIdx);
+		AssetPtr<CTexture> pCurTex = m_CurFlipbook->GetScene<CTexture>(m_SceneIdx);
 
 		GetMaterial()->SetScalarParam(INT_0, 0);
 		GetMaterial()->SetScalarParam(INT_1, (int)!!pCurTex.Get());
@@ -109,7 +109,7 @@ void CFlipbookRender::CreateFlipbookMaterial()
 	if (nullptr == CAssetMgr::GetInst()->FindAsset<CGraphicShader>(L"FlipbookShader"))
 	{
 		// FlipbookShader
-		Ptr<CGraphicShader> pShader = new CGraphicShader;
+		AssetPtr<CGraphicShader> pShader = new CGraphicShader;
 		pShader->CreateVertexShader(L"HLSL\\flipbook.fx", "VS_Flipbook");
 		pShader->CreatePixelShader(L"HLSL\\flipbook.fx", "PS_Flipbook");
 		pShader->SetRSType(RS_TYPE::CULL_NONE);
@@ -120,7 +120,7 @@ void CFlipbookRender::CreateFlipbookMaterial()
 	if (nullptr == CAssetMgr::GetInst()->FindAsset<CMaterial>(L"FlipbookMtrl"))
 	{
 		// FlipbookMtrl
-		Ptr<CMaterial> pMtrl = new CMaterial;
+		AssetPtr<CMaterial> pMtrl = new CMaterial;
 		pMtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicShader>(L"FlipbookShader"));
 		CAssetMgr::GetInst()->AddAsset(L"FlipbookMtrl", pMtrl.Get());
 	}
@@ -128,7 +128,7 @@ void CFlipbookRender::CreateFlipbookMaterial()
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"FlipbookMtrl"));
 }
 
-void CFlipbookRender::AddFlipbook(int _Idx, Ptr<CFlipbook> _Flipbook)
+void CFlipbookRender::AddFlipbook(int _Idx, AssetPtr<CFlipbook> _Flipbook)
 {
 	if (m_vecFlipbook.size() <= _Idx)
 	{

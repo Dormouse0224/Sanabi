@@ -149,10 +149,5 @@ CGameObject* CGameObject::FindChild(wstring _Name)
 #include "CTaskMgr.h"
 void CGameObject::Destroy()
 {
-	tTask task = {};
-
-	task.Type = TASK_TYPE::DELETE_OBJECT;
-	task.Param0 = (DWORD_PTR)this;
-
-	CTaskMgr::GetInst()->AddTask(task);
+	CTaskMgr::GetInst()->AddTask(TASK_TYPE::DELETE_OBJECT, (DWORD_PTR)this, (DWORD_PTR)nullptr);
 }

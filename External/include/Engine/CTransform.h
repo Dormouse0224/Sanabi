@@ -4,6 +4,11 @@
 class CTransform :
     public CComponent
 {
+public:
+    CTransform();
+    ~CTransform();
+    CLONE(CTransform);
+
 private:
     Vec3    m_RelativePos;  // 위치
     Vec3    m_RelativeScale;// 크기
@@ -50,11 +55,5 @@ public:
     const Matrix& GetWorldMat() { return m_matWorld; }
     void SetWorldMat(const Matrix& _Mat) { m_matWorld = _Mat; }
 
-public:
-    CLONE(CTransform);
-
-public:
-    CTransform();
-    ~CTransform();
 };
 

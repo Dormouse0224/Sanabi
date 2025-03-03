@@ -51,7 +51,7 @@ void CSpriteRender::CreateSpriteMaterial()
 	if (nullptr == CAssetMgr::GetInst()->FindAsset<CGraphicShader>(L"SpriteShader"))
 	{
 		// SpriteShader
-		Ptr<CGraphicShader> pShader = new CGraphicShader;
+		AssetPtr<CGraphicShader> pShader = new CGraphicShader;
 		pShader->CreateVertexShader(L"HLSL\\sprite.fx", "VS_Sprite");
 		pShader->CreatePixelShader(L"HLSL\\sprite.fx", "PS_Sprite");
 		pShader->SetRSType(RS_TYPE::CULL_NONE);
@@ -62,7 +62,7 @@ void CSpriteRender::CreateSpriteMaterial()
 	if (nullptr == CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpriteMtrl"))
 	{
 		// SpriteMtrl
-		Ptr<CMaterial> pMtrl = new CMaterial;
+		AssetPtr<CMaterial> pMtrl = new CMaterial;
 		pMtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicShader>(L"SpriteShader"));
 		CAssetMgr::GetInst()->AddAsset(L"SpriteMtrl", pMtrl.Get());
 	}

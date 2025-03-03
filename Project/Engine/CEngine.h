@@ -15,9 +15,9 @@ public:
 
 	Vec2 GetResolution() { return m_vResolution; }
 	HWND GetMainWndHwnd() { return m_hMainWnd; }
-	void LiveObjectReport();
 
 private:
+	void LiveObjectReport();
 	int CreateMainWindow();
 };
 

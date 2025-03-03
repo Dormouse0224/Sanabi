@@ -8,6 +8,12 @@
 class CComponent :
     public CEntity
 {
+    friend class CGameObject;
+public:
+    CComponent(COMPONENT_TYPE _Type);
+    ~CComponent();
+    virtual CComponent* Clone() = 0;
+
 private:
     const COMPONENT_TYPE    m_Type;
     CGameObject* m_Owner;
@@ -29,12 +35,5 @@ public:
     virtual void Tick() {};
     virtual void FinalTick() = 0;
 
-public:
-    virtual CComponent* Clone() = 0;
-
-public:
-    CComponent(COMPONENT_TYPE _Type);
-    ~CComponent();
-    friend class CGameObject;
 };
 

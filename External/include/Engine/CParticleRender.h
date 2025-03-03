@@ -7,12 +7,17 @@ class CStructuredBuffer;
 class CParticleRender :
     public CRenderComponent
 {
+public:
+    CParticleRender();
+    ~CParticleRender();
+    CLONE(CParticleRender);
+
 private:
     CStructuredBuffer*      m_ParticleBuffer;
     CStructuredBuffer*      m_SpawnBuffer;
     CStructuredBuffer*      m_ModuleBuffer;
 
-    Ptr<CParticleTickCS>    m_TickCS;
+    AssetPtr<CParticleTickCS>    m_TickCS;
     UINT                    m_MaxParticle;      // 파티클 최대 개수
 
     tParticleModule         m_Module;           // 파티클 제어 설정값
@@ -22,14 +27,14 @@ private:
     bool                    m_Active;
     bool                    m_Gravity;
 
-    Ptr<CTexture>           m_ParticleTex;
+    AssetPtr<CTexture>           m_ParticleTex;
 
     map<UINT, CGameObject*> m_mapParticleObj;
 
 public:
     void SetSpawnRate(float _Rate) { m_Module.SpawnRate = _Rate; m_ModuleChanged = true; }
     void SetSpawnCount(float _Count) { m_SpawnCount = _Count; }
-    void SetParticleTex(const Ptr<CTexture>& _Tex) { m_ParticleTex = _Tex; }
+    void SetParticleTex(const AssetPtr<CTexture>& _Tex) { m_ParticleTex = _Tex; }
     float GetSpawnRate() { return m_Module.SpawnRate; m_ModuleChanged = true; }
     void SetStartColor(Vec4 _Color) { m_Module.StartColor = _Color; m_ModuleChanged = true; }
     void SetEndColor(Vec4 _Color) { m_Module.EndColor = _Color; m_ModuleChanged = true; }
@@ -62,9 +67,5 @@ private:
     void CalcSpawnCount();
 
 
-public:
-    CLONE(CParticleRender);
-    CParticleRender();
-    ~CParticleRender();
 };
 

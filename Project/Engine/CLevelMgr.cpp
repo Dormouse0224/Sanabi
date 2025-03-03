@@ -8,6 +8,7 @@
 #include "CAssetMgr.h"
 #include "CCollisionMgr.h"
 #include "CPhysxMgr.h"
+#include "CTaskMgr.h"
 
 #include "CGameObject.h"
 #include "components.h"
@@ -52,7 +53,7 @@ void CLevelMgr::Init()
 	pCamObj->Camera()->CheckLayerAll();
 	pCamObj->Camera()->CheckLayer(31);
 
-	m_CurLevel->AddGameObject(pCamObj, 0, false);
+	CTaskMgr::GetInst()->AddTask(TASK_TYPE::CREATE_OBJECT, (DWORD_PTR)pCamObj, (DWORD_PTR)0);
 
 	// 배경 오브젝트
 	CGameObject* pObject = new CGameObject;
@@ -66,7 +67,7 @@ void CLevelMgr::Init()
 	pObject->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Background_Mtrl"));
 
-	m_CurLevel->AddGameObject(pObject, 1, true);
+	CTaskMgr::GetInst()->AddTask(TASK_TYPE::CREATE_OBJECT, (DWORD_PTR)pObject, (DWORD_PTR)1);
 
 
 	// Parent Object
@@ -146,7 +147,7 @@ void CLevelMgr::Init()
 	pObject->AddChild(pChild);
 
 	// 레벨에 부모 오브젝트만 추가
-	m_CurLevel->AddGameObject(pObject, 3, true);
+	CTaskMgr::GetInst()->AddTask(TASK_TYPE::CREATE_OBJECT, (DWORD_PTR)pObject, (DWORD_PTR)3);
 
 
 	// ========
@@ -182,7 +183,7 @@ void CLevelMgr::Init()
 
 
 	//오브젝트를 0번 레이어에 추가
-	m_CurLevel->AddGameObject(pObject, 0, false);
+	CTaskMgr::GetInst()->AddTask(TASK_TYPE::CREATE_OBJECT, (DWORD_PTR)pObject, (DWORD_PTR)0);
 
 
 	pObject = new CGameObject;
@@ -212,7 +213,7 @@ void CLevelMgr::Init()
 	pObject->ParticleRender()->SetActiveState(true);
 
 	//오브젝트를 0번 레이어에 추가
-	m_CurLevel->AddGameObject(pObject, 0, false);
+	CTaskMgr::GetInst()->AddTask(TASK_TYPE::CREATE_OBJECT, (DWORD_PTR)pObject, (DWORD_PTR)0);
 
 
 	// ========
@@ -237,7 +238,7 @@ void CLevelMgr::Init()
 	desc.FilterLayer_Other = FILTER_LAYER::ePLAYER;
 	pObject->PhysxActor()->AddCollider(desc, PxVec3(80.f, 10.f, 10.f), PxVec3(0.f, -20.f, 0.f));
 
-	m_CurLevel->AddGameObject(pObject, 4, true);
+	CTaskMgr::GetInst()->AddTask(TASK_TYPE::CREATE_OBJECT, (DWORD_PTR)pObject, (DWORD_PTR)4);
 
 
 	pObject = new CGameObject;
@@ -258,7 +259,7 @@ void CLevelMgr::Init()
 	desc.FilterLayer_Other = FILTER_LAYER::ePLAYER;
 	pObject->PhysxActor()->AddCollider(desc, PxVec3(80.f, 10.f, 60.f), PxVec3(0.f, -20.f, 0.f));
 
-	m_CurLevel->AddGameObject(pObject, 4, true);
+	CTaskMgr::GetInst()->AddTask(TASK_TYPE::CREATE_OBJECT, (DWORD_PTR)pObject, (DWORD_PTR)4);
 
 
 	pObject = new CGameObject;
@@ -279,7 +280,7 @@ void CLevelMgr::Init()
 	desc.FilterLayer_Other = FILTER_LAYER::ePLAYER;
 	pObject->PhysxActor()->AddCollider(desc, PxVec3(80.f, 10.f, 10.f), PxVec3(0.f, -20.f, 0.f));
 
-	m_CurLevel->AddGameObject(pObject, 4, true);
+	CTaskMgr::GetInst()->AddTask(TASK_TYPE::CREATE_OBJECT, (DWORD_PTR)pObject, (DWORD_PTR)4);
 
 	// 충돌 레이어 지정
 	//CCollisionMgr::GetInst()->CollisionLayerCheck(3, 4);

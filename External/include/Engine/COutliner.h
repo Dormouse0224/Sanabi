@@ -1,0 +1,26 @@
+#pragma once
+#include "CImguiObject.h"
+
+class CTreeUI;
+class CGameObject;
+struct TreeNode;
+
+class COutliner :
+    public CImguiObject
+{
+public:
+    COutliner(wstring _Name);
+    ~COutliner();
+    CLONE_DISABLE(COutliner);
+
+private:
+    CTreeUI* m_LevelObjects;
+
+public:
+    virtual void Update();
+    virtual void Render();
+
+private:
+    void Renew();
+    void AddObject(CGameObject* _Obj, TreeNode* _ParentNode);
+};

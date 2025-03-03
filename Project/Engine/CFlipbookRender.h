@@ -6,9 +6,14 @@
 class CFlipbookRender :
     public CRenderComponent
 {
+public:
+    CFlipbookRender();
+    ~CFlipbookRender();
+    CLONE(CFlipbookRender);
+
 private:
-    vector<Ptr<CFlipbook>>  m_vecFlipbook;
-    Ptr<CFlipbook>          m_CurFlipbook;
+    vector<AssetPtr<CFlipbook>>  m_vecFlipbook;
+    AssetPtr<CFlipbook>          m_CurFlipbook;
     int                     m_SceneIdx;
 
     float                   m_Time;
@@ -18,7 +23,7 @@ private:
 
 
 public:
-    void AddFlipbook(int _Idx, Ptr<CFlipbook> _Flipbook);
+    void AddFlipbook(int _Idx, AssetPtr<CFlipbook> _Flipbook);
     void Play(int _Idx, float _FPS, bool _Repeat, int _SpriteIdx = 0)
     {
         m_CurFlipbook = m_vecFlipbook[_Idx];
@@ -37,9 +42,5 @@ public:
 private:
     void CreateFlipbookMaterial();
 
-public:
-    CLONE(CFlipbookRender);
-    CFlipbookRender();
-    ~CFlipbookRender();
 };
 

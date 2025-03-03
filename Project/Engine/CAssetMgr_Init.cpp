@@ -24,7 +24,7 @@ void CAssetMgr::CreateEngineMesh()
 	// =========
 	// PointMesh
 	// =========
-	Ptr<CMesh> pMesh = new CMesh;
+	AssetPtr<CMesh> pMesh = new CMesh;
 	Vtx vPoint;
 	vPoint.vPos = Vec3(0.f, 0.f, 0.f);
 	vPoint.vUV = Vec2(0.f, 0.f);
@@ -161,7 +161,7 @@ void CAssetMgr::CreateEngineTexture()
 void CAssetMgr::CreateEngineGraphicShader()
 {
 	// 표준 쉐이더 생성
-	Ptr<CGraphicShader>	pShader = nullptr;
+	AssetPtr<CGraphicShader>	pShader = nullptr;
 
 	// ===========
 	// Std2DShader
@@ -208,7 +208,7 @@ void CAssetMgr::CreateEngineMaterial()
 	//pMtrl->SetShader(FindAsset<CGraphicShader>(L"Std2DShader"));
 	//AddAsset(L"Std2DMtrl", pMtrl.Get());
 
-	Ptr<CMaterial> pMtrl = new CMaterial;
+	AssetPtr<CMaterial> pMtrl = new CMaterial;
 	pMtrl->SetShader(FindAsset<CGraphicShader>(L"Std2DShader"));
 	pMtrl->SetTexParam(TEX_0, Load<CTexture>(L"Texture2D\\Spr_SNB_IdleRand1 (1).png"));
 	AddAsset(L"SNB_Mtrl", pMtrl.Get());
@@ -279,7 +279,7 @@ void CAssetMgr::CreateEngineSprite()
 
 
 	// 플립북 에셋 등록
-	Ptr<CFlipbook> pFlipbook = new CFlipbook;
+	AssetPtr<CFlipbook> pFlipbook = new CFlipbook;
 	for (int i = 0; i < 8; ++i)
 	{
 		wchar_t path[255] = {};

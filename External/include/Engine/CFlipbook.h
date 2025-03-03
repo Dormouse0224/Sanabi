@@ -13,15 +13,20 @@ enum class SceneType
 class CFlipbook :
     public CAsset
 {
+public:
+    CFlipbook();
+    ~CFlipbook();
+    CLONE_DISABLE(CFlipbook);
+
 private:
-    vector<Ptr<CSprite>>    m_vecSprite;
-    vector<Ptr<CTexture>>   m_vecTex;
+    vector<AssetPtr<CSprite>>    m_vecSprite;
+    vector<AssetPtr<CTexture>>   m_vecTex;
 
     SceneType               m_SceneType;
 
 public:
     template<typename T>
-    void AddScene(Ptr<T> _Scene)
+    void AddScene(AssetPtr<T> _Scene)
     {
         if constexpr (is_same_v<CSprite, T>)
         {
@@ -38,7 +43,7 @@ public:
     int GetSceneCount();
 
     template<typename T>
-    Ptr<T> GetScene(int _Idx)
+    AssetPtr<T> GetScene(int _Idx)
     {
         if constexpr (is_same_v<CSprite, T>)
         {
@@ -56,10 +61,5 @@ public:
     virtual int Save(const wstring& _FilePath) override;
     virtual int Load(const wstring& _FilePath) override;
 
-public:
-    CLONE_DISABLE(CFlipbook);
-public:
-    CFlipbook();
-    ~CFlipbook();
 };
 

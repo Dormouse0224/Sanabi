@@ -4,6 +4,16 @@
 class CAsset :
     public CEntity
 {
+    template<typename T>
+    friend class AssetPtr;
+
+    friend class CAssetMgr;
+
+public:
+    CAsset(ASSET_TYPE _Type);
+    ~CAsset();
+    virtual CAsset* Clone() = 0;
+
 private:
     const ASSET_TYPE    m_Type;
     int                 m_RefCount; // 참조 횟수(0 이되면 스스로 삭제)
@@ -29,14 +39,5 @@ private:
 
     virtual int Save(const wstring& _FilePath) = 0;
     virtual int Load(const wstring& _FilePath) = 0;
-    virtual CAsset* Clone() = 0;
-public:
-    CAsset(ASSET_TYPE _Type);
-    ~CAsset();
-
-    template<typename T>
-    friend class Ptr;
-
-    friend class CAssetMgr;
 };
 

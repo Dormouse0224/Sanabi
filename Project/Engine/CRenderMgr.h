@@ -9,7 +9,7 @@ class CRenderMgr
 	SINGLE(CRenderMgr);
 private:
 	vector<CCamera*>		m_vecCam;
-	CGameObject* m_DebugObject;
+	CGameObject*			m_DebugObject;
 
 	vector<tDebugShapeInfo> m_vecDebugInfo;
 

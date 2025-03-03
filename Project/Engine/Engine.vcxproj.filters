@@ -160,14 +160,29 @@
     <Filter Include="08. Asset\09. Flipbook">
       <UniqueIdentifier>{6847000e-3d26-4f9f-86fc-510fd86244fd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Imgui">
-      <UniqueIdentifier>{0248c35c-c65c-4983-b7cd-578e660c14ac}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. Manager\10. PhysxMgr">
       <UniqueIdentifier>{9efee060-e300-4765-86b8-4e0f87fb0a0a}</UniqueIdentifier>
     </Filter>
     <Filter Include="09. ImguiObject">
       <UniqueIdentifier>{4648d97a-9cf3-45af-97d6-c0eba7a3bdc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\Imgui">
+      <UniqueIdentifier>{0248c35c-c65c-4983-b7cd-578e660c14ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\Inspector">
+      <UniqueIdentifier>{1344a44e-d983-4678-9523-f3a193f2342d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\Outliner">
+      <UniqueIdentifier>{fe65e37e-6817-4f11-b4d3-874b30656848}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ContentViewer">
+      <UniqueIdentifier>{aec4e7fc-6215-4c45-9af5-95395ca741b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\TreeUI">
+      <UniqueIdentifier>{79132774-3c34-417e-9b1c-28fdfd2193a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ListUI">
+      <UniqueIdentifier>{82946dad-ccf9-48af-b3bf-eef482355e9a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -291,9 +306,6 @@
     <ClInclude Include="CCollisionMgr.h">
       <Filter>04. Manager\07. CollisionMgr</Filter>
     </ClInclude>
-    <ClInclude Include="CMissileScript.h">
-      <Filter>GameScript</Filter>
-    </ClInclude>
     <ClInclude Include="CTaskMgr.h">
       <Filter>04. Manager\08. TaskMgr</Filter>
     </ClInclude>
@@ -340,34 +352,49 @@
       <Filter>07. Component\PhysxCollider</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imgui_impl_dx11.h">
-      <Filter>Imgui</Filter>
+      <Filter>09. ImguiObject\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imgui_impl_win32.h">
-      <Filter>Imgui</Filter>
+      <Filter>09. ImguiObject\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imgui_internal.h">
-      <Filter>Imgui</Filter>
+      <Filter>09. ImguiObject\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imstb_rectpack.h">
-      <Filter>Imgui</Filter>
+      <Filter>09. ImguiObject\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imstb_textedit.h">
-      <Filter>Imgui</Filter>
+      <Filter>09. ImguiObject\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imstb_truetype.h">
-      <Filter>Imgui</Filter>
+      <Filter>09. ImguiObject\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imconfig.h">
-      <Filter>Imgui</Filter>
+      <Filter>09. ImguiObject\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imgui.h">
-      <Filter>Imgui</Filter>
+      <Filter>09. ImguiObject\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="CImguiMgr.h">
       <Filter>04. Manager\09. ImguiMgr</Filter>
     </ClInclude>
     <ClInclude Include="CImguiObject.h">
       <Filter>09. ImguiObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CInspector.h">
+      <Filter>09. ImguiObject\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="COutliner.h">
+      <Filter>09. ImguiObject\Outliner</Filter>
+    </ClInclude>
+    <ClInclude Include="CContentViewer.h">
+      <Filter>09. ImguiObject\ContentViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="CListUI.h">
+      <Filter>09. ImguiObject\ListUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CTreeUI.h">
+      <Filter>09. ImguiObject\TreeUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -470,9 +497,6 @@
     <ClCompile Include="CCollisionMgr.cpp">
       <Filter>04. Manager\07. CollisionMgr</Filter>
     </ClCompile>
-    <ClCompile Include="CMissileScript.cpp">
-      <Filter>GameScript</Filter>
-    </ClCompile>
     <ClCompile Include="CTaskMgr.cpp">
       <Filter>04. Manager\08. TaskMgr</Filter>
     </ClCompile>
@@ -519,31 +543,49 @@
       <Filter>07. Component\PhysxCollider</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_impl_dx11.cpp">
-      <Filter>Imgui</Filter>
+      <Filter>09. ImguiObject\Imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_impl_win32.cpp">
-      <Filter>Imgui</Filter>
+      <Filter>09. ImguiObject\Imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_tables.cpp">
-      <Filter>Imgui</Filter>
+      <Filter>09. ImguiObject\Imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_widgets.cpp">
-      <Filter>Imgui</Filter>
+      <Filter>09. ImguiObject\Imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui.cpp">
-      <Filter>Imgui</Filter>
+      <Filter>09. ImguiObject\Imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_demo.cpp">
-      <Filter>Imgui</Filter>
+      <Filter>09. ImguiObject\Imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_draw.cpp">
-      <Filter>Imgui</Filter>
+      <Filter>09. ImguiObject\Imgui</Filter>
     </ClCompile>
     <ClCompile Include="CImguiMgr.cpp">
       <Filter>04. Manager\09. ImguiMgr</Filter>
     </ClCompile>
     <ClCompile Include="CImguiObject.cpp">
       <Filter>09. ImguiObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CInspector.cpp">
+      <Filter>09. ImguiObject\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="CImguiMgr_Init.cpp">
+      <Filter>04. Manager\09. ImguiMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="COutliner.cpp">
+      <Filter>09. ImguiObject\Outliner</Filter>
+    </ClCompile>
+    <ClCompile Include="CContentViewer.cpp">
+      <Filter>09. ImguiObject\ContentViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="CListUI.cpp">
+      <Filter>09. ImguiObject\ListUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CTreeUI.cpp">
+      <Filter>09. ImguiObject\TreeUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

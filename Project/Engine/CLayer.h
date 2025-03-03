@@ -6,6 +6,12 @@ class CGameObject;
 class CLayer :
     public CEntity
 {
+    friend class CLevel;
+public:
+    CLayer();
+    ~CLayer();
+    CLONE(CLayer);
+
 private:
     vector<CGameObject*>    m_vecParentObjects; // 레이어에 소속된 오브젝트 중, 최상위 부모 오브젝트만 관리
     vector<CGameObject*>    m_vecObjects;       // 최상위 부모, 자식 상관없이, 해당 레이어 소속 모든 오브젝트
@@ -22,14 +28,5 @@ public:
 
     const vector<CGameObject*>& GetParentObjects() { return m_vecParentObjects; }
     const vector<CGameObject*>& GetObjects() { return m_vecObjects; }
-
-public:
-    CLONE(CLayer);
-
-public:
-    CLayer();
-    ~CLayer();
-
-    friend class CLevel;
 };
 

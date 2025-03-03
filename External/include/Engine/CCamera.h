@@ -4,6 +4,12 @@
 class CCamera :
     public CComponent
 {
+    friend class CRenderMgr;
+public:
+    CCamera();
+    ~CCamera();
+    CLONE(CCamera);
+
 private:
     PROJ_TYPE   m_ProjType;     // 투영 방법
     float       m_OrthoScaleX;  // 직교투영 가로길이
@@ -42,14 +48,6 @@ public:
 
     void CheckLayer(UINT _LayerIdx)
     {
-        /*if (m_LayerCheck & (1 << _LayerIdx))
-        {
-            m_LayerCheck &= ~(1 << _LayerIdx);
-        }
-        else
-        {
-            m_LayerCheck |= ~(1 << _LayerIdx);
-        }*/
         m_LayerCheck ^= (1 << _LayerIdx);
     }
     void CheckLayerAll() { m_LayerCheck = 0xffffffff; }
@@ -63,11 +61,4 @@ private:
 public:
     virtual void FinalTick() override;
     void Render();
-
-    CLONE(CCamera);
-public:
-    CCamera();
-    ~CCamera();
-
-    friend class CRenderMgr;
 };

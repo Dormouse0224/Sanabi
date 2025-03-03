@@ -33,7 +33,7 @@ private:
 	map<CGameObject*, PxRigidActor*>	m_mapRigidBody;
 
 	// 디버그용 셰이더
-	Ptr<CGraphicShader>					m_Shader;
+	AssetPtr<CGraphicShader>					m_Shader;
 
 	// 충돌 이벤트 처리 객체
 	CSimulationEvent*					m_EventCallback;

@@ -5,13 +5,21 @@
 #include "imgui/imgui_impl_dx11.h"
 
 class CImguiObject;
+class CInspector;
+class COutliner;
 
 class CImguiMgr
 	: public Singleton<CImguiMgr>
 {
 	SINGLE(CImguiMgr);
 private:
-	map<string, CImguiObject*> m_mapImguiObj;
+	map<string, CImguiObject*>	m_mapImguiObj;
+
+	bool						m_DebugMenuBar;
+	bool						m_DemoActive;
+
+	CInspector*					m_Inspector;
+	COutliner*					m_Outliner;
 
 
 public:
@@ -19,5 +27,6 @@ public:
 	void Progress();
 
 	void AddImguiObj(CImguiObject* _ImguiObj);
+	void DebugMenuBar();
 };
 

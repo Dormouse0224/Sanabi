@@ -16,7 +16,7 @@ CMaterial::~CMaterial()
 {
 }
 
-void CMaterial::SetTexParam(TEX_PARAM _Param, const Ptr<CTexture>& _Tex)
+void CMaterial::SetTexParam(TEX_PARAM _Param, const AssetPtr<CTexture>& _Tex)
 {
 	m_arrTex[_Param] = _Tex;
 }

@@ -93,7 +93,7 @@ void CTileRender::SetTileSize(Vec2 _TileSize)
 	Transform()->SetRelativeScale(Vec3(vScale.x, vScale.y, 1.f));
 }
 
-void CTileRender::SetSprite(UINT _Col, UINT _Row, Ptr<CSprite> _Sprite)
+void CTileRender::SetSprite(UINT _Col, UINT _Row, AssetPtr<CSprite> _Sprite)
 {
 	assert(m_Col > _Col && m_Row > _Row);
 
@@ -109,7 +109,7 @@ void CTileRender::CreateTileRenderMtrl()
 	if (nullptr == CAssetMgr::GetInst()->FindAsset<CGraphicShader>(L"TileRenderShader"))
 	{
 		// TileRenderShader
-		Ptr<CGraphicShader> pShader = new CGraphicShader;
+		AssetPtr<CGraphicShader> pShader = new CGraphicShader;
 		pShader->CreateVertexShader(L"HLSL\\tilerender.fx", "VS_TileRender");
 		pShader->CreatePixelShader(L"HLSL\\tilerender.fx", "PS_TileRender");
 		pShader->SetRSType(RS_TYPE::CULL_NONE);
@@ -120,7 +120,7 @@ void CTileRender::CreateTileRenderMtrl()
 	if (nullptr == CAssetMgr::GetInst()->FindAsset<CMaterial>(L"TileRenderMtrl"))
 	{
 		// TileRenderMtrl
-		Ptr<CMaterial> pMtrl = new CMaterial;
+		AssetPtr<CMaterial> pMtrl = new CMaterial;
 		pMtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicShader>(L"TileRenderShader"));
 		CAssetMgr::GetInst()->AddAsset(L"TileRenderMtrl", pMtrl.Get());
 	}
@@ -129,7 +129,7 @@ void CTileRender::CreateTileRenderMtrl()
 }
 
 
-Ptr<CTexture> CTileRender::GetAtlasTex()
+AssetPtr<CTexture> CTileRender::GetAtlasTex()
 {
 	for (size_t i = 0; i < m_vecTileInfo.size(); ++i)
 	{

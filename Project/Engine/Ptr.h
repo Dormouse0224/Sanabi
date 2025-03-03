@@ -1,7 +1,7 @@
 #pragma once
 
 template <typename T>
-class Ptr
+class AssetPtr
 {
 private:
 	T* m_Asset;
@@ -17,7 +17,7 @@ public:
 		return false;
 	}
 
-	bool operator == (const  Ptr<T>& _Other)
+	bool operator == (const  AssetPtr<T>& _Other)
 	{
 		if (m_Asset == _Other.m_Asset)
 			return true;
@@ -31,7 +31,7 @@ public:
 		return true;
 	}
 
-	bool operator != (const  Ptr<T>& _Other)
+	bool operator != (const  AssetPtr<T>& _Other)
 	{
 		if (m_Asset == _Other.m_Asset)
 			return false;
@@ -43,7 +43,7 @@ public:
 
 
 
-	Ptr& operator = (T* _Asset)
+	AssetPtr& operator = (T* _Asset)
 	{
 		if (nullptr != m_Asset)
 			m_Asset->Release();
@@ -56,7 +56,7 @@ public:
 		return *this;
 	}
 
-	Ptr& operator = (const Ptr<T>& _Other)
+	AssetPtr& operator = (const AssetPtr<T>& _Other)
 	{
 		if (nullptr != m_Asset)
 			m_Asset->Release();
@@ -76,25 +76,25 @@ public:
 
 
 public:
-	Ptr()
+	AssetPtr()
 		: m_Asset(nullptr)
 	{}
 
-	Ptr(T* _Asset)
+	AssetPtr(T* _Asset)
 		: m_Asset(_Asset)
 	{
 		if (nullptr != m_Asset)
 			m_Asset->AddRef();
 	}
 
-	Ptr(const Ptr<T>& _Other)
+	AssetPtr(const AssetPtr<T>& _Other)
 		: m_Asset(_Other.m_Asset)
 	{
 		if (nullptr != m_Asset)
 			m_Asset->AddRef();
 	}
 
-	~Ptr()
+	~AssetPtr()
 	{
 		if (nullptr != m_Asset)
 			m_Asset->Release();
@@ -103,7 +103,7 @@ public:
 
 
 template<typename T>
-bool operator == (void* _Left, Ptr<T> _Right)
+bool operator == (void* _Left, AssetPtr<T> _Right)
 {
 	if (_Left == _Right.Get())
 		return true;
@@ -112,7 +112,7 @@ bool operator == (void* _Left, Ptr<T> _Right)
 }
 
 template<typename T>
-bool operator != (void* _Left, Ptr<T> _Right)
+bool operator != (void* _Left, AssetPtr<T> _Right)
 {
 	if (_Left == _Right.Get())
 		return false;

@@ -5,6 +5,13 @@
 class CComputeShader :
     public CShader
 {
+public:
+    CComputeShader();
+    CComputeShader(const wstring& _RelativePath, const string& _FuncName
+        , UINT _GroupPerX, UINT _GroupPerY, UINT _GroupPerZ);
+    ~CComputeShader();
+    CLONE_DISABLE(CComputeShader);
+
 protected:
     ComPtr<ID3DBlob>            m_CSBlob;
     ComPtr<ID3D11ComputeShader> m_CS;
@@ -31,11 +38,5 @@ private:
     virtual void CalcGroupNum() = 0;
     virtual void Clear() = 0;
 
-    CLONE_DISABLE(CComputeShader);
-public:
-    CComputeShader();
-    CComputeShader(const wstring& _RelativePath, const string& _FuncName
-        , UINT _GroupPerX, UINT _GroupPerY, UINT _GroupPerZ);
-    ~CComputeShader();
 };
 

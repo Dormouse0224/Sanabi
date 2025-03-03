@@ -4,6 +4,11 @@
 class CCollider2D :
     public CComponent
 {
+public:
+    CCollider2D();
+    ~CCollider2D();
+    CLONE(CCollider2D);
+
 private:
     Vec3    m_Scale;
     Vec3    m_Offset;
@@ -43,9 +48,5 @@ private:
     void NotifyOverlap(CCollider2D* _Other);
     void NotifyEndOverlap(CCollider2D* _Other);
 
-public:
-    CLONE(CCollider2D);
-    CCollider2D();
-    ~CCollider2D();
 };
 

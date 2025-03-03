@@ -4,6 +4,11 @@
 class CConstBuffer :
     public CEntity
 {
+public:
+    CConstBuffer();
+    ~CConstBuffer();
+    CLONE_DISABLE(CConstBuffer);
+
 private:
     ComPtr<ID3D11Buffer>    m_Buffer;
     D3D11_BUFFER_DESC       m_Desc;
@@ -15,11 +20,5 @@ public:
     void SetData(void* _Data, UINT _DataSize);
     void Binding();
     void Binding_CS();
-
-public:
-    CLONE_DISABLE(CConstBuffer);
-public:
-    CConstBuffer();
-    ~CConstBuffer();
 };
 

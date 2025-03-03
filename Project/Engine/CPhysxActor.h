@@ -39,6 +39,7 @@ class CPhysxActor :
 public:
     CPhysxActor();
     ~CPhysxActor();
+    CLONE(CPhysxActor);
 
 private:
     float m_Density;
@@ -47,7 +48,6 @@ public:
     virtual void Begin() {};
     virtual void Tick() {};
     virtual void FinalTick() {};
-    CLONE(CPhysxActor);
 
 public:
     void SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag = 0, float _Density = 1.f, bool _DisableGravity = false, PxVec3 _InitVel = PxVec3(0.f));

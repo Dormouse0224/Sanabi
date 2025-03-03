@@ -4,6 +4,11 @@
 class CGraphicShader :
     public CShader
 {
+public:
+    CGraphicShader();
+    ~CGraphicShader();
+    CLONE_DISABLE(CGraphicShader);
+
 private:
     ComPtr<ID3DBlob>                m_VSBlob;
     ComPtr<ID3DBlob>                m_GSBlob;
@@ -36,8 +41,5 @@ public:
     void SetDomain(SHADER_DOMAIN _Domain) { m_Domain = _Domain; }
     SHADER_DOMAIN GetDomain() { return m_Domain; }
 
-public:
-    CGraphicShader();
-    ~CGraphicShader();
 };
 

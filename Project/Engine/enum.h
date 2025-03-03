@@ -13,7 +13,7 @@ enum class CB_TYPE
 // Rasterizer State
 enum class RS_TYPE
 {
-	CULL_BACK, // cull_ccw, 뒷면(반시계 순서) 컬링
+	CULL_BACK,	// cull_ccw, 뒷면(반시계 순서) 컬링
 	CULL_FRONT, // cull_cw
 	CULL_NONE,  // 컬링하지 않음
 	WIRE_FRAME, // 컬링하지 않음, 
@@ -114,11 +114,11 @@ enum class SHADER_DOMAIN
 
 enum SCALAR_PARAM
 {
-	INT_0, INT_1, INT_2, INT_3,
-	FLOAT_0, FLOAT_1, FLOAT_2, FLOAT_3,
-	VEC2_0, VEC2_1, VEC2_2, VEC2_3,
-	VEC4_0, VEC4_1, VEC4_2, VEC4_3,
-	MAT_0, MAT_1, MAT_2, MAT_3,
+	INT_0,		INT_1,		INT_2,		INT_3,
+	FLOAT_0,	FLOAT_1,	FLOAT_2,	FLOAT_3,
+	VEC2_0,		VEC2_1,		VEC2_2,		VEC2_3,
+	VEC4_0,		VEC4_1,		VEC4_2,		VEC4_3,
+	MAT_0,		MAT_1,		MAT_2,		MAT_3,
 };
 
 enum TEX_PARAM

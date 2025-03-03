@@ -4,6 +4,12 @@
 class CTexture :
     public CAsset
 {
+    friend class CAssetMgr;
+public:
+    CTexture();
+    ~CTexture();
+    CLONE_DISABLE(CTexture);
+
 private:
     ScratchImage                        m_Image; // DirectxTex 라이브러리에서 제공, 이미지파일을 SystemMem 로 로딩하는 기능이 구현되어있음
     ComPtr<ID3D11Texture2D>             m_Tex2D; // GPU 메모리에 저장된 텍스쳐를 관리하는 객체
@@ -50,12 +56,5 @@ private:
 public:
     virtual int Save(const wstring& _FilePath) override;
 
-public:
-    CLONE_DISABLE(CTexture);
-public:
-    CTexture();
-    ~CTexture();
-
-    friend class CAssetMgr;
 };
 

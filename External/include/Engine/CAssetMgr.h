@@ -9,7 +9,7 @@ class CAssetMgr
 {
 	SINGLE(CAssetMgr)
 private:
-	map<wstring, Ptr<CAsset>>	m_mapAsset[ASSET_END];
+	map<wstring, AssetPtr<CAsset>>	m_mapAsset[ASSET_END];
 
 public:
 	void Init();
@@ -21,17 +21,17 @@ public:
 	void CreateEngineSprite();
 
 public:
-	void AddAsset(const wstring& _Key, Ptr<CAsset> _Asset);
+	void AddAsset(const wstring& _Key, AssetPtr<CAsset> _Asset);
 
 	template<typename T>
-	Ptr<T> FindAsset(const wstring& _RelativePath);
+	AssetPtr<T> FindAsset(const wstring& _RelativePath);
 
 	template<typename T>
-	Ptr<T> Load(const wstring& _RelativePath);
+	AssetPtr<T> Load(const wstring& _RelativePath);
 
 	// _BindFlag : D3D11_BIND_FLAG
-	Ptr<CTexture> CreateTexture(const wstring& _Key, UINT _Width, UINT _Height, DXGI_FORMAT _Format, UINT _BindFlag, D3D11_USAGE _Usage = D3D11_USAGE_DEFAULT);
-	Ptr<CTexture> CreateTexture(const wstring& _Key, ComPtr<ID3D11Texture2D> _Tex2D);
+	AssetPtr<CTexture> CreateTexture(const wstring& _Key, UINT _Width, UINT _Height, DXGI_FORMAT _Format, UINT _BindFlag, D3D11_USAGE _Usage = D3D11_USAGE_DEFAULT);
+	AssetPtr<CTexture> CreateTexture(const wstring& _Key, ComPtr<ID3D11Texture2D> _Tex2D);
 };
 
 template<typename T>
@@ -54,11 +54,11 @@ ASSET_TYPE GetAssetType()
 }
 
 template<typename T>
-inline Ptr<T> CAssetMgr::FindAsset(const wstring& _Key)
+inline AssetPtr<T> CAssetMgr::FindAsset(const wstring& _Key)
 {
 	ASSET_TYPE Type = GetAssetType<T>();
 
-	map<wstring, Ptr<CAsset>>::iterator iter = m_mapAsset[Type].find(_Key);
+	map<wstring, AssetPtr<CAsset>>::iterator iter = m_mapAsset[Type].find(_Key);
 
 	if (iter == m_mapAsset[Type].end())
 		return nullptr;
@@ -67,9 +67,9 @@ inline Ptr<T> CAssetMgr::FindAsset(const wstring& _Key)
 }
 
 template<typename T>
-inline Ptr<T> CAssetMgr::Load(const wstring& _RelativePath)
+inline AssetPtr<T> CAssetMgr::Load(const wstring& _RelativePath)
 {
-	Ptr<T> pAsset = FindAsset<T>(_RelativePath);
+	AssetPtr<T> pAsset = FindAsset<T>(_RelativePath);
 
 	if (nullptr != pAsset)
 		return pAsset;

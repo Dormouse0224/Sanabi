@@ -9,9 +9,18 @@ class CTaskMgr
 private:
 	vector<tTask>			m_vecTask;
 	vector<CGameObject*>	m_vecGC;
+	bool					m_LevelUpdated;
 
 public:
 	void Tick();
-	void AddTask(const tTask& _Task) { m_vecTask.push_back(_Task); }
+	/// <summary>
+	/// Task 를 추가합니다.
+	/// </summary>
+	/// <param name="Type">Task Type.</param>
+	/// <param name="Param0">CREATE_OBJECT : (CGameObject*) Create Object / DELETE_OBJECT : (CGameObject*) Delete Object / CHANGE_LEVEL : </param>
+	/// <param name="Param1">CREATE_OBJECT : (int) Layer Index / DELETE_OBJECT : No used / CHANGE_LEVEL : </param>
+	void AddTask(TASK_TYPE Type, DWORD_PTR Param0, DWORD_PTR Param1);
+	
+	bool GetLevelUpdated() { return m_LevelUpdated; }
 };
 

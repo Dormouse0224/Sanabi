@@ -16,9 +16,9 @@ private:
 
 	ComPtr<IDXGISwapChain>			m_SwapChain;			// Window 화면에 렌더링
 
-	Ptr<CTexture>					m_RenderTarget;			// 그려질 타겟
+	AssetPtr<CTexture>					m_RenderTarget;			// 그려질 타겟
 
-	Ptr<CTexture>					m_DepthStencil;			// 깊이가 그려질 타겟
+	AssetPtr<CTexture>					m_DepthStencil;			// 깊이가 그려질 타겟
 
 	CConstBuffer*					m_ConstBuffer[(UINT)CB_TYPE::END];
 

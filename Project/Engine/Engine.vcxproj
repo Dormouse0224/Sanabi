@@ -73,13 +73,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)External\lib\$(ProjectName)\</OutDir>
     <TargetName>$(ProjectName)_d</TargetName>
-    <ExternalIncludePath>$(SolutionDir)External\include\physx\;$(SolutionDir)External\include\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)External\include\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\lib\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)External\lib\$(ProjectName)\</OutDir>
-    <ExternalIncludePath>$(SolutionDir)External\include\physx\;$(SolutionDir)External\include\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)External\include\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\lib\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -153,10 +155,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="assets.h" />
+    <ClInclude Include="CContentViewer.h" />
     <ClInclude Include="CFlipbook.h" />
     <ClInclude Include="CFlipbookRender.h" />
     <ClInclude Include="CImguiMgr.h" />
     <ClInclude Include="CImguiObject.h" />
+    <ClInclude Include="CInspector.h" />
+    <ClInclude Include="CListUI.h" />
+    <ClInclude Include="COutliner.h" />
     <ClInclude Include="CParticleRender.h" />
     <ClInclude Include="CParticleTickCS.h" />
     <ClInclude Include="CPhysxActor.h" />
@@ -167,6 +173,7 @@
     <ClInclude Include="CSpriteRender.h" />
     <ClInclude Include="CStructuredBuffer.h" />
     <ClInclude Include="CTileRender.h" />
+    <ClInclude Include="CTreeUI.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx11.h" />
@@ -196,7 +203,6 @@
     <ClInclude Include="CMaterial.h" />
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CMeshRender.h" />
-    <ClInclude Include="CMissileScript.h" />
     <ClInclude Include="components.h" />
     <ClInclude Include="CPathMgr.h" />
     <ClInclude Include="CPlayerScript.h" />
@@ -230,6 +236,7 @@
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CComputeShader.cpp" />
     <ClCompile Include="CConstBuffer.cpp" />
+    <ClCompile Include="CContentViewer.cpp" />
     <ClCompile Include="CDevice.cpp" />
     <ClCompile Include="CEngine.cpp" />
     <ClCompile Include="CEntity.cpp" />
@@ -238,15 +245,18 @@
     <ClCompile Include="CGameObject.cpp" />
     <ClCompile Include="CGraphicShader.cpp" />
     <ClCompile Include="CImguiMgr.cpp" />
+    <ClCompile Include="CImguiMgr_Init.cpp" />
     <ClCompile Include="CImguiObject.cpp" />
+    <ClCompile Include="CInspector.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CLayer.cpp" />
     <ClCompile Include="CLevel.cpp" />
     <ClCompile Include="CLevelMgr.cpp" />
+    <ClCompile Include="CListUI.cpp" />
     <ClCompile Include="CMaterial.cpp" />
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CMeshRender.cpp" />
-    <ClCompile Include="CMissileScript.cpp" />
+    <ClCompile Include="COutliner.cpp" />
     <ClCompile Include="CParticleRender.cpp" />
     <ClCompile Include="CParticleTickCS.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
@@ -268,6 +278,7 @@
     <ClCompile Include="CTileRender.cpp" />
     <ClCompile Include="CTimeMgr.cpp" />
     <ClCompile Include="CTransform.cpp" />
+    <ClCompile Include="CTreeUI.cpp" />
     <ClCompile Include="extern.cpp" />
     <ClCompile Include="func.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />

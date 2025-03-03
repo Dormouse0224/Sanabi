@@ -42,8 +42,8 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Priority)
 void CRenderMgr::Tick()
 {
 	// Ãâ·Â ·»´õÅ¸°Ù ¹× Ãâ·Â ±íÀÌÅ¸°Ù ¼³Á¤
-	Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTarget");
-	Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencil");
+	AssetPtr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTarget");
+	AssetPtr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencil");
 	CONTEXT->OMSetRenderTargets(1, pRTTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
 
 

@@ -12,7 +12,7 @@ void CRenderMgr::Init()
 	// ================
 	// DebugShapeShader
 	// ================
-	Ptr<CGraphicShader> pShader = new CGraphicShader;
+	AssetPtr<CGraphicShader> pShader = new CGraphicShader;
 
 	pShader->CreateVertexShader(L"HLSL\\debug_shape.fx", "VS_DebugShape");
 	pShader->CreatePixelShader(L"HLSL\\debug_shape.fx", "PS_DebugShape");
@@ -27,7 +27,7 @@ void CRenderMgr::Init()
 	// ==============
 	// DebugShapeMtrl
 	// ==============
-	Ptr<CMaterial> pMtrl = new CMaterial;
+	AssetPtr<CMaterial> pMtrl = new CMaterial;
 	pMtrl->SetShader(pShader);
 	CAssetMgr::GetInst()->AddAsset(L"DebugShapeMtrl", pMtrl.Get());
 
