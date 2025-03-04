@@ -263,7 +263,7 @@ void CLevelMgr::Init()
 
 
 	pObject = new CGameObject;
-	pObject->SetName(L"Platform_2");
+	pObject->SetName(L"Platform_3");
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	pObject->AddComponent(new CPhysxActor);

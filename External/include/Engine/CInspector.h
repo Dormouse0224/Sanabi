@@ -19,5 +19,9 @@ private:
 public:
     virtual void Update();
     virtual void Render();
+
+    CGameObject* GetTargetObject() { return m_TargetObject; }
+
+    void SetTargetObject(CGameObject* _Obj) { m_TargetObject = _Obj; }
 };
 

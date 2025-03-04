@@ -5,6 +5,7 @@
 #include "CDevice.h"
 #include "CInspector.h"
 #include "COutliner.h"
+#include "CTreeUI.h"
 
 void CImguiMgr::Init()
 {

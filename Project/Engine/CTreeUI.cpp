@@ -10,6 +10,7 @@ TreeNode::TreeNode(string _Name)
 	, m_Data((DWORD_PTR)nullptr)
 	, m_Parent(nullptr)
 	, m_vecChild{}
+	, m_Owner(nullptr)
 {
 	m_Name = _Name + "##" + to_string(m_TreeID);
 }
@@ -19,11 +20,14 @@ TreeNode::TreeNode(string _Name, DWORD_PTR _Data, TreeNode* _Parent)
 	, m_Data(_Data)
 	, m_Parent(_Parent)
 	, m_vecChild{}
+	, m_Owner(_Parent->m_Owner)
 {
 	m_Name = _Name + "##" + to_string(m_TreeID);
 
 	if (_Parent)
+	{
 		_Parent->m_vecChild.push_back(this);
+	}
 }
 
 TreeNode::~TreeNode()
@@ -40,12 +44,20 @@ void TreeNode::Render()
 
 	if (ImGui::TreeNodeEx(m_Name.c_str(), flag))
 	{
+		// 트리 노드가 열려있을 때 클릭 감지
+		DoubleClickCheck();
+
 		for (auto child : m_vecChild)
 		{
 			child->Render();
 		}
 
 		ImGui::TreePop();
+	}
+	else
+	{
+		// 트리 노드가 닫혀있을 때 클릭 감지
+		DoubleClickCheck();
 	}
 }
 
@@ -54,14 +66,25 @@ void TreeNode::Clear()
 	Delete_Vec(m_vecChild);
 }
 
+void TreeNode::DoubleClickCheck()
+{
+	if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
+	{
+		if (m_Owner->GetOwner() != nullptr && m_Owner->GetDoubleClickFunc() != nullptr)
+			(m_Owner->GetOwner()->*(m_Owner->GetDoubleClickFunc()))(m_Data);		
+	}
+}
+
 // Tree UI
 
 CTreeUI::CTreeUI(wstring _Name)
 	: CImguiObject(_Name)
 	, m_Root(nullptr)
 	, m_ShowRoot(false)
+	, m_DoubleClickFunc(nullptr)
 {
 	m_Root = new TreeNode(string(_Name.begin(), _Name.end()));
+	m_Root->m_Owner = this;
 }
 
 CTreeUI::~CTreeUI()
@@ -94,6 +117,7 @@ void CTreeUI::AddChildNode(TreeNode* _Parent, string _Name, DWORD_PTR m_Data)
 	TreeNode* pChild = new TreeNode(_Name);
 	pChild->m_Data = m_Data;
 	pChild->m_Parent = _Parent;
+	pChild->m_Owner = _Parent->m_Owner;
 
 	_Parent->m_vecChild.push_back(pChild);
 }

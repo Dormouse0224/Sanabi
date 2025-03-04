@@ -14,11 +14,15 @@ public:
     CLONE_DISABLE(COutliner);
 
 private:
-    CTreeUI* m_LevelObjects;
+    CTreeUI* m_ObjTree;
 
 public:
     virtual void Update();
     virtual void Render();
+
+    CTreeUI* GetObjTree() { return m_ObjTree; }
+
+    void DoubleClickEvent(DWORD_PTR _Obj);
 
 private:
     void Renew();

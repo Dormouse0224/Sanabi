@@ -25,8 +25,10 @@ private:
 public:
 	void Init();
 	void Progress();
-
 	void AddImguiObj(CImguiObject* _ImguiObj);
 	void DebugMenuBar();
+
+	CInspector* GetInspector() { return m_Inspector; }
+	COutliner* GetOutliner() { return m_Outliner; }
 };
 

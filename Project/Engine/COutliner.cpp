@@ -3,21 +3,25 @@
 
 #include "CTaskMgr.h"
 #include "CLevelMgr.h"
+#include "CImguiMgr.h"
 
 #include "CTreeUI.h"
 #include "CLevel.h"
 #include "CLayer.h"
 #include "CGameObject.h"
+#include "CInspector.h"
 
 COutliner::COutliner(wstring _Name)
 	: CImguiObject(_Name)
 {
-	m_LevelObjects = new CTreeUI(_Name);
+	m_ObjTree = new CTreeUI(_Name);
+	m_ObjTree->SetOwner(this);
+	m_ObjTree->SetDoubleClickFunc((DELEGATE_1)&COutliner::DoubleClickEvent);
 }
 
 COutliner::~COutliner()
 {
-	delete m_LevelObjects;
+	delete m_ObjTree;
 }
 
 
@@ -32,12 +36,17 @@ void COutliner::Update()
 
 void COutliner::Render()
 {
-	m_LevelObjects->Render();
+	m_ObjTree->Render();
+}
+
+void COutliner::DoubleClickEvent(DWORD_PTR _Obj)
+{
+	CImguiMgr::GetInst()->GetInspector()->SetTargetObject((CGameObject*)_Obj);
 }
 
 void COutliner::Renew()
 {
-	m_LevelObjects->GetRoot()->Clear();
+	m_ObjTree->GetRoot()->Clear();
 
 	CLevel* pLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 
@@ -45,7 +54,7 @@ void COutliner::Renew()
 	{
 		for (auto parentObj : pLevel->GetLayer(i)->GetParentObjects())
 		{
-			AddObject(parentObj, m_LevelObjects->GetRoot());
+			AddObject(parentObj, m_ObjTree->GetRoot());
 		}
 	}
 }
