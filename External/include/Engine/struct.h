@@ -93,15 +93,18 @@ struct tParticleModule
 
 
 
+// ===========
+// enum 문자열
+// ===========
 
-
-
+extern wstring COMPONENT_TYPE_WSTR[];
 
 
 
 // ===================
 // 상수버퍼 연동 구조체
 // ===================
+
 struct tTransform
 {
 	Matrix	matWorld;

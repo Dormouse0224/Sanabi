@@ -2,6 +2,7 @@
 #include "CImguiObject.h"
 
 class CGameObject;
+class CComponentUI;
 
 class CInspector :
     public CImguiObject
@@ -12,8 +13,8 @@ public:
     CLONE_DISABLE(CInspector);
 
 private:
-    CGameObject* m_TargetObject;
-
+    CGameObject*    m_TargetObject;
+    CComponentUI*   m_ComponentUI[(UINT)COMPONENT_TYPE::COMPONENT_END];
 
 
 public:

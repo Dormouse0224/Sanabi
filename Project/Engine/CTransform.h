@@ -52,6 +52,8 @@ public:
     Vec3 GetRelativeDir(DIR _DirType) { return m_RelativeDir[(UINT)_DirType]; }
     Vec3 GetWorldDir(DIR _DirType) { return m_WorldDir[(UINT)_DirType]; }
 
+    bool GetIndependentScale() { return m_IndependentScale; }
+
     const Matrix& GetWorldMat() { return m_matWorld; }
     void SetWorldMat(const Matrix& _Mat) { m_matWorld = _Mat; }
 

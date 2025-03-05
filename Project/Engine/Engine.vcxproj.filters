@@ -79,9 +79,6 @@
     <Filter Include="HLSL\03. Compute\SetColor">
       <UniqueIdentifier>{212108d4-10e0-4e43-b88b-801f30d76eec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="07. Component\PhysxCollider">
-      <UniqueIdentifier>{89926b5f-3481-43a2-bc0c-4ccf2e845f97}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. Manager">
       <UniqueIdentifier>{7133b147-733a-4501-98a8-2c13745a2961}</UniqueIdentifier>
     </Filter>
@@ -183,6 +180,42 @@
     </Filter>
     <Filter Include="09. ImguiObject\ListUI">
       <UniqueIdentifier>{82946dad-ccf9-48af-b3bf-eef482355e9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI">
+      <UniqueIdentifier>{135bc060-339e-4b82-98cd-6395f614a0a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07. Component\04. PhysxActor">
+      <UniqueIdentifier>{89926b5f-3481-43a2-bc0c-4ccf2e845f97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\01. TransformUI">
+      <UniqueIdentifier>{4de0edcb-5f3a-4013-91e5-10118f1b1e6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\02. CameraUI">
+      <UniqueIdentifier>{d866d89e-d5ed-49f2-8178-92ae3765afd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\03. Collider2DUI">
+      <UniqueIdentifier>{9708f2df-974b-41ce-9072-50e4530277dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\04. PhysxActorUI">
+      <UniqueIdentifier>{a33f974a-215c-4c98-9264-78f59eaec836}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\RenderComponentUI">
+      <UniqueIdentifier>{5015dbfc-d071-4387-b060-5f90791c38d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\RenderComponentUI\01. MeshRenderUI">
+      <UniqueIdentifier>{2585ab8a-f670-4183-ab1d-fae43903424d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\RenderComponentUI\02. SpriterenderUI">
+      <UniqueIdentifier>{c730770e-db5f-4ee6-9c57-e98bd237df5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\RenderComponentUI\03. FlipbookRenderUI">
+      <UniqueIdentifier>{2d93176a-6817-4148-a124-23725e4951eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\RenderComponentUI\04. TileRenderUI">
+      <UniqueIdentifier>{3fd5314a-31fd-4f3e-ba5b-b144fea25c4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\RenderComponentUI\05. ParticleRenderUI">
+      <UniqueIdentifier>{32270fa4-bbfb-4c03-b267-d500ac1d7f9b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -349,7 +382,7 @@
       <Filter>04. Manager\10. PhysxMgr</Filter>
     </ClInclude>
     <ClInclude Include="CPhysxActor.h">
-      <Filter>07. Component\PhysxCollider</Filter>
+      <Filter>07. Component\04. PhysxActor</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imgui_impl_dx11.h">
       <Filter>09. ImguiObject\Imgui</Filter>
@@ -395,6 +428,12 @@
     </ClInclude>
     <ClInclude Include="CTreeUI.h">
       <Filter>09. ImguiObject\TreeUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CComponentUI.h">
+      <Filter>09. ImguiObject\ComponentUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CTransformUI.h">
+      <Filter>09. ImguiObject\ComponentUI\01. TransformUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -540,7 +579,7 @@
       <Filter>04. Manager\10. PhysxMgr</Filter>
     </ClCompile>
     <ClCompile Include="CPhysxActor.cpp">
-      <Filter>07. Component\PhysxCollider</Filter>
+      <Filter>07. Component\04. PhysxActor</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_impl_dx11.cpp">
       <Filter>09. ImguiObject\Imgui</Filter>
@@ -586,6 +625,12 @@
     </ClCompile>
     <ClCompile Include="CTreeUI.cpp">
       <Filter>09. ImguiObject\TreeUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CComponentUI.cpp">
+      <Filter>09. ImguiObject\ComponentUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CTransformUI.cpp">
+      <Filter>09. ImguiObject\ComponentUI\01. TransformUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
