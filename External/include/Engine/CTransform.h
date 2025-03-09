@@ -28,8 +28,8 @@ public:
     void Binding();
 
 public:
-    void SetRelativePos(Vec3 _Pos) { m_RelativePos = _Pos; }
-    void SetRelativePos(float _x, float _y, float _z) { m_RelativePos = Vec3(_x, _y, _z); }
+    void SetRelativePos(Vec3 _Pos);
+    void SetRelativePos(float _x, float _y, float _z) { SetRelativePos(Vec3(_x, _y, _z)); }
 
     void SetRelativeScale(Vec3 _Scale) { m_RelativeScale = _Scale; }
     void SetRelativeScale(float _x, float _y, float _z) { m_RelativeScale = Vec3(_x, _y, _z); }

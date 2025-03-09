@@ -111,9 +111,9 @@ void CPhysxMgr::Tick()
     for (int i = 0; i < vecDynamicActor.size(); ++i)
     {
         CGameObject* pObject = (CGameObject*)(vecDynamicActor[i]->userData);
-        PxVec3 Trans = ((PxRigidDynamic*)(vecDynamicActor[i]))->getGlobalPose().p;
+        PxVec3 Pos = ((PxRigidDynamic*)(vecDynamicActor[i]))->getGlobalPose().p;
         PxQuat Rot = ((PxRigidDynamic*)(vecDynamicActor[i]))->getGlobalPose().q;
-        pObject->Transform()->SetRelativePos(Trans.x, Trans.y, Trans.z);
+        pObject->Transform()->SetRelativePos(Pos.x, Pos.y, Pos.z);
     }
 }
 

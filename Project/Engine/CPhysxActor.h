@@ -42,7 +42,8 @@ public:
     CLONE(CPhysxActor);
 
 private:
-    float m_Density;
+    PxRigidActor*   m_Body;
+    float           m_Density;
 
 public:
     virtual void Begin() {};
@@ -53,5 +54,6 @@ public:
     void SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag = 0, float _Density = 1.f, bool _DisableGravity = false, PxVec3 _InitVel = PxVec3(0.f));
     void AddCollider(COLLIDER_DESC _desc, PxVec3 _Scale = PxVec3(1.f), PxVec3 _Offset = PxVec3(0.f));
 
+    void UpdatePosition(Vec3 _Pos);
 };
 

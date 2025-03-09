@@ -24,9 +24,15 @@ public:
 
 protected:
     GET_OTHER_COMPONENT(Transform);
-    GET_OTHER_COMPONENT(MeshRender);
     GET_OTHER_COMPONENT(Camera);
     GET_OTHER_COMPONENT(Collider2D);
+    GET_OTHER_COMPONENT(PhysxActor);
+
+    GET_OTHER_COMPONENT(MeshRender);
+    GET_OTHER_COMPONENT(SpriteRender);
+    GET_OTHER_COMPONENT(FlipbookRender);
+    GET_OTHER_COMPONENT(TileRender);
+    GET_OTHER_COMPONENT(ParticleRender);
 
     class CRenderComponent* RenderComponent() { return m_Owner->GetRenderComponent(); }
 

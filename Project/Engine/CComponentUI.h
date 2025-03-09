@@ -19,5 +19,8 @@ public:
     CGameObject* GetTarget() { return m_Target; }
 
     void SetTarget(CGameObject* _Obj) { m_Target = _Obj; }
+
+    virtual void Render() final;
+    virtual void Render_Com() = 0;
 };
 

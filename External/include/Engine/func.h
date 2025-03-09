@@ -6,7 +6,8 @@ void DrawDebugRect(Vec4 _Color, const Matrix& _matWorld, bool _DepthTest = true,
 
 void DrawDebugCircle(Vec4 _Color, Vec3 _WorldPos, float _Radius, Vec3 _WorldRotation, bool _DepthTest = true, float _Duration = 0.f);
 
-
+inline string to_str(const wstring& _wstr) { return string(_wstr.begin(), _wstr.end()); }
+inline wstring to_wstr(const string& _str) { return wstring(_str.begin(), _str.end()); }
 
 template<typename T>
 void Delete_Vec(vector<T*>& _vec)

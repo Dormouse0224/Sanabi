@@ -17,14 +17,14 @@ void CTransformUI::Update()
 {
 }
 
-void CTransformUI::Render()
+void CTransformUI::Render_Com()
 {
     CTransform* pTransform = dynamic_cast<CTransform*>(m_Target->GetComponent(m_Type));
 
     if (pTransform == nullptr)
         return;
 
-    float tab = 120.f;
+    float tab = 130.f;
 
     ImGui::Text("Position");
     ImGui::SameLine(tab);

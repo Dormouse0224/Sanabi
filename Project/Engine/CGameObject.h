@@ -45,15 +45,16 @@ public:
     const vector<CScript*>& GetScripts() { return m_vecScript; }
     int GetLayerIdx() { return m_LayerIdx; }
 
-    class CTransform* Transform() { return (CTransform*)GetComponent(COMPONENT_TYPE::TRANSFORM); }
-    class CCamera* Camera() { return (CCamera*)GetComponent(COMPONENT_TYPE::CAMERA); }
-    class CCollider2D* Collider2D() { return (CCollider2D*)GetComponent(COMPONENT_TYPE::COLLIDER2D); }
-    class CPhysxActor* PhysxActor() { return (CPhysxActor*)GetComponent(COMPONENT_TYPE::PHYSXACTOR); }
-    class CMeshRender* MeshRender() { return (CMeshRender*)GetComponent(COMPONENT_TYPE::MESHRENDER); }
-    class CSpriteRender* SpriteRender() { return (CSpriteRender*)GetComponent(COMPONENT_TYPE::SPRITERENDER); }
-    class CFlipbookRender* FlipbookRender() { return (CFlipbookRender*)GetComponent(COMPONENT_TYPE::FLIPBOOKRENDER); }
-    class CTileRender* TileRender() { return (CTileRender*)GetComponent(COMPONENT_TYPE::TILERENDER); }
-    class CParticleRender* ParticleRender() { return (CParticleRender*)GetComponent(COMPONENT_TYPE::PARTICLERENDER); }
+    class CTransform*   Transform() { return (CTransform*)GetComponent(COMPONENT_TYPE::TRANSFORM); }
+    class CCamera*      Camera() { return (CCamera*)GetComponent(COMPONENT_TYPE::CAMERA); }
+    class CCollider2D*  Collider2D() { return (CCollider2D*)GetComponent(COMPONENT_TYPE::COLLIDER2D); }
+    class CPhysxActor*  PhysxActor() { return (CPhysxActor*)GetComponent(COMPONENT_TYPE::PHYSXACTOR); }
+
+    class CMeshRender*      MeshRender() { return (CMeshRender*)GetComponent(COMPONENT_TYPE::MESHRENDER); }
+    class CSpriteRender*    SpriteRender() { return (CSpriteRender*)GetComponent(COMPONENT_TYPE::SPRITERENDER); }
+    class CFlipbookRender*  FlipbookRender() { return (CFlipbookRender*)GetComponent(COMPONENT_TYPE::FLIPBOOKRENDER); }
+    class CTileRender*      TileRender() { return (CTileRender*)GetComponent(COMPONENT_TYPE::TILERENDER); }
+    class CParticleRender*  ParticleRender() { return (CParticleRender*)GetComponent(COMPONENT_TYPE::PARTICLERENDER); }
 
     void Destroy();
 

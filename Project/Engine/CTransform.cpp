@@ -3,6 +3,7 @@
 
 #include "CDevice.h"
 #include "CConstBuffer.h"
+#include "CPhysxActor.h"
 
 
 CTransform::CTransform()
@@ -99,6 +100,13 @@ void CTransform::Binding()
 
 	pTransformBuffer->SetData(&g_Trans, sizeof(tTransform));
 	pTransformBuffer->Binding();
+}
+
+void CTransform::SetRelativePos(Vec3 _Pos)
+{
+	m_RelativePos = _Pos;
+	if (PhysxActor())
+		PhysxActor()->UpdatePosition(_Pos);
 }
 
 Vec3 CTransform::GetWorldScale()

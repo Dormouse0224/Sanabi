@@ -5,6 +5,7 @@
 
 CPhysxActor::CPhysxActor()
     : CComponent(COMPONENT_TYPE::PHYSXACTOR)
+    , m_Body(nullptr)
     , m_Density(1.f)
 {
 
@@ -43,6 +44,7 @@ void CPhysxActor::SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag, float _Density,
 
         // 오브젝트를 시뮬레이션 강체 목록에 추가
         CPhysxMgr::GetInst()->m_mapRigidBody.insert(make_pair(GetOwner(), pBody));
+        m_Body = pBody;
     }
     else if (_Type == RIGID_TYPE::STATIC)
     {
@@ -53,14 +55,13 @@ void CPhysxActor::SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag, float _Density,
 
         // 오브젝트를 시뮬레이션 강체 목록에 추가
         CPhysxMgr::GetInst()->m_mapRigidBody.insert(make_pair(GetOwner(), pBody));
+        m_Body = pBody;
     }
 
 }
 
 void CPhysxActor::AddCollider(COLLIDER_DESC _desc, PxVec3 _Scale, PxVec3 _Offset)
 {
-    PxRigidActor* Body = CPhysxMgr::GetInst()->FindRigidBody(GetOwner());
-    assert(Body);
     // 마찰계수, 탄성계수, 모양 설정
     PxMaterial* pMaterial = CPhysxMgr::GetInst()->m_Physics->createMaterial(_desc.StaticFriction, _desc.DynamicFriction, _desc.Restitution);
     pMaterial->setRestitutionCombineMode(PxCombineMode::eMIN);
@@ -77,10 +78,20 @@ void CPhysxActor::AddCollider(COLLIDER_DESC _desc, PxVec3 _Scale, PxVec3 _Offset
     shape->setLocalPose(PxTransform(_Offset));
 
     // 강체에 충돌체 추가
-    Body->attachShape(*shape);
+    m_Body->attachShape(*shape);
 
-    if (PxConcreteType::eRIGID_DYNAMIC == Body->getConcreteType())
+    if (PxConcreteType::eRIGID_DYNAMIC == m_Body->getConcreteType())
     {
-        PxRigidBodyExt::updateMassAndInertia(*(PxRigidBody*)Body, m_Density);
+        PxRigidBodyExt::updateMassAndInertia(*(PxRigidBody*)m_Body, m_Density);
+    }
+}
+
+void CPhysxActor::UpdatePosition(Vec3 _Pos)
+{
+    // Scene 에 등록된 강체가 존재하는 경우, 해당 강체의 Scene 에서의 위치를 업데이트
+    if (m_Body)
+    {
+        PxTransform Trans = PxTransform(_Pos.x, _Pos.y, _Pos.z, m_Body->getGlobalPose().q);
+        m_Body->setGlobalPose(Trans);
     }
 }

@@ -10,3 +10,13 @@ CComponentUI::CComponentUI(COMPONENT_TYPE _Type)
 CComponentUI::~CComponentUI()
 {
 }
+
+void CComponentUI::Render()
+{
+	if (ImGui::CollapsingHeader(to_str(COMPONENT_TYPE_WSTR[(UINT)m_Type]).c_str()))
+	{
+		Render_Com();
+		ImGui::Separator();
+	}
+
+}
