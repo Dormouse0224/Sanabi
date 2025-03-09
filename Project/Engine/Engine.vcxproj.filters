@@ -435,6 +435,9 @@
     <ClInclude Include="CTransformUI.h">
       <Filter>09. ImguiObject\ComponentUI\01. TransformUI</Filter>
     </ClInclude>
+    <ClInclude Include="CCameraUI.h">
+      <Filter>09. ImguiObject\ComponentUI\02. CameraUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CEngine.cpp">
@@ -631,6 +634,9 @@
     </ClCompile>
     <ClCompile Include="CTransformUI.cpp">
       <Filter>09. ImguiObject\ComponentUI\01. TransformUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraUI.cpp">
+      <Filter>09. ImguiObject\ComponentUI\02. CameraUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

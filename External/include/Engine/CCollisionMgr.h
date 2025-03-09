@@ -20,7 +20,7 @@ class CCollisionMgr
 {
 	SINGLE(CCollisionMgr);
 private:
-	UINT				 m_Matrix[MAX_LAYER];
+	UINT				 m_Matrix[(UINT)CAMERA_LAYER::END];
 	map<DWORD_PTR, bool> m_mapInfo;
 
 

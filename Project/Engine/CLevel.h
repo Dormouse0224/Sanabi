@@ -14,7 +14,7 @@ public:
     CLONE(CLevel);
 
 private:
-    CLayer* m_Layer[MAX_LAYER];
+    CLayer* m_Layer[(UINT)CAMERA_LAYER::END];
 
 public:
     void Begin();

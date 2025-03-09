@@ -12,8 +12,8 @@ public:
 
 private:
     PROJ_TYPE   m_ProjType;     // 투영 방법
-    float       m_OrthoScaleX;  // 직교투영 가로길이
-    float       m_AspectRatio;  // 가로 세로 종횡비
+    float       m_ViewX;        // 카메라 투영 가로길이
+    float       m_ViewY;        // 카메라 투영 세로길이
     float       m_FOV;          // 시야각(FieldOfView)
     float       m_Far;          // 최대 시야거리
 
@@ -34,22 +34,20 @@ private:
 
 public:
     void SetProjType(PROJ_TYPE _Type) { m_ProjType = _Type; }
-    void SetOrthoScaleX(float _Scale) { m_OrthoScaleX = _Scale; }
-    void SetAspectRatio(float _Ratio) { m_AspectRatio = _Ratio; }
+    void SetViewX(float _Width) { m_ViewX = _Width; }
+    void SetViewY(float _Height) { m_ViewY = _Height; }
     void SetFOV(float _FOV) { m_FOV = (_FOV / 180.f) * XM_PI; }
     void SetFar(float _Far) { m_Far = _Far; }
     void SetPriority(int _Priority);
 
     PROJ_TYPE GetProjType() { return m_ProjType; }
-    float GetOrthoScaleX() { return m_OrthoScaleX; }
-    float GetAspectRatio() { return m_AspectRatio; }
-    float GetFar() { return m_Far; }
+    float GetViewX() { return m_ViewX; }
+    float GetViewY() { return m_ViewY; }
     float GetFOV() { return (m_FOV / XM_PI) * 180.f; }
+    float GetFar() { return m_Far; }
+    bool GetLayerState(CAMERA_LAYER _LayerIdx) { return m_LayerCheck & (1 << (UINT)_LayerIdx); }
 
-    void CheckLayer(UINT _LayerIdx)
-    {
-        m_LayerCheck ^= (1 << _LayerIdx);
-    }
+    void CheckLayer(CAMERA_LAYER _LayerIdx) { m_LayerCheck ^= (1 << (UINT)_LayerIdx); }
     void CheckLayerAll() { m_LayerCheck = 0xffffffff; }
     void CheckLayerClear() { m_LayerCheck = 0; }
 

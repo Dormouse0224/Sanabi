@@ -11,7 +11,7 @@ private:
 
 
 public:
-    virtual void Update();
+    virtual void Update_Com();
     virtual void Render_Com();
 
 };

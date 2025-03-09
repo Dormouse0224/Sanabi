@@ -17,8 +17,6 @@
 #define KEY_RELEASED(key)	(CKeyMgr::GetInst()->GetKeyState(key) == Key_state::RELEASE)
 #define KEY_NONE(key)		(CKeyMgr::GetInst()->GetKeyState(key) == Key_state::NONE)
 
-#define MAX_LAYER 32
-
 #define CLONE(Type) virtual Type* Clone() override { return new Type(*this); }
 #define CLONE_DISABLE(Type) virtual Type* Clone() override {return nullptr;}\
 							private: Type(const Type& _Other) = delete;

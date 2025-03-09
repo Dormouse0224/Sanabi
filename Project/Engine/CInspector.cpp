@@ -4,12 +4,14 @@
 #include "CGameObject.h"
 #include "CComponentUI.h"
 #include "CTransformUI.h"
+#include "CCameraUI.h"
 
 CInspector::CInspector(wstring _Name)
 	: CImguiObject(_Name)
 	, m_TargetObject(nullptr)
 {
 	m_ComponentUI[(UINT)COMPONENT_TYPE::TRANSFORM] = new CTransformUI;
+	m_ComponentUI[(UINT)COMPONENT_TYPE::CAMERA] = new CCameraUI;
 }
 
 CInspector::~CInspector()

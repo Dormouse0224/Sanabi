@@ -20,7 +20,9 @@ public:
 
     void SetTarget(CGameObject* _Obj) { m_Target = _Obj; }
 
+    virtual void Update() final;
     virtual void Render() final;
+    virtual void Update_Com() = 0;
     virtual void Render_Com() = 0;
 };
 

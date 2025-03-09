@@ -46,6 +46,7 @@ enum class BS_TYPE
 	END,
 };
 
+// wstr 구조체 업데이트 할 것
 enum class COMPONENT_TYPE
 {
 	TRANSFORM,
@@ -153,10 +154,26 @@ enum class TASK_TYPE
 	CHANGE_LEVEL,
 };
 
-enum FILTER_LAYER
+enum COLLISION_LAYER
 {
 	ePLAYER				= (1<<0),
 	eLANDSCAPE			= (1<<1),
 	eMONSTER			= (1<<2),
 	ePARTICLE			= (1<<3),
+};
+
+// wstr 구조체 업데이트 할 것
+enum class CAMERA_LAYER
+{
+	Default,
+	Background,
+	Tile,
+	Player,
+	PlayerProjectile,
+	Enermy,
+	EnermyProjectile,
+
+	UI,
+
+	END
 };

@@ -18,9 +18,9 @@ CCollisionMgr::~CCollisionMgr()
 
 void CCollisionMgr::Tick()
 {
-	for (UINT row = 0; row < MAX_LAYER; ++row)
+	for (UINT row = 0; row < (UINT)CAMERA_LAYER::END; ++row)
 	{
-		for (UINT col = row; col < MAX_LAYER; ++col)
+		for (UINT col = row; col < (UINT)CAMERA_LAYER::END; ++col)
 		{
 			if (m_Matrix[row] & (1 << col))
 			{

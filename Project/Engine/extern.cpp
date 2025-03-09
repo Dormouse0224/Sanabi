@@ -33,3 +33,16 @@ wstring COMPONENT_TYPE_WSTR[] =
 
 	L"SCRIPT",
 };
+
+wstring CAMERA_LAYER_WSTR[] =
+{
+	L"Default",
+	L"Background",
+	L"Tile",
+	L"Player",
+	L"PlayerProjectile",
+	L"Enermy",
+	L"EnermyProjectile",
+
+	L"UI",
+};

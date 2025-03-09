@@ -109,8 +109,8 @@ void CParticleRender::FinalTick()
 				COLLIDER_DESC desc;
 				desc.Restitution - 0.f;
 				desc.ShapeFlag = PxShapeFlag::eSIMULATION_SHAPE;
-				desc.FilterLayer_Self = FILTER_LAYER::ePARTICLE;
-				desc.FilterLayer_Other = FILTER_LAYER::eLANDSCAPE;
+				desc.FilterLayer_Self = COLLISION_LAYER::ePARTICLE;
+				desc.FilterLayer_Other = COLLISION_LAYER::eLANDSCAPE;
 				pParticle->PhysxActor()->AddCollider(desc, PxVec3(1.f, 1.f, 1.f), PxVec3(0.f, 0.f, 0.f));
 
 				vecParticle[i].EntityID = pParticle->GetID();

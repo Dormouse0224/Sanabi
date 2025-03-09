@@ -99,6 +99,8 @@ struct tParticleModule
 
 extern wstring COMPONENT_TYPE_WSTR[];
 
+extern wstring CAMERA_LAYER_WSTR[];
+
 
 
 // ===================

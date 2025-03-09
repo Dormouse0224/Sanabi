@@ -11,6 +11,11 @@ CComponentUI::~CComponentUI()
 {
 }
 
+void CComponentUI::Update()
+{
+	Update_Com();
+}
+
 void CComponentUI::Render()
 {
 	if (ImGui::CollapsingHeader(to_str(COMPONENT_TYPE_WSTR[(UINT)m_Type]).c_str()))

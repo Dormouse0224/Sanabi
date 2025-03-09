@@ -13,7 +13,7 @@ CTransformUI::~CTransformUI()
 {
 }
 
-void CTransformUI::Update()
+void CTransformUI::Update_Com()
 {
 }
 
@@ -24,7 +24,7 @@ void CTransformUI::Render_Com()
     if (pTransform == nullptr)
         return;
 
-    float tab = 130.f;
+    float tab = 140.f;
 
     ImGui::Text("Position");
     ImGui::SameLine(tab);
@@ -33,6 +33,7 @@ void CTransformUI::Render_Com()
     {
         pTransform->SetRelativePos(Vec3(Position));
     }
+    ImGui::Spacing();
 
     ImGui::Text("Scale");
     ImGui::SameLine(tab);
@@ -41,6 +42,7 @@ void CTransformUI::Render_Com()
     {
         pTransform->SetRelativeScale(Vec3(Scale));
     }
+    ImGui::Spacing();
 
     ImGui::Text("Rotation");
     ImGui::SameLine(tab);
@@ -49,6 +51,7 @@ void CTransformUI::Render_Com()
     {
         pTransform->SetRelativeRotation(Vec4(Vec3(Rotation), pTransform->GetRelativeRotation().w));
     }
+    ImGui::Spacing();
 
     ImGui::Text("Independent Scale");
     ImGui::SameLine(tab);
@@ -57,4 +60,5 @@ void CTransformUI::Render_Com()
     {
         pTransform->SetIndependentScale(bIS);
     }
+    ImGui::Spacing();
 }

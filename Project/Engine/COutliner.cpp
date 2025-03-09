@@ -50,7 +50,7 @@ void COutliner::Renew()
 
 	CLevel* pLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 
-	for (int i = 0; i < MAX_LAYER; ++i)
+	for (int i = 0; i < (UINT)CAMERA_LAYER::END; ++i)
 	{
 		for (auto parentObj : pLevel->GetLayer(i)->GetParentObjects())
 		{

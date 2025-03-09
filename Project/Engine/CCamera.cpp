@@ -15,16 +15,16 @@
 CCamera::CCamera()
 	: CComponent(COMPONENT_TYPE::CAMERA)
 	, m_ProjType(PROJ_TYPE::ORTHOGRAPHIC)
-	, m_OrthoScaleX(1.f)
-	, m_AspectRatio(1.f)
+	, m_ViewX(1.f)
+	, m_ViewY(1.f)
 	, m_FOV(XM_PI / 2.f)
 	, m_Far(10000.f)
 	, m_Priority(-1)
 	, m_LayerCheck(0)
 {
 	Vec2 vResolution = CDevice::GetInst()->GetRenderResolution();
-	m_OrthoScaleX = vResolution.x;
-	m_AspectRatio = vResolution.x / vResolution.y;
+	m_ViewX = vResolution.x;
+	m_ViewY = vResolution.y;
 }
 
 CCamera::~CCamera()
@@ -61,11 +61,11 @@ void CCamera::FinalTick()
 	// 투영행렬 계산하기
 	if (ORTHOGRAPHIC == m_ProjType)
 	{
-		m_matProj = XMMatrixOrthographicLH(m_OrthoScaleX, m_OrthoScaleX / m_AspectRatio, 1.f, m_Far);
+		m_matProj = XMMatrixOrthographicLH(m_ViewX, m_ViewY, 1.f, m_Far);
 	}
 	else
 	{
-		m_matProj = XMMatrixPerspectiveFovLH(m_FOV, m_AspectRatio, 1.f, m_Far);
+		m_matProj = XMMatrixPerspectiveFovLH(m_FOV, m_ViewX / m_ViewY, 1.f, m_Far);
 	}
 }
 
@@ -108,7 +108,7 @@ void CCamera::SortObject()
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 
 
-	for (UINT i = 0; i < MAX_LAYER; ++i)
+	for (UINT i = 0; i < (UINT)CAMERA_LAYER::END; ++i)
 	{
 		// Camera 가 Rendering 하지 않는 레이어는 거른다.	
 		if (!(m_LayerCheck & (1 << i)))
