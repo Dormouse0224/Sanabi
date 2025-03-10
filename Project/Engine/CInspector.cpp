@@ -5,6 +5,7 @@
 #include "CComponentUI.h"
 #include "CTransformUI.h"
 #include "CCameraUI.h"
+#include "CPhysxActorUI.h"
 
 CInspector::CInspector(wstring _Name)
 	: CImguiObject(_Name)
@@ -12,6 +13,7 @@ CInspector::CInspector(wstring _Name)
 {
 	m_ComponentUI[(UINT)COMPONENT_TYPE::TRANSFORM] = new CTransformUI;
 	m_ComponentUI[(UINT)COMPONENT_TYPE::CAMERA] = new CCameraUI;
+	m_ComponentUI[(UINT)COMPONENT_TYPE::PHYSXACTOR] = new CPhysxActorUI;
 }
 
 CInspector::~CInspector()

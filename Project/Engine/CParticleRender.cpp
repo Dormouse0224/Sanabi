@@ -105,7 +105,7 @@ void CParticleRender::FinalTick()
 				pParticle->Transform()->SetRelativeScale(10.f, 10.f, 1.f);
 
 				PxVec3 InitVel(vecParticle[i].Velocity.x, vecParticle[i].Velocity.y, vecParticle[i].Velocity.z);
-				pParticle->PhysxActor()->SetRigidBody(RIGID_TYPE::DYNAMIC, NONE, 0.01f, !m_Gravity, InitVel);
+				pParticle->PhysxActor()->SetRigidBody(RIGID_TYPE::DYNAMIC, NONE, m_Gravity, 0.01f, InitVel);
 				COLLIDER_DESC desc;
 				desc.Restitution - 0.f;
 				desc.ShapeFlag = PxShapeFlag::eSIMULATION_SHAPE;

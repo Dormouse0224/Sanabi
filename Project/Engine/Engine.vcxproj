@@ -168,6 +168,7 @@
     <ClInclude Include="CParticleRender.h" />
     <ClInclude Include="CParticleTickCS.h" />
     <ClInclude Include="CPhysxActor.h" />
+    <ClInclude Include="CPhysxActorUI.h" />
     <ClInclude Include="CPhysxMgr.h" />
     <ClInclude Include="CSetColorCS.h" />
     <ClInclude Include="CSimulationEvent.h" />
@@ -266,6 +267,7 @@
     <ClCompile Include="CParticleTickCS.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
     <ClCompile Include="CPhysxActor.cpp" />
+    <ClCompile Include="CPhysxActorUI.cpp" />
     <ClCompile Include="CPhysxMgr.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CRenderComponent.cpp" />

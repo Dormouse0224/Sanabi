@@ -83,7 +83,7 @@ void CLevelMgr::Init()
 	pObject->FlipbookRender()->AddFlipbook(0, CAssetMgr::GetInst()->FindAsset<CFlipbook>(L"SNB_Idle_Flipbook"));
 	pObject->FlipbookRender()->AddFlipbook(1, CAssetMgr::GetInst()->FindAsset<CFlipbook>(L"SNB_Running_Flipbook"));
 
-	pObject->PhysxActor()->SetRigidBody(RIGID_TYPE::DYNAMIC, LINEAR_Z | ANGULAR_ALL);
+	pObject->PhysxActor()->SetRigidBody(RIGID_TYPE::DYNAMIC, LINEAR_Z | ANGULAR_ALL, true);
 	COLLIDER_DESC desc;
 	desc.Restitution - -1.f;
 	desc.ShapeFlag = PxShapeFlag::eSIMULATION_SHAPE;

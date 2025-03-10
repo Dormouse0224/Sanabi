@@ -17,6 +17,8 @@ enum class RIGID_TYPE
     KINEMATIC,
     DYNAMIC,
     STATIC,
+
+    NONE,
 };
 
 enum LOCK_FLAG
@@ -33,6 +35,8 @@ enum LOCK_FLAG
     ANGULAR_ALL = ANGULAR_X | ANGULAR_Y | ANGULAR_Z,
 };
 
+extern wstring LOCK_FLAG_WSTR[];
+
 class CPhysxActor :
     public CComponent
 {
@@ -42,18 +46,34 @@ public:
     CLONE(CPhysxActor);
 
 private:
-    PxRigidActor*   m_Body;
-    float           m_Density;
+    PxRigidActor*           m_Body;
+    RIGID_TYPE              m_Type;
+
+    float                   m_Density;
+
+    vector<COLLIDER_DESC>   m_vecDesc;
+    vector<PxVec3>          m_vecScale;
+    vector<PxVec3>          m_vecOffset;
 
 public:
     virtual void Begin() {};
     virtual void Tick() {};
-    virtual void FinalTick() {};
+    virtual void FinalTick();
 
 public:
-    void SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag = 0, float _Density = 1.f, bool _DisableGravity = false, PxVec3 _InitVel = PxVec3(0.f));
-    void AddCollider(COLLIDER_DESC _desc, PxVec3 _Scale = PxVec3(1.f), PxVec3 _Offset = PxVec3(0.f));
+    PxRigidActor* GetRigidBody() { return m_Body; }
+    RIGID_TYPE GetRigidType() { return m_Type; }
+    float GetDensity() { return m_Density; }
 
+    void SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag = 0, bool _Gravity = false, float _Density = 1.f, PxVec3 _InitVel = PxVec3(0.f));
+    void SetRigidType(RIGID_TYPE _Type);
+    void SetDensity(float _Density);
+
+    void AddCollider(COLLIDER_DESC _desc, PxVec3 _Scale = PxVec3(1.f), PxVec3 _Offset = PxVec3(0.f));
     void UpdatePosition(Vec3 _Pos);
+    void CkeckLockFlag(LOCK_FLAG _Flag);
+
+private:
+    void AttachCollider(COLLIDER_DESC _desc, PxVec3 _Scale, PxVec3 _Offset);
 };
 

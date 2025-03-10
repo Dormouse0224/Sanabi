@@ -183,6 +183,21 @@ PxRigidActor* CPhysxMgr::FindRigidBody(CGameObject* _Object)
     return iter->second;
 }
 
+/// <summary>
+/// 시뮬레이션에 해당 오브젝트를 키값으로 하여 강체 액터를 등록합니다.
+/// </summary>
+/// <param name="_Object"></param>
+/// <param name="_Actor"></param>
+void CPhysxMgr::AddRigidBody(CGameObject* _Object, PxRigidActor* _Actor)
+{
+    m_Scene->addActor(*_Actor);
+    m_mapRigidBody.insert(make_pair(_Object, _Actor));
+}
+
+/// <summary>
+/// 시뮬레이션에 해당 오브젝트로 등록된 강체를 찾아 제거합니다.
+/// </summary>
+/// <param name="_Object"></param>
 void CPhysxMgr::RemoveRigidBody(CGameObject* _Object)
 {
     map<CGameObject*, PxRigidActor*>::iterator iter = m_mapRigidBody.find(_Object);

@@ -438,6 +438,9 @@
     <ClInclude Include="CCameraUI.h">
       <Filter>09. ImguiObject\ComponentUI\02. CameraUI</Filter>
     </ClInclude>
+    <ClInclude Include="CPhysxActorUI.h">
+      <Filter>09. ImguiObject\ComponentUI\04. PhysxActorUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CEngine.cpp">
@@ -637,6 +640,9 @@
     </ClCompile>
     <ClCompile Include="CCameraUI.cpp">
       <Filter>09. ImguiObject\ComponentUI\02. CameraUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CPhysxActorUI.cpp">
+      <Filter>09. ImguiObject\ComponentUI\04. PhysxActorUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
