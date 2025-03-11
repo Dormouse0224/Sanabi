@@ -70,9 +70,28 @@ void CPhysxActorUI::Render_Com()
 		}
 		
 		// Gravity
+		ImGui::Text("Gravity");
+		bool bGravity = !(pDynamicBody->getActorFlags() & PxActorFlag::eDISABLE_GRAVITY);
+		if (ImGui::Checkbox("##Gravity", &bGravity))
+		{
+			pDynamicBody->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, !bGravity);
+		}
 
 
-		// Velocity
-		
+		// Linear Velocity
+		ImGui::Text("Linear Velocity");
+		float LinVel[3] = { pDynamicBody->getLinearVelocity().x, pDynamicBody->getLinearVelocity().y, pDynamicBody->getLinearVelocity().z };
+		if (ImGui::DragFloat3("##LinearVelocity", LinVel))
+		{
+			pDynamicBody->setLinearVelocity(PxVec3(LinVel[0], LinVel[1], LinVel[2]));
+		}
+
+		// Angular Velocity
+		ImGui::Text("Angular Velocity");
+		float AngVel[3] = { pDynamicBody->getAngularVelocity().x, pDynamicBody->getAngularVelocity().y, pDynamicBody->getAngularVelocity().z };
+		if (ImGui::DragFloat3("##AngularVelocity", AngVel))
+		{
+			pDynamicBody->setAngularVelocity(PxVec3(AngVel[0], AngVel[1], AngVel[2]));
+		}
 	}
 }
