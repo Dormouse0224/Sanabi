@@ -75,5 +75,5 @@ using namespace std;
 #include "struct.h"
 #include "func.h"
 
-#include "Ptr.h"
+#include "AssetPtr.h"
 

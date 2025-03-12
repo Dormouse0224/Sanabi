@@ -1,5 +1,8 @@
 #pragma once
 #include "CImguiObject.h"
+
+class CTreeUI;
+
 class CContentViewer :
     public CImguiObject
 {
@@ -9,9 +12,12 @@ public:
     CLONE_DISABLE(CContentViewer);
 
 private:
+    CTreeUI* m_AssetTree;
 
 public:
     virtual void Update();
     virtual void Render();
+
+    void Renew();
 };
 

@@ -3,8 +3,11 @@
 
 #include "CEngine.h"
 #include "CDevice.h"
+
 #include "CInspector.h"
 #include "COutliner.h"
+#include "CContentViewer.h"
+
 #include "CTreeUI.h"
 
 void CImguiMgr::Init()
@@ -65,4 +68,8 @@ void CImguiMgr::Init()
     // Outliner 생성 및 추가
     m_Outliner = new COutliner(L"Outliner");
     m_mapImguiObj.insert(make_pair(m_Outliner->GetKey(), m_Outliner));
+
+    // ContentViewer 생성 및 추가
+    m_ContentViewer = new CContentViewer(L"ContentViewer");
+    m_mapImguiObj.insert(make_pair(m_ContentViewer->GetKey(), m_ContentViewer));
 }

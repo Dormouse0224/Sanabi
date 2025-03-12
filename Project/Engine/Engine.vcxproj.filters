@@ -270,7 +270,7 @@
     <ClInclude Include="CLevelMgr.h">
       <Filter>04. Manager\05. Level</Filter>
     </ClInclude>
-    <ClInclude Include="Ptr.h">
+    <ClInclude Include="AssetPtr.h">
       <Filter>08. Asset</Filter>
     </ClInclude>
     <ClInclude Include="CAsset.h">

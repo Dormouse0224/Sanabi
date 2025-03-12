@@ -13,16 +13,23 @@ CAssetMgr::~CAssetMgr()
 
 }
 
+void CAssetMgr::Tick()
+{
+	m_Renew = false;
+}
+
 void CAssetMgr::AddAsset(const wstring& _Key, AssetPtr<CAsset> _Asset)
 {
 	ASSET_TYPE Type = _Asset->GetType();
 
-	map<wstring, AssetPtr<CAsset>>::iterator iter = m_mapAsset[Type].find(_Key);
+	map<wstring, AssetPtr<CAsset>>::iterator iter = m_mapAsset[(UINT)Type].find(_Key);
 
-	assert(iter == m_mapAsset[Type].end());
+	assert(iter == m_mapAsset[(UINT)Type].end());
 
 	_Asset->m_Key = _Key;
-	m_mapAsset[Type].insert(make_pair(_Key, _Asset));
+	_Asset->SetName(_Key);
+	m_mapAsset[(UINT)Type].insert(make_pair(_Key, _Asset));
+	m_Renew = true;
 }
 
 AssetPtr<CTexture> CAssetMgr::CreateTexture(const wstring& _Key, UINT _Width, UINT _Height

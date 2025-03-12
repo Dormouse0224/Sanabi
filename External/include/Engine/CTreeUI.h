@@ -57,7 +57,7 @@ public:
     void SetDoubleClickFunc(DELEGATE_1  _SelectFunc) { m_DoubleClickFunc = _SelectFunc; }
     void SetOwner(CEntity* _Owner) { m_Owner = _Owner; }
 
-    void AddChildNode(TreeNode* _Parent, string _Name, DWORD_PTR m_Data);
+    TreeNode* AddChildNode(TreeNode* _Parent, string _Name, DWORD_PTR m_Data);
 
 };
 

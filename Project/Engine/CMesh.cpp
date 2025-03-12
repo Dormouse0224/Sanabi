@@ -4,7 +4,7 @@
 #include "CDevice.h"
 
 CMesh::CMesh()
-	: CAsset(MESH)
+	: CAsset(ASSET_TYPE::MESH)
 	, m_VBDesc{}
 	, m_IBDesc{}
 	, m_VtxSysMem(nullptr)

@@ -34,6 +34,22 @@ wstring COMPONENT_TYPE_WSTR[] =
 	L"SCRIPT",
 };
 
+wstring ASSET_TYPE_WSTR[] = 
+{
+	L"MESH",
+	L"MESHDATA",
+	L"TEXTURE",
+	L"MATERIAL",
+	L"PREFAB",
+	L"SOUND",
+	L"GRAPHIC_SHADER",	// ·»´õ¸µ
+	L"COMPUTE_SHADER", // °è»ê, GP(General Purpose)
+	L"SPRITE",
+	L"FLIPBOOK",
+
+	L"ASSET_END",
+};
+
 wstring CAMERA_LAYER_WSTR[] =
 {
 	L"Default",

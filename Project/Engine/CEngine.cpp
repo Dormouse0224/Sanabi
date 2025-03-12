@@ -59,6 +59,7 @@ void CEngine::Progress()
     // Manager Tick
     CTimeMgr::GetInst()->Tick();
     CKeyMgr::GetInst()->Tick();
+    CAssetMgr::GetInst()->Tick();
 
     // Level Progress
     CLevelMgr::GetInst()->Progress();

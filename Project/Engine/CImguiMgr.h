@@ -5,8 +5,10 @@
 #include "imgui/imgui_impl_dx11.h"
 
 class CImguiObject;
+
 class CInspector;
 class COutliner;
+class CContentViewer;
 
 class CImguiMgr
 	: public Singleton<CImguiMgr>
@@ -20,7 +22,7 @@ private:
 
 	CInspector*					m_Inspector;
 	COutliner*					m_Outliner;
-
+	CContentViewer*				m_ContentViewer;
 
 public:
 	void Init();

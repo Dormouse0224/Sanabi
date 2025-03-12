@@ -112,7 +112,7 @@ void CTreeUI::Render()
 		
 }
 
-void CTreeUI::AddChildNode(TreeNode* _Parent, string _Name, DWORD_PTR m_Data)
+TreeNode* CTreeUI::AddChildNode(TreeNode* _Parent, string _Name, DWORD_PTR m_Data)
 {
 	TreeNode* pChild = new TreeNode(_Name);
 	pChild->m_Data = m_Data;
@@ -120,5 +120,7 @@ void CTreeUI::AddChildNode(TreeNode* _Parent, string _Name, DWORD_PTR m_Data)
 	pChild->m_Owner = _Parent->m_Owner;
 
 	_Parent->m_vecChild.push_back(pChild);
+
+	return pChild;
 }
 

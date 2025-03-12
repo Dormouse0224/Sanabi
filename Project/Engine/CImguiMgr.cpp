@@ -1,9 +1,11 @@
 #include "pch.h"
 #include "CImguiMgr.h"
 
-#include "CImguiObject.h"
+#include "CImguiObject.h".
+
 #include "CInspector.h"
 #include "COutliner.h"
+#include "CContentViewer.h"
 
 CImguiMgr::CImguiMgr()
     : m_DebugMenuBar(true)
@@ -88,14 +90,22 @@ void CImguiMgr::DebugMenuBar()
         if (ImGui::BeginMenu("Tool"))
         {
             ImGui::MenuItem("Demo Window", nullptr, &m_DemoActive);
+
             if (ImGui::MenuItem("Inspector", nullptr))
             {
                 m_Inspector->SetActive(true);
             }
+
             if (ImGui::MenuItem("Outliner", nullptr))
             {
                 m_Outliner->SetActive(true);
             }
+
+            if (ImGui::MenuItem("ContentViewer", nullptr))
+            {
+                m_ContentViewer->SetActive(true);
+            }
+
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Edit"))

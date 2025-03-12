@@ -70,8 +70,9 @@ enum class COMPONENT_TYPE
 
 	SCRIPT,				// 대본, 역할, 컨텐츠
 };
+extern wstring COMPONENT_TYPE_WSTR[];
 
-enum ASSET_TYPE
+enum class ASSET_TYPE
 {
 	MESH,
 	MESHDATA,
@@ -86,6 +87,7 @@ enum ASSET_TYPE
 
 	ASSET_END,
 };
+extern wstring ASSET_TYPE_WSTR[];
 
 
 // 투영(Projection) 방식
@@ -177,3 +179,4 @@ enum class CAMERA_LAYER
 
 	END
 };
+extern wstring CAMERA_LAYER_WSTR[];
