@@ -155,15 +155,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="assets.h" />
+    <ClInclude Include="CAssetUI.h" />
     <ClInclude Include="CCameraUI.h" />
     <ClInclude Include="CComponentUI.h" />
+    <ClInclude Include="CComputeShaderUI.h" />
     <ClInclude Include="CContentViewer.h" />
     <ClInclude Include="CFlipbook.h" />
     <ClInclude Include="CFlipbookRender.h" />
+    <ClInclude Include="CFlipbookUI.h" />
+    <ClInclude Include="CGraphicShaderUI.h" />
     <ClInclude Include="CImguiMgr.h" />
     <ClInclude Include="CImguiObject.h" />
     <ClInclude Include="CInspector.h" />
     <ClInclude Include="CListUI.h" />
+    <ClInclude Include="CMaterialUI.h" />
+    <ClInclude Include="CMeshUI.h" />
     <ClInclude Include="COutliner.h" />
     <ClInclude Include="CParticleRender.h" />
     <ClInclude Include="CParticleTickCS.h" />
@@ -174,7 +180,9 @@
     <ClInclude Include="CSimulationEvent.h" />
     <ClInclude Include="CSprite.h" />
     <ClInclude Include="CSpriteRender.h" />
+    <ClInclude Include="CSpriteUI.h" />
     <ClInclude Include="CStructuredBuffer.h" />
+    <ClInclude Include="CTextureUI.h" />
     <ClInclude Include="CTileRender.h" />
     <ClInclude Include="CTransformUI.h" />
     <ClInclude Include="CTreeUI.h" />
@@ -233,6 +241,7 @@
     <ClCompile Include="CAsset.cpp" />
     <ClCompile Include="CAssetMgr.cpp" />
     <ClCompile Include="CAssetMgr_Init.cpp" />
+    <ClCompile Include="CAssetUI.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CCameraUI.cpp" />
@@ -241,6 +250,7 @@
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CComponentUI.cpp" />
     <ClCompile Include="CComputeShader.cpp" />
+    <ClCompile Include="CComputeShaderUI.cpp" />
     <ClCompile Include="CConstBuffer.cpp" />
     <ClCompile Include="CContentViewer.cpp" />
     <ClCompile Include="CDevice.cpp" />
@@ -248,8 +258,10 @@
     <ClCompile Include="CEntity.cpp" />
     <ClCompile Include="CFlipbook.cpp" />
     <ClCompile Include="CFlipbookRender.cpp" />
+    <ClCompile Include="CFlipbookUI.cpp" />
     <ClCompile Include="CGameObject.cpp" />
     <ClCompile Include="CGraphicShader.cpp" />
+    <ClCompile Include="CGraphicShaderUI.cpp" />
     <ClCompile Include="CImguiMgr.cpp" />
     <ClCompile Include="CImguiMgr_Init.cpp" />
     <ClCompile Include="CImguiObject.cpp" />
@@ -260,8 +272,10 @@
     <ClCompile Include="CLevelMgr.cpp" />
     <ClCompile Include="CListUI.cpp" />
     <ClCompile Include="CMaterial.cpp" />
+    <ClCompile Include="CMaterialUI.cpp" />
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CMeshRender.cpp" />
+    <ClCompile Include="CMeshUI.cpp" />
     <ClCompile Include="COutliner.cpp" />
     <ClCompile Include="CParticleRender.cpp" />
     <ClCompile Include="CParticleTickCS.cpp" />
@@ -279,9 +293,11 @@
     <ClCompile Include="CSimulationEvent.cpp" />
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="CSpriteRender.cpp" />
+    <ClCompile Include="CSpriteUI.cpp" />
     <ClCompile Include="CStructuredBuffer.cpp" />
     <ClCompile Include="CTaskMgr.cpp" />
     <ClCompile Include="CTexture.cpp" />
+    <ClCompile Include="CTextureUI.cpp" />
     <ClCompile Include="CTileRender.cpp" />
     <ClCompile Include="CTimeMgr.cpp" />
     <ClCompile Include="CTransform.cpp" />

@@ -124,15 +124,6 @@
     <Filter Include="08. Asset">
       <UniqueIdentifier>{467337eb-7b4a-4ccc-a47d-c727a0ff492d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Asset\01.Mesh">
-      <UniqueIdentifier>{72d804bc-f319-41e2-8c8b-be6c13c993fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Asset\02.MeshData">
-      <UniqueIdentifier>{a550afc9-b1bf-4d5d-92e7-fe1f065b2eff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Asset\03.Material">
-      <UniqueIdentifier>{aafd811d-32c8-4eb9-ac88-25f050d602e3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="08. Asset\04. Texture">
       <UniqueIdentifier>{afc9de93-8012-45e0-b1c9-3c191d68b750}</UniqueIdentifier>
     </Filter>
@@ -217,6 +208,51 @@
     <Filter Include="09. ImguiObject\ComponentUI\RenderComponentUI\05. ParticleRenderUI">
       <UniqueIdentifier>{32270fa4-bbfb-4c03-b267-d500ac1d7f9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="09. ImguiObject\AssetUI">
+      <UniqueIdentifier>{953d67fb-5d4f-4faa-84d6-01bab07d7fb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\AssetUI\01. MeshUI">
+      <UniqueIdentifier>{1a792098-1f96-4c74-8f91-dd94f5b98bb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Asset\03. Material">
+      <UniqueIdentifier>{aafd811d-32c8-4eb9-ac88-25f050d602e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Asset\02. MeshData">
+      <UniqueIdentifier>{a550afc9-b1bf-4d5d-92e7-fe1f065b2eff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Asset\01. Mesh">
+      <UniqueIdentifier>{72d804bc-f319-41e2-8c8b-be6c13c993fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\AssetUI\02. MeshDataUI">
+      <UniqueIdentifier>{39b1d748-cbbf-4dd6-85b0-6d9be664a057}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\AssetUI\03. MaterialUI">
+      <UniqueIdentifier>{1ba084bc-2040-486f-878c-11b204024121}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\AssetUI\04. TextureUI">
+      <UniqueIdentifier>{54547184-2302-4930-a620-a3c30cc01d65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\AssetUI\05. SoundUI">
+      <UniqueIdentifier>{04c32233-9921-4c3b-a5db-af796155092f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\AssetUI\06. ShaderUI">
+      <UniqueIdentifier>{9882b482-d4c3-420d-ba78-31139f5bea01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\AssetUI\07. PrefabUI">
+      <UniqueIdentifier>{31404a4b-0b54-4ffa-b1a1-63a78fad30fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\AssetUI\08. SpriteUI">
+      <UniqueIdentifier>{9a1173d2-7d30-4461-b6f9-c0dec9f1d5bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\AssetUI\09. FlipbookUI">
+      <UniqueIdentifier>{3516488c-9059-46e6-848f-944c87b80ab3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\AssetUI\06. ShaderUI\ComputeShaderUI">
+      <UniqueIdentifier>{ba980dbd-9abc-4f54-bcaa-d3925e1e02ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\AssetUI\06. ShaderUI\GraphicShaderUI">
+      <UniqueIdentifier>{2d8cbf68-1df7-44eb-a57e-c37f38d64596}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CEngine.h">
@@ -283,7 +319,7 @@
       <Filter>08. Asset\06. Shader</Filter>
     </ClInclude>
     <ClInclude Include="CMesh.h">
-      <Filter>08. Asset\01.Mesh</Filter>
+      <Filter>08. Asset\01. Mesh</Filter>
     </ClInclude>
     <ClInclude Include="CLevel.h">
       <Filter>05. Level</Filter>
@@ -322,7 +358,7 @@
       <Filter>07. Component\RenderComponent</Filter>
     </ClInclude>
     <ClInclude Include="CMaterial.h">
-      <Filter>08. Asset\03.Material</Filter>
+      <Filter>08. Asset\03. Material</Filter>
     </ClInclude>
     <ClInclude Include="CRenderMgr.h">
       <Filter>04. Manager\06. Render</Filter>
@@ -441,6 +477,30 @@
     <ClInclude Include="CPhysxActorUI.h">
       <Filter>09. ImguiObject\ComponentUI\04. PhysxActorUI</Filter>
     </ClInclude>
+    <ClInclude Include="CAssetUI.h">
+      <Filter>09. ImguiObject\AssetUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshUI.h">
+      <Filter>09. ImguiObject\AssetUI\01. MeshUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CComputeShaderUI.h">
+      <Filter>09. ImguiObject\AssetUI\06. ShaderUI\ComputeShaderUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CFlipbookUI.h">
+      <Filter>09. ImguiObject\AssetUI\09. FlipbookUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CGraphicShaderUI.h">
+      <Filter>09. ImguiObject\AssetUI\06. ShaderUI\GraphicShaderUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CMaterialUI.h">
+      <Filter>09. ImguiObject\AssetUI\03. MaterialUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpriteUI.h">
+      <Filter>09. ImguiObject\AssetUI\08. SpriteUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CTextureUI.h">
+      <Filter>09. ImguiObject\AssetUI\04. TextureUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CEngine.cpp">
@@ -480,7 +540,7 @@
       <Filter>08. Asset\06. Shader</Filter>
     </ClCompile>
     <ClCompile Include="CMesh.cpp">
-      <Filter>08. Asset\01.Mesh</Filter>
+      <Filter>08. Asset\01. Mesh</Filter>
     </ClCompile>
     <ClCompile Include="CLevel.cpp">
       <Filter>05. Level</Filter>
@@ -516,7 +576,7 @@
       <Filter>07. Component\RenderComponent</Filter>
     </ClCompile>
     <ClCompile Include="CMaterial.cpp">
-      <Filter>08. Asset\03.Material</Filter>
+      <Filter>08. Asset\03. Material</Filter>
     </ClCompile>
     <ClCompile Include="CAssetMgr_Init.cpp">
       <Filter>04. Manager\04. Asset</Filter>
@@ -643,6 +703,30 @@
     </ClCompile>
     <ClCompile Include="CPhysxActorUI.cpp">
       <Filter>09. ImguiObject\ComponentUI\04. PhysxActorUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CAssetUI.cpp">
+      <Filter>09. ImguiObject\AssetUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshUI.cpp">
+      <Filter>09. ImguiObject\AssetUI\01. MeshUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CComputeShaderUI.cpp">
+      <Filter>09. ImguiObject\AssetUI\06. ShaderUI\ComputeShaderUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CFlipbookUI.cpp">
+      <Filter>09. ImguiObject\AssetUI\09. FlipbookUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CGraphicShaderUI.cpp">
+      <Filter>09. ImguiObject\AssetUI\06. ShaderUI\GraphicShaderUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CMaterialUI.cpp">
+      <Filter>09. ImguiObject\AssetUI\03. MaterialUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpriteUI.cpp">
+      <Filter>09. ImguiObject\AssetUI\08. SpriteUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CTextureUI.cpp">
+      <Filter>09. ImguiObject\AssetUI\04. TextureUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -40,7 +40,6 @@ int CMesh::Create(Vtx* _VtxSysMem, UINT _VtxCount, UINT* _IdxSysMem, UINT _IdxCo
 
 	DEVICE->CreateBuffer(&m_VBDesc, &Sub, m_VB.GetAddressOf());
 
-
 	// 버퍼 크기 설정
 	m_IBDesc.ByteWidth = sizeof(UINT) * _IdxCount;
 

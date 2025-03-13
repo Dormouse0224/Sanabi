@@ -18,7 +18,8 @@ private:
     ComPtr<ID3D11GeometryShader>    m_GS;
     ComPtr<ID3D11PixelShader>       m_PS;
 
-    ComPtr<ID3D11InputLayout>       m_Layout;
+    // 정점 구조체 구조정보 레이아웃
+    ComPtr<ID3D11InputLayout>       m_Layout;   
     D3D11_PRIMITIVE_TOPOLOGY        m_Topology;
 
     SHADER_DOMAIN                   m_Domain;

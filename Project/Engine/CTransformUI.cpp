@@ -19,7 +19,7 @@ void CTransformUI::Update_Com()
 
 void CTransformUI::Render_Com()
 {
-    CTransform* pTransform = dynamic_cast<CTransform*>(m_Target->GetComponent(m_Type));
+    CTransform* pTransform = dynamic_cast<CTransform*>(m_TargetObj->GetComponent(m_Type));
 
     if (pTransform == nullptr)
         return;

@@ -30,7 +30,11 @@ private:
     void Binding();
 
 public:
+    UINT GetVtxCount() { return m_VtxCount; }
+    UINT GetIdxCount() { return m_IdxCount; }
+
     virtual int Save(const wstring& _FilePath) { return S_OK; }
     virtual int Load(const wstring& _FilePath) { return S_OK; }
+
 };
 

@@ -41,10 +41,10 @@ public:
     CLONE_DISABLE(CTreeUI);
 
 private:
-    TreeNode*   m_Root;
-    bool        m_ShowRoot;
-    CEntity*    m_Owner;
-    DELEGATE_1  m_DoubleClickFunc;
+    TreeNode*       m_Root;
+    bool            m_ShowRoot;
+    CImguiObject*   m_OwnerUI;
+    DELEGATE_1      m_DoubleClickFunc;
 
 public:
     virtual void Update();
@@ -52,10 +52,15 @@ public:
 
     TreeNode* GetRoot() { return m_Root; }
     DELEGATE_1 GetDoubleClickFunc() { return m_DoubleClickFunc; }
-    CEntity* GetOwner() { return m_Owner; }
+    CImguiObject* GetOwnerUI() { return m_OwnerUI; }
 
-    void SetDoubleClickFunc(DELEGATE_1  _SelectFunc) { m_DoubleClickFunc = _SelectFunc; }
-    void SetOwner(CEntity* _Owner) { m_Owner = _Owner; }
+    /// <summary>
+    /// 노드를 더블클릭 시 호출될 이벤트 콜백 함수를 등록합니다.
+    /// 이벤트 콜백 함수는 입력값으로 노드의 DWORD_PTR 데이터를 받습니다.
+    /// </summary>
+    /// <param name="_SelectFunc">이벤트 콜백 함수</param>
+    /// <param name="_Owner">함수 호출 객체</param>
+    void SetDoubleClickFunc(DELEGATE_1  _SelectFunc, CImguiObject* _Owner) { m_DoubleClickFunc = _SelectFunc; m_OwnerUI = _Owner; }
 
     TreeNode* AddChildNode(TreeNode* _Parent, string _Name, DWORD_PTR m_Data);
 

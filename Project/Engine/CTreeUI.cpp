@@ -70,8 +70,8 @@ void TreeNode::DoubleClickCheck()
 {
 	if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
 	{
-		if (m_Owner->GetOwner() != nullptr && m_Owner->GetDoubleClickFunc() != nullptr)
-			(m_Owner->GetOwner()->*(m_Owner->GetDoubleClickFunc()))(m_Data);		
+		if (m_Owner->GetOwnerUI() != nullptr && m_Owner->GetDoubleClickFunc() != nullptr)
+			(m_Owner->GetOwnerUI()->*(m_Owner->GetDoubleClickFunc()))(m_Data);	
 	}
 }
 

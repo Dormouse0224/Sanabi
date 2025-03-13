@@ -15,8 +15,7 @@ COutliner::COutliner(wstring _Name)
 	: CImguiObject(_Name)
 {
 	m_ObjTree = new CTreeUI(_Name);
-	m_ObjTree->SetOwner(this);
-	m_ObjTree->SetDoubleClickFunc((DELEGATE_1)&COutliner::DoubleClickEvent);
+	m_ObjTree->SetDoubleClickFunc((DELEGATE_1)&COutliner::DoubleClickEvent, this);
 }
 
 COutliner::~COutliner()
@@ -41,7 +40,7 @@ void COutliner::Render()
 
 void COutliner::DoubleClickEvent(DWORD_PTR _Obj)
 {
-	CImguiMgr::GetInst()->GetInspector()->SetTargetObject((CGameObject*)_Obj);
+	CImguiMgr::GetInst()->GetInspector()->SetTarget((CGameObject*)_Obj, TARGET_TYPE::GAMEOBJECT);
 }
 
 void COutliner::Renew()

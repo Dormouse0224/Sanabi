@@ -1,8 +1,16 @@
 #pragma once
 #include "CImguiObject.h"
 
+enum class TARGET_TYPE
+{
+    GAMEOBJECT,
+    ASSET,
+};
+
 class CGameObject;
 class CComponentUI;
+class CAsset;
+class CAssetUI;
 
 class CInspector :
     public CImguiObject
@@ -13,16 +21,19 @@ public:
     CLONE_DISABLE(CInspector);
 
 private:
-    CGameObject*    m_TargetObject;
-    CComponentUI*   m_ComponentUI[(UINT)COMPONENT_TYPE::COMPONENT_END];
+    TARGET_TYPE         m_Type;
+    CGameObject*        m_TargetObj;
+    CComponentUI*       m_ComponentUI[(UINT)COMPONENT_TYPE::COMPONENT_END];
+    AssetPtr<CAsset>    m_TargetAsset;
+    CAssetUI*           m_AssetUI[(UINT)ASSET_TYPE::ASSET_END];
 
 
 public:
     virtual void Update();
     virtual void Render();
 
-    CGameObject* GetTargetObject() { return m_TargetObject; }
+    CGameObject* GetTargetObject() { return m_TargetObj; }
 
-    void SetTargetObject(CGameObject* _Obj) { m_TargetObject = _Obj; }
+    void SetTarget(CEntity* _Obj, TARGET_TYPE _Type);
 };
 

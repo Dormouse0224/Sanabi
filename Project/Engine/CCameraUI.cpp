@@ -23,7 +23,7 @@ void CCameraUI::Render_Com()
 
     ImGui::Text("Projection Type");
     const char* ProjTypes[] = { "ORTHOGRAPHIC", "PERSPECTIVE" };
-    int ProjType = m_Target->Camera()->GetProjType();
+    int ProjType = m_TargetObj->Camera()->GetProjType();
     if (ImGui::BeginCombo("##ProjectionType", ProjTypes[ProjType]))
     {
         for (int n = 0; n < IM_ARRAYSIZE(ProjTypes); n++)
@@ -31,7 +31,7 @@ void CCameraUI::Render_Com()
             const bool is_selected = (ProjType == n);
             if (ImGui::Selectable(ProjTypes[n], is_selected))
             {
-                m_Target->Camera()->SetProjType((PROJ_TYPE)n);
+                m_TargetObj->Camera()->SetProjType((PROJ_TYPE)n);
             }
 
             // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
@@ -43,31 +43,31 @@ void CCameraUI::Render_Com()
     ImGui::Spacing();
 
     ImGui::Text("Camera View Width & Height");
-    float WH[2] = { m_Target->Camera()->GetViewX(), m_Target->Camera()->GetViewY() };
+    float WH[2] = { m_TargetObj->Camera()->GetViewX(), m_TargetObj->Camera()->GetViewY() };
     if (ImGui::DragFloat2("##CameraViewWidthHeight", WH, 1.f, 1.f, FLT_MAX))
     {
-        m_Target->Camera()->SetViewX(WH[0]);
-        m_Target->Camera()->SetViewY(WH[1]);
+        m_TargetObj->Camera()->SetViewX(WH[0]);
+        m_TargetObj->Camera()->SetViewY(WH[1]);
     }
     ImGui::Spacing();
 
-    ImGui::BeginDisabled(m_Target->Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC);
+    ImGui::BeginDisabled(m_TargetObj->Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC);
     ImGui::Text("FOV");
     ImGui::SameLine(tab);
-    float FOV = m_Target->Camera()->GetFOV();
+    float FOV = m_TargetObj->Camera()->GetFOV();
     if (ImGui::DragFloat("##FOV", &FOV, 1.f, 1.f, FLT_MAX))
     {
-        m_Target->Camera()->SetFOV(FOV);
+        m_TargetObj->Camera()->SetFOV(FOV);
     }
     ImGui::EndDisabled();
     ImGui::Spacing();
 
     ImGui::Text("Far");
     ImGui::SameLine(tab);
-    float Far = m_Target->Camera()->GetFar();
+    float Far = m_TargetObj->Camera()->GetFar();
     if (ImGui::DragFloat("##Far", &Far, 1.f, 10.f, FLT_MAX))
     {
-        m_Target->Camera()->SetFar(Far);
+        m_TargetObj->Camera()->SetFar(Far);
     }
     ImGui::Spacing();
 
@@ -79,11 +79,11 @@ void CCameraUI::Render_Com()
     {
         for (int i = 0; i < (UINT)CAMERA_LAYER::END; i++)
         {
-            LayerCheck[i] = m_Target->Camera()->GetLayerState((CAMERA_LAYER)i);
+            LayerCheck[i] = m_TargetObj->Camera()->GetLayerState((CAMERA_LAYER)i);
             ImGui::TableNextColumn();
             if (ImGui::Selectable(to_str(CAMERA_LAYER_WSTR[i]).c_str(), &LayerCheck[i]))
             {
-                m_Target->Camera()->CheckLayer((CAMERA_LAYER)i);
+                m_TargetObj->Camera()->CheckLayer((CAMERA_LAYER)i);
             }
         }
         ImGui::EndTable();

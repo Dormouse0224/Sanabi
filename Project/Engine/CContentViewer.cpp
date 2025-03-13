@@ -2,13 +2,16 @@
 #include "CContentViewer.h"
 
 #include "CAssetMgr.h"
+#include "CImguiMgr.h"
 
 #include "CTreeUI.h"
+#include "CInspector.h"
 
 CContentViewer::CContentViewer(wstring _Name)
 	: CImguiObject(_Name)
 {
 	m_AssetTree = new CTreeUI(L"AssetTree");
+	m_AssetTree->SetDoubleClickFunc((DELEGATE_1)&CContentViewer::ClickEventCallback, this);
 }
 
 CContentViewer::~CContentViewer()
@@ -25,6 +28,14 @@ void CContentViewer::Update()
 void CContentViewer::Render()
 {
 	m_AssetTree->Render();
+}
+
+void CContentViewer::ClickEventCallback(DWORD_PTR _Target)
+{
+	if (_Target != 0)
+	{
+		CImguiMgr::GetInst()->GetInspector()->SetTarget(reinterpret_cast<CEntity*>(_Target), TARGET_TYPE::ASSET);
+	}
 }
 
 void CContentViewer::Renew()

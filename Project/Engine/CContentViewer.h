@@ -18,6 +18,8 @@ public:
     virtual void Update();
     virtual void Render();
 
+    void ClickEventCallback(DWORD_PTR _Target);
+
     void Renew();
 };
 

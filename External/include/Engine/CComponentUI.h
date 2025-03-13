@@ -13,15 +13,17 @@ public:
 
 protected:
     const COMPONENT_TYPE    m_Type;
-    CGameObject*            m_Target;
+    CGameObject*            m_TargetObj;
 
 public:
-    CGameObject* GetTarget() { return m_Target; }
+    CGameObject* GetTarget() { return m_TargetObj; }
 
-    void SetTarget(CGameObject* _Obj) { m_Target = _Obj; }
+    void SetTargetObj(CGameObject* _Obj) { m_TargetObj = _Obj; }
 
     virtual void Update() final;
     virtual void Render() final;
+
+private:
     virtual void Update_Com() = 0;
     virtual void Render_Com() = 0;
 };

@@ -21,32 +21,32 @@ void CPhysxActorUI::Render_Com()
 {
 	float tab = 130;
 
-	if (m_Target->PhysxActor()->GetRigidType() == RIGID_TYPE::NONE)
+	if (m_TargetObj->PhysxActor()->GetRigidType() == RIGID_TYPE::NONE)
 	{
 		ImGui::Text("Rigid type is NONE");
 		return;
 	}
 	
-	PxRigidActor* pBody = m_Target->PhysxActor()->GetRigidBody();
+	PxRigidActor* pBody = m_TargetObj->PhysxActor()->GetRigidBody();
 
 	// Rigid Type
 	ImGui::Text("Rigid Type");
 	ImGui::SameLine(tab);
-	int TypeIdx = (int)m_Target->PhysxActor()->GetRigidType();
+	int TypeIdx = (int)m_TargetObj->PhysxActor()->GetRigidType();
 	const char* const Type[] = { "KINEMATIC", "DYNAMIC", "STATIC" };
 	if (ImGui::Combo("##RigidType", &TypeIdx, Type, 3))
 	{
-		m_Target->PhysxActor()->SetRigidType((RIGID_TYPE)TypeIdx);
-		pBody = m_Target->PhysxActor()->GetRigidBody();
+		m_TargetObj->PhysxActor()->SetRigidType((RIGID_TYPE)TypeIdx);
+		pBody = m_TargetObj->PhysxActor()->GetRigidBody();
 	}
 
 	// Density
 	ImGui::Text("Density");
 	ImGui::SameLine(tab);
-	float Dens = m_Target->PhysxActor()->GetDensity();
+	float Dens = m_TargetObj->PhysxActor()->GetDensity();
 	if (ImGui::DragFloat("##Density", &Dens, 1.f, 0.1f))
 	{
-		m_Target->PhysxActor()->SetDensity(Dens);
+		m_TargetObj->PhysxActor()->SetDensity(Dens);
 	}
 
 	if ((RIGID_TYPE)TypeIdx == RIGID_TYPE::DYNAMIC)
@@ -63,7 +63,7 @@ void CPhysxActorUI::Render_Com()
 				ImGui::TableNextColumn();
 				if (ImGui::Selectable(to_str(LOCK_FLAG_WSTR[i]).c_str(), &LockState[i]))
 				{
-					m_Target->PhysxActor()->CkeckLockFlag((LOCK_FLAG)(1 << i));
+					m_TargetObj->PhysxActor()->CkeckLockFlag((LOCK_FLAG)(1 << i));
 				}
 			}
 			ImGui::EndTable();
