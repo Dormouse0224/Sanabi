@@ -100,13 +100,14 @@ void CMeshUI::VertexRender()
 	CONTEXT->RSSetViewports(1, &m_ViewPort);
 
 	// 렌더 타겟 클리어
-	float Color[4] = { 1.f, 1.f, 1.f, 1.f };
+	float Color[4] = { 0.f, 0.f, 0.f, 1.f };
 	CONTEXT->ClearRenderTargetView(m_VertexRTTex->GetRTV().Get(), Color);
 	CONTEXT->ClearDepthStencilView(m_VertexDSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 
 	// 렌더 오브젝트 메쉬 설정, 카메라 틱 및 렌더링 수행
 	m_VertexObject->MeshRender()->SetMesh(static_cast<CMesh*>(m_TargetAsset.Get()));
-	m_VertexObject->MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(1, 0, 0, 1));
+	m_VertexObject->MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(0, 1, 0, 1));
+	m_VertexObject->MeshRender()->GetMaterial()->GetShader()->SetBSType(BS_TYPE::DEFAULT);
 	m_MeshCam->FinalTick(false);
 	m_VertexObject->FinalTick(false);
 	vector<CGameObject*> vec = { m_VertexObject };
