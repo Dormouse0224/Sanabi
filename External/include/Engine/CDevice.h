@@ -1,7 +1,7 @@
 #pragma once
 
 class CConstBuffer;
-class CTexture;
+class CTexture2D;
 
 class CDevice
 	: public Singleton<CDevice>
@@ -9,6 +9,7 @@ class CDevice
 	SINGLE(CDevice);
 private:
 	HWND							m_hMainWnd;
+	D3D11_VIEWPORT					m_ViewPort;
 	Vec2							m_RenderResolution;		// 렌더타겟 해상도
 
 	ComPtr<ID3D11Device>			m_Device;				// GPU 메모리 제어, DirectX 객체 생성
@@ -16,9 +17,9 @@ private:
 
 	ComPtr<IDXGISwapChain>			m_SwapChain;			// Window 화면에 렌더링
 
-	AssetPtr<CTexture>					m_RenderTarget;			// 그려질 타겟
+	AssetPtr<CTexture2D>			m_RenderTarget;			// 그려질 타겟
 
-	AssetPtr<CTexture>					m_DepthStencil;			// 깊이가 그려질 타겟
+	AssetPtr<CTexture2D>			m_DepthStencil;			// 깊이가 그려질 타겟
 
 	CConstBuffer*					m_ConstBuffer[(UINT)CB_TYPE::END];
 
@@ -42,6 +43,8 @@ public:
 	ComPtr<ID3D11RasterizerState> GetRSState(RS_TYPE _Type) { return m_RSState[(UINT)_Type]; }
 	ComPtr<ID3D11DepthStencilState> GetDSState(DS_TYPE _Type) { return m_DSState[(UINT)_Type]; }
 	ComPtr<ID3D11BlendState>	GetBSState(BS_TYPE _Type) { return m_BSState[(UINT)_Type]; }
+
+	void SetRenderTargetAndViewport();
 
 private:
 	int CreateSwapChain();

@@ -15,7 +15,7 @@ private:
 
 
 public:
-	void RegisterCamera(CCamera* _Cam, int _Priority);
+	void RegisterCamera(CCamera* _Cam, UINT _Priority);
 	void AddDebugShapeInfo(const tDebugShapeInfo& _info) { m_vecDebugInfo.push_back(_info); }
 
 public:

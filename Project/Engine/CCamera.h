@@ -59,4 +59,10 @@ private:
 public:
     virtual void FinalTick() override;
     void Render();
+
+    /// <summary>
+    /// Render Manager 에서 관리되지 않는 별도의 카메라 객체용 렌더링 함수입니다.
+    /// </summary>
+    /// <param name="_vecObj">렌더링 대상 오브젝트 벡터</param>
+    void Direct_Render(const vector<CGameObject*>& _vecObj);
 };

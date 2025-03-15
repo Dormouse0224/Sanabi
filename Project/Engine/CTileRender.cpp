@@ -129,7 +129,7 @@ void CTileRender::CreateTileRenderMtrl()
 }
 
 
-AssetPtr<CTexture> CTileRender::GetAtlasTex()
+AssetPtr<CTexture2D> CTileRender::GetAtlasTex()
 {
 	for (size_t i = 0; i < m_vecTileInfo.size(); ++i)
 	{

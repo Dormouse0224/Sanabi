@@ -36,7 +36,7 @@ struct tTask
 // =============
 // Particle 관련
 // =============
-struct tParticle
+struct alignas(16) tParticle
 {
 	Vec4		LocalPos;		// 소유 오브젝트로 부터의 상대 좌표
 	Vec4		WorldPos;		// 파티클의 월드 좌표
@@ -55,19 +55,16 @@ struct tParticle
 	int			PrevActive;		// 이전 프레임에서 파티클 활성화 여부
 
 	UINT		EntityID;
-
-	int			padding;		// 파티클 구조체 크기를 16 배수로 맞추기 위한 패딩 바이트
 };
 
-struct tSpawnCount
+struct alignas(16) tSpawnCount
 {
 	int		SpawnCount;
-	Vec3	vPadding;
 };
 
 
 // Particle Module
-struct tParticleModule
+struct alignas(16) tParticleModule
 {
 	// Spawn Modlue
 	float	SpawnRate;			// 초당 파티클 생성량
@@ -87,8 +84,6 @@ struct tParticleModule
 
 	// 추가 데이터
 	Vec3	ObjectWorldPos;
-
-	int		padding[1];
 };
 
 
@@ -99,7 +94,7 @@ struct tParticleModule
 // 상수버퍼 연동 구조체
 // ===================
 
-struct tTransform
+struct alignas(16) tTransform
 {
 	Matrix	matWorld;
 	Matrix	matView;
@@ -112,7 +107,7 @@ struct tTransform
 extern tTransform g_Trans;
 
 // 재질을 통해서 전달되는 상수
-struct tMtrlConst
+struct alignas(16) tMtrlConst
 {
 	int		iArr[4];
 	float	fArr[4];
@@ -122,11 +117,10 @@ struct tMtrlConst
 
 	//텍스쳐 바인딩 정보
 	int		bTex[TEX_END];
-	int		padding[2];
 };
 
 // Global Data
-struct tGlobal
+struct alignas(16) tGlobal
 {
 	Vec2	g_Resolution;
 	float   g_DT;
@@ -134,6 +128,5 @@ struct tGlobal
 	float   g_AccTime;
 	int     g_Light2DCount;
 	int     g_Light3DCount;
-	int     padding;
 };
 extern tGlobal g_global;

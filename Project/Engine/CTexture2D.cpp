@@ -1,18 +1,18 @@
 #include "pch.h"
-#include "CTexture.h"
+#include "CTexture2D.h"
 
 #include "CDevice.h"
 
-CTexture::CTexture()
+CTexture2D::CTexture2D()
 	: CAsset(ASSET_TYPE::TEXTURE)
 {
 }
 
-CTexture::~CTexture()
+CTexture2D::~CTexture2D()
 {
 }
 
-int CTexture::Load(const wstring& _FilePath)
+int CTexture2D::Load(const wstring& _FilePath)
 {
 	wchar_t szExt[50] = {};
 	_wsplitpath_s(_FilePath.c_str(), nullptr, 0, nullptr, 0, nullptr, 0, szExt, 50);
@@ -69,25 +69,25 @@ int CTexture::Load(const wstring& _FilePath)
 	return S_OK;
 }
 
-void CTexture::Binding(UINT _RegisterNum)
+void CTexture2D::Binding(UINT _RegisterNum)
 {
 	CONTEXT->PSSetShaderResources(_RegisterNum, 1, m_SRV.GetAddressOf());
 }
 
-void CTexture::Binding_CS_SRV(UINT _RegisterNum)
+void CTexture2D::Binding_CS_SRV(UINT _RegisterNum)
 {
 	m_RecentSRV_CS = _RegisterNum;
 	CONTEXT->CSSetShaderResources(_RegisterNum, 1, m_SRV.GetAddressOf());
 }
 
-void CTexture::Binding_CS_UAV(UINT _RegisterNum)
+void CTexture2D::Binding_CS_UAV(UINT _RegisterNum)
 {
 	m_RecentUAV_CS = _RegisterNum;
 	UINT i = -1;
 	CONTEXT->CSSetUnorderedAccessViews(_RegisterNum, 1, m_UAV.GetAddressOf(), &i);
 }
 
-void CTexture::Clear_CS_SRV(int _RegisterNum)
+void CTexture2D::Clear_CS_SRV(int _RegisterNum)
 {
 	if (_RegisterNum == -1)
 	{
@@ -102,7 +102,7 @@ void CTexture::Clear_CS_SRV(int _RegisterNum)
 	}
 }
 
-void CTexture::Clear_CS_UAV()
+void CTexture2D::Clear_CS_UAV()
 {
 	ID3D11UnorderedAccessView* pUAV = nullptr;
 	UINT i = -1;
@@ -110,7 +110,7 @@ void CTexture::Clear_CS_UAV()
 	m_RecentUAV_CS = -1;
 }
 
-int CTexture::Create(UINT _Width, UINT _Height, DXGI_FORMAT _format
+int CTexture2D::Create(UINT _Width, UINT _Height, DXGI_FORMAT _format
 	, UINT _Flag, D3D11_USAGE _usage)
 {
 	m_Desc.Format = _format;
@@ -174,7 +174,7 @@ int CTexture::Create(UINT _Width, UINT _Height, DXGI_FORMAT _format
 
 }
 
-int CTexture::Create(ComPtr<ID3D11Texture2D> _Tex2D)
+int CTexture2D::Create(ComPtr<ID3D11Texture2D> _Tex2D)
 {
 	m_Tex2D = _Tex2D;
 
@@ -218,7 +218,7 @@ int CTexture::Create(ComPtr<ID3D11Texture2D> _Tex2D)
 }
 
 
-int CTexture::Save(const wstring& _FilePath)
+int CTexture2D::Save(const wstring& _FilePath)
 {
 	return S_OK;
 }

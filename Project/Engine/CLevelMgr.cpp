@@ -123,7 +123,7 @@ void CLevelMgr::Init()
 	pChild->AddComponent(new CTransform);
 	pChild->AddComponent(new CParticleRender);
 
-	pChild->ParticleRender()->SetParticleTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture2D\\TX_HitFlash_0.png"));
+	pChild->ParticleRender()->SetParticleTex(CAssetMgr::GetInst()->Load<CTexture2D>(L"Texture2D\\TX_HitFlash_0.png"));
 	pChild->ParticleRender()->SetStartColor(Vec4(1.f, 0.f, 0.f, 1.f));
 	pChild->ParticleRender()->SetEndColor(Vec4(1.f, 0.f, 0.f, 0.f));
 	pChild->ParticleRender()->SetSpawnRate(0.f);
@@ -159,7 +159,7 @@ void CLevelMgr::Init()
 	pObject->Transform()->SetRelativePos(300.f, 50.f, 100.f);
 	pObject->Transform()->SetRelativeScale(10.f, 10.f, 1.f);
 
-	pObject->ParticleRender()->SetParticleTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture2D\\Ambient_Circle.png"));
+	pObject->ParticleRender()->SetParticleTex(CAssetMgr::GetInst()->Load<CTexture2D>(L"Texture2D\\Ambient_Circle.png"));
 	pObject->ParticleRender()->SetStartColor(Vec4(0.f, 1.f, 0.f, 1.f));
 	pObject->ParticleRender()->SetEndColor(Vec4(0.f, 1.f, 0.f, 0.f));
 	pObject->ParticleRender()->SetSpawnRate(10.f);
@@ -191,7 +191,7 @@ void CLevelMgr::Init()
 	pObject->Transform()->SetRelativePos(100.f, 300.f, 100.f);
 	pObject->Transform()->SetRelativeScale(10.f, 10.f, 1.f);
 
-	pObject->ParticleRender()->SetParticleTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture2D\\Sprsheet_RainParticle_5x1.png"));
+	pObject->ParticleRender()->SetParticleTex(CAssetMgr::GetInst()->Load<CTexture2D>(L"Texture2D\\Sprsheet_RainParticle_5x1.png"));
 	pObject->ParticleRender()->SetStartColor(Vec4(1.f, 1.f, 1.f, 1.f));
 	pObject->ParticleRender()->SetEndColor(Vec4(1.f, 1.f, 1.f, 1.f));
 	pObject->ParticleRender()->SetSpawnRate(10.f);

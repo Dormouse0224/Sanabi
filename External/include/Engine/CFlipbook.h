@@ -20,7 +20,7 @@ public:
 
 private:
     vector<AssetPtr<CSprite>>    m_vecSprite;
-    vector<AssetPtr<CTexture>>   m_vecTex;
+    vector<AssetPtr<CTexture2D>>   m_vecTex;
 
     SceneType               m_SceneType;
 
@@ -33,7 +33,7 @@ public:
             m_vecSprite.push_back(_Scene);
             m_SceneType = SceneType::SPRITE;
         }
-        else if constexpr (is_same_v<CTexture, T>)
+        else if constexpr (is_same_v<CTexture2D, T>)
         {
             m_vecTex.push_back(_Scene);
             m_SceneType = SceneType::TEXTURE;
@@ -49,7 +49,7 @@ public:
         {
             return m_vecSprite[_Idx];
         }
-        else if constexpr (is_same_v<CTexture, T>)
+        else if constexpr (is_same_v<CTexture2D, T>)
         {
             return m_vecTex[_Idx];
         }

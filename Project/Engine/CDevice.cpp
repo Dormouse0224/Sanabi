@@ -2,7 +2,7 @@
 #include "CDevice.h"
 
 #include "CConstBuffer.h"
-#include "CTexture.h"
+#include "CTexture2D.h"
 #include "CAssetMgr.h"
 
 
@@ -10,6 +10,7 @@ CDevice::CDevice()
     : m_hMainWnd(nullptr)
     , m_ConstBuffer{}
     , m_RSState{}
+    , m_ViewPort{}
 {
 
 }
@@ -69,24 +70,14 @@ int CDevice::Init(HWND _OutputWnd, Vec2 _vResolution)
     CreateConstBuffer();
 
     // ViewPort 설정
-    D3D11_VIEWPORT ViewPort = { };
+    m_ViewPort.TopLeftX = 0;
+    m_ViewPort.TopLeftY = 0;
+    m_ViewPort.Width = m_RenderResolution.x;
+    m_ViewPort.Height = m_RenderResolution.y;
+    m_ViewPort.MinDepth = 0.f;    // 깊이 텍스쳐에 저장하는 깊이값의 범위
+    m_ViewPort.MaxDepth = 1.f;
 
-    ViewPort.TopLeftX = 0;
-    ViewPort.TopLeftY = 0;
-
-    ViewPort.Width = m_RenderResolution.x;
-    ViewPort.Height = m_RenderResolution.y;
-
-    // 깊이 텍스쳐에 저장하는 깊이값의 범위
-    ViewPort.MinDepth = 0.f;
-    ViewPort.MaxDepth = 1.f;
-
-    // 뷰포트 설정값 전달
-    m_Context->RSSetViewports(1, &ViewPort);
-
-    // 출력 렌더타겟 및 출력 깊이타겟 설정
-    m_Context->OMSetRenderTargets(1, m_RenderTarget->GetRTV().GetAddressOf(), m_DepthStencil->GetDSV().Get());
-
+    SetRenderTargetAndViewport();
 
     // 샘플러 생성 및 바인딩
     CreateSamplerState();
@@ -311,4 +302,13 @@ void CDevice::CreateSamplerState()
     CONTEXT->GSSetSamplers(1, 1, m_Sampler[1].GetAddressOf());
     CONTEXT->PSSetSamplers(1, 1, m_Sampler[1].GetAddressOf());
     CONTEXT->CSSetSamplers(1, 1, m_Sampler[1].GetAddressOf());
+}
+
+void CDevice::SetRenderTargetAndViewport()
+{
+    // 뷰포트 설정값 전달
+    m_Context->RSSetViewports(1, &m_ViewPort);
+
+    // 출력 렌더타겟 및 출력 깊이타겟 설정
+    m_Context->OMSetRenderTargets(1, m_RenderTarget->GetRTV().GetAddressOf(), m_DepthStencil->GetDSV().Get());
 }

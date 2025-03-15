@@ -351,7 +351,7 @@
     <ClInclude Include="CCamera.h">
       <Filter>07. Component\02. Camera</Filter>
     </ClInclude>
-    <ClInclude Include="CTexture.h">
+    <ClInclude Include="CTexture2D.h">
       <Filter>08. Asset\04. Texture</Filter>
     </ClInclude>
     <ClInclude Include="CRenderComponent.h">
@@ -569,7 +569,7 @@
     <ClCompile Include="extern.cpp">
       <Filter>01. Header</Filter>
     </ClCompile>
-    <ClCompile Include="CTexture.cpp">
+    <ClCompile Include="CTexture2D.cpp">
       <Filter>08. Asset\04. Texture</Filter>
     </ClCompile>
     <ClCompile Include="CRenderComponent.cpp">

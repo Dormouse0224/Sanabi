@@ -2,17 +2,59 @@
 #include "CMeshUI.h"
 #include "CMesh.h"
 
+#include "CAssetMgr.h"
+#include "CTaskMgr.h"
+
+#include "CGameObject.h"
+#include "CTransform.h"
+#include "CCamera.h"
+#include "CTexture2D.h"
+#include "CDevice.h"
+#include "CMeshRender.h"
+
 CMeshUI::CMeshUI()
 	: CAssetUI(ASSET_TYPE_WSTR[(UINT)ASSET_TYPE::MESH])
+	, m_ViewPort{}
 {
+	m_VertexRTTex = CAssetMgr::GetInst()->CreateTexture(L"VertexRTTex", 300, 300, DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+	m_VertexDSTex = CAssetMgr::GetInst()->CreateTexture(L"VertexDSTex", 300, 300, DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_DEPTH_STENCIL);
+
+	// ViewPort 설정
+	m_ViewPort.TopLeftX = 0;
+	m_ViewPort.TopLeftY = 0;
+	m_ViewPort.Width = 300;
+	m_ViewPort.Height = 300;
+	m_ViewPort.MinDepth = 0.f;    // 깊이 텍스쳐에 저장하는 깊이값의 범위
+	m_ViewPort.MaxDepth = 1.f;
+
+	m_MeshCam = new CGameObject;
+	m_MeshCam->AddComponent(new CTransform);
+	m_MeshCam->AddComponent(new CCamera);
+	m_MeshCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
+	m_MeshCam->Camera()->SetViewX(300);
+	m_MeshCam->Camera()->SetViewY(300);
+	//m_MeshCam->Camera()->SetPriority(1);
+	//m_MeshCam->Camera()->CheckLayer(CAMERA_LAYER::UI);
+	//CTaskMgr::GetInst()->AddTask(TASK_TYPE::CREATE_OBJECT, (DWORD_PTR)m_MeshCam, (DWORD_PTR)CAMERA_LAYER::Default);
+
+
+	m_VertexObject = new CGameObject;
+	m_VertexObject->AddComponent(new CTransform);
+	m_VertexObject->AddComponent(new CMeshRender);
+	m_VertexObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DebugShapeMtrl"));
+	m_VertexObject->Transform()->SetRelativePos(0, 0, 1);
+	//CTaskMgr::GetInst()->AddTask(TASK_TYPE::CREATE_OBJECT, (DWORD_PTR)m_VertexObject, (DWORD_PTR)CAMERA_LAYER::UI);
 }
 
 CMeshUI::~CMeshUI()
 {
+	delete m_MeshCam;
+	delete m_VertexObject;
 }
 
 void CMeshUI::Update_Ast()
 {
+	m_VertexObject->MeshRender()->SetMesh(static_cast<CMesh*>(m_TargetAsset.Get()));
 }
 
 void CMeshUI::Render_Ast()
@@ -34,4 +76,48 @@ void CMeshUI::Render_Ast()
 	ImGui::BeginDisabled(true);
 	ImGui::InputInt("##IndexCount", &IdxCount, 0, 0, ImGuiInputTextFlags_ReadOnly);
 	ImGui::EndDisabled();
+
+	ImGui::Text("Vertex Preview");
+	VertexRender();
+	Vec3 VertexPos = m_MeshCam->Transform()->GetRelativePos();
+	float Pos[3] = { VertexPos.x, VertexPos.y, VertexPos.z };
+	if (ImGui::DragFloat3("##Pos", Pos, 0.01f))
+	{
+		m_MeshCam->Transform()->SetRelativePos(Pos[0], Pos[1], Pos[2]);
+	}
+}
+
+void CMeshUI::VertexRender()
+{
+	// 렌더타겟 및 뷰포트 교체
+	ComPtr<ID3D11RenderTargetView> ImGuiRTV = nullptr;
+	ComPtr<ID3D11DepthStencilView> ImGuiDSV = nullptr;
+	D3D11_VIEWPORT ImGuiVP = {};
+	UINT VPCount = 0;
+	CONTEXT->OMGetRenderTargets(1, ImGuiRTV.GetAddressOf(), ImGuiDSV.GetAddressOf());
+	CONTEXT->RSGetViewports(&VPCount, &ImGuiVP);
+	CONTEXT->OMSetRenderTargets(1, m_VertexRTTex->GetRTV().GetAddressOf(), m_VertexDSTex->GetDSV().Get());
+	CONTEXT->RSSetViewports(1, &m_ViewPort);
+
+	// 렌더 타겟 클리어
+	float Color[4] = { 1.f, 1.f, 1.f, 1.f };
+	CONTEXT->ClearRenderTargetView(m_VertexRTTex->GetRTV().Get(), Color);
+	CONTEXT->ClearDepthStencilView(m_VertexDSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+
+	// 렌더 오브젝트 메쉬 설정, 카메라 틱 및 렌더링 수행
+	m_VertexObject->MeshRender()->SetMesh(static_cast<CMesh*>(m_TargetAsset.Get()));
+	m_VertexObject->MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(1, 0, 0, 1));
+	m_MeshCam->FinalTick(false);
+	m_VertexObject->FinalTick(false);
+	vector<CGameObject*> vec = { m_VertexObject };
+	m_MeshCam->Camera()->Direct_Render(vec);
+
+	// 렌더타겟과 뷰포트 원상복구
+	CONTEXT->OMSetRenderTargets(1, ImGuiRTV.GetAddressOf(), ImGuiDSV.Get());
+	CONTEXT->RSSetViewports(VPCount, &ImGuiVP);
+
+	// ImGui 이미지 UI에 SRV 전달해서 렌더링
+	ImGui::Image((ImTextureID)m_VertexRTTex->GetSRV().Get(), ImVec2(300, 300), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
+
+
 }

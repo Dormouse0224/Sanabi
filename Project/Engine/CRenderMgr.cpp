@@ -23,8 +23,10 @@ CRenderMgr::~CRenderMgr()
 		delete m_DebugObject;
 }
 
-void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Priority)
+void CRenderMgr::RegisterCamera(CCamera* _Cam, UINT _Priority)
 {
+	assert(_Priority >= 0);	// Priority 는 0 이상이어야 합니다.
+
 	if (m_vecCam.size() <= _Priority)
 	{
 		m_vecCam.resize(_Priority + 1);
@@ -41,10 +43,11 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Priority)
 
 void CRenderMgr::Tick()
 {
-	// 출력 렌더타겟 및 출력 깊이타겟 설정
-	AssetPtr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTarget");
-	AssetPtr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencil");
-	CONTEXT->OMSetRenderTargets(1, pRTTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
+	CDevice::GetInst()->SetRenderTargetAndViewport();
+	//// 출력 렌더타겟 및 출력 깊이타겟 설정
+	//AssetPtr<CTexture2D> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture2D>(L"RenderTarget");
+	//AssetPtr<CTexture2D> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture2D>(L"DepthStencil");
+	//CONTEXT->OMSetRenderTargets(1, pRTTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
 
 
 	// GlobalData Binding

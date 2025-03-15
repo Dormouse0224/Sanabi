@@ -27,14 +27,14 @@ private:
     bool                    m_Active;
     bool                    m_Gravity;
 
-    AssetPtr<CTexture>           m_ParticleTex;
+    AssetPtr<CTexture2D>           m_ParticleTex;
 
     map<UINT, CGameObject*> m_mapParticleObj;
 
 public:
     void SetSpawnRate(float _Rate) { m_Module.SpawnRate = _Rate; m_ModuleChanged = true; }
     void SetSpawnCount(float _Count) { m_SpawnCount = _Count; }
-    void SetParticleTex(const AssetPtr<CTexture>& _Tex) { m_ParticleTex = _Tex; }
+    void SetParticleTex(const AssetPtr<CTexture2D>& _Tex) { m_ParticleTex = _Tex; }
     float GetSpawnRate() { return m_Module.SpawnRate; m_ModuleChanged = true; }
     void SetStartColor(Vec4 _Color) { m_Module.StartColor = _Color; m_ModuleChanged = true; }
     void SetEndColor(Vec4 _Color) { m_Module.EndColor = _Color; m_ModuleChanged = true; }

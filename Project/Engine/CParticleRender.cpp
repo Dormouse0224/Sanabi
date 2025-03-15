@@ -83,7 +83,7 @@ void CParticleRender::FinalTick()
 	m_TickCS->SetSpawnBuffer(m_SpawnBuffer);
 	m_TickCS->SetParticleBuffer(m_ParticleBuffer);
 	m_TickCS->SetModuleBuffer(m_ModuleBuffer);
-	m_TickCS->SetNoiseTex(CAssetMgr::GetInst()->Load<CTexture>(L"Noise\\noise_03.jpg"));
+	m_TickCS->SetNoiseTex(CAssetMgr::GetInst()->Load<CTexture2D>(L"Noise\\noise_03.jpg"));
 
 	// 파티클 컴퓨트 셰이더 Tick 수행
 	m_TickCS->Execute();

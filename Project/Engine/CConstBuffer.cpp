@@ -17,7 +17,7 @@ int CConstBuffer::Create(CB_TYPE _Type, UINT _BufferSize)
 {
 	m_Type = _Type;
 
-	// 물체의 위치값을 전달시키기 위한 상수버퍼 생성
+	// 상수버퍼 생성
 	m_Desc.ByteWidth = _BufferSize;
 
 	// 생성 이후엔 데이터 이동 없음

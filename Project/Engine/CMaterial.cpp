@@ -3,7 +3,7 @@
 
 #include "CDevice.h"
 #include "CConstBuffer.h"
-#include "CTexture.h"
+#include "CTexture2D.h"
 
 CMaterial::CMaterial()
 	: CAsset(ASSET_TYPE::MATERIAL)
@@ -16,7 +16,7 @@ CMaterial::~CMaterial()
 {
 }
 
-void CMaterial::SetTexParam(TEX_PARAM _Param, const AssetPtr<CTexture>& _Tex)
+void CMaterial::SetTexParam(TEX_PARAM _Param, const AssetPtr<CTexture2D>& _Tex)
 {
 	m_arrTex[_Param] = _Tex;
 }

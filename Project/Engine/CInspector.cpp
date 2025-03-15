@@ -40,6 +40,37 @@ CInspector::~CInspector()
 
 void CInspector::Update()
 {
+	switch (m_Type)
+	{
+	case TARGET_TYPE::GAMEOBJECT:
+	{
+		if (!m_TargetObj)
+			return;
+
+		for (int i = 0; i < (UINT)COMPONENT_TYPE::COMPONENT_END; ++i)
+		{
+			if (m_TargetObj->GetComponent((COMPONENT_TYPE)i))
+			{
+				if (m_ComponentUI[i] == nullptr)
+					continue;
+				m_ComponentUI[i]->SetTargetObj(m_TargetObj);
+				m_ComponentUI[i]->Update();
+			}
+		}
+	}
+	break;
+	case TARGET_TYPE::ASSET:
+	{
+		if (!m_TargetAsset.Get())
+			return;
+		if (CAssetUI* pAssetUI = m_AssetUI[(UINT)m_TargetAsset->GetType()])
+		{
+			pAssetUI->SetTarget(m_TargetAsset);
+			pAssetUI->Update();
+		}
+	}
+	break;
+	}
 }
 
 void CInspector::Render()
@@ -52,13 +83,14 @@ void CInspector::Render()
 			return;
 		ImGui::Text(to_str(m_TargetObj->GetName()).c_str());
 		ImGui::Separator();
+
 		for (int i = 0; i < (UINT)COMPONENT_TYPE::COMPONENT_END; ++i)
 		{
 			if (m_TargetObj->GetComponent((COMPONENT_TYPE)i))
 			{
 				if (m_ComponentUI[i] == nullptr)
 					continue;
-				m_ComponentUI[i]->SetTargetObj(m_TargetObj);
+				m_TargetAsset;
 				m_ComponentUI[i]->Render();
 			}
 		}

@@ -102,6 +102,18 @@ void CCamera::Render()
 	m_vecTransparent.clear();
 }
 
+void CCamera::Direct_Render(const vector<CGameObject*>& _vecObj)
+{
+	// 카메라의 View, Proj 행렬을 세팅
+	g_Trans.matView = m_matView;
+	g_Trans.matProj = m_matProj;
+
+	for (CGameObject* pObj : _vecObj)
+	{
+		pObj->Render();
+	}
+}
+
 
 void CCamera::SortObject()
 {

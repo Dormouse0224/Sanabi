@@ -1,14 +1,14 @@
 #pragma once
 #include "CAsset.h"
 
-class CTexture :
+class CTexture2D :
     public CAsset
 {
     friend class CAssetMgr;
 public:
-    CTexture();
-    ~CTexture();
-    CLONE_DISABLE(CTexture);
+    CTexture2D();
+    ~CTexture2D();
+    CLONE_DISABLE(CTexture2D);
 
 private:
     ScratchImage                        m_Image; // DirectxTex 라이브러리에서 제공, 이미지파일을 SystemMem 로 로딩하는 기능이 구현되어있음

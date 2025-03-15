@@ -32,14 +32,13 @@ void CAssetMgr::AddAsset(const wstring& _Key, AssetPtr<CAsset> _Asset)
 	m_Renew = true;
 }
 
-AssetPtr<CTexture> CAssetMgr::CreateTexture(const wstring& _Key, UINT _Width, UINT _Height
+AssetPtr<CTexture2D> CAssetMgr::CreateTexture(const wstring& _Key, UINT _Width, UINT _Height
 	, DXGI_FORMAT _Format, UINT _BindFlag, D3D11_USAGE _Usage)
 {
-	AssetPtr<CTexture> pTex = FindAsset<CTexture>(_Key);
-	if (nullptr != pTex)
-		return pTex;
+	AssetPtr<CTexture2D> pTex = FindAsset<CTexture2D>(_Key);
+	assert(nullptr == pTex);	// 키값이 중복된 경우 중단합니다.
 
-	pTex = new CTexture;
+	pTex = new CTexture2D;
 	if (FAILED(pTex->Create(_Width, _Height, _Format, _BindFlag, _Usage)))
 	{
 		MessageBox(nullptr, _Key.c_str(), L"텍스쳐 생성 실패", MB_OK);
@@ -51,13 +50,13 @@ AssetPtr<CTexture> CAssetMgr::CreateTexture(const wstring& _Key, UINT _Width, UI
 	return pTex;
 }
 
-AssetPtr<CTexture> CAssetMgr::CreateTexture(const wstring& _Key, ComPtr<ID3D11Texture2D> _Tex2D)
+AssetPtr<CTexture2D> CAssetMgr::CreateTexture(const wstring& _Key, ComPtr<ID3D11Texture2D> _Tex2D)
 {
-	AssetPtr<CTexture> pTex = FindAsset<CTexture>(_Key);
+	AssetPtr<CTexture2D> pTex = FindAsset<CTexture2D>(_Key);
 	if (nullptr != pTex)
 		return pTex;
 
-	pTex = new CTexture;
+	pTex = new CTexture2D;
 	if (FAILED(pTex->Create(_Tex2D)))
 	{
 		MessageBox(nullptr, _Key.c_str(), L"텍스쳐 생성 실패", MB_OK);

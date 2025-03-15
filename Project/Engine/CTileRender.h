@@ -2,7 +2,7 @@
 #include "CRenderComponent.h"
 
 #include "CSprite.h"
-#include "CTexture.h"
+#include "CTexture2D.h"
 #include "CStructuredBuffer.h"
 
 struct tTileInfo
@@ -38,7 +38,7 @@ public:
 private:
     void CreateTileRenderMtrl();
     void UpdateBuffer();
-    AssetPtr<CTexture> GetAtlasTex();
+    AssetPtr<CTexture2D> GetAtlasTex();
 
 
 

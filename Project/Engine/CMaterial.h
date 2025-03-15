@@ -2,7 +2,7 @@
 #include "CAsset.h"
 
 #include "CGraphicShader.h"
-#include "CTexture.h"
+#include "CTexture2D.h"
 
 class CMaterial :
     public CAsset
@@ -14,7 +14,7 @@ public:
 
 private:
     AssetPtr<CGraphicShader> m_Shader;
-    AssetPtr<CTexture>       m_arrTex[TEX_PARAM::TEX_END];
+    AssetPtr<CTexture2D>       m_arrTex[TEX_PARAM::TEX_END];
     tMtrlConst          m_Const;
 
 
@@ -25,7 +25,7 @@ public:
     template<typename T>
     void SetScalarParam(SCALAR_PARAM _Param, const T& _Data);
 
-    void SetTexParam(TEX_PARAM _Param, const AssetPtr<CTexture>& _Tex);
+    void SetTexParam(TEX_PARAM _Param, const AssetPtr<CTexture2D>& _Tex);
 
     void Binding();
 

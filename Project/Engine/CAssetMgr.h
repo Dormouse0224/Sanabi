@@ -16,7 +16,6 @@ public:
 	void Init();
 	void Tick();
 	void CreateEngineMesh();
-	void CreateEngineTexture();
 	void CreateEngineGraphicShader();
 	void CreateEngineComputeShader();
 	void CreateEngineMaterial();
@@ -34,8 +33,8 @@ public:
 	template<typename T>
 	AssetPtr<T> Load(const wstring& _RelativePath);
 	/// <param name="_BindFlag">flags of D3D11_BIND_FLAG</param>
-	AssetPtr<CTexture> CreateTexture(const wstring& _Key, UINT _Width, UINT _Height, DXGI_FORMAT _Format, UINT _BindFlag, D3D11_USAGE _Usage = D3D11_USAGE_DEFAULT);
-	AssetPtr<CTexture> CreateTexture(const wstring& _Key, ComPtr<ID3D11Texture2D> _Tex2D);
+	AssetPtr<CTexture2D> CreateTexture(const wstring& _Key, UINT _Width, UINT _Height, DXGI_FORMAT _Format, UINT _BindFlag, D3D11_USAGE _Usage = D3D11_USAGE_DEFAULT);
+	AssetPtr<CTexture2D> CreateTexture(const wstring& _Key, ComPtr<ID3D11Texture2D> _Tex2D);
 
 
 };
@@ -46,7 +45,7 @@ ASSET_TYPE CAssetMgr::GetAssetType()
 {
 	if constexpr (is_same_v<CMesh, T>)
 		return ASSET_TYPE::MESH;
-	else if constexpr (is_same_v<CTexture, T>)
+	else if constexpr (is_same_v<CTexture2D, T>)
 		return ASSET_TYPE::TEXTURE;
 	else if constexpr (is_same_v<CMaterial, T>)
 		return ASSET_TYPE::MATERIAL;

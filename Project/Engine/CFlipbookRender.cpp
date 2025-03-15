@@ -66,7 +66,7 @@ void CFlipbookRender::Render()
 	{
 		// 현재 진행중인 프레임 스프라이트를 출력
 		AssetPtr<CSprite> pCurSprite = m_CurFlipbook->GetScene<CSprite>(m_SceneIdx);
-		AssetPtr<CTexture> pAtlas = pCurSprite->GetAtlasTex();
+		AssetPtr<CTexture2D> pAtlas = pCurSprite->GetAtlasTex();
 		Vec2 vLeftTop = pCurSprite->GetLeftTop();
 		Vec2 vSlice = pCurSprite->GetSlice();
 		Vec2 vBackground = pCurSprite->GetBackground();
@@ -91,7 +91,7 @@ void CFlipbookRender::Render()
 	}
 	else if (m_CurFlipbook->GetSceneType() == SceneType::TEXTURE)
 	{
-		AssetPtr<CTexture> pCurTex = m_CurFlipbook->GetScene<CTexture>(m_SceneIdx);
+		AssetPtr<CTexture2D> pCurTex = m_CurFlipbook->GetScene<CTexture2D>(m_SceneIdx);
 
 		GetMaterial()->SetScalarParam(INT_0, 0);
 		GetMaterial()->SetScalarParam(INT_1, (int)!!pCurTex.Get());
