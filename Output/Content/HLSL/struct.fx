@@ -29,7 +29,7 @@ struct tParticle
 struct tSpawnCount
 {
     int SpawnCount;
-    float3 vPadding;
+    int3 padding;
 };
 
 // Particle Module

@@ -3,6 +3,7 @@
 class CComputeShaderUI :
     public CAssetUI
 {
+public:
     CComputeShaderUI();
     ~CComputeShaderUI();
 

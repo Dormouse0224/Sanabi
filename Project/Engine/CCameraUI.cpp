@@ -75,7 +75,7 @@ void CCameraUI::Render_Com()
 
     bool LayerCheck[(UINT)CAMERA_LAYER::END] = {};
     ImGui::Text("Camera Layer");
-    if (ImGui::BeginTable("##CameraLayer", 1, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders))
+    if (ImGui::BeginTable("##CameraLayer", 1, ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders))
     {
         for (int i = 0; i < (UINT)CAMERA_LAYER::END; i++)
         {

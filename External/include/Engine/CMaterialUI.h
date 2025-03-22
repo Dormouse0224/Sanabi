@@ -3,6 +3,7 @@
 class CMaterialUI :
     public CAssetUI
 {
+public:
     CMaterialUI();
     ~CMaterialUI();
 

@@ -3,6 +3,7 @@
 class CSpriteUI :
     public CAssetUI
 {
+public:
     CSpriteUI();
     ~CSpriteUI();
 

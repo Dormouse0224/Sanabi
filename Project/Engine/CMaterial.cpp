@@ -16,11 +16,6 @@ CMaterial::~CMaterial()
 {
 }
 
-void CMaterial::SetTexParam(TEX_PARAM _Param, const AssetPtr<CTexture2D>& _Tex)
-{
-	m_arrTex[_Param] = _Tex;
-}
-
 void CMaterial::Binding()
 {
 	m_Shader->Binding();

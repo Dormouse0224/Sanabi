@@ -13,29 +13,29 @@ public:
     CLONE(CMaterial);
 
 private:
-    AssetPtr<CGraphicShader> m_Shader;
-    AssetPtr<CTexture2D>       m_arrTex[TEX_PARAM::TEX_END];
-    tMtrlConst          m_Const;
+    AssetPtr<CGraphicShader>    m_Shader;
+    AssetPtr<CTexture2D>        m_arrTex[TEX_PARAM::TEX_END];
+    tMtrlConst                  m_Const;
 
 
 public:
-    void SetShader(AssetPtr<CGraphicShader> _Shader) { m_Shader = _Shader; }
     AssetPtr<CGraphicShader> GetShader() { return m_Shader; }
+    AssetPtr<CTexture2D> GetTexParam(TEX_PARAM _Idx) { return m_arrTex[_Idx]; }
+    tMtrlConst GetConstParam() { return m_Const; }
 
+    void SetShader(AssetPtr<CGraphicShader> _Shader) { m_Shader = _Shader; }
     template<typename T>
-    void SetScalarParam(SCALAR_PARAM _Param, const T& _Data);
-
-    void SetTexParam(TEX_PARAM _Param, const AssetPtr<CTexture2D>& _Tex);
+    void SetScalarParam(CONST_PARAM _Param, const T& _Data);
+    void SetTexParam(TEX_PARAM _Param, const AssetPtr<CTexture2D>& _Tex) { m_arrTex[_Param] = _Tex; }
 
     void Binding();
-
 
     virtual int Save(const wstring& _FilePath) { return S_OK; };
     virtual int Load(const wstring& _FilePath) { return S_OK; };
 };
 
 template<typename T>
-void CMaterial::SetScalarParam(SCALAR_PARAM _Param, const T& _Data)
+void CMaterial::SetScalarParam(CONST_PARAM _Param, const T& _Data)
 {
     bool bInput = false;
 

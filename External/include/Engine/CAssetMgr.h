@@ -46,7 +46,7 @@ ASSET_TYPE CAssetMgr::GetAssetType()
 	if constexpr (is_same_v<CMesh, T>)
 		return ASSET_TYPE::MESH;
 	else if constexpr (is_same_v<CTexture2D, T>)
-		return ASSET_TYPE::TEXTURE;
+		return ASSET_TYPE::TEXTURE2D;
 	else if constexpr (is_same_v<CMaterial, T>)
 		return ASSET_TYPE::MATERIAL;
 	else if constexpr (is_same_v<CGraphicShader, T>)

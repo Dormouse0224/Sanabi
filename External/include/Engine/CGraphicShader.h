@@ -1,6 +1,18 @@
 #pragma once
 #include "CShader.h"
 
+struct tConstData
+{
+    CONST_PARAM m_Param;
+    string      m_Desc;
+};
+
+struct tTexData
+{
+    TEX_PARAM   m_Param;
+    string      m_Desc;
+};
+
 class CGraphicShader :
     public CShader
 {
@@ -28,19 +40,27 @@ private:
     DS_TYPE                         m_DSType;
     BS_TYPE                         m_BSType;
 
+    vector<tConstData>              m_vecConstData;
+    vector<tTexData>                m_vecTexData;
+
 public:
     int CreateVertexShader(const wstring& _RelativePath, const string& _FuncName);
     int CreateGeometryShader(const wstring& _RelativePath, const string& _FuncName);
     int CreatePixelShader(const wstring& _RelativePath, const string& _FuncName);
+    SHADER_DOMAIN GetDomain() { return m_Domain; }
+    const vector<tConstData>& GetConstData() { return m_vecConstData; }
+    const vector<tTexData>& GetTexData() { return m_vecTexData; }
 
     void SetTopology(D3D11_PRIMITIVE_TOPOLOGY _Topology) { m_Topology = _Topology; }
     void SetRSType(RS_TYPE _Type) { m_RSType = _Type; }
     void SetDSType(DS_TYPE _Type) { m_DSType = _Type; }
     void SetBSType(BS_TYPE _Type) { m_BSType = _Type; }
+    void SetDomain(SHADER_DOMAIN _Domain) { m_Domain = _Domain; }
+    void SetConstData(CONST_PARAM _Param, string _Desc) { m_vecConstData.push_back(tConstData{ _Param, _Desc }); }
+    void SetTexData(TEX_PARAM _Param, string _Desc) { m_vecTexData.push_back(tTexData{ _Param, _Desc }); }
+
     void Binding();
 
-    void SetDomain(SHADER_DOMAIN _Domain) { m_Domain = _Domain; }
-    SHADER_DOMAIN GetDomain() { return m_Domain; }
 
 };
 

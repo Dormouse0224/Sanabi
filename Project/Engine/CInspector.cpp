@@ -10,6 +10,12 @@
 #include "CAsset.h"
 #include "CAssetUI.h"
 #include "CMeshUI.h"
+#include "CMaterialUI.h"
+#include "CTexture2DUI.h"
+#include "CComputeShaderUI.h"
+#include "CGraphicShaderUI.h"
+#include "CSpriteUI.h"
+#include "CFlipbookUI.h"
 
 CInspector::CInspector(wstring _Name)
 	: CImguiObject(_Name)
@@ -23,6 +29,12 @@ CInspector::CInspector(wstring _Name)
 	m_ComponentUI[(UINT)COMPONENT_TYPE::PHYSXACTOR] = new CPhysxActorUI;
 
 	m_AssetUI[(UINT)ASSET_TYPE::MESH] = new CMeshUI;
+	m_AssetUI[(UINT)ASSET_TYPE::MATERIAL] = new CMaterialUI;
+	m_AssetUI[(UINT)ASSET_TYPE::TEXTURE2D] = new CTexture2DUI;
+	m_AssetUI[(UINT)ASSET_TYPE::COMPUTE_SHADER] = new CComputeShaderUI;
+	m_AssetUI[(UINT)ASSET_TYPE::GRAPHIC_SHADER] = new CGraphicShaderUI;
+	m_AssetUI[(UINT)ASSET_TYPE::SPRITE] = new CSpriteUI;
+	m_AssetUI[(UINT)ASSET_TYPE::FLIPBOOK] = new CFlipbookUI;
 }
 
 CInspector::~CInspector()

@@ -3,6 +3,7 @@
 class CFlipbookUI :
     public CAssetUI
 {
+public:
     CFlipbookUI();
     ~CFlipbookUI();
 

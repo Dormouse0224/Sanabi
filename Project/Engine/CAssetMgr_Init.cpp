@@ -153,6 +153,7 @@ void CAssetMgr::CreateEngineGraphicShader()
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::LESS);
 	pShader->SetBSType(BS_TYPE::DEFAULT);
+	pShader->SetTexData(TEX_0, "Main Texture");
 
 	AddAsset(L"Std2DShader", pShader.Get());
 
@@ -168,6 +169,7 @@ void CAssetMgr::CreateEngineGraphicShader()
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::NO_WRITE);
 	pShader->SetBSType(BS_TYPE::ALPHABLEND);
+	pShader->SetTexData(TEX_0, "Alpha Texture");
 
 	AddAsset(L"Std2DAlphaBlendShader", pShader.Get());
 

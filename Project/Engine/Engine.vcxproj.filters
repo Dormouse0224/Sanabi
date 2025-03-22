@@ -498,7 +498,7 @@
     <ClInclude Include="CSpriteUI.h">
       <Filter>09. ImguiObject\AssetUI\08. SpriteUI</Filter>
     </ClInclude>
-    <ClInclude Include="CTextureUI.h">
+    <ClInclude Include="CTexture2DUI.h">
       <Filter>09. ImguiObject\AssetUI\04. TextureUI</Filter>
     </ClInclude>
   </ItemGroup>
@@ -725,7 +725,7 @@
     <ClCompile Include="CSpriteUI.cpp">
       <Filter>09. ImguiObject\AssetUI\08. SpriteUI</Filter>
     </ClCompile>
-    <ClCompile Include="CTextureUI.cpp">
+    <ClCompile Include="CTexture2DUI.cpp">
       <Filter>09. ImguiObject\AssetUI\04. TextureUI</Filter>
     </ClCompile>
   </ItemGroup>

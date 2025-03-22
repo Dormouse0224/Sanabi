@@ -4,7 +4,7 @@
 #include "CDevice.h"
 
 CTexture2D::CTexture2D()
-	: CAsset(ASSET_TYPE::TEXTURE)
+	: CAsset(ASSET_TYPE::TEXTURE2D)
 {
 }
 

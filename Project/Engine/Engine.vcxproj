@@ -182,7 +182,7 @@
     <ClInclude Include="CSpriteRender.h" />
     <ClInclude Include="CSpriteUI.h" />
     <ClInclude Include="CStructuredBuffer.h" />
-    <ClInclude Include="CTextureUI.h" />
+    <ClInclude Include="CTexture2DUI.h" />
     <ClInclude Include="CTileRender.h" />
     <ClInclude Include="CTransformUI.h" />
     <ClInclude Include="CTreeUI.h" />
@@ -297,7 +297,7 @@
     <ClCompile Include="CStructuredBuffer.cpp" />
     <ClCompile Include="CTaskMgr.cpp" />
     <ClCompile Include="CTexture2D.cpp" />
-    <ClCompile Include="CTextureUI.cpp" />
+    <ClCompile Include="CTexture2DUI.cpp" />
     <ClCompile Include="CTileRender.cpp" />
     <ClCompile Include="CTimeMgr.cpp" />
     <ClCompile Include="CTransform.cpp" />

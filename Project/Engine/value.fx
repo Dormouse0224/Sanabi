@@ -61,6 +61,7 @@ cbuffer GLOBAL : register(b2)
     float g_AccTime;
     int g_Light2DCount;
     int g_Light3DCount;
+    
     int padding;
 }
 

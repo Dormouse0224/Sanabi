@@ -25,7 +25,8 @@ int CConstBuffer::Create(CB_TYPE _Type, UINT _BufferSize)
 	m_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	m_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
-	if (FAILED(DEVICE->CreateBuffer(&m_Desc, nullptr, m_Buffer.GetAddressOf())))
+	HRESULT err;
+	if (FAILED(err = CDevice::GetInst()->GetDevice().Get()->CreateBuffer(&m_Desc, nullptr, m_Buffer.GetAddressOf())))
 	{
 		return E_FAIL;
 	}
@@ -37,6 +38,10 @@ int CConstBuffer::Create(CB_TYPE _Type, UINT _BufferSize)
 
 void CConstBuffer::SetData(void* _Data, UINT _DataSize)
 {
+	// 버퍼 크기의 단위가 16 배수여야 한다.
+	int padding_byte = _DataSize % 16 ? 16 - _DataSize % 16 : _DataSize % 16;
+	assert(!padding_byte);
+
 	D3D11_MAPPED_SUBRESOURCE tMapSub = {};
 
 	CONTEXT->Map(m_Buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &tMapSub);

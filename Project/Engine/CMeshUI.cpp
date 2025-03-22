@@ -33,9 +33,6 @@ CMeshUI::CMeshUI()
 	m_MeshCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
 	m_MeshCam->Camera()->SetViewX(300);
 	m_MeshCam->Camera()->SetViewY(300);
-	//m_MeshCam->Camera()->SetPriority(1);
-	//m_MeshCam->Camera()->CheckLayer(CAMERA_LAYER::UI);
-	//CTaskMgr::GetInst()->AddTask(TASK_TYPE::CREATE_OBJECT, (DWORD_PTR)m_MeshCam, (DWORD_PTR)CAMERA_LAYER::Default);
 
 
 	m_VertexObject = new CGameObject;
@@ -43,7 +40,6 @@ CMeshUI::CMeshUI()
 	m_VertexObject->AddComponent(new CMeshRender);
 	m_VertexObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DebugShapeMtrl"));
 	m_VertexObject->Transform()->SetRelativePos(0, 0, 1);
-	//CTaskMgr::GetInst()->AddTask(TASK_TYPE::CREATE_OBJECT, (DWORD_PTR)m_VertexObject, (DWORD_PTR)CAMERA_LAYER::UI);
 }
 
 CMeshUI::~CMeshUI()

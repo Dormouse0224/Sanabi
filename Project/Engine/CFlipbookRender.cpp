@@ -114,6 +114,13 @@ void CFlipbookRender::CreateFlipbookMaterial()
 		pShader->CreatePixelShader(L"HLSL\\flipbook.fx", "PS_Flipbook");
 		pShader->SetRSType(RS_TYPE::CULL_NONE);
 		pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+		pShader->SetTexData(TEX_0, "Atlas Texture");
+		pShader->SetConstData(INT_0, "Atlas Tex Flag");
+		pShader->SetConstData(INT_1, "Single Tex Flag");
+		pShader->SetConstData(VEC2_0, "LeftTop");
+		pShader->SetConstData(VEC2_1, "Slice");
+		pShader->SetConstData(VEC2_2, "Background");
+		pShader->SetConstData(VEC2_3, "Offset");
 		CAssetMgr::GetInst()->AddAsset(L"FlipbookShader", pShader.Get());
 	}
 

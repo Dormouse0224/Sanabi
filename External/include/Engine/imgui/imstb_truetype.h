@@ -524,7 +524,7 @@ typedef struct
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// TEXTURE BAKING API
+// TEXTURE2D BAKING API
 //
 // If you use this API, you only have to call two functions ever.
 //
@@ -572,7 +572,7 @@ STBTT_DEF void stbtt_GetScaledFontVMetrics(const unsigned char *fontdata, int in
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// NEW TEXTURE BAKING API
+// NEW TEXTURE2D BAKING API
 //
 // This provides options for packing multiple fonts into one atlas, not
 // perfectly but better than nothing.

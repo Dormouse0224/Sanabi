@@ -31,8 +31,9 @@ int CStructuredBuffer::Create(UINT _ElementSize, UINT _ElementCount
 	m_ElementSize = _ElementSize;
 	m_ElementCount = _ElementCount;
 
-	// 구조화버퍼 크기의 단위가 16 배수여야 한다.
-	assert(!((m_ElementSize * m_ElementCount) % 16));
+	// 버퍼 크기의 단위가 16 배수여야 한다.
+	int padding_byte = (m_ElementSize * m_ElementCount) % 16 ? 16 - (m_ElementSize * m_ElementCount) % 16 : (m_ElementSize * m_ElementCount) % 16;
+	assert(!padding_byte);
 
 	// 버퍼 전체 용량
 	m_Desc.ByteWidth = m_ElementSize * m_ElementCount;

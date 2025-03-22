@@ -76,7 +76,7 @@ enum class ASSET_TYPE
 {
 	MESH,
 	MESHDATA,
-	TEXTURE,
+	TEXTURE2D,
 	MATERIAL,
 	PREFAB,
 	SOUND,
@@ -115,7 +115,7 @@ enum class SHADER_DOMAIN
 	DOMAIN_DEBUG,		// 디버그 렌더링
 };
 
-enum SCALAR_PARAM
+enum CONST_PARAM
 {
 	INT_0,		INT_1,		INT_2,		INT_3,
 	FLOAT_0,	FLOAT_1,	FLOAT_2,	FLOAT_3,
