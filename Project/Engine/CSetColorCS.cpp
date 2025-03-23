@@ -28,14 +28,14 @@ int CSetColorCS::Binding()
 
 void CSetColorCS::CalcGroupNum()
 {
-	m_GroupX = m_TargetTex->GetWidth() / m_GroupPerThreadX;
-	m_GroupY = m_TargetTex->GetHeight() / m_GroupPerThreadY;
+	m_GroupX = m_TargetTex->GetWidth() / m_ThreadPerGroupX;
+	m_GroupY = m_TargetTex->GetHeight() / m_ThreadPerGroupY;
 	m_GroupZ = 1;
 
-	if (m_TargetTex->GetWidth() % m_GroupPerThreadX)
+	if (m_TargetTex->GetWidth() % m_ThreadPerGroupX)
 		m_GroupX += 1;
 
-	if (m_TargetTex->GetHeight() % m_GroupPerThreadY)
+	if (m_TargetTex->GetHeight() % m_ThreadPerGroupY)
 		m_GroupY += 1;
 }
 

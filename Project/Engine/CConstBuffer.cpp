@@ -38,16 +38,13 @@ int CConstBuffer::Create(CB_TYPE _Type, UINT _BufferSize)
 
 void CConstBuffer::SetData(void* _Data, UINT _DataSize)
 {
-	// 버퍼 크기의 단위가 16 배수여야 한다.
-	int padding_byte = _DataSize % 16 ? 16 - _DataSize % 16 : _DataSize % 16;
-	assert(!padding_byte);
-
 	D3D11_MAPPED_SUBRESOURCE tMapSub = {};
 
+	// GPU 메모리 잠금 및 CPU로 매핑
 	CONTEXT->Map(m_Buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &tMapSub);
-
+	// 매핑된 주소에 데이터 복사
 	memcpy(tMapSub.pData, _Data, _DataSize);
-
+	// 언맵 및 잠금해제
 	CONTEXT->Unmap(m_Buffer.Get(), 0);
 }
 

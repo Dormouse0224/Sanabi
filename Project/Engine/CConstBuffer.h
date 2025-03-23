@@ -17,6 +17,11 @@ private:
 
 public:
     int Create(CB_TYPE _Type, UINT _BufferSize);
+    /// <summary>
+    /// 상수 버퍼에 데이터를 작성합니다.
+    /// </summary>
+    /// <param name="_Data">작성할 데이터</param>
+    /// <param name="_DataSize">작성할 데이터의 크기</param>
     void SetData(void* _Data, UINT _DataSize);
     void Binding();
     void Binding_CS();

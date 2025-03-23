@@ -37,6 +37,8 @@ CParticleRender::CParticleRender()
 	{
 		pCS = new CParticleTickCS;
 		pCS->SetName(L"ParticleTickCS");
+		pCS->SetConstData(INT_0, "Max Particle Count");
+		pCS->SetTexData(TEX_0, "Noise Texture");
 		CAssetMgr::GetInst()->AddAsset(pCS->GetName(), pCS.Get());
 	}
 

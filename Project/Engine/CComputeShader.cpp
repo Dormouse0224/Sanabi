@@ -7,24 +7,26 @@
 
 CComputeShader::CComputeShader()
 	: CShader(ASSET_TYPE::COMPUTE_SHADER)
-	, m_GroupPerThreadX(1)
-	, m_GroupPerThreadY(1)
-	, m_GroupPerThreadZ(1)
+	, m_ThreadPerGroupX(1)
+	, m_ThreadPerGroupY(1)
+	, m_ThreadPerGroupZ(1)
 	, m_GroupX(1)
 	, m_GroupY(1)
 	, m_GroupZ(1)
+	, m_CSTex{}
 {
 }
 
 CComputeShader::CComputeShader(const wstring& _RelativePath, const string& _FuncName
 	, UINT _GroupPerX, UINT _GroupPerY, UINT _GroupPerZ)
 	: CShader(ASSET_TYPE::COMPUTE_SHADER)
-	, m_GroupPerThreadX(_GroupPerX)
-	, m_GroupPerThreadY(_GroupPerY)
-	, m_GroupPerThreadZ(_GroupPerZ)
+	, m_ThreadPerGroupX(_GroupPerX)
+	, m_ThreadPerGroupY(_GroupPerY)
+	, m_ThreadPerGroupZ(_GroupPerZ)
 	, m_GroupX(1)
 	, m_GroupY(1)
 	, m_GroupZ(1)
+	, m_CSTex{}
 {
 	CreateComputeShader(_RelativePath, _FuncName);
 }
@@ -76,6 +78,7 @@ int CComputeShader::CreateComputeShader(const wstring& _RelativePath, const stri
 
 int CComputeShader::Execute()
 {
+	// 리소스 및 쉐이더 바인딩
 	if (FAILED(Binding()))
 	{
 		assert(nullptr);
@@ -89,11 +92,23 @@ int CComputeShader::Execute()
 	pBuffer->SetData(&m_Const, sizeof(tMtrlConst));
 	pBuffer->Binding_CS();
 
+	// 텍스처 바인딩
+	for (int i = 0; i < TEX_PARAM::TEX_END; ++i)
+	{
+		if (m_CSTex[i].first != nullptr)
+			m_CSTex[i].first->Binding_CS_SRV(m_CSTex[i].second);
+	}
+
 	// 컴퓨트 쉐이더 바인딩 및 실행
 	CONTEXT->CSSetShader(m_CS.Get(), nullptr, 0);
 	CONTEXT->Dispatch(m_GroupX, m_GroupY, m_GroupZ);
 
-	// 리소스 및 쉐이더 클리어
+	// 리소스 및 쉐이더 바인딩 클리어
 	Clear();
+	for (int i = 0; i < TEX_PARAM::TEX_END; ++i)
+	{
+		if (m_CSTex[i].first != nullptr)
+			m_CSTex[i].first->Clear_CS_SRV(m_CSTex[i].second);
+	}
 	CONTEXT->CSSetShader(nullptr, nullptr, 0);
 }

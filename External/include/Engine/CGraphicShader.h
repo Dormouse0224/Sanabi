@@ -1,17 +1,16 @@
 #pragma once
 #include "CShader.h"
 
-struct tConstData
+enum SHADER_TYPE
 {
-    CONST_PARAM m_Param;
-    string      m_Desc;
+    VERTEX_SHADER,
+    GEOMETRY_SHADER,
+    PIXEL_SHADER,
+
+    SHADER_TYPE_END
 };
 
-struct tTexData
-{
-    TEX_PARAM   m_Param;
-    string      m_Desc;
-};
+extern string SHADER_TYPE_STR[];
 
 class CGraphicShader :
     public CShader
@@ -29,9 +28,10 @@ private:
     ComPtr<ID3D11VertexShader>      m_VS;
     ComPtr<ID3D11GeometryShader>    m_GS;
     ComPtr<ID3D11PixelShader>       m_PS;
+    pair<wstring, string>           m_ShaderName[SHADER_TYPE_END];  // 셰이더 파일 디렉토리와 셰이더 함수 이름
 
     // 정점 구조체 구조정보 레이아웃
-    ComPtr<ID3D11InputLayout>       m_Layout;   
+    ComPtr<ID3D11InputLayout>       m_Layout;
     D3D11_PRIMITIVE_TOPOLOGY        m_Topology;
 
     SHADER_DOMAIN                   m_Domain;
@@ -40,24 +40,24 @@ private:
     DS_TYPE                         m_DSType;
     BS_TYPE                         m_BSType;
 
-    vector<tConstData>              m_vecConstData;
-    vector<tTexData>                m_vecTexData;
 
 public:
-    int CreateVertexShader(const wstring& _RelativePath, const string& _FuncName);
-    int CreateGeometryShader(const wstring& _RelativePath, const string& _FuncName);
-    int CreatePixelShader(const wstring& _RelativePath, const string& _FuncName);
+    pair<wstring, string> GetShaderName(SHADER_TYPE _Type) { return m_ShaderName[_Type]; }
+    D3D11_PRIMITIVE_TOPOLOGY GetTopology() { return m_Topology; }
     SHADER_DOMAIN GetDomain() { return m_Domain; }
-    const vector<tConstData>& GetConstData() { return m_vecConstData; }
-    const vector<tTexData>& GetTexData() { return m_vecTexData; }
+    RS_TYPE GetRSType() { return m_RSType; }
+    DS_TYPE GetDSType() { return m_DSType; }
+    BS_TYPE GetBSType() { return m_BSType; }
 
     void SetTopology(D3D11_PRIMITIVE_TOPOLOGY _Topology) { m_Topology = _Topology; }
     void SetRSType(RS_TYPE _Type) { m_RSType = _Type; }
     void SetDSType(DS_TYPE _Type) { m_DSType = _Type; }
     void SetBSType(BS_TYPE _Type) { m_BSType = _Type; }
     void SetDomain(SHADER_DOMAIN _Domain) { m_Domain = _Domain; }
-    void SetConstData(CONST_PARAM _Param, string _Desc) { m_vecConstData.push_back(tConstData{ _Param, _Desc }); }
-    void SetTexData(TEX_PARAM _Param, string _Desc) { m_vecTexData.push_back(tTexData{ _Param, _Desc }); }
+
+    int CreateVertexShader(const wstring& _RelativePath, const string& _FuncName);
+    int CreateGeometryShader(const wstring& _RelativePath, const string& _FuncName);
+    int CreatePixelShader(const wstring& _RelativePath, const string& _FuncName);
 
     void Binding();
 

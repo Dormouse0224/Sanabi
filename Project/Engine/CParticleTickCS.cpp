@@ -30,25 +30,14 @@ int CParticleTickCS::Binding()
 	// 파티클 버퍼 최대 개수
 	m_Const.iArr[0] = (int)m_ParticleBuffer->GetElementCount();
 
-	// 노이즈 텍스쳐
-	if (nullptr != m_NoiseTex)
-	{
-		m_NoiseTex->Binding_CS_SRV(0);
-		m_Const.bTex[0] = 1;
-	}
-	else
-	{
-		m_NoiseTex->Clear_CS_SRV(0);
-		m_Const.bTex[0] = 0;
-	}
 
 	return S_OK;
 }
 
 void CParticleTickCS::CalcGroupNum()
 {
-	m_GroupX = m_ParticleBuffer->GetElementCount() / m_GroupPerThreadX;
-	if (m_ParticleBuffer->GetElementCount() % m_GroupPerThreadX)
+	m_GroupX = m_ParticleBuffer->GetElementCount() / m_ThreadPerGroupX;
+	if (m_ParticleBuffer->GetElementCount() % m_ThreadPerGroupX)
 		m_GroupX += 1;
 
 	m_GroupY = 1;
@@ -66,9 +55,5 @@ void CParticleTickCS::Clear()
 	m_ModuleBuffer->Clear_CS_SRV();
 	m_ModuleBuffer = nullptr;
 
-	if (nullptr != m_NoiseTex)
-	{
-		m_NoiseTex->Clear_CS_SRV(0);
-		m_NoiseTex = nullptr;
-	}
+
 }
