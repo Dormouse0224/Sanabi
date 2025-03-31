@@ -50,10 +50,12 @@ void CLayer::FinalTick()
 
 void CLayer::AddGameObject(CGameObject* _Parent, bool _bChildMove)
 {
+	// 전달받은 오브젝트를 레이어의 부모 오브젝트 컨테이너에 저장하고, 오브젝트의 레이어 인덱스 정보를 현재 레이어 인덱스로 수정한다.
 	m_vecParentObjects.push_back(_Parent);
 	_Parent->m_LayerIdx = m_LayerIdx;
 
 	// 자식을 보유했을 경우, 자식도 해당 레이어 소속으로 변경한다.
+	// 오브젝트와 오브젝트의 자식에 대한 작업 처리 큐를 생성한다.
 	static list<CGameObject*> queue;
 	queue.clear();
 	queue.push_back(_Parent);

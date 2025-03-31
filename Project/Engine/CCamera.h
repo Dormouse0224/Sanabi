@@ -45,9 +45,9 @@ public:
     float GetViewY() { return m_ViewY; }
     float GetFOV() { return (m_FOV / XM_PI) * 180.f; }
     float GetFar() { return m_Far; }
-    bool GetLayerState(CAMERA_LAYER _LayerIdx) { return m_LayerCheck & (1 << (UINT)_LayerIdx); }
+    bool GetLayerState(LAYER _LayerIdx) { return m_LayerCheck & (1 << (UINT)_LayerIdx); }
 
-    void CheckLayer(CAMERA_LAYER _LayerIdx) { m_LayerCheck ^= (1 << (UINT)_LayerIdx); }
+    void CheckLayer(LAYER _LayerIdx) { m_LayerCheck ^= (1 << (UINT)_LayerIdx); }
     void CheckLayerAll() { m_LayerCheck = 0xffffffff; }
     void CheckLayerClear() { m_LayerCheck = 0; }
 

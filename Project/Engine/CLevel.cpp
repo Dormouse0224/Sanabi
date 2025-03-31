@@ -6,7 +6,7 @@
 CLevel::CLevel()
 	: m_Layer{}
 {
-	for (UINT i = 0; i < (UINT)CAMERA_LAYER::END; ++i)
+	for (UINT i = 0; i < (UINT)LAYER::END; ++i)
 	{
 		m_Layer[i] = new CLayer;
 		m_Layer[i]->m_LayerIdx = i;
@@ -15,7 +15,7 @@ CLevel::CLevel()
 
 CLevel::~CLevel()
 {
-	for (UINT i = 0; i < (UINT)CAMERA_LAYER::END; ++i)
+	for (UINT i = 0; i < (UINT)LAYER::END; ++i)
 	{
 		delete m_Layer[i];
 	}
@@ -23,7 +23,7 @@ CLevel::~CLevel()
 
 void CLevel::Begin()
 {
-	for (UINT i = 0; i < (UINT)CAMERA_LAYER::END; ++i)
+	for (UINT i = 0; i < (UINT)LAYER::END; ++i)
 	{
 		m_Layer[i]->Begin();
 	}
@@ -31,7 +31,7 @@ void CLevel::Begin()
 
 void CLevel::Tick()
 {
-	for (UINT i = 0; i < (UINT)CAMERA_LAYER::END; ++i)
+	for (UINT i = 0; i < (UINT)LAYER::END; ++i)
 	{
 		m_Layer[i]->Tick();
 	}
@@ -39,7 +39,7 @@ void CLevel::Tick()
 
 void CLevel::FinalTick()
 {
-	for (UINT i = 0; i < (UINT)CAMERA_LAYER::END; ++i)
+	for (UINT i = 0; i < (UINT)LAYER::END; ++i)
 	{
 		m_Layer[i]->FinalTick();
 	}
@@ -47,7 +47,7 @@ void CLevel::FinalTick()
 
 void CLevel::Deregister()
 {
-	for (UINT i = 0; i < (UINT)CAMERA_LAYER::END; ++i)
+	for (UINT i = 0; i < (UINT)LAYER::END; ++i)
 	{
 		m_Layer[i]->m_vecObjects.clear();
 	}

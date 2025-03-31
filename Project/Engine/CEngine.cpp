@@ -16,12 +16,19 @@
 CEngine::CEngine()
     : m_hInst(nullptr)
     , m_hMainWnd(nullptr)
+    , m_FMODSystem(nullptr)
 {
 
 }
 
 CEngine::~CEngine()
 {
+    if (nullptr != m_FMODSystem)
+    {
+        m_FMODSystem->release();
+        m_FMODSystem = nullptr;
+    }
+
     LiveObjectReport();
 }
 
@@ -40,6 +47,11 @@ int CEngine::Init(HINSTANCE _Inst, UINT _Width, UINT _Height)
     {
         return E_FAIL;
     }
+
+    // FMOD 초기화 및 32개 채널 생성
+    FMOD::System_Create(&m_FMODSystem);
+    assert(m_FMODSystem);
+    m_FMODSystem->init(32, FMOD_DEFAULT, nullptr);
 
     // Manager 초기화
     CPathMgr::Init();
@@ -65,7 +77,7 @@ void CEngine::Progress()
     CLevelMgr::GetInst()->Progress();
 
     // Collision Check
-    CCollisionMgr::GetInst()->Tick();
+    //CCollisionMgr::GetInst()->Tick();
 
     // physx simulate
     CPhysxMgr::GetInst()->Tick();
@@ -102,6 +114,10 @@ int CEngine::CreateMainWindow()
 
 void CEngine::LiveObjectReport()
 {
+#ifndef _DEBUG
+    return;
+#endif
+
     HMODULE dxgidebugdll = GetModuleHandleW(L"dxgidebug.dll");
     decltype(&DXGIGetDebugInterface) GetDebugInterface = reinterpret_cast<decltype(&DXGIGetDebugInterface)>(GetProcAddress(dxgidebugdll, "DXGIGetDebugInterface"));
 

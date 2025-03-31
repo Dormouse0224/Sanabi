@@ -9,7 +9,6 @@ class CTaskMgr
 private:
 	vector<tTask>			m_vecTask;
 	vector<CGameObject*>	m_vecGC;
-	bool					m_LevelUpdated;
 
 public:
 	void Tick();
@@ -21,6 +20,5 @@ public:
 	/// <param name="Param1">CREATE_OBJECT : (int) Layer Index / DELETE_OBJECT : No used / CHANGE_LEVEL : </param>
 	void AddTask(TASK_TYPE Type, DWORD_PTR Param0, DWORD_PTR Param1);
 	
-	bool GetLevelUpdated() { return m_LevelUpdated; }
 };
 

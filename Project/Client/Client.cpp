@@ -6,6 +6,8 @@
 #include "Engine/CDevice.h"
 #include "Engine/CImguiMgr.h"
 
+#include "SanabiScript/TestLevel.h"
+
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 
@@ -37,6 +39,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     {
         return 0;
     }
+    // 테스트레벨 생성
+    TestLevel();
 
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));

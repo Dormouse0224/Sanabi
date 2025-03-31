@@ -53,9 +53,31 @@ using namespace DirectX::SimpleMath;
 #pragma comment(lib, "physx/_d/SceneQuery_static_64.lib")
 #pragma comment(lib, "physx/_d/SimulationController_static_64.lib")
 #else
+#pragma comment(lib, "physx/LowLevel_static_64.lib")
+#pragma comment(lib, "physx/LowLevelAABB_static_64.lib")
+#pragma comment(lib, "physx/LowLevelDynamics_static_64.lib")
 #pragma comment(lib, "physx/PhysX_64.lib")
+#pragma comment(lib, "physx/PhysXCharacterKinematic_static_64.lib")
+#pragma comment(lib, "physx/PhysXCommon_64.lib")
+#pragma comment(lib, "physx/PhysXCooking_64.lib")
+#pragma comment(lib, "physx/PhysXExtensions_static_64.lib")
+#pragma comment(lib, "physx/PhysXFoundation_64.lib")
+#pragma comment(lib, "physx/PhysXPvdSDK_static_64.lib")
+#pragma comment(lib, "physx/PhysXTask_static_64.lib")
+#pragma comment(lib, "physx/PhysXVehicle_static_64.lib")
+#pragma comment(lib, "physx/PhysXVehicle2_static_64.lib")
+#pragma comment(lib, "physx/SceneQuery_static_64.lib")
+#pragma comment(lib, "physx/SimulationController_static_64.lib")
 #endif
 using namespace physx;
+
+// FMOD 라이브러리 링크
+#include <FMOD/fmod.hpp>
+#ifdef _DEBUG
+#pragma comment(lib, "FMOD/fmodL_vc.lib")
+#else
+#pragma comment(lib, "FMOD/fmod_vc.lib")
+#endif
 
 // Visual Leak Detector 라이브러리 링크 (디버그에서만 적용)
 #include <VLD/vld.h>

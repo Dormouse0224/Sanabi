@@ -93,9 +93,22 @@ void CInspector::Render()
 	{
 		if (!m_TargetObj)
 			return;
+
+		float tab = 130.f;
+		// 기본 정보 표기
 		ImGui::Text(to_str(m_TargetObj->GetName()).c_str());
 		ImGui::Separator();
 
+		ImGui::Text("Layer");
+		ImGui::SameLine(tab);
+		if (m_TargetObj->GetLayerIdx() < 0)
+			ImGui::InputText("##Layer", const_cast<char*>(string("NO LAYER").c_str())
+				, 8, ImGuiInputTextFlags_ReadOnly);
+		else
+			ImGui::InputText("##Layer", const_cast<char*>(to_str(LAYER_WSTR[m_TargetObj->GetLayerIdx()]).c_str())
+			, to_str(LAYER_WSTR[m_TargetObj->GetLayerIdx()]).size() + 1, ImGuiInputTextFlags_ReadOnly);
+
+		// 컴포넌트 정보 표기
 		for (int i = 0; i < (UINT)COMPONENT_TYPE::COMPONENT_END; ++i)
 		{
 			if (m_TargetObj->GetComponent((COMPONENT_TYPE)i))
@@ -106,6 +119,8 @@ void CInspector::Render()
 				m_ComponentUI[i]->Render();
 			}
 		}
+
+		// 스크립트 정보 표기
 	}
 		break;
 	case TARGET_TYPE::ASSET:

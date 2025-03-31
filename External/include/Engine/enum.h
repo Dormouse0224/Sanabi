@@ -70,7 +70,7 @@ enum class COMPONENT_TYPE
 
 	SCRIPT,				// 대본, 역할, 컨텐츠
 };
-extern wstring COMPONENT_TYPE_WSTR[];
+extern wstring COMPONENT_TYPE_WSTR[static_cast<int>(COMPONENT_TYPE::SCRIPT) + 1];
 
 enum class ASSET_TYPE
 {
@@ -87,7 +87,7 @@ enum class ASSET_TYPE
 
 	ASSET_END,
 };
-extern wstring ASSET_TYPE_WSTR[];
+extern wstring ASSET_TYPE_WSTR[static_cast<int>(ASSET_TYPE::ASSET_END)];
 
 
 // 투영(Projection) 방식
@@ -165,7 +165,7 @@ enum COLLISION_LAYER
 };
 
 // wstr 구조체 업데이트 할 것
-enum class CAMERA_LAYER
+enum class LAYER
 {
 	Default,
 	Background,
@@ -179,4 +179,4 @@ enum class CAMERA_LAYER
 
 	END
 };
-extern wstring CAMERA_LAYER_WSTR[];
+extern wstring LAYER_WSTR[static_cast<int>(LAYER::END)];

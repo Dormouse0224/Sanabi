@@ -27,7 +27,7 @@ COutliner::~COutliner()
 void COutliner::Update()
 {
 	// 레벨이 업데이트되면 레벨 오브젝트 목록 갱신
-	if (CTaskMgr::GetInst()->GetLevelUpdated())
+	if (CLevelMgr::GetInst()->GetLevelUpdated())
 	{
 		Renew();
 	}
@@ -49,7 +49,7 @@ void COutliner::Renew()
 
 	CLevel* pLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 
-	for (int i = 0; i < (UINT)CAMERA_LAYER::END; ++i)
+	for (int i = 0; i < (UINT)LAYER::END; ++i)
 	{
 		for (auto parentObj : pLevel->GetLayer(i)->GetParentObjects())
 		{

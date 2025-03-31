@@ -27,7 +27,6 @@ void CTaskMgr::Tick()
 	// =========
 	// Task Ã³¸®
 	// =========
-	m_LevelUpdated = false;
 
 	CLevel* pLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 	for (size_t i = 0; i < m_vecTask.size(); ++i)
@@ -38,7 +37,7 @@ void CTaskMgr::Tick()
 		{
 		case TASK_TYPE::CREATE_OBJECT:
 		{
-			m_LevelUpdated = true;
+			CLevelMgr::GetInst()->SetLevelUpdated(true);
 			CGameObject* pNewObj = (CGameObject*)task.Param0;
 			int LayerIdx = (int)task.Param1;
 			pLevel->AddGameObject(pNewObj, LayerIdx, false);
@@ -46,7 +45,7 @@ void CTaskMgr::Tick()
 			break;
 		case TASK_TYPE::DELETE_OBJECT:
 		{
-			m_LevelUpdated = true;
+			CLevelMgr::GetInst()->SetLevelUpdated(true);
 			CGameObject* pDelObj = (CGameObject*)task.Param0;
 
 			if (!pDelObj->m_Dead)
@@ -58,7 +57,7 @@ void CTaskMgr::Tick()
 			break;
 		case TASK_TYPE::CHANGE_LEVEL:
 		{
-			m_LevelUpdated = true;
+			CLevelMgr::GetInst()->SetLevelUpdated(true);
 		}
 			break;
 

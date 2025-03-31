@@ -120,7 +120,7 @@ void CCamera::SortObject()
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 
 
-	for (UINT i = 0; i < (UINT)CAMERA_LAYER::END; ++i)
+	for (UINT i = 0; i < (UINT)LAYER::END; ++i)
 	{
 		// Camera 가 Rendering 하지 않는 레이어는 거른다.	
 		if (!(m_LayerCheck & (1 << i)))

@@ -3,6 +3,8 @@
 
 #include "CImguiObject.h".
 
+#include "CLevelMgr.h"
+
 #include "CInspector.h"
 #include "COutliner.h"
 #include "CContentViewer.h"
@@ -101,7 +103,7 @@ void CImguiMgr::DebugMenuBar()
                 m_Outliner->SetActive(true);
             }
 
-            if (ImGui::MenuItem("ContentViewer", nullptr))
+            if (ImGui::MenuItem("Content Viewer", nullptr))
             {
                 m_ContentViewer->SetActive(true);
             }
@@ -110,9 +112,65 @@ void CImguiMgr::DebugMenuBar()
         }
         if (ImGui::BeginMenu("Edit"))
         {
-
+            if (ImGui::MenuItem("Add GameObject", nullptr))
+            {
+                m_AddGameObjectMenuActive = true;
+            }
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
     }
+
+    AddGameObjectMenu();
+}
+
+void CImguiMgr::AddGameObjectMenu()
+{
+    if (m_AddGameObjectMenuActive)
+    {
+        m_AddGameObjectMenuActive = false;
+        ImGui::OpenPopup("AddGameObjectMenu");
+    }
+
+    if (ImGui::BeginPopupModal("AddGameObjectMenu", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        float tab = 130.f;
+        ImGui::Text("Adding GameObject instance to current level.");
+        ImGui::NewLine();
+
+        // 오브젝트 이름 입력
+        ImGui::Text("Name: ");
+        ImGui::SameLine(tab);
+        static char Name[255] = {};
+        ImGui::InputText("##Name", Name, 255);
+
+        // 레이어 입력
+        ImGui::Text("Layer select");
+        static int layeridx = 0;
+        string layerstr[static_cast<int>(LAYER::END)] = {};
+        const char* layer[static_cast<int>(LAYER::END)] = {};
+        for (int i = 0; i < static_cast<int>(LAYER::END); ++i)
+        {
+            layerstr[i] = to_str(LAYER_WSTR[i]);
+            layer[i] = layerstr[i].c_str();
+        }
+        ImGui::Combo("##Topology", &layeridx, layer, static_cast<int>(LAYER::END));
+
+        if (ImGui::Button("Add"))
+        {
+            CLevelMgr::GetInst()->AddGameObject(to_wstr(string(Name)), static_cast<LAYER>(layeridx));
+            layeridx = 0;
+            memset(Name, 0, sizeof(Name));
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Cancel"))
+        {
+            ImGui::CloseCurrentPopup();
+        }
+
+
+        ImGui::EndPopup();
+    }
+    
 }

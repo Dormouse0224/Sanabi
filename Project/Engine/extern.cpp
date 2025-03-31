@@ -46,11 +46,9 @@ wstring ASSET_TYPE_WSTR[] =
 	L"COMPUTE_SHADER", // °è»ê, GP(General Purpose)
 	L"SPRITE",
 	L"FLIPBOOK",
-
-	L"ASSET_END",
 };
 
-wstring CAMERA_LAYER_WSTR[] =
+wstring LAYER_WSTR[] =
 {
 	L"Default",
 	L"Background",

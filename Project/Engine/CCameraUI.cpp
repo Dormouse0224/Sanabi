@@ -73,17 +73,17 @@ void CCameraUI::Render_Com()
 
     //int         m_Priority;     // 카메라 우선순위, -1 : 미등록 카메라, 0 : 메인 카메라, 1 ~> : 서브 카메라
 
-    bool LayerCheck[(UINT)CAMERA_LAYER::END] = {};
+    bool LayerCheck[(UINT)LAYER::END] = {};
     ImGui::Text("Camera Layer");
     if (ImGui::BeginTable("##CameraLayer", 1, ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders))
     {
-        for (int i = 0; i < (UINT)CAMERA_LAYER::END; i++)
+        for (int i = 0; i < (UINT)LAYER::END; i++)
         {
-            LayerCheck[i] = m_TargetObj->Camera()->GetLayerState((CAMERA_LAYER)i);
+            LayerCheck[i] = m_TargetObj->Camera()->GetLayerState((LAYER)i);
             ImGui::TableNextColumn();
-            if (ImGui::Selectable(to_str(CAMERA_LAYER_WSTR[i]).c_str(), &LayerCheck[i]))
+            if (ImGui::Selectable(to_str(LAYER_WSTR[i]).c_str(), &LayerCheck[i]))
             {
-                m_TargetObj->Camera()->CheckLayer((CAMERA_LAYER)i);
+                m_TargetObj->Camera()->CheckLayer((LAYER)i);
             }
         }
         ImGui::EndTable();

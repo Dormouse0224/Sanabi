@@ -132,6 +132,10 @@
       </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>cd $(SolutionDir)
+call EngineHeaderCopy.bat</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -152,6 +156,10 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>cd $(SolutionDir)
+call EngineHeaderCopy.bat</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="assets.h" />
@@ -176,8 +184,10 @@
     <ClInclude Include="CPhysxActor.h" />
     <ClInclude Include="CPhysxActorUI.h" />
     <ClInclude Include="CPhysxMgr.h" />
+    <ClInclude Include="CPrefab.h" />
     <ClInclude Include="CSetColorCS.h" />
     <ClInclude Include="CSimulationEvent.h" />
+    <ClInclude Include="CSound.h" />
     <ClInclude Include="CSprite.h" />
     <ClInclude Include="CSpriteRender.h" />
     <ClInclude Include="CSpriteUI.h" />
@@ -198,7 +208,6 @@
     <ClInclude Include="CAsset.h" />
     <ClInclude Include="CAssetMgr.h" />
     <ClInclude Include="CCamera.h" />
-    <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CCollider2D.h" />
     <ClInclude Include="CCollisionMgr.h" />
     <ClInclude Include="CComponent.h" />
@@ -217,7 +226,6 @@
     <ClInclude Include="CMeshRender.h" />
     <ClInclude Include="components.h" />
     <ClInclude Include="CPathMgr.h" />
-    <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CRenderComponent.h" />
     <ClInclude Include="CRenderMgr.h" />
     <ClInclude Include="CScript.h" />
@@ -243,7 +251,6 @@
     <ClCompile Include="CAssetMgr_Init.cpp" />
     <ClCompile Include="CAssetUI.cpp" />
     <ClCompile Include="CCamera.cpp" />
-    <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CCameraUI.cpp" />
     <ClCompile Include="CCollider2D.cpp" />
     <ClCompile Include="CCollisionMgr.cpp" />
@@ -283,7 +290,7 @@
     <ClCompile Include="CPhysxActor.cpp" />
     <ClCompile Include="CPhysxActorUI.cpp" />
     <ClCompile Include="CPhysxMgr.cpp" />
-    <ClCompile Include="CPlayerScript.cpp" />
+    <ClCompile Include="CPrefab.cpp" />
     <ClCompile Include="CRenderComponent.cpp" />
     <ClCompile Include="CRenderMgr.cpp" />
     <ClCompile Include="CRenderMgr_Init.cpp" />
@@ -291,6 +298,7 @@
     <ClCompile Include="CSetColorCS.cpp" />
     <ClCompile Include="CShader.cpp" />
     <ClCompile Include="CSimulationEvent.cpp" />
+    <ClCompile Include="CSound.cpp" />
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="CSpriteRender.cpp" />
     <ClCompile Include="CSpriteUI.cpp" />

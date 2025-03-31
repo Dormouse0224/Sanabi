@@ -19,9 +19,6 @@
     <Filter Include="Default">
       <UniqueIdentifier>{29c61fd4-bb61-40ad-9e34-76dbd0fa43da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameScript">
-      <UniqueIdentifier>{7d86c184-09a0-4766-bf1e-e79f897cd380}</UniqueIdentifier>
-    </Filter>
     <Filter Include="HLSL">
       <UniqueIdentifier>{a2448546-ee81-4cd6-acbb-7a7863207b54}</UniqueIdentifier>
     </Filter>
@@ -366,12 +363,6 @@
     <ClInclude Include="CCollider2D.h">
       <Filter>07. Component\03. Collider2D</Filter>
     </ClInclude>
-    <ClInclude Include="CCameraMoveScript.h">
-      <Filter>GameScript</Filter>
-    </ClInclude>
-    <ClInclude Include="CPlayerScript.h">
-      <Filter>GameScript</Filter>
-    </ClInclude>
     <ClInclude Include="CCollisionMgr.h">
       <Filter>04. Manager\07. CollisionMgr</Filter>
     </ClInclude>
@@ -501,6 +492,12 @@
     <ClInclude Include="CTexture2DUI.h">
       <Filter>09. ImguiObject\AssetUI\04. TextureUI</Filter>
     </ClInclude>
+    <ClInclude Include="CPrefab.h">
+      <Filter>08. Asset\07. Prefab</Filter>
+    </ClInclude>
+    <ClInclude Include="CSound.h">
+      <Filter>08. Asset\05. Sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CEngine.cpp">
@@ -589,12 +586,6 @@
     </ClCompile>
     <ClCompile Include="CCollider2D.cpp">
       <Filter>07. Component\03. Collider2D</Filter>
-    </ClCompile>
-    <ClCompile Include="CCameraMoveScript.cpp">
-      <Filter>GameScript</Filter>
-    </ClCompile>
-    <ClCompile Include="CPlayerScript.cpp">
-      <Filter>GameScript</Filter>
     </ClCompile>
     <ClCompile Include="func.cpp">
       <Filter>01. Header</Filter>
@@ -727,6 +718,12 @@
     </ClCompile>
     <ClCompile Include="CTexture2DUI.cpp">
       <Filter>09. ImguiObject\AssetUI\04. TextureUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CPrefab.cpp">
+      <Filter>08. Asset\07. Prefab</Filter>
+    </ClCompile>
+    <ClCompile Include="CSound.cpp">
+      <Filter>08. Asset\05. Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

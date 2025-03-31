@@ -20,17 +20,17 @@ class CCollisionMgr
 {
 	SINGLE(CCollisionMgr);
 private:
-	UINT				 m_Matrix[(UINT)CAMERA_LAYER::END];
+	UINT				 m_Matrix[(UINT)LAYER::END];
 	map<DWORD_PTR, bool> m_mapInfo;
 
 
-public:
-	void Tick();
-	void CollisionLayerCheck(UINT _Left, UINT _Right);
-
-private:
-	void CollisionLayer(UINT _Left, UINT _Right);
-	bool IsOverlap(CCollider2D* _LeftCol, CCollider2D* _RightCol);
+//public:
+//	void Tick();
+//	void CollisionLayerCheck(UINT _Left, UINT _Right);
+//
+//private:
+//	void CollisionLayer(UINT _Left, UINT _Right);
+//	bool IsOverlap(CCollider2D* _LeftCol, CCollider2D* _RightCol);
 
 };
 

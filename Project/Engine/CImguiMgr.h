@@ -19,6 +19,7 @@ private:
 
 	bool						m_DebugMenuBar;
 	bool						m_DemoActive;
+	bool						m_AddGameObjectMenuActive;
 
 	CInspector*					m_Inspector;
 	COutliner*					m_Outliner;
@@ -29,6 +30,7 @@ public:
 	void Progress();
 	void AddImguiObj(CImguiObject* _ImguiObj);
 	void DebugMenuBar();
+	void AddGameObjectMenu();
 
 	CInspector* GetInspector() { return m_Inspector; }
 	COutliner* GetOutliner() { return m_Outliner; }
