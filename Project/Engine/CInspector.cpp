@@ -1,12 +1,15 @@
 #include "pch.h"
 #include "CInspector.h"
 
+#include "CPathMgr.h"
+
 #include "CGameObject.h"
 #include "CComponentUI.h"
 #include "CTransformUI.h"
 #include "CCameraUI.h"
 #include "CPhysxActorUI.h"
 
+#include "CEngine.h"
 #include "CAsset.h"
 #include "CAssetUI.h"
 #include "CMeshUI.h"
@@ -133,6 +136,45 @@ void CInspector::Render()
 		{
 			pAssetUI->SetTarget(m_TargetAsset);
 			pAssetUI->Render();
+		}
+
+		ImGui::Separator();
+		if (ImGui::Button("Save Asset as File"))
+		{
+			ImGui::OpenPopup("AssetSave");
+		}
+		if (ImGui::BeginPopupModal("AssetSave", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			float tab = 130.f;
+			ImGui::Text("Save asset as file.");
+			ImGui::Text("Do not enter extention.");
+			ImGui::Text("Directory folders and extention will automatically decided.");
+			ImGui::NewLine();
+
+			// 오브젝트 이름 입력
+			ImGui::Text("Name: ");
+			ImGui::SameLine(tab);
+			static char Name[255] = {};
+			ImGui::InputText("##Name", Name, 255);
+
+			// 저장/취소 버튼
+			if (ImGui::Button("Save"))
+			{
+				if (m_TargetAsset->GetEngineAsset())
+					MessageBoxW(nullptr, L"엔진 에셋은 파일 저장을 지원하지 않습니다.", L"Asset Save Error", MB_OK);
+				else
+					m_TargetAsset->Save(to_wstr(Name));
+				memset(Name, 0, sizeof(Name));
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel"))
+			{
+				memset(Name, 0, sizeof(Name));
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
 		}
 	}
 		break;

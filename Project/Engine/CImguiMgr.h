@@ -30,7 +30,9 @@ public:
 	void Progress();
 	void AddImguiObj(CImguiObject* _ImguiObj);
 	void DebugMenuBar();
+
 	void AddGameObjectMenu();
+	void LoadAsset();
 
 	CInspector* GetInspector() { return m_Inspector; }
 	COutliner* GetOutliner() { return m_Outliner; }

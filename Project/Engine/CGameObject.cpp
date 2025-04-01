@@ -8,6 +8,7 @@
 #include "CLevelMgr.h"
 #include "CLevel.h"
 #include "CLayer.h"
+#include "CPathMgr.h"
 
 CGameObject::CGameObject()
 	: m_Com{}
@@ -128,6 +129,28 @@ void CGameObject::Render()
 		return;
 
 	m_RenderCom->Render();
+}
+
+int CGameObject::Save(fstream& _Stream)
+{
+	
+	CComponent* m_Com[(UINT)COMPONENT_TYPE::COMPONENT_END];
+	vector<CScript*>        m_vecScript;
+	CRenderComponent* m_RenderCom; // 렌더링 컴포넌트 포인터
+
+	CGameObject* m_Parent;   // 부모 오브젝트
+	vector<CGameObject*>    m_vecChild; // 자식 오브젝트
+
+	int                     m_LayerIdx; // 소속 레이어 인덱스, -1 : 어느 레이어에도 소속되어있지 않다.
+
+	bool                    m_Dead;  // 오브젝트가 삭제되기 직전 상태 체크
+
+	return S_OK;
+}
+
+int CGameObject::Load(fstream& _Stream)
+{
+	return S_OK;
 }
 
 

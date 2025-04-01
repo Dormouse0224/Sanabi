@@ -14,8 +14,8 @@ void CRenderMgr::Init()
 	// ================
 	AssetPtr<CGraphicShader> pShader = new CGraphicShader;
 
-	pShader->CreateVertexShader(L"HLSL\\debug_shape.fx", "VS_DebugShape");
-	pShader->CreatePixelShader(L"HLSL\\debug_shape.fx", "PS_DebugShape");
+	pShader->CreateVertexShader(L"HLSL\\Engine\\debug_shape.fx", "VS_DebugShape");
+	pShader->CreatePixelShader(L"HLSL\\Engine\\debug_shape.fx", "PS_DebugShape");
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEBUG);
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::LESS);

@@ -18,8 +18,8 @@ private:
     D3D11_BUFFER_DESC           m_IBDesc;
     UINT                        m_IdxCount;
 
-    Vtx* m_VtxSysMem;
-    UINT* m_IdxSysMem;
+    Vtx*                        m_VtxSysMem;
+    UINT*                       m_IdxSysMem;
 
 public:
     int Create(Vtx* _VtxSysMem, UINT _VtxCount, UINT* _IdxSysMem, UINT _IdxCount);
@@ -33,8 +33,8 @@ public:
     UINT GetVtxCount() { return m_VtxCount; }
     UINT GetIdxCount() { return m_IdxCount; }
 
-    virtual int Save(const wstring& _FilePath) { return S_OK; }
-    virtual int Load(const wstring& _FilePath) { return S_OK; }
+    virtual int Save(const wstring& _FileName) override;
+    virtual int Load(const wstring& _FilePath) override;
 
 };
 

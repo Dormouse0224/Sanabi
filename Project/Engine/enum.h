@@ -70,7 +70,7 @@ enum class COMPONENT_TYPE
 
 	SCRIPT,				// 대본, 역할, 컨텐츠
 };
-extern wstring COMPONENT_TYPE_WSTR[static_cast<int>(COMPONENT_TYPE::SCRIPT) + 1];
+extern std::wstring COMPONENT_TYPE_WSTR[static_cast<int>(COMPONENT_TYPE::SCRIPT) + 1];
 
 enum class ASSET_TYPE
 {
@@ -87,7 +87,7 @@ enum class ASSET_TYPE
 
 	ASSET_END,
 };
-extern wstring ASSET_TYPE_WSTR[static_cast<int>(ASSET_TYPE::ASSET_END)];
+extern std::wstring ASSET_TYPE_WSTR[static_cast<int>(ASSET_TYPE::ASSET_END)];
 
 
 // 투영(Projection) 방식
@@ -179,4 +179,4 @@ enum class LAYER
 
 	END
 };
-extern wstring LAYER_WSTR[static_cast<int>(LAYER::END)];
+extern std::wstring LAYER_WSTR[static_cast<int>(LAYER::END)];

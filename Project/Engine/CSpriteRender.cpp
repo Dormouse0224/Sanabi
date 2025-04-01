@@ -52,8 +52,8 @@ void CSpriteRender::CreateSpriteMaterial()
 	{
 		// SpriteShader
 		AssetPtr<CGraphicShader> pShader = new CGraphicShader;
-		pShader->CreateVertexShader(L"HLSL\\sprite.fx", "VS_Sprite");
-		pShader->CreatePixelShader(L"HLSL\\sprite.fx", "PS_Sprite");
+		pShader->CreateVertexShader(L"HLSL\\Engine\\sprite.fx", "VS_Sprite");
+		pShader->CreatePixelShader(L"HLSL\\Engine\\sprite.fx", "PS_Sprite");
 		pShader->SetRSType(RS_TYPE::CULL_NONE);
 		pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 		CAssetMgr::GetInst()->AddAsset(L"SpriteShader", pShader.Get());

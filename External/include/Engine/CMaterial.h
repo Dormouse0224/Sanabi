@@ -30,8 +30,8 @@ public:
 
     void Binding();
 
-    virtual int Save(const wstring& _FilePath) { return S_OK; };
-    virtual int Load(const wstring& _FilePath) { return S_OK; };
+    virtual int Save(const wstring& _FileName) override;
+    virtual int Load(const wstring& _FilePath) override;
 };
 
 template<typename T>

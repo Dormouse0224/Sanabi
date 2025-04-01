@@ -4,7 +4,7 @@
 
 
 CParticleTickCS::CParticleTickCS()
-	: CComputeShader(L"HLSL\\particle_tick.fx", "CS_ParticleTick", 256, 1, 1)
+	: CComputeShader(L"HLSL\\Engine\\particle_tick.fx", "CS_ParticleTick", 256, 1, 1)
 	, m_ParticleBuffer(nullptr)
 {
 }
@@ -56,4 +56,10 @@ void CParticleTickCS::Clear()
 	m_ModuleBuffer = nullptr;
 
 
+}
+
+void CParticleTickCS::SetData()
+{
+	SetConstData(INT_0, "Max Particle Count");
+	SetTexData(TEX_0, "Noise Texture");
 }

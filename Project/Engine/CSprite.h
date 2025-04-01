@@ -33,7 +33,7 @@ public:
     Vec2 GetBackground() { return m_Background; }
 
 public:
-    virtual int Save(const wstring& _FilePath) override;
+    virtual int Save(const wstring& _FileName) override;
     virtual int Load(const wstring& _FilePath) override;
 
 };

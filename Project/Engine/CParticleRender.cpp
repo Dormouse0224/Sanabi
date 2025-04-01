@@ -31,18 +31,9 @@ CParticleRender::CParticleRender()
 	CreateMtrl();
 
 	// 파티클 Tick 컴퓨트 쉐이더
-	AssetPtr<CComputeShader> pCS = CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"ParticleTickCS");
+	AssetPtr<CParticleTickCS> pCS = CAssetMgr::GetInst()->Load<CParticleTickCS>(L"EA_ParticleTickCS");
 
-	if (nullptr == pCS)
-	{
-		pCS = new CParticleTickCS;
-		pCS->SetName(L"ParticleTickCS");
-		pCS->SetConstData(INT_0, "Max Particle Count");
-		pCS->SetTexData(TEX_0, "Noise Texture");
-		CAssetMgr::GetInst()->AddAsset(pCS->GetName(), pCS.Get());
-	}
-
-	m_TickCS = (CParticleTickCS*)pCS.Get();
+	m_TickCS = pCS.Get();
 }
 
 CParticleRender::~CParticleRender()
@@ -193,9 +184,9 @@ void CParticleRender::CreateMtrl()
 	AssetPtr<CGraphicShader> pShader = new CGraphicShader;
 	pShader->SetName(L"ParticleRenderShader");
 
-	pShader->CreateVertexShader(L"HLSL\\particle.fx", "VS_Particle");
-	pShader->CreateGeometryShader(L"HLSL\\particle.fx", "GS_Particle");
-	pShader->CreatePixelShader(L"HLSL\\particle.fx", "PS_Particle");
+	pShader->CreateVertexShader(L"HLSL\\Engine\\particle.fx", "VS_Particle");
+	pShader->CreateGeometryShader(L"HLSL\\Engine\\particle.fx", "GS_Particle");
+	pShader->CreatePixelShader(L"HLSL\\Engine\\particle.fx", "PS_Particle");
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 	pShader->SetBSType(BS_TYPE::ALPHABLEND);
 	pShader->SetRSType(RS_TYPE::CULL_NONE);

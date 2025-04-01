@@ -58,7 +58,7 @@ public:
     SceneType GetSceneType() { return m_SceneType; }
 
 public:
-    virtual int Save(const wstring& _FilePath) override;
+    virtual int Save(const wstring& _FileName) override;
     virtual int Load(const wstring& _FilePath) override;
 
 };

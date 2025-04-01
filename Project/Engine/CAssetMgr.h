@@ -45,14 +45,18 @@ ASSET_TYPE CAssetMgr::GetAssetType()
 {
 	if constexpr (is_same_v<CMesh, T>)
 		return ASSET_TYPE::MESH;
-	else if constexpr (is_same_v<CTexture2D, T>)
-		return ASSET_TYPE::TEXTURE2D;
 	else if constexpr (is_same_v<CMaterial, T>)
 		return ASSET_TYPE::MATERIAL;
+	else if constexpr (is_same_v<CTexture2D, T>)
+		return ASSET_TYPE::TEXTURE2D;
+	else if constexpr (is_same_v<CSound, T>)
+		return ASSET_TYPE::SOUND;
 	else if constexpr (is_same_v<CGraphicShader, T>)
 		return ASSET_TYPE::GRAPHIC_SHADER;
 	else if constexpr (is_same_v<CComputeShader, T>)
 		return ASSET_TYPE::COMPUTE_SHADER;
+	else if constexpr (is_same_v<CPrefab, T>)
+		return ASSET_TYPE::PREFAB;
 	else if constexpr (is_same_v<CSprite, T>)
 		return ASSET_TYPE::SPRITE;
 	else if constexpr (is_same_v<CFlipbook, T>)
@@ -75,22 +79,40 @@ inline AssetPtr<T> CAssetMgr::FindAsset(const wstring& _Key)
 template<typename T>
 inline AssetPtr<T> CAssetMgr::Load(const wstring& _RelativePath)
 {
-	AssetPtr<T> pAsset = FindAsset<T>(_RelativePath);
-
-	if (nullptr != pAsset)
-		return pAsset;
-
-	wstring ContentPath = CPathMgr::GetContentPath();
-
-	pAsset = new T;
-	if (FAILED(pAsset->Load(ContentPath + _RelativePath)))
+	if constexpr (is_base_of<CComputeShader, T>::value)
 	{
-		MessageBox(nullptr, L"에셋 로딩 실패", L"에셋 로딩 에러", MB_OK);
-		return nullptr;
+		AssetPtr<CComputeShader> pAsset = FindAsset<CComputeShader>(_RelativePath);
+
+		if (nullptr != pAsset)
+			return dynamic_cast<T*>(pAsset.Get());
+
+		pAsset = new T;
+		pAsset->SetName(_RelativePath);
+		pAsset->SetData();
+		CAssetMgr::GetInst()->AddAsset(_RelativePath, pAsset.Get());
+
+
+		return dynamic_cast<T*>(pAsset.Get());
 	}
+	else
+	{
+		AssetPtr<T> pAsset = FindAsset<T>(_RelativePath);
 
-	AddAsset(_RelativePath, pAsset.Get());
+		if (nullptr != pAsset)
+			return pAsset;
+
+		wstring ContentPath = CPathMgr::GetContentDir();
+
+		pAsset = new T;
+		if (FAILED(pAsset->Load(ContentPath + _RelativePath)))
+		{
+			MessageBox(nullptr, L"에셋 로딩 실패", L"에셋 로딩 에러", MB_OK);
+			return nullptr;
+		}
+
+		AddAsset(_RelativePath, pAsset.Get());
 
 
-	return pAsset;
+		return pAsset;
+	}
 }

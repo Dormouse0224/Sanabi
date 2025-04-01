@@ -147,8 +147,8 @@ void CAssetMgr::CreateEngineGraphicShader()
 	// ===========
 	pShader = new CGraphicShader;
 
-	pShader->CreateVertexShader(L"HLSL\\std2d.fx", "VS_Std2D");
-	pShader->CreatePixelShader(L"HLSL\\std2d.fx", "PS_Std2D");
+	pShader->CreateVertexShader(L"HLSL\\Engine\\std2d.fx", "VS_Std2D");
+	pShader->CreatePixelShader(L"HLSL\\Engine\\std2d.fx", "PS_Std2D");
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::LESS);
@@ -163,8 +163,8 @@ void CAssetMgr::CreateEngineGraphicShader()
 	// =====================
 	pShader = new CGraphicShader;
 
-	pShader->CreateVertexShader(L"HLSL\\std2d.fx", "VS_Std2D");
-	pShader->CreatePixelShader(L"HLSL\\std2d.fx", "PS_Std2D_AlphaBlend");
+	pShader->CreateVertexShader(L"HLSL\\Engine\\std2d.fx", "VS_Std2D");
+	pShader->CreatePixelShader(L"HLSL\\Engine\\std2d.fx", "PS_Std2D_AlphaBlend");
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::NO_WRITE);

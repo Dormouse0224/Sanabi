@@ -1,7 +1,13 @@
 #pragma once
 
-
 #include <Windows.h>
+#define _HAS_STD_BYTE 0
+#include <commdlg.h>
+#include <iostream>
+#include <fstream>
+#include <filesystem>
+using namespace std;
+using namespace std::filesystem;
 
 // ComPtr
 #include <wrl/client.h>
@@ -88,9 +94,7 @@ using namespace physx;
 #include <string>
 
 
-// 기본 프로젝트 헤더
-using namespace std;
-
+// 엔진 프로젝트 헤더
 #include "define.h"
 #include "enum.h"
 #include "singleton.h"

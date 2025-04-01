@@ -2,6 +2,8 @@
 #include "CMesh.h"
 
 #include "CDevice.h"
+#include "CPathMgr.h"
+#include "CAssetMgr.h"
 
 CMesh::CMesh()
 	: CAsset(ASSET_TYPE::MESH)
@@ -89,3 +91,75 @@ void CMesh::Render_Particle(UINT _Count)
 	CONTEXT->DrawIndexedInstanced(m_IdxCount, _Count, 0, 0, 0);
 }
 
+int CMesh::Save(const wstring& _FileName)
+{
+	std::filesystem::path path = CPathMgr::GetContentDir() + std::wstring(L"Mesh\\") + _FileName + std::wstring(L".mesh");
+	if (!std::filesystem::exists(path.parent_path()))
+		std::filesystem::create_directories(path.parent_path());
+	std::fstream file(path, std::ios::out | std::ios::binary);
+
+	// 정점 버퍼 정보 저장
+	file.write(reinterpret_cast<char*>(&m_VBDesc), sizeof(D3D11_BUFFER_DESC));
+	file.write(reinterpret_cast<char*>(&m_VtxCount), sizeof(UINT));
+	if (m_VtxSysMem)
+		file.write(reinterpret_cast<char*>(m_VtxSysMem), sizeof(Vtx) * m_VtxCount);
+
+	// 인덱스 버퍼 정보 저장
+	file.write(reinterpret_cast<char*>(&m_IBDesc), sizeof(D3D11_BUFFER_DESC));
+	file.write(reinterpret_cast<char*>(&m_IdxCount), sizeof(UINT));
+	if (m_IdxSysMem)
+		file.write(reinterpret_cast<char*>(m_IdxSysMem), sizeof(UINT) * m_IdxCount);
+
+	file.close();
+	return S_OK;
+}
+
+int CMesh::Load(const wstring& _FilePath)
+{
+	std::fstream file(CPathMgr::GetContentDir() + _FilePath, std::ios::in | std::ios::binary);
+
+	if (!file.is_open())
+	{
+		MessageBoxW(nullptr, L"파일을 찾을 수 없습니다.\n경로를 확인해 주세요.", L"Mesh Load Error", MB_OK);
+		return E_FAIL;
+	}
+
+	// 정점 버퍼 정보 불러오기
+	file.read((char*)&m_VBDesc, sizeof(D3D11_BUFFER_DESC));
+	file.read((char*)&m_VtxCount, sizeof(UINT));
+	if (m_VtxCount != 0)
+	{
+		delete[] m_VtxSysMem;
+		m_VtxSysMem = new Vtx[m_VtxCount];
+		file.read((char*)m_VtxSysMem, sizeof(Vtx) * m_VtxCount);
+	}
+
+	// 인덱스 버퍼 정보 불러오기
+	file.read((char*)&m_IBDesc, sizeof(D3D11_BUFFER_DESC));
+	file.read((char*)&m_IdxCount, sizeof(UINT));
+	if (m_IdxCount != 0)
+	{
+		delete[] m_IdxSysMem;
+		m_IdxSysMem = new UINT[m_IdxCount];
+		file.read((char*)m_IdxSysMem, sizeof(UINT) * m_IdxCount);
+	}
+
+	file.close();
+
+	// 정점 버퍼 생성
+	D3D11_SUBRESOURCE_DATA Sub = {};
+	Sub.pSysMem = m_VtxSysMem;
+	DEVICE->CreateBuffer(&m_VBDesc, &Sub, m_VB.GetAddressOf());
+
+	// 인덱스 버퍼 생성
+	Sub = {};
+	Sub.pSysMem = m_IdxSysMem;
+	DEVICE->CreateBuffer(&m_IBDesc, &Sub, m_IB.GetAddressOf());
+
+	DEBUG_NAME(m_VB, "CMesh_VB");
+	DEBUG_NAME(m_IB, "CMesh_IB");
+
+	CAssetMgr::GetInst()->AddAsset(_FilePath, this);
+
+	return S_OK;
+}

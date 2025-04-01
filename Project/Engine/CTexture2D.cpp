@@ -217,8 +217,3 @@ int CTexture2D::Create(ComPtr<ID3D11Texture2D> _Tex2D)
 
 }
 
-
-int CTexture2D::Save(const wstring& _FilePath)
-{
-	return S_OK;
-}

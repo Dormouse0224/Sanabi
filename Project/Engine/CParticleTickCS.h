@@ -23,6 +23,7 @@ public:
     virtual void CalcGroupNum() override;
     virtual void Clear() override;
     virtual void UIRender() override {}
+    virtual void SetData() override;
 
 public:
     CParticleTickCS();

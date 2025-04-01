@@ -110,8 +110,8 @@ void CFlipbookRender::CreateFlipbookMaterial()
 	{
 		// FlipbookShader
 		AssetPtr<CGraphicShader> pShader = new CGraphicShader;
-		pShader->CreateVertexShader(L"HLSL\\flipbook.fx", "VS_Flipbook");
-		pShader->CreatePixelShader(L"HLSL\\flipbook.fx", "PS_Flipbook");
+		pShader->CreateVertexShader(L"HLSL\\Engine\\flipbook.fx", "VS_Flipbook");
+		pShader->CreatePixelShader(L"HLSL\\Engine\\flipbook.fx", "PS_Flipbook");
 		pShader->SetRSType(RS_TYPE::CULL_NONE);
 		pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 		pShader->SetTexData(TEX_0, "Atlas Texture");

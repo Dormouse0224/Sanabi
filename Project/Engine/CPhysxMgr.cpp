@@ -83,8 +83,8 @@ void CPhysxMgr::Init()
     // physx 디버그용 셰이더 컴파일
     m_Shader = new CGraphicShader;
 
-    m_Shader->CreateVertexShader(L"HLSL\\PhysxDebug.fx", "VS_PhysxDebug");
-    m_Shader->CreatePixelShader(L"HLSL\\PhysxDebug.fx", "PS_PhysxDebug");
+    m_Shader->CreateVertexShader(L"HLSL\\Engine\\PhysxDebug.fx", "VS_PhysxDebug");
+    m_Shader->CreatePixelShader(L"HLSL\\Engine\\PhysxDebug.fx", "PS_PhysxDebug");
     m_Shader->SetDomain(SHADER_DOMAIN::DOMAIN_DEBUG);
     m_Shader->SetRSType(RS_TYPE::CULL_NONE);
     m_Shader->SetDSType(DS_TYPE::LESS);

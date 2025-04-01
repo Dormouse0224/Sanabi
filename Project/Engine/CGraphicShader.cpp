@@ -2,6 +2,7 @@
 #include "CGraphicShader.h"
 
 #include "CPathMgr.h"
+#include "CAssetMgr.h"
 #include "CDevice.h"
 
 string SHADER_TYPE_STR[] =
@@ -30,7 +31,7 @@ CGraphicShader::~CGraphicShader()
 
 int CGraphicShader::CreateVertexShader(const wstring& _RelativePath, const string& _FuncName)
 {
-	wstring strFilePath = CPathMgr::GetContentPath() + _RelativePath;
+	wstring strFilePath = CPathMgr::GetContentDir() + _RelativePath;
 
 	UINT Flag = 0;
 
@@ -108,7 +109,7 @@ int CGraphicShader::CreateVertexShader(const wstring& _RelativePath, const strin
 
 int CGraphicShader::CreateGeometryShader(const wstring& _RelativePath, const string& _FuncName)
 {
-	wstring strFilePath = CPathMgr::GetContentPath() + _RelativePath;
+	wstring strFilePath = CPathMgr::GetContentDir() + _RelativePath;
 
 	UINT Flag = 0;
 
@@ -151,7 +152,7 @@ int CGraphicShader::CreateGeometryShader(const wstring& _RelativePath, const str
 
 int CGraphicShader::CreatePixelShader(const wstring& _RelativePath, const string& _FuncName)
 {
-	wstring strFilePath = CPathMgr::GetContentPath() + _RelativePath;
+	wstring strFilePath = CPathMgr::GetContentDir() + _RelativePath;
 
 	UINT Flag = 0;
 
@@ -205,4 +206,103 @@ void CGraphicShader::Binding()
 	CONTEXT->OMSetDepthStencilState(CDevice::GetInst()->GetDSState(m_DSType).Get(), 0);
 	CONTEXT->OMSetBlendState(CDevice::GetInst()->GetBSState(m_BSType).Get(), nullptr, 0xffffffff);
 
+}
+
+int CGraphicShader::Save(const wstring& _FileName)
+{
+	std::filesystem::path path = CPathMgr::GetContentDir() + std::wstring(L"GraphicShader\\") + _FileName + std::wstring(L".shader");
+	if (!std::filesystem::exists(path.parent_path()))
+		std::filesystem::create_directories(path.parent_path());
+	std::fstream file(path, std::ios::out | std::ios::binary);
+
+	// hlsl 파일 경로 및 셰이더 함수 이름 정보 저장
+	for (int i = 0; i < SHADER_TYPE_END; ++i)
+	{
+		int size = m_ShaderName[i].first.size();
+		file.write(reinterpret_cast<char*>(&size), sizeof(int));
+		file.write(reinterpret_cast<char*>(m_ShaderName[i].first.data()), sizeof(wchar_t) * m_ShaderName[i].first.size());
+		size = m_ShaderName[i].second.size();
+		file.write(reinterpret_cast<char*>(&size), sizeof(int));
+		file.write(reinterpret_cast<char*>(m_ShaderName[i].second.data()), sizeof(char) * m_ShaderName[i].second.size());
+	}
+
+	// 토폴로지, 셰이더 도메인, RS, DS, BS 타입 정보 저장
+	file.write(reinterpret_cast<char*>(&m_Topology), sizeof(D3D11_PRIMITIVE_TOPOLOGY));
+	file.write(reinterpret_cast<char*>(&m_Domain), sizeof(SHADER_DOMAIN));
+	file.write(reinterpret_cast<char*>(&m_RSType), sizeof(RS_TYPE));
+	file.write(reinterpret_cast<char*>(&m_DSType), sizeof(DS_TYPE));
+	file.write(reinterpret_cast<char*>(&m_BSType), sizeof(BS_TYPE));
+
+	// 상수, 텍스쳐 데이터 저장
+	int size = m_vecConstData.size();
+	file.write(reinterpret_cast<char*>(&size), sizeof(int));
+	for (int i = 0; i < size; ++i)
+		file.write(reinterpret_cast<char*>(&m_vecConstData[i]), sizeof(tConstData));
+	size = m_vecTexData.size();
+	file.write(reinterpret_cast<char*>(&size), sizeof(int));
+	for (int i = 0; i < size; ++i)
+		file.write(reinterpret_cast<char*>(&m_vecTexData[i]), sizeof(tTexData));
+
+	file.close();
+	return S_OK;
+}
+
+int CGraphicShader::Load(const wstring& _FilePath)
+{
+	std::filesystem::path path = CPathMgr::GetContentDir() + _FilePath;
+	std::fstream file(path, std::ios::in | std::ios::binary);
+	if (!file.is_open())
+		return E_FAIL;
+
+	// hlsl 파일 경로 및 셰이더 함수 이름 정보 불러오기
+	for (int i = 0; i < SHADER_TYPE_END; ++i)
+	{
+		int size = 0;
+		file.read(reinterpret_cast<char*>(&size), sizeof(int));
+		file.read(reinterpret_cast<char*>(m_ShaderName[i].first.data()), sizeof(wchar_t) * size);
+		file.read(reinterpret_cast<char*>(&size), sizeof(int));
+		file.read(reinterpret_cast<char*>(m_ShaderName[i].second.data()), sizeof(char) * size);
+	}
+
+	// 토폴로지, 셰이더 도메인, RS, DS, BS 타입 정보 불러오기
+	file.read(reinterpret_cast<char*>(&m_Topology), sizeof(D3D11_PRIMITIVE_TOPOLOGY));
+	file.read(reinterpret_cast<char*>(&m_Domain), sizeof(SHADER_DOMAIN));
+	file.read(reinterpret_cast<char*>(&m_RSType), sizeof(RS_TYPE));
+	file.read(reinterpret_cast<char*>(&m_DSType), sizeof(DS_TYPE));
+	file.read(reinterpret_cast<char*>(&m_BSType), sizeof(BS_TYPE));
+
+	// 상수, 텍스쳐 데이터 불러오기
+	int size = 0;
+	file.read(reinterpret_cast<char*>(&size), sizeof(int));
+	m_vecConstData.resize(size);
+	for (int i = 0; i < size; ++i)
+		file.read(reinterpret_cast<char*>(&m_vecConstData[i]), sizeof(tConstData));
+	file.read(reinterpret_cast<char*>(&size), sizeof(int));
+	m_vecTexData.resize(size);
+	for (int i = 0; i < size; ++i)
+		file.read(reinterpret_cast<char*>(&m_vecTexData[i]), sizeof(tTexData));
+
+	file.close();
+
+
+	// hlsl 파일 경로 및 셰이더 함수 이름 정보로 각 셰이더 생성 및 컴파일
+	for (int i = 0; i < SHADER_TYPE_END; ++i)
+	{
+		switch (i)
+		{
+		case VERTEX_SHADER:
+			CreateVertexShader(m_ShaderName[i].first, m_ShaderName[i].second);
+			break;
+		case GEOMETRY_SHADER:
+			CreateGeometryShader(m_ShaderName[i].first, m_ShaderName[i].second);
+			break;
+		case PIXEL_SHADER:
+			CreatePixelShader(m_ShaderName[i].first, m_ShaderName[i].second);
+			break;
+		}
+	}
+
+	CAssetMgr::GetInst()->AddAsset(_FilePath, this);
+
+	return S_OK;
 }

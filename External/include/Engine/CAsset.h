@@ -20,11 +20,18 @@ private:
 
     wstring             m_Key;
     wstring             m_RelativePath;
+    bool                m_EngineAsset;
 
 public:
     ASSET_TYPE GetType() const { return m_Type; }
     wstring GetKey() { return m_Key; }
     wstring GetRelativePath() { return m_RelativePath; }
+    bool GetEngineAsset() { return m_EngineAsset; }
+
+    void SetEngineAsset(bool _b) { m_EngineAsset = _b; }
+
+    virtual int Save(const wstring& _FileName) = 0;
+    virtual int Load(const wstring& _FilePath) = 0;
 
 private:
     void AddRef() { ++m_RefCount; }
@@ -37,7 +44,5 @@ private:
         }
     }
 
-    virtual int Save(const wstring& _FilePath) = 0;
-    virtual int Load(const wstring& _FilePath) = 0;
 };
 

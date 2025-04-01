@@ -37,7 +37,7 @@ CComputeShader::~CComputeShader()
 
 int CComputeShader::CreateComputeShader(const wstring& _RelativePath, const string& _FuncName)
 {
-	wstring strFilePath = CPathMgr::GetContentPath() + _RelativePath;
+	wstring strFilePath = CPathMgr::GetContentDir() + _RelativePath;
 
 	UINT Flag = 0;
 

@@ -110,8 +110,8 @@ void CTileRender::CreateTileRenderMtrl()
 	{
 		// TileRenderShader
 		AssetPtr<CGraphicShader> pShader = new CGraphicShader;
-		pShader->CreateVertexShader(L"HLSL\\tilerender.fx", "VS_TileRender");
-		pShader->CreatePixelShader(L"HLSL\\tilerender.fx", "PS_TileRender");
+		pShader->CreateVertexShader(L"HLSL\\Engine\\tilerender.fx", "VS_TileRender");
+		pShader->CreatePixelShader(L"HLSL\\Engine\\tilerender.fx", "PS_TileRender");
 		pShader->SetRSType(RS_TYPE::CULL_NONE);
 		pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 		CAssetMgr::GetInst()->AddAsset(L"TileRenderShader", pShader.Get());

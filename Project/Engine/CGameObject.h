@@ -70,5 +70,7 @@ public:
     void FinalTick(bool _RigisterToLevel = true);
     void Render();
 
-};
+    int Save(fstream& _Stream);
+    int Load(fstream& _Stream);
+};  
 
