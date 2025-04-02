@@ -65,4 +65,7 @@ public:
     /// </summary>
     /// <param name="_vecObj">렌더링 대상 오브젝트 벡터</param>
     void Direct_Render(const vector<CGameObject*>& _vecObj);
+
+    virtual int Load(fstream& _Stream) override;
+    virtual int Save(fstream& _Stream) override;
 };

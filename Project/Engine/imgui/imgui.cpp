@@ -3557,7 +3557,7 @@ void ImGui::PopStyleVar(int count)
 
 const char* ImGui::GetStyleColorName(ImGuiCol idx)
 {
-    // Create switch-case from enum with regexp: ImGuiCol_{.*}, --> case ImGuiCol_\1: return "\1";
+    // CreateScript switch-case from enum with regexp: ImGuiCol_{.*}, --> case ImGuiCol_\1: return "\1";
     switch (idx)
     {
     case ImGuiCol_Text: return "Text";
@@ -4210,7 +4210,7 @@ void ImGui::Initialize()
     g.PlatformIO.Platform_OpenInShellFn = Platform_OpenInShellFn_DefaultImpl;
     g.PlatformIO.Platform_SetImeDataFn = Platform_SetImeDataFn_DefaultImpl;
 
-    // Create default viewport
+    // CreateScript default viewport
     ImGuiViewportP* viewport = IM_NEW(ImGuiViewportP)();
     viewport->ID = IMGUI_VIEWPORT_DEFAULT_ID;
     viewport->Idx = 0;
@@ -4971,7 +4971,7 @@ int ImGui::GetFrameCount()
 
 static ImDrawList* GetViewportBgFgDrawList(ImGuiViewportP* viewport, size_t drawlist_no, const char* drawlist_name)
 {
-    // Create the draw list on demand, because they are not frequently used for all viewports
+    // CreateScript the draw list on demand, because they are not frequently used for all viewports
     ImGuiContext& g = *GImGui;
     IM_ASSERT(drawlist_no < IM_ARRAYSIZE(viewport->BgFgDrawLists));
     ImDrawList* draw_list = viewport->BgFgDrawLists[drawlist_no];
@@ -5572,7 +5572,7 @@ void ImGui::NewFrame()
     }
 #endif
 
-    // Create implicit/fallback window - which we will only render it if the user has added something to it.
+    // CreateScript implicit/fallback window - which we will only render it if the user has added something to it.
     // We don't use "Debug" to avoid colliding with user trying to create a "Debug" window with custom flags.
     // This fallback is particularly important as it prevents ImGui:: calls from crashing.
     g.WithinFrameScopeWithImplicitWindow = true;
@@ -6541,7 +6541,7 @@ static void InitOrLoadWindowSettings(ImGuiWindow* window, ImGuiWindowSettings* s
 
 static ImGuiWindow* CreateNewWindow(const char* name, ImGuiWindowFlags flags)
 {
-    // Create window the first time
+    // CreateScript window the first time
     //IMGUI_DEBUG_LOG("CreateNewWindow '%s', flags = 0x%08X\n", name, flags);
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = IM_NEW(ImGuiWindow)(&g, name);
@@ -15873,7 +15873,7 @@ static void ImGui::UpdateViewportsNewFrame()
             focused_viewport->LastFocusedHadNavWindow = (g.NavWindow != NULL) && (g.NavWindow->Viewport == focused_viewport);
     }
 
-    // Create/update main viewport with current platform position.
+    // CreateScript/update main viewport with current platform position.
     // FIXME-VIEWPORT: Size is driven by backend/user code for backward-compatibility but we should aim to make this more consistent.
     ImGuiViewportP* main_viewport = g.Viewports[0];
     IM_ASSERT(main_viewport->ID == IMGUI_VIEWPORT_DEFAULT_ID);
@@ -16394,7 +16394,7 @@ void ImGui::UpdatePlatformWindows()
     if (!(g.ConfigFlagsCurrFrame & ImGuiConfigFlags_ViewportsEnable))
         return;
 
-    // Create/resize/destroy platform windows to match each active viewport.
+    // CreateScript/resize/destroy platform windows to match each active viewport.
     // Skip the main viewport (index 0), which is always fully handled by the application!
     for (int i = 1; i < g.Viewports.Size; i++)
     {
@@ -16415,7 +16415,7 @@ void ImGui::UpdatePlatformWindows()
         if (viewport->LastFrameActive < g.FrameCount || viewport->Size.x <= 0 || viewport->Size.y <= 0)
             continue;
 
-        // Create window
+        // CreateScript window
         const bool is_new_platform_window = (viewport->PlatformWindowCreated == false);
         if (is_new_platform_window)
         {
@@ -16963,7 +16963,7 @@ void ImGui::DockContextNewFrameUpdateDocking(ImGuiContext* ctx)
             DockContextProcessDock(ctx, &req);
     dc->Requests.resize(0);
 
-    // Create windows for each automatic docking nodes
+    // CreateScript windows for each automatic docking nodes
     // We can have NULL pointers when we delete nodes, but because ID are recycled this should amortize nicely (and our node count will never be very high)
     for (int n = 0; n < dc->Nodes.Data.Size; n++)
         if (ImGuiDockNode* node = (ImGuiDockNode*)dc->Nodes.Data[n].val_p)
@@ -17265,7 +17265,7 @@ void ImGui::DockContextProcessDock(ImGuiContext* ctx, ImGuiDockRequest* req)
     if (node && target_window && node == target_window->DockNodeAsHost)
         IM_ASSERT(node->Windows.Size > 0 || node->IsSplitNode() || node->IsCentralNode());
 
-    // Create new node and add existing window to it
+    // CreateScript new node and add existing window to it
     if (node == NULL)
     {
         node = DockContextAddNode(ctx, 0);
@@ -17295,7 +17295,7 @@ void ImGui::DockContextProcessDock(ImGuiContext* ctx, ImGuiDockRequest* req)
 
     if (node != payload_node)
     {
-        // Create tab bar before we call DockNodeMoveWindows (which would attempt to move the old tab-bar, which would lead us to payload tabs wrongly appearing before target tabs!)
+        // CreateScript tab bar before we call DockNodeMoveWindows (which would attempt to move the old tab-bar, which would lead us to payload tabs wrongly appearing before target tabs!)
         if (node->Windows.Size > 0 && node->TabBar == NULL)
         {
             DockNodeAddTabBar(node);
@@ -17415,7 +17415,7 @@ void ImGui::DockContextProcessUndockNode(ImGuiContext* ctx, ImGuiDockNode* node)
 
     if (node->IsRootNode() || node->IsCentralNode())
     {
-        // In the case of a root node or central node, the node will have to stay in place. Create a new node to receive the payload.
+        // In the case of a root node or central node, the node will have to stay in place. CreateScript a new node to receive the payload.
         ImGuiDockNode* new_node = DockContextAddNode(ctx, 0);
         new_node->Pos = node->Pos;
         new_node->Size = node->Size;
@@ -19454,7 +19454,7 @@ void ImGui::SetWindowDock(ImGuiWindow* window, ImGuiID dock_id, ImGuiCond cond)
     window->DockId = dock_id;
 }
 
-// Create an explicit dockspace node within an existing window. Also expose dock node flags and creates a CentralNode by default.
+// CreateScript an explicit dockspace node within an existing window. Also expose dock node flags and creates a CentralNode by default.
 // The Central Node is always displayed even when empty and shrink/extend according to the requested size of its neighbors.
 // DockSpace() needs to be submitted _before_ any window they can host. If you use a dockspace, submit it early in your app.
 // When ImGuiDockNodeFlags_KeepAliveOnly is set, nothing is submitted in the current window (function may be called from any location).
@@ -20074,7 +20074,7 @@ static ImGuiDockNode* ImGui::DockContextBindNodeToWindow(ImGuiContext* ctx, ImGu
         return NULL;
     }
 
-    // Create node
+    // CreateScript node
     if (node == NULL)
     {
         node = DockContextAddNode(ctx, window->DockId);

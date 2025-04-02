@@ -10,6 +10,7 @@ class CAssetMgr
 	SINGLE(CAssetMgr)
 private:
 	map<wstring, AssetPtr<CAsset>>	m_mapAsset[(UINT)ASSET_TYPE::ASSET_END];
+	bool m_AssetModified;
 	bool m_Renew;
 
 public:
@@ -101,10 +102,10 @@ inline AssetPtr<T> CAssetMgr::Load(const wstring& _RelativePath)
 		if (nullptr != pAsset)
 			return pAsset;
 
-		wstring ContentPath = CPathMgr::GetContentDir();
+		//wstring ContentPath = CPathMgr::GetContentDir();
 
 		pAsset = new T;
-		if (FAILED(pAsset->Load(ContentPath + _RelativePath)))
+		if (FAILED(pAsset->Load(_RelativePath)))
 		{
 			MessageBox(nullptr, L"에셋 로딩 실패", L"에셋 로딩 에러", MB_OK);
 			return nullptr;

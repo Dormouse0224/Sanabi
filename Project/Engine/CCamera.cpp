@@ -97,6 +97,7 @@ void CCamera::Render()
 		m_vecTransparent[i]->Render();
 	}
 
+	// 오브젝트 렌더링이 끝난 후 분류용 벡터 클리어
 	m_vecOpaque.clear();
 	m_vecMasked.clear();
 	m_vecTransparent.clear();
@@ -112,6 +113,43 @@ void CCamera::Direct_Render(const vector<CGameObject*>& _vecObj)
 	{
 		pObj->Render();
 	}
+}
+
+int CCamera::Load(fstream& _Stream)
+{
+	if (!_Stream.is_open())
+		return E_FAIL;
+
+	_Stream.read(reinterpret_cast<char*>(&m_ProjType), sizeof(PROJ_TYPE));	// 투영 방법
+	_Stream.read(reinterpret_cast<char*>(&m_ViewX), sizeof(float));			// 카메라 투영 가로길이
+	_Stream.read(reinterpret_cast<char*>(&m_ViewY), sizeof(float));			// 카메라 투영 세로길이
+	_Stream.read(reinterpret_cast<char*>(&m_FOV), sizeof(float));			// 시야각(FieldOfView)
+	_Stream.read(reinterpret_cast<char*>(&m_Far), sizeof(float));			// 최대 시야거리
+	_Stream.read(reinterpret_cast<char*>(&m_Priority), sizeof(int));		// 카메라 우선순위, -1 : 미등록 카메라, 0 : 메인 카메라, 1 ~> : 서브 카메라
+	_Stream.read(reinterpret_cast<char*>(&m_LayerCheck), sizeof(UINT));		// 카메라가 렌더링할 레이어 비트설정
+
+
+	return S_OK;
+}
+
+int CCamera::Save(fstream& _Stream)
+{
+	// m_matView, m_matProj 는 매 틱마다 계산되므로 저장하지 않음
+	// 물체 분류 용도의 벡터 m_vecOpaque, m_vecMasked, m_vecTransparent 는 매 프레임마다 분류작업이 이루어지므로 저장하지 않음
+
+	if (!_Stream.is_open())
+		return E_FAIL;
+
+	_Stream.write(reinterpret_cast<char*>(&m_ProjType), sizeof(PROJ_TYPE));		// 투영 방법
+	_Stream.write(reinterpret_cast<char*>(&m_ViewX), sizeof(float));			// 카메라 투영 가로길이
+	_Stream.write(reinterpret_cast<char*>(&m_ViewY), sizeof(float));			// 카메라 투영 세로길이
+	_Stream.write(reinterpret_cast<char*>(&m_FOV), sizeof(float));				// 시야각(FieldOfView)
+	_Stream.write(reinterpret_cast<char*>(&m_Far), sizeof(float));				// 최대 시야거리
+	_Stream.write(reinterpret_cast<char*>(&m_Priority), sizeof(int));			// 카메라 우선순위, -1 : 미등록 카메라, 0 : 메인 카메라, 1 ~> : 서브 카메라
+	_Stream.write(reinterpret_cast<char*>(&m_LayerCheck), sizeof(UINT));		// 카메라가 렌더링할 레이어 비트설정
+
+
+	return S_OK;
 }
 
 
@@ -139,6 +177,7 @@ void CCamera::SortObject()
 				|| vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader() == nullptr)
 				continue;
 
+			// 2. 오브젝트가 사용하는 쉐이더의 도메인에 따라서 분류한다.
 			switch (vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader()->GetDomain())
 			{
 			case SHADER_DOMAIN::DOMAIN_QPAQUE:
@@ -157,5 +196,4 @@ void CCamera::SortObject()
 
 
 
-	// 2. 오브젝트가 사용하는 쉐이더의 도메인에 따라서 분류한다.
 }

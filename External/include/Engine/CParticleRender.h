@@ -27,7 +27,7 @@ private:
     bool                    m_Active;
     bool                    m_Gravity;
 
-    AssetPtr<CTexture2D>           m_ParticleTex;
+    AssetPtr<CTexture2D>    m_ParticleTex;
 
     map<UINT, CGameObject*> m_mapParticleObj;
 
@@ -61,6 +61,9 @@ public:
 public:
     virtual void FinalTick() override;
     virtual void Render() override;
+
+    virtual int Load(fstream& _Stream) override;
+    virtual int Save(fstream& _Stream) override;
 
 private:
     void CreateMtrl();

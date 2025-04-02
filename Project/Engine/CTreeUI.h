@@ -47,6 +47,7 @@ private:
     DELEGATE_1      m_DoubleClickFunc;
 
 public:
+    void Clear();
     virtual void Update();
     virtual void Render();
 

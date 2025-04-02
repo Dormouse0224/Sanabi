@@ -57,5 +57,8 @@ public:
     const Matrix& GetWorldMat() { return m_matWorld; }
     void SetWorldMat(const Matrix& _Mat) { m_matWorld = _Mat; }
 
+    virtual int Load(fstream& _Stream) override;
+    virtual int Save(fstream& _Stream) override;
+
 };
 

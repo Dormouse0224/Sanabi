@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CTexture2D.h"
 
+#include "CPathMgr.h"
+
 #include "CDevice.h"
 
 CTexture2D::CTexture2D()
@@ -14,16 +16,17 @@ CTexture2D::~CTexture2D()
 
 int CTexture2D::Load(const wstring& _FilePath)
 {
-	wchar_t szExt[50] = {};
-	_wsplitpath_s(_FilePath.c_str(), nullptr, 0, nullptr, 0, nullptr, 0, szExt, 50);
+	/*wchar_t szExt[50] = {};
+	_wsplitpath_s(_FilePath.c_str(), nullptr, 0, nullptr, 0, nullptr, 0, szExt, 50);*/
 
+	std::filesystem::path fullpath = CPathMgr::GetContentDir() + _FilePath;
 
-	wstring EXT = szExt;
+	wstring EXT = fullpath.extension();
 
 	// .dds .DDS
 	if (EXT == L".dds" || EXT == L".DDS")
 	{
-		if (FAILED(LoadFromDDSFile(_FilePath.c_str(), DDS_FLAGS_NONE, nullptr, m_Image)))
+		if (FAILED(LoadFromDDSFile(fullpath.c_str(), DDS_FLAGS_NONE, nullptr, m_Image)))
 		{
 			return E_FAIL;
 		}
@@ -31,7 +34,7 @@ int CTexture2D::Load(const wstring& _FilePath)
 	// .tga .TGA
 	else if (EXT == L".tga" || EXT == L".TGA")
 	{
-		if (FAILED(LoadFromTGAFile(_FilePath.c_str(), nullptr, m_Image)))
+		if (FAILED(LoadFromTGAFile(fullpath.c_str(), nullptr, m_Image)))
 		{
 			return E_FAIL;
 		}
@@ -43,7 +46,7 @@ int CTexture2D::Load(const wstring& _FilePath)
 		|| EXT == L".jpeg" || EXT == L".JPEG"
 		|| EXT == L".bmp" || EXT == L".BMP")
 	{
-		if (FAILED(LoadFromWICFile(_FilePath.c_str(), WIC_FLAGS_NONE, nullptr, m_Image)))
+		if (FAILED(LoadFromWICFile(fullpath.c_str(), WIC_FLAGS_NONE, nullptr, m_Image)))
 		{
 			return E_FAIL;
 		}

@@ -17,6 +17,8 @@ CPhysxActor::CPhysxActor()
     , m_Body(nullptr)
     , m_Type(RIGID_TYPE::NONE)
     , m_Density(1.f)
+    , m_LockFlag(0)
+    , m_Gravity(false)
 {
 
 }
@@ -34,6 +36,8 @@ void CPhysxActor::FinalTick()
 void CPhysxActor::SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag, bool _Gravity, float _Density, PxVec3 _InitVel)
 {
     m_Type = _Type;
+    m_LockFlag = _LockFlag;
+    m_Gravity = _Gravity;
     m_Density = _Density;
 
     // 오브젝트 좌표 가져오기
@@ -94,6 +98,17 @@ void CPhysxActor::SetRigidType(RIGID_TYPE _Type)
     }
 }
 
+void CPhysxActor::SetGravity(bool _Gravity)
+{
+    // 다이나믹 액터가 아니면 즉시 리턴
+    if (PxConcreteType::eRIGID_DYNAMIC != m_Body->getConcreteType())
+        return;
+
+    m_Gravity = _Gravity;
+    PxRigidDynamic* pBody = (PxRigidDynamic*)m_Body;
+    pBody->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, !_Gravity);
+}
+
 void CPhysxActor::SetDensity(float _Density)
 {
     m_Density = _Density;
@@ -124,11 +139,69 @@ void CPhysxActor::UpdatePosition(Vec3 _Pos)
 
 void CPhysxActor::CkeckLockFlag(LOCK_FLAG _Flag)
 {
+    // 다이나믹 액터가 아니면 즉시 리턴
     if (PxConcreteType::eRIGID_DYNAMIC != m_Body->getConcreteType())
         return;
 
+    // 비트플래그 토글
+    m_LockFlag = m_LockFlag ^ _Flag;
     PxRigidDynamic* pBody = (PxRigidDynamic*)m_Body;
-    pBody->setRigidDynamicLockFlag((PxRigidDynamicLockFlag::Enum)_Flag, !(pBody->getRigidDynamicLockFlags() & (PxRigidDynamicLockFlag::Enum)_Flag));
+    pBody->setRigidDynamicLockFlags(static_cast<PxRigidDynamicLockFlags>(m_LockFlag));
+}
+
+int CPhysxActor::Load(fstream& _Stream)
+{
+    if (!_Stream.is_open())
+        return E_FAIL;
+
+    // RigidBody 작성을 위해 필요한 데이터 불러오기
+    _Stream.read(reinterpret_cast<char*>(&m_Type), sizeof(RIGID_TYPE));
+    _Stream.read(reinterpret_cast<char*>(&m_LockFlag), sizeof(UINT));
+    _Stream.read(reinterpret_cast<char*>(&m_Gravity), sizeof(bool));
+    _Stream.read(reinterpret_cast<char*>(&m_Density), sizeof(float));
+
+    // 데이터를 통해 m_Body 작성
+    SetRigidBody(m_Type, m_LockFlag, m_Gravity, m_Density);
+
+    // RigidBody 의 Collider 정보 불러오기
+    int count = 0;
+    _Stream.read(reinterpret_cast<char*>(&count), sizeof(int));
+    m_vecDesc.resize(count);
+    m_vecScale.resize(count);
+    m_vecOffset.resize(count);
+    for (int i = 0; i < count; ++i)
+    {
+        _Stream.read(reinterpret_cast<char*>(&m_vecDesc[i]), sizeof(COLLIDER_DESC));
+        _Stream.read(reinterpret_cast<char*>(&m_vecScale[i]), sizeof(PxVec3));
+        _Stream.read(reinterpret_cast<char*>(&m_vecOffset[i]), sizeof(PxVec3));
+    }
+
+    return S_OK;
+}
+
+int CPhysxActor::Save(fstream& _Stream)
+{
+    // m_Body 는 데이터를 통해 로드 시 작성된다.
+    if (!_Stream.is_open())
+        return E_FAIL;
+    
+    // RigidBody 작성을 위해 필요한 데이터 저장
+    _Stream.write(reinterpret_cast<char*>(&m_Type), sizeof(RIGID_TYPE));
+    _Stream.write(reinterpret_cast<char*>(&m_LockFlag), sizeof(UINT));
+    _Stream.write(reinterpret_cast<char*>(&m_Gravity), sizeof(bool));
+    _Stream.write(reinterpret_cast<char*>(&m_Density), sizeof(float));
+
+    // RigidBody 의 Collider 정보 저장
+    int count = m_vecDesc.size();
+    _Stream.write(reinterpret_cast<char*>(&count), sizeof(int));
+    for (int i = 0; i < count; ++i)
+    {
+        _Stream.write(reinterpret_cast<char*>(&m_vecDesc[i]), sizeof(COLLIDER_DESC));
+        _Stream.write(reinterpret_cast<char*>(&m_vecScale[i]), sizeof(PxVec3));
+        _Stream.write(reinterpret_cast<char*>(&m_vecOffset[i]), sizeof(PxVec3));
+    }
+
+    return S_OK;
 }
 
 void CPhysxActor::AttachCollider(COLLIDER_DESC _Desc, PxVec3 _Scale, PxVec3 _Offset)

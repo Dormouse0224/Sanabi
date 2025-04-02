@@ -130,8 +130,8 @@ void CParticleRender::Render()
 {
 	Transform()->Binding();
 
-	vector<tParticle> vecParticle = {};
-	vecParticle.resize(m_ParticleBuffer->GetElementCount());
+	// 파티클 위치값를 오브젝트 시뮬레이션 결과와 동기화
+	vector<tParticle> vecParticle(m_ParticleBuffer->GetElementCount());
 	m_ParticleBuffer->GetData(vecParticle.data());
 	for (int i = 0; i < vecParticle.size(); ++i)
 	{
@@ -163,6 +163,59 @@ void CParticleRender::Render()
 	m_ParticleBuffer->Clear(20);
 	// 모듈버퍼 Clear
 	m_ModuleBuffer->Clear(21);
+}
+
+int CParticleRender::Load(fstream& _Stream)
+{
+	if (FAILED(CRenderComponent::RenderCom_Save(_Stream)))
+		return E_FAIL;
+
+
+	_Stream.read(reinterpret_cast<char*>(&m_MaxParticle), sizeof(UINT));
+	_Stream.read(reinterpret_cast<char*>(&m_Module), sizeof(tParticleModule));
+	_Stream.read(reinterpret_cast<char*>(&m_ModuleChanged), sizeof(bool));
+	_Stream.read(reinterpret_cast<char*>(&m_AccTime), sizeof(float));
+	_Stream.read(reinterpret_cast<char*>(&m_SpawnCount), sizeof(int));
+	_Stream.read(reinterpret_cast<char*>(&m_Active), sizeof(bool));
+	_Stream.read(reinterpret_cast<char*>(&m_Gravity), sizeof(bool));
+
+	std::wstring ParticleTexName = {};
+	int size = 0;
+	_Stream.read(reinterpret_cast<char*>(&size), sizeof(int));
+	ParticleTexName.resize(size);
+	_Stream.read(reinterpret_cast<char*>(ParticleTexName.data()), sizeof(wchar_t) * size);
+	m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture2D>(ParticleTexName);
+
+	return S_OK;
+}
+
+int CParticleRender::Save(fstream& _Stream)
+{
+	// m_ParticleBuffer, m_SpawnBuffer, m_ModuleBuffer 는 프레임마다 계산됨
+	// m_TickCS 는 객체 생성 시 자동으로 로드됨
+	// m_mapParticleObj 는 World 공간계 파티클 물리 시뮬레이션 시 자동으로 추가 또는 제거됨
+
+	if (FAILED(CRenderComponent::RenderCom_Save(_Stream)))
+		return E_FAIL;
+
+
+	_Stream.write(reinterpret_cast<char*>(&m_MaxParticle), sizeof(UINT));
+	_Stream.write(reinterpret_cast<char*>(&m_Module), sizeof(tParticleModule));
+	_Stream.write(reinterpret_cast<char*>(&m_ModuleChanged), sizeof(bool));
+	_Stream.write(reinterpret_cast<char*>(&m_AccTime), sizeof(float));
+	_Stream.write(reinterpret_cast<char*>(&m_SpawnCount), sizeof(int));
+	_Stream.write(reinterpret_cast<char*>(&m_Active), sizeof(bool));
+	_Stream.write(reinterpret_cast<char*>(&m_Gravity), sizeof(bool));
+
+	std::wstring ParticleTexName = {};
+	if (m_ParticleTex.Get())
+		ParticleTexName = m_ParticleTex->GetName();
+	int size = ParticleTexName.size();
+	_Stream.write(reinterpret_cast<char*>(&size), sizeof(int));
+	_Stream.write(reinterpret_cast<char*>(ParticleTexName.data()), sizeof(wchar_t) * size);
+
+	return S_OK;
+
 }
 
 void CParticleRender::CreateMtrl()

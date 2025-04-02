@@ -40,6 +40,8 @@ void CContentViewer::ClickEventCallback(DWORD_PTR _Target)
 
 void CContentViewer::Renew()
 {
+	m_AssetTree->Clear();
+
 	for (int i = 0; i < static_cast<UINT>(ASSET_TYPE::ASSET_END); ++i)
 	{
 		TreeNode* pNode = m_AssetTree->AddChildNode(m_AssetTree->GetRoot(), to_str(ASSET_TYPE_WSTR[i]), 0);

@@ -104,6 +104,44 @@ void CFlipbookRender::Render()
 	GetMesh()->Render();
 }
 
+int CFlipbookRender::Load(fstream& _Stream)
+{
+	if (FAILED(CRenderComponent::RenderCom_Load(_Stream)))
+		return E_FAIL;
+
+	int count = 0;
+	_Stream.read(reinterpret_cast<char*>(&count), sizeof(int));
+	for (int i = 0; i < count; ++i)
+	{
+		std::wstring FlipbookName = {};
+		int size = 0;
+		_Stream.read(reinterpret_cast<char*>(&size), sizeof(int));
+		FlipbookName.resize(size);
+		_Stream.read(reinterpret_cast<char*>(FlipbookName.data()), sizeof(wchar_t) * size);
+	}
+
+	return S_OK;
+}
+
+int CFlipbookRender::Save(fstream& _Stream)
+{
+	// 재생 정보는 Play 가 호출될 때 입력받으므로 저장하지 않는다.
+	if (FAILED(CRenderComponent::RenderCom_Save(_Stream)))
+		return E_FAIL;
+
+	int count = m_vecFlipbook.size();
+	_Stream.write(reinterpret_cast<char*>(&count), sizeof(int));
+	for (int i = 0; i < count; ++i)
+	{
+		std::wstring FlipbookName = m_vecFlipbook[i]->GetName();
+		int size = FlipbookName.size();
+		_Stream.write(reinterpret_cast<char*>(&size), sizeof(int));
+		_Stream.write(reinterpret_cast<char*>(FlipbookName.data()), sizeof(wchar_t) * size);
+	}
+
+	return S_OK;
+}
+
 void CFlipbookRender::CreateFlipbookMaterial()
 {
 	if (nullptr == CAssetMgr::GetInst()->FindAsset<CGraphicShader>(L"FlipbookShader"))

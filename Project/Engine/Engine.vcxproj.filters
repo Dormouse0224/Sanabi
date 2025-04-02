@@ -498,6 +498,9 @@
     <ClInclude Include="CSound.h">
       <Filter>08. Asset\05. Sound</Filter>
     </ClInclude>
+    <ClInclude Include="CComponentMgr.h">
+      <Filter>04. Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CEngine.cpp">
@@ -724,6 +727,9 @@
     </ClCompile>
     <ClCompile Include="CSound.cpp">
       <Filter>08. Asset\05. Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="CComponentMgr.cpp">
+      <Filter>04. Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

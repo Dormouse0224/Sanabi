@@ -2,6 +2,7 @@
 #include "CLevel.h"
 
 #include "CLayer.h"
+#include "CGameObject.h"
 
 CLevel::CLevel()
 	: m_Layer{}

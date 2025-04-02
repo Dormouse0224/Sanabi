@@ -20,8 +20,6 @@ CTileRender::CTileRender()
 
 CTileRender::~CTileRender()
 {
-	Delete_Vec(m_vecTileInfo);
-
 	if (nullptr != m_GpuBuffer)
 		delete m_GpuBuffer;
 }
@@ -37,13 +35,12 @@ void CTileRender::Render()
 	// 위치정보 업데이트
 	Transform()->Binding();
 
-	GetMaterial()->SetScalarParam(INT_0, (int)!!m_vecTileInfo[0]->Sprite->GetAtlasTex().Get());
-	GetMaterial()->SetScalarParam(INT_1, m_Col);
-	GetMaterial()->SetScalarParam(INT_2, m_Row);
+	GetMaterial()->SetScalarParam(INT_0, m_Col);
+	GetMaterial()->SetScalarParam(INT_1, m_Row);
 
-	GetMaterial()->SetTexParam(TEX_0, GetAtlasTex());
-	GetMaterial()->SetScalarParam(VEC2_0, m_vecTileInfo[0]->Sprite->GetLeftTop());
-	GetMaterial()->SetScalarParam(VEC2_1, m_vecTileInfo[0]->Sprite->GetSlice());
+	GetMaterial()->SetTexParam(TEX_0, m_AtlasTex);
+
+	GetMaterial()->SetScalarParam(VEC2_0, m_TileSize);
 
 	GetMaterial()->Binding();
 
@@ -54,33 +51,86 @@ void CTileRender::Render()
 	GetMesh()->Render();
 }
 
+int CTileRender::Load(fstream& _Stream)
+{
+	if (FAILED(CRenderComponent::RenderCom_Save(_Stream)))
+		return E_FAIL;
+
+
+	_Stream.read(reinterpret_cast<char*>(&m_Col), sizeof(UINT));
+	_Stream.read(reinterpret_cast<char*>(&m_Row), sizeof(UINT));
+	_Stream.read(reinterpret_cast<char*>(&m_TileSize), sizeof(Vec2));
+
+	std::wstring AtlasName = {};
+	int size = 0;
+	_Stream.read(reinterpret_cast<char*>(&size), sizeof(int));
+	AtlasName.resize(size);
+	_Stream.read(reinterpret_cast<char*>(AtlasName.data()), sizeof(wchar_t) * size);
+	m_AtlasTex = CAssetMgr::GetInst()->Load<CTexture2D>(AtlasName);
+
+	int count = 0;
+	_Stream.read(reinterpret_cast<char*>(&count), sizeof(int));
+	m_vecTileLT.resize(count);
+	for (int i = 0; i < count; ++i)
+	{
+		_Stream.read(reinterpret_cast<char*>(&m_vecTileLT[i]), sizeof(Vec2));
+	}
+
+	return S_OK;
+}
+
+int CTileRender::Save(fstream& _Stream)
+{
+	if (FAILED(CRenderComponent::RenderCom_Save(_Stream)))
+		return E_FAIL;
+
+
+	_Stream.write(reinterpret_cast<char*>(&m_Col), sizeof(UINT));
+	_Stream.write(reinterpret_cast<char*>(&m_Row), sizeof(UINT));
+	_Stream.write(reinterpret_cast<char*>(&m_TileSize), sizeof(Vec2));
+
+	std::wstring AtlasName = {};
+	if (m_AtlasTex.Get())
+		AtlasName = m_AtlasTex->GetName();
+	int size = AtlasName.size();
+	_Stream.write(reinterpret_cast<char*>(&size), sizeof(int));
+	_Stream.write(reinterpret_cast<char*>(AtlasName.data()), sizeof(wchar_t) * size);
+
+	int count = m_vecTileLT.size();
+	_Stream.write(reinterpret_cast<char*>(&count), sizeof(int));
+	for (int i = 0; i < count; ++i)
+	{
+		_Stream.write(reinterpret_cast<char*>(&m_vecTileLT[i]), sizeof(Vec2));
+	}
+
+	return S_OK;
+}
+
 
 void CTileRender::SetColRow(UINT _Col, UINT _Row)
 {
 	m_Col = _Col;
 	m_Row = _Row;
 
-	if ((m_Col * m_Row) < m_vecTileInfo.capacity())
+	// 벡터 크기가 타일 개수보다 큰 경우 벡터 메모리 해제
+	if ((m_Col * m_Row) < m_vecTileLT.capacity())
 	{
-		vector<tTileInfo*> temp;
-		m_vecTileInfo.swap(temp);
-		Delete_Vec(temp);
+		vector<Vec2> temp;
+		m_vecTileLT.swap(temp);
 	}
 
-	// 벡터크기를 타일 개수만큼 재 설정
-	m_vecTileInfo.resize(m_Col * m_Row);
+	// 벡터 메모리 크기를 타일 개수만큼 재설정
+	m_vecTileLT.resize(m_Col * m_Row);
 
-	// 각 포인터가 타일정보를 가질 수 있게 함
-	for (size_t i = 0; i < m_vecTileInfo.size(); ++i)
-	{
-		m_vecTileInfo[i] = new tTileInfo;
-	}
+	// 벡터 내 모든 LT 값을 (-1, -1) 로 초기화 (해당 인덱스에는 타일이 없다는 뜻)
+	for (auto& LT : m_vecTileLT)
+		LT = Vec2(-1, -1);
 
 	// 오브젝트 스케일 재 조정
 	Vec2 vScale = m_TileSize * Vec2(m_Col, m_Row);
 	Transform()->SetRelativeScale(Vec3(vScale.x, vScale.y, 1.f));
 
-	// 타일 데이터를 버퍼로 전송
+	// 타일 데이터를 버퍼에 동기화
 	UpdateBuffer();
 }
 
@@ -93,14 +143,14 @@ void CTileRender::SetTileSize(Vec2 _TileSize)
 	Transform()->SetRelativeScale(Vec3(vScale.x, vScale.y, 1.f));
 }
 
-void CTileRender::SetSprite(UINT _Col, UINT _Row, AssetPtr<CSprite> _Sprite)
+void CTileRender::SetTile(UINT _Col, UINT _Row, Vec2 _LT)
 {
 	assert(m_Col > _Col && m_Row > _Row);
 
 	int idx = m_Col * _Row + _Col;
-	m_vecTileInfo[idx]->Sprite = _Sprite;
+	m_vecTileLT[idx] = _LT;
 
-	// 타일 데이터를 버퍼로 전송
+	// 타일 데이터를 버퍼에 동기화
 	UpdateBuffer();
 }
 
@@ -128,48 +178,25 @@ void CTileRender::CreateTileRenderMtrl()
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"TileRenderMtrl"));
 }
 
-
-AssetPtr<CTexture2D> CTileRender::GetAtlasTex()
-{
-	for (size_t i = 0; i < m_vecTileInfo.size(); ++i)
-	{
-		if (nullptr == m_vecTileInfo[i]->Sprite)
-			continue;
-
-		return m_vecTileInfo[i]->Sprite->GetAtlasTex();
-	}
-
-	return nullptr;
-}
-
 void CTileRender::UpdateBuffer()
 {
-	if (m_GpuBuffer->GetElementCount() < m_Row * m_Col)
-	{
-		m_GpuBuffer->Create(16, m_Row * m_Col, SB_TYPE::SRV_ONLY, true);
-	}
-
 	struct SpriteInfo {
 		Vec2 vLeftTop;
-		Vec2 vSlice;
 	};
+
+	if (m_GpuBuffer->GetElementCount() < m_Row * m_Col)
+	{
+		m_GpuBuffer->Create(sizeof(SpriteInfo), m_Row* m_Col, SB_TYPE::SRV_ONLY, true);
+	}
+
+	
 	static vector<SpriteInfo> vecInfo;
 	vecInfo.clear();
 
-	for (size_t i = 0; i < m_vecTileInfo.size(); ++i)
+	for (size_t i = 0; i < m_vecTileLT.size(); ++i)
 	{
 		SpriteInfo info;
-		if (m_vecTileInfo[i]->Sprite.Get())
-		{
-			info.vLeftTop = m_vecTileInfo[i]->Sprite->GetLeftTop();
-			info.vSlice = m_vecTileInfo[i]->Sprite->GetSlice();
-		}
-		else
-		{
-			info.vLeftTop = Vec2(-1.f, -1.f);
-			info.vSlice = Vec2(-1.f, -1.f);
-		}
-
+		info.vLeftTop = m_vecTileLT[i];
 		vecInfo.push_back(info);
 	}
 

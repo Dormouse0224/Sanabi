@@ -4,6 +4,8 @@
 #include "CPathMgr.h"
 
 CAssetMgr::CAssetMgr()
+	: m_Renew(false)
+	, m_AssetModified(false)
 {
 
 }
@@ -15,7 +17,13 @@ CAssetMgr::~CAssetMgr()
 
 void CAssetMgr::Tick()
 {
-	m_Renew = false;
+	if (m_Renew)
+		m_Renew = false;
+	if (m_AssetModified)
+	{
+		m_AssetModified = false;
+		m_Renew = true;
+	}
 }
 
 void CAssetMgr::AddAsset(const wstring& _Key, AssetPtr<CAsset> _Asset)
@@ -29,7 +37,7 @@ void CAssetMgr::AddAsset(const wstring& _Key, AssetPtr<CAsset> _Asset)
 	_Asset->m_Key = _Key;
 	_Asset->SetName(_Key);
 	m_mapAsset[(UINT)Type].insert(make_pair(_Key, _Asset));
-	m_Renew = true;
+	m_AssetModified = true;
 }
 
 AssetPtr<CTexture2D> CAssetMgr::CreateTexture(const wstring& _Key, UINT _Width, UINT _Height

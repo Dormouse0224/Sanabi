@@ -11,6 +11,7 @@
 
 #include "CEngine.h"
 #include "CAsset.h"
+#include "assets.h"
 #include "CAssetUI.h"
 #include "CMeshUI.h"
 #include "CMaterialUI.h"
@@ -124,6 +125,15 @@ void CInspector::Render()
 		}
 
 		// 스크립트 정보 표기
+
+
+		// 오브젝트 프리펩화
+		ImGui::Separator();
+		if (ImGui::Button("Save Asset as File"))
+		{
+			AssetPtr<CPrefab> prefab = new CPrefab;
+			prefab->SaveAsPrefab(m_TargetObj);
+		}
 	}
 		break;
 	case TARGET_TYPE::ASSET:

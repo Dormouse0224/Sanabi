@@ -9,6 +9,7 @@
 #include "CLevel.h"
 #include "CLayer.h"
 #include "CPathMgr.h"
+#include "CComponentMgr.h"
 
 CGameObject::CGameObject()
 	: m_Com{}
@@ -16,6 +17,8 @@ CGameObject::CGameObject()
 	, m_Parent(nullptr)
 	, m_LayerIdx(-1)
 	, m_Dead(false)
+	, m_vecScript{}
+	, m_vecChild{}
 {
 }
 
@@ -133,23 +136,106 @@ void CGameObject::Render()
 
 int CGameObject::Save(fstream& _Stream)
 {
+	// m_RenderCom 는 컴포넌트 로드 시 해당 컴포넌트가 렌더 컴포넌트면 오브젝트에 추가하면서 자동으로 등록됨.
+
+	if (!_Stream.is_open())
+		return E_FAIL;
+
+	// 보유한 컴포넌트 정보 저장
+	int ComCount = 0;
+	for (int i = 0; i < (UINT)COMPONENT_TYPE::COMPONENT_END; ++i)
+		if (m_Com[i])
+			++ComCount;
+	_Stream.write(reinterpret_cast<char*>(&ComCount), sizeof(int));
+	for (int i = 0; i < (UINT)COMPONENT_TYPE::COMPONENT_END; ++i)
+	{
+		if (m_Com[i])
+		{
+			_Stream.write(reinterpret_cast<char*>(&i), sizeof(int));
+			if (FAILED(m_Com[i]->Save(_Stream)))
+				return E_FAIL;
+		}
+	}
+
+	// 보유한 스크립트 정보 저장
+	int count = m_vecScript.size();
+	_Stream.write(reinterpret_cast<char*>(&count), sizeof(int));
+	for (int i = 0; i < count; ++i)
+	{
+		std::string ClassName = typeid(*m_vecScript[i]).name();
+		int size = ClassName.size();
+		_Stream.write(reinterpret_cast<char*>(&size), sizeof(int));
+		_Stream.write(reinterpret_cast<char*>(ClassName.data()), sizeof(wchar_t) * size);
+
+		if (FAILED(m_vecScript[i]->Save(_Stream)))
+			return E_FAIL;
+	}
+
+	// 소속 레이어 인덱스 저장
+	_Stream.write(reinterpret_cast<char*>(&m_LayerIdx), sizeof(int));
 	
-	CComponent* m_Com[(UINT)COMPONENT_TYPE::COMPONENT_END];
-	vector<CScript*>        m_vecScript;
-	CRenderComponent* m_RenderCom; // 렌더링 컴포넌트 포인터
-
-	CGameObject* m_Parent;   // 부모 오브젝트
-	vector<CGameObject*>    m_vecChild; // 자식 오브젝트
-
-	int                     m_LayerIdx; // 소속 레이어 인덱스, -1 : 어느 레이어에도 소속되어있지 않다.
-
-	bool                    m_Dead;  // 오브젝트가 삭제되기 직전 상태 체크
+	// 자식 오브젝트 정보 저장 (재귀)
+	count = m_vecChild.size();
+	_Stream.write(reinterpret_cast<char*>(&count), sizeof(int));
+	for (int i = 0; i < count; ++i)
+		m_vecChild[i]->Save(_Stream);
 
 	return S_OK;
 }
 
 int CGameObject::Load(fstream& _Stream)
 {
+	if (!_Stream.is_open())
+		return E_FAIL;
+
+	// 보유한 컴포넌트 정보 불러오기
+	int ComCount = 0;
+	_Stream.read(reinterpret_cast<char*>(&ComCount), sizeof(int));
+	for (int i = 0; i < ComCount; ++i)
+	{
+		int ComType = 0;
+		_Stream.read(reinterpret_cast<char*>(&ComType), sizeof(int));
+		AddComponent(CComponentMgr::GetInst()->CreateComp((COMPONENT_TYPE)ComType));
+		if (FAILED(m_Com[ComType]->Load(_Stream)))
+			return E_FAIL;
+	}
+
+	// 보유한 스크립트 정보 불러오기
+	int count = 0;
+	_Stream.read(reinterpret_cast<char*>(&count), sizeof(int));
+	m_vecScript.resize(count);
+	for (int i = 0; i < count; ++i)
+	{
+		std::string ClassName = {};
+		int size = 0;
+		_Stream.read(reinterpret_cast<char*>(&size), sizeof(int));
+		ClassName.resize(size);
+		_Stream.read(reinterpret_cast<char*>(ClassName.data()), sizeof(wchar_t) * size);
+		m_vecScript[i] = CComponentMgr::GetInst()->CreateScript(ClassName);
+
+		if (m_vecScript[i])
+		{
+			if (FAILED(m_vecScript[i]->Load(_Stream)))
+				return E_FAIL;
+		}
+		else
+			return E_FAIL;
+	}
+
+	// 소속 레이어 인덱스 불러오기
+	_Stream.read(reinterpret_cast<char*>(&m_LayerIdx), sizeof(int));
+
+	// 자식 오브젝트 정보 불러오기 (재귀)
+	count = 0;
+	_Stream.read(reinterpret_cast<char*>(&count), sizeof(int));
+	m_vecChild.resize(count);
+	for (int i = 0; i < count; ++i)
+	{
+		m_vecChild[i] = new CGameObject;
+		m_vecChild[i]->m_Parent = this;
+		m_vecChild[i]->Load(_Stream);
+	}
+
 	return S_OK;
 }
 

@@ -4,9 +4,11 @@
 class CPlayerScript :
     public CScript
 {
+public:
+    CPlayerScript();
+    ~CPlayerScript();
+    CLONE(CPlayerScript);
 private:
-    float   m_Speed;
-
     bool    m_Idle;
     bool    m_Run;
 
@@ -17,9 +19,10 @@ public:
     virtual void EndOverlap(CCollider2D* _OwnCollider, CGameObject* _Other, CCollider2D* _OtherCollider) override;
 
 public:
-    CLONE(CPlayerScript);
-public:
-    CPlayerScript();
-    ~CPlayerScript();
+    virtual int Load(fstream& _Stream) override;
+    virtual int Save(fstream& _Stream) override;
+
+protected:
+    static CScript* Instantiate();
 };
 

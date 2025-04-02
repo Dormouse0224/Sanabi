@@ -71,10 +71,10 @@ void CPhysxActorUI::Render_Com()
 		
 		// Gravity
 		ImGui::Text("Gravity");
-		bool bGravity = !(pDynamicBody->getActorFlags() & PxActorFlag::eDISABLE_GRAVITY);
+		bool bGravity = m_TargetObj->PhysxActor()->GetGravity();
 		if (ImGui::Checkbox("##Gravity", &bGravity))
 		{
-			pDynamicBody->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, !bGravity);
+			m_TargetObj->PhysxActor()->SetGravity(bGravity);
 		}
 
 

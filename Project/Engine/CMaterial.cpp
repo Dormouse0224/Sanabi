@@ -116,7 +116,5 @@ int CMaterial::Load(const wstring& _FilePath)
 
 	file.close();
 
-	CAssetMgr::GetInst()->AddAsset(_FilePath, this);
-
 	return S_OK;
 }

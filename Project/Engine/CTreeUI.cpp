@@ -92,6 +92,14 @@ CTreeUI::~CTreeUI()
 	delete m_Root;
 }
 
+void CTreeUI::Clear()
+{
+	if (nullptr != m_Root)
+	{
+		Delete_Vec(m_Root->m_vecChild);
+	}
+}
+
 void CTreeUI::Update()
 {
 }

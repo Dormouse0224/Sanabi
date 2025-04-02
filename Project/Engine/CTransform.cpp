@@ -133,6 +133,37 @@ Vec4 CTransform::GetRelativeRotation()
 	return vRotation;
 }
 
+int CTransform::Load(fstream& _Stream)
+{
+	if (!_Stream.is_open())
+		return E_FAIL;
+
+	// 크기, 회전, 위치 정보와 크기 독립성 여부 불러오기
+	_Stream.read(reinterpret_cast<char*>(&m_RelativePos), sizeof(Vec3));
+	_Stream.read(reinterpret_cast<char*>(&m_RelativeScale), sizeof(Vec3));
+	_Stream.read(reinterpret_cast<char*>(&m_RelativeRot), sizeof(Vec4));
+	_Stream.read(reinterpret_cast<char*>(&m_IndependentScale), sizeof(bool));
+
+	return S_OK;
+}
+
+int CTransform::Save(fstream& _Stream)
+{
+	// m_RelativeDir, m_WorldDir, m_matWorld 는 매 틱마다 계산되므로 저장하지 않음
+
+	if (!_Stream.is_open())
+		return E_FAIL;
+
+	// 크기, 회전, 위치 정보와 크기 독립성 여부 저장
+	_Stream.write(reinterpret_cast<char*>(&m_RelativePos), sizeof(Vec3));
+	_Stream.write(reinterpret_cast<char*>(&m_RelativeScale), sizeof(Vec3));
+	_Stream.write(reinterpret_cast<char*>(&m_RelativeRot), sizeof(Vec4));
+	_Stream.write(reinterpret_cast<char*>(&m_IndependentScale), sizeof(bool));
+
+
+	return S_OK;
+}
+
 void CTransform::SetRelativeRotation(Vec4 _RotationRad)
 {
 	m_RelativeRot = (_RotationRad / 180.f) * XM_PI;

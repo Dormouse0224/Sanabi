@@ -20,6 +20,7 @@
 CPlayerScript::CPlayerScript()
 	: m_Idle(false)
 {
+	CComponentMgr::GetInst()->Register(typeid(CPlayerScript).name(), &CPlayerScript::Instantiate);
 }
 
 CPlayerScript::~CPlayerScript()
@@ -119,3 +120,19 @@ void CPlayerScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _Other, CCol
 void CPlayerScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _Other, CCollider2D* _OtherCollider)
 {
 }
+
+int CPlayerScript::Load(fstream& _Stream)
+{
+	return 0;
+}
+
+int CPlayerScript::Save(fstream& _Stream)
+{
+	return 0;
+}
+
+CScript* CPlayerScript::Instantiate()
+{
+	return new CPlayerScript;
+}
+

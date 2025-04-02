@@ -41,5 +41,7 @@ public:
     virtual void Tick() {};
     virtual void FinalTick() = 0;
 
+    virtual int Save(fstream& _Stream) = 0;
+    virtual int Load(fstream& _Stream) = 0;
 };
 

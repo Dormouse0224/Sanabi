@@ -9,6 +9,7 @@
 CCameraMoveScript::CCameraMoveScript()
 	: m_CamSpeed(500.f)
 {
+	CComponentMgr::GetInst()->Register(typeid(CCameraMoveScript).name(), &CCameraMoveScript::Instantiate);
 }
 
 CCameraMoveScript::~CCameraMoveScript()
@@ -27,6 +28,20 @@ void CCameraMoveScript::Tick()
 		Move_Perspective();
 	else
 		Move_OrthoGraphic();
+}
+
+int CCameraMoveScript::Load(fstream& _Stream)
+{
+	_Stream.read(reinterpret_cast<char*>(&m_CamSpeed), sizeof(float));
+
+	return S_OK;
+}
+
+int CCameraMoveScript::Save(fstream& _Stream)
+{
+	_Stream.write(reinterpret_cast<char*>(&m_CamSpeed), sizeof(float));
+
+	return S_OK;
 }
 
 void CCameraMoveScript::Move_Perspective()
@@ -78,4 +93,9 @@ void CCameraMoveScript::Move_OrthoGraphic()
 		vPos.x += DT * m_CamSpeed;
 
 	Transform()->SetRelativePos(vPos);
+}
+
+CScript* CCameraMoveScript::Instantiate()
+{
+	return new CCameraMoveScript;
 }

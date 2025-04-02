@@ -5,11 +5,6 @@
 #include "CTexture2D.h"
 #include "CStructuredBuffer.h"
 
-struct tTileInfo
-{
-    AssetPtr<CSprite>    Sprite;
-};
-
 class CTileRender :
     public CRenderComponent
 {
@@ -19,26 +14,31 @@ public:
     CLONE(CTileRender);
 
 private:
-    UINT                m_Col;          // 열
-    UINT                m_Row;          // 행
-    Vec2                m_TileSize;     // 타일 1개의 크기
-    vector<tTileInfo*>  m_vecTileInfo;  // 각 타일의 정보
-    CStructuredBuffer* m_GpuBuffer;    // 타일 정보를 저장하고 텍스쳐 레지스터로 바인딩하기 위함
+    UINT                    m_Col;          // 열
+    UINT                    m_Row;          // 행
+    Vec2                    m_TileSize;     // 타일 1개의 크기
+    AssetPtr<CTexture2D>    m_AtlasTex;     // 타일의 아틀라스 텍스쳐
+    vector<Vec2>            m_vecTileLT;    // 각 타일 스프라이트의 Left Top 좌표
+
+    CStructuredBuffer*      m_GpuBuffer;    // 타일 스프라이트의 정보를 GPU로 전달하는 구조화버퍼
 
 
 public:
     void SetColRow(UINT _Col, UINT _Row);
     void SetTileSize(Vec2 _TileSize);
-    void SetSprite(UINT _Col, UINT _Row, AssetPtr<CSprite> _Sprite);
+    void SetAtlasTex(CTexture2D* _Tex) { m_AtlasTex = _Tex; }
+    void SetTile(UINT _Col, UINT _Row, Vec2 _LT);
 
 public:
     virtual void FinalTick() override;
     virtual void Render() override;
 
+    virtual int Load(fstream& _Stream) override;
+    virtual int Save(fstream& _Stream) override;
+
 private:
     void CreateTileRenderMtrl();
     void UpdateBuffer();
-    AssetPtr<CTexture2D> GetAtlasTex();
 
 
 

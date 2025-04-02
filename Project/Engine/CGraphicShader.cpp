@@ -302,7 +302,5 @@ int CGraphicShader::Load(const wstring& _FilePath)
 		}
 	}
 
-	CAssetMgr::GetInst()->AddAsset(_FilePath, this);
-
 	return S_OK;
 }

@@ -23,5 +23,10 @@ public:
     AssetPtr<CMaterial> GetMaterial() { return m_Mtrl; }
 
     virtual void Render() = 0;
+
+protected:
+    int RenderCom_Load(fstream& _Stream);
+    int RenderCom_Save(fstream& _Stream);
+
 };
 

@@ -38,8 +38,7 @@ struct tTask
 // =============
 struct tParticle
 {
-	Vec4		LocalPos;		// 소유 오브젝트로 부터의 상대 좌표
-	Vec4		WorldPos;		// 파티클의 월드 좌표
+	Vec4		LocalPos;		// 소유 오브젝트로 부터의 상대 좌표 (World 공간계인 경우 셰이더에서 ObjectPos 를 더함)
 	Vec4		WorldScale;		// 파티클 월드 크기
 	Vec4		Color;			// 파티클 색상
 

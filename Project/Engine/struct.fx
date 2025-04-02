@@ -5,7 +5,6 @@
 struct tParticle
 {
     float4 LocalPos; // 소유 오브젝트로 부터의 상대 좌표
-    float4 WorldPos; // 파티클의 월드 좌표
     float4 WorldScale; // 파티클 월드 크기
     float4 Color; // 파티클 색상
 

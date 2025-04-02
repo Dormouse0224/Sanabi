@@ -23,6 +23,7 @@ public:
 
 public:
     CLayer* GetLayer(int _LayerIdx) { return m_Layer[_LayerIdx]; }
+    // 모든 레이어 모든 오브젝트를 클리어합니다.
     void Deregister();
 
 

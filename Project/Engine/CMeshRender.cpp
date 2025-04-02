@@ -30,3 +30,19 @@ void CMeshRender::Render()
 	// ·»´õ¸µ ½ÃÀÛ
 	GetMesh()->Render();
 }
+
+int CMeshRender::Load(fstream& _Stream)
+{
+	if (FAILED(CRenderComponent::RenderCom_Load(_Stream)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+int CMeshRender::Save(fstream& _Stream)
+{
+	if (FAILED(CRenderComponent::RenderCom_Save(_Stream)))
+		return E_FAIL;
+
+	return S_OK;
+}

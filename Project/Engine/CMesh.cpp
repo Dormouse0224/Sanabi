@@ -159,7 +159,5 @@ int CMesh::Load(const wstring& _FilePath)
 	DEBUG_NAME(m_VB, "CMesh_VB");
 	DEBUG_NAME(m_IB, "CMesh_IB");
 
-	CAssetMgr::GetInst()->AddAsset(_FilePath, this);
-
 	return S_OK;
 }

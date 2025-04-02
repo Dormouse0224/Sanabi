@@ -160,7 +160,7 @@ void ImGui_ImplDX11_RenderDrawData(ImDrawData* draw_data)
     ImGui_ImplDX11_Data* bd = ImGui_ImplDX11_GetBackendData();
     ID3D11DeviceContext* device = bd->pd3dDeviceContext;
 
-    // Create and grow vertex/index buffers if needed
+    // CreateScript and grow vertex/index buffers if needed
     if (!bd->pVB || bd->VertexBufferSize < draw_data->TotalVtxCount)
     {
         if (bd->pVB) { bd->pVB->Release(); bd->pVB = nullptr; }
@@ -359,7 +359,7 @@ static void ImGui_ImplDX11_CreateFontsTexture()
         bd->pd3dDevice->CreateTexture2D(&desc, &subResource, &pTexture);
         IM_ASSERT(pTexture != nullptr);
 
-        // Create texture view
+        // CreateScript texture view
         D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
         ZeroMemory(&srvDesc, sizeof(srvDesc));
         srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -399,7 +399,7 @@ bool    ImGui_ImplDX11_CreateDeviceObjects()
     //  2) use code to detect any version of the DLL and grab a pointer to D3DCompile from the DLL.
     // See https://github.com/ocornut/imgui/pull/638 for sources and details.
 
-    // Create the vertex shader
+    // CreateScript the vertex shader
     {
         static const char* vertexShader =
             "cbuffer vertexBuffer : register(b0) \
@@ -438,7 +438,7 @@ bool    ImGui_ImplDX11_CreateDeviceObjects()
             return false;
         }
 
-        // Create the input layout
+        // CreateScript the input layout
         D3D11_INPUT_ELEMENT_DESC local_layout[] =
         {
             { "POSITION", 0, DXGI_FORMAT_R32G32_FLOAT,   0, (UINT)offsetof(ImDrawVert, pos), D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -452,7 +452,7 @@ bool    ImGui_ImplDX11_CreateDeviceObjects()
         }
         vertexShaderBlob->Release();
 
-        // Create the constant buffer
+        // CreateScript the constant buffer
         {
             D3D11_BUFFER_DESC desc;
             desc.ByteWidth = sizeof(VERTEX_CONSTANT_BUFFER_DX11);
@@ -464,7 +464,7 @@ bool    ImGui_ImplDX11_CreateDeviceObjects()
         }
     }
 
-    // Create the pixel shader
+    // CreateScript the pixel shader
     {
         static const char* pixelShader =
             "struct PS_INPUT\
@@ -493,7 +493,7 @@ bool    ImGui_ImplDX11_CreateDeviceObjects()
         pixelShaderBlob->Release();
     }
 
-    // Create the blending setup
+    // CreateScript the blending setup
     {
         D3D11_BLEND_DESC desc;
         ZeroMemory(&desc, sizeof(desc));
@@ -509,7 +509,7 @@ bool    ImGui_ImplDX11_CreateDeviceObjects()
         bd->pd3dDevice->CreateBlendState(&desc, &bd->pBlendState);
     }
 
-    // Create the rasterizer state
+    // CreateScript the rasterizer state
     {
         D3D11_RASTERIZER_DESC desc;
         ZeroMemory(&desc, sizeof(desc));
@@ -520,7 +520,7 @@ bool    ImGui_ImplDX11_CreateDeviceObjects()
         bd->pd3dDevice->CreateRasterizerState(&desc, &bd->pRasterizerState);
     }
 
-    // Create depth-stencil State
+    // CreateScript depth-stencil State
     {
         D3D11_DEPTH_STENCIL_DESC desc;
         ZeroMemory(&desc, sizeof(desc));
@@ -534,7 +534,7 @@ bool    ImGui_ImplDX11_CreateDeviceObjects()
         bd->pd3dDevice->CreateDepthStencilState(&desc, &bd->pDepthStencilState);
     }
 
-    // Create texture sampler
+    // CreateScript texture sampler
     // (Bilinear sampling is required by default. Set 'io.Fonts->Flags |= ImFontAtlasFlags_NoBakedLines' or 'style.AntiAliasedLinesUseTex = false' to allow point/nearest sampling)
     {
         D3D11_SAMPLER_DESC desc;
@@ -664,7 +664,7 @@ static void ImGui_ImplDX11_CreateWindow(ImGuiViewport* viewport)
     HWND hwnd = viewport->PlatformHandleRaw ? (HWND)viewport->PlatformHandleRaw : (HWND)viewport->PlatformHandle;
     IM_ASSERT(hwnd != 0);
 
-    // Create swap chain
+    // CreateScript swap chain
     DXGI_SWAP_CHAIN_DESC sd;
     ZeroMemory(&sd, sizeof(sd));
     sd.BufferDesc.Width = (UINT)viewport->Size.x;
@@ -682,7 +682,7 @@ static void ImGui_ImplDX11_CreateWindow(ImGuiViewport* viewport)
     IM_ASSERT(vd->SwapChain == nullptr && vd->RTView == nullptr);
     bd->pFactory->CreateSwapChain(bd->pd3dDevice, &sd, &vd->SwapChain);
 
-    // Create the render target
+    // CreateScript the render target
     if (vd->SwapChain)
     {
         ID3D11Texture2D* pBackBuffer;

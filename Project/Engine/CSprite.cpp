@@ -121,6 +121,5 @@ int CSprite::Load(const wstring& _FilePath)
     file.read(reinterpret_cast<char*>(&m_Background), sizeof(Vec2));
 
     file.close();
-    CAssetMgr::GetInst()->AddAsset(_FilePath, this);
     return S_OK;
 }

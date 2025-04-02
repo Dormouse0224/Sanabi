@@ -48,7 +48,8 @@ public:
 private:
     PxRigidActor*           m_Body;
     RIGID_TYPE              m_Type;
-
+    UINT                    m_LockFlag;
+    bool                    m_Gravity;
     float                   m_Density;
 
     vector<COLLIDER_DESC>   m_vecDesc;
@@ -63,15 +64,20 @@ public:
 public:
     PxRigidActor* GetRigidBody() { return m_Body; }
     RIGID_TYPE GetRigidType() { return m_Type; }
+    bool GetGravity() { return m_Gravity; }
     float GetDensity() { return m_Density; }
 
     void SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag = 0, bool _Gravity = false, float _Density = 1.f, PxVec3 _InitVel = PxVec3(0.f));
     void SetRigidType(RIGID_TYPE _Type);
+    void SetGravity(bool _Gravity);
     void SetDensity(float _Density);
 
     void AddCollider(COLLIDER_DESC _desc, PxVec3 _Scale = PxVec3(1.f), PxVec3 _Offset = PxVec3(0.f));
     void UpdatePosition(Vec3 _Pos);
     void CkeckLockFlag(LOCK_FLAG _Flag);
+
+    virtual int Load(fstream& _Stream) override;
+    virtual int Save(fstream& _Stream) override;
 
 private:
     void AttachCollider(COLLIDER_DESC _desc, PxVec3 _Scale, PxVec3 _Offset);

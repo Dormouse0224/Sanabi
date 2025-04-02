@@ -32,6 +32,7 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, UINT _Priority)
 		m_vecCam.resize(_Priority + 1);
 	}
 
+	// 입력받은 priority 자리에 다른 카메라가 이미 있는 경우, 기존 카메라를 priority -1 로 설정 후 자리를 덮어 쓴다.
 	if (m_vecCam[_Priority] != nullptr)
 	{
 		m_vecCam[_Priority]->m_Priority = -1;

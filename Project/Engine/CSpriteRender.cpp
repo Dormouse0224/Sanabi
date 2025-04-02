@@ -46,6 +46,34 @@ void CSpriteRender::Render()
 	GetMesh()->Render();
 }
 
+int CSpriteRender::Load(fstream& _Stream)
+{
+	if (FAILED(CRenderComponent::RenderCom_Load(_Stream)))
+		return E_FAIL;
+
+	std::wstring SpriteName = {};
+	int size = 0;
+	_Stream.read(reinterpret_cast<char*>(&size), sizeof(int));
+	SpriteName.resize(size);
+	_Stream.read(reinterpret_cast<char*>(SpriteName.data()), sizeof(wchar_t) * size);
+	m_Sprite = CAssetMgr::GetInst()->Load<CSprite>(SpriteName);
+
+	return S_OK;
+}
+
+int CSpriteRender::Save(fstream& _Stream)
+{
+	if (FAILED(CRenderComponent::RenderCom_Save(_Stream)))
+		return E_FAIL;
+
+	std::wstring SpriteName = m_Sprite->GetName();
+	int size = SpriteName.size();
+	_Stream.write(reinterpret_cast<char*>(&size), sizeof(int));
+	_Stream.write(reinterpret_cast<char*>(SpriteName.data()), sizeof(wchar_t) * size);
+
+	return S_OK;
+}
+
 void CSpriteRender::CreateSpriteMaterial()
 {
 	if (nullptr == CAssetMgr::GetInst()->FindAsset<CGraphicShader>(L"SpriteShader"))

@@ -12,14 +12,15 @@ public:
     CLONE(CFlipbookRender);
 
 private:
-    vector<AssetPtr<CFlipbook>>  m_vecFlipbook;
-    AssetPtr<CFlipbook>          m_CurFlipbook;
-    int                     m_SceneIdx;
+    vector<AssetPtr<CFlipbook>>     m_vecFlipbook;
 
-    float                   m_Time;
-    float                   m_FPS;
-    bool                    m_Repeat;
-    bool                    m_Finish;
+    // 재생 정보
+    AssetPtr<CFlipbook>             m_CurFlipbook;
+    int                             m_SceneIdx;
+    float                           m_Time;
+    float                           m_FPS;
+    bool                            m_Repeat;
+    bool                            m_Finish;
 
 
 public:
@@ -38,6 +39,9 @@ public:
 public:
     virtual void FinalTick() override;
     virtual void Render() override;
+
+    virtual int Load(fstream& _Stream) override;
+    virtual int Save(fstream& _Stream) override;
 
 private:
     void CreateFlipbookMaterial();

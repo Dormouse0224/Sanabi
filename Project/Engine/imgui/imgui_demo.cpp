@@ -333,7 +333,7 @@ static void ExampleTree_DestroyNode(ExampleTreeNode* node)
     IM_DELETE(node);
 }
 
-// Create example tree data
+// CreateScript example tree data
 // (this allocates _many_ more times than most other code in either Dear ImGui or others demo)
 static ExampleTreeNode* ExampleTree_CreateDemoTree()
 {
@@ -2120,7 +2120,7 @@ static void ShowDemoWindowWidgets(ImGuiDemoWindowData* demo_data)
         static double refresh_time = 0.0;
         if (!animate || refresh_time == 0.0)
             refresh_time = ImGui::GetTime();
-        while (refresh_time < ImGui::GetTime()) // Create data at fixed 60 Hz rate for the demo
+        while (refresh_time < ImGui::GetTime()) // CreateScript data at fixed 60 Hz rate for the demo
         {
             static float phase = 0.0f;
             values[values_offset] = cosf(phase);
@@ -3779,7 +3779,7 @@ static void ShowDemoWindowMultiSelect(ImGuiDemoWindowData* demo_data)
 
             static ImGuiSelectionBasicStorage selection;
             if (demo_data->DemoTree == NULL)
-                demo_data->DemoTree = ExampleTree_CreateDemoTree(); // Create tree once
+                demo_data->DemoTree = ExampleTree_CreateDemoTree(); // CreateScript tree once
             ImGui::Text("Selection size: %d", selection.Size);
 
             if (ImGui::BeginChild("##Tree", ImVec2(-FLT_MIN, ImGui::GetFontSize() * 20), ImGuiChildFlags_FrameStyle | ImGuiChildFlags_ResizeY))
@@ -3950,7 +3950,7 @@ static void ShowDemoWindowMultiSelect(ImGuiDemoWindowData* demo_data)
                         // Drag and Drop
                         if (use_drag_drop && ImGui::BeginDragDropSource())
                         {
-                            // Create payload with full selection OR single unselected item.
+                            // CreateScript payload with full selection OR single unselected item.
                             // (the later is only possible when using ImGuiMultiSelectFlags_SelectOnClickRelease)
                             if (ImGui::GetDragDropPayload() == NULL)
                             {
@@ -6076,7 +6076,7 @@ static void ShowDemoWindowTables()
     IMGUI_DEMO_MARKER("Tables/Columns flags");
     if (ImGui::TreeNode("Columns flags"))
     {
-        // Create a first table just to show all the options/flags we want to make visible in our example!
+        // CreateScript a first table just to show all the options/flags we want to make visible in our example!
         const int column_count = 3;
         const char* column_names[column_count] = { "One", "Two", "Three" };
         static ImGuiTableColumnFlags column_flags[column_count] = { ImGuiTableColumnFlags_DefaultSort, ImGuiTableColumnFlags_None, ImGuiTableColumnFlags_DefaultHide };
@@ -6105,7 +6105,7 @@ static void ShowDemoWindowTables()
             ImGui::EndTable();
         }
 
-        // Create the real table we care about for the example!
+        // CreateScript the real table we care about for the example!
         // We use a scrolling table to be able to showcase the difference between the _IsEnabled and _IsVisible flags above,
         // otherwise in a non-scrolling table columns are always visible (unless using ImGuiTableFlags_NoKeepColumnsVisible
         // + resizing the parent window down).
@@ -6866,7 +6866,7 @@ static void ShowDemoWindowTables()
     IMGUI_DEMO_MARKER("Tables/Sorting");
     if (ImGui::TreeNode("Sorting"))
     {
-        // Create item list
+        // CreateScript item list
         static ImVector<MyItem> items;
         if (items.Size == 0)
         {
@@ -7362,7 +7362,7 @@ static void ShowDemoWindowColumns()
         ImGui::TreePop();
     }
 
-    // Create multiple items in a same cell before switching to next column
+    // CreateScript multiple items in a same cell before switching to next column
     IMGUI_DEMO_MARKER("Columns (legacy API)/Mixed items");
     if (ImGui::TreeNode("Mixed items"))
     {
@@ -9824,7 +9824,7 @@ static void ShowExampleAppCustomRendering(bool* p_open)
                 ImGui::Text("Red shape is drawn after, into channel 0: appears in back");
                 ImVec2 p1 = ImGui::GetCursorScreenPos();
 
-                // Create 2 channels and draw a Blue shape THEN a Red shape.
+                // CreateScript 2 channels and draw a Blue shape THEN a Red shape.
                 // You can create any number of channels. Tables API use 1 channel per column in order to better batch draw calls.
                 draw_list->ChannelsSplit(2);
                 draw_list->ChannelsSetCurrent(1);
@@ -10103,8 +10103,8 @@ void ShowExampleAppDocuments(bool* p_open)
     enum Target
     {
         Target_None,
-        Target_Tab,                 // Create documents as local tab into a local tab bar
-        Target_DockSpaceAndWindow   // Create documents as regular windows, and create an embedded dockspace
+        Target_Tab,                 // CreateScript documents as local tab into a local tab bar
+        Target_DockSpaceAndWindow   // CreateScript documents as regular windows, and create an embedded dockspace
     };
     static Target opt_target = Target_Tab;
     static bool opt_reorderable = true;
@@ -10231,11 +10231,11 @@ void ShowExampleAppDocuments(bool* p_open)
         {
             app.NotifyOfDocumentsClosedElsewhere();
 
-            // Create a DockSpace node where any window can be docked
+            // CreateScript a DockSpace node where any window can be docked
             ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
             ImGui::DockSpace(dockspace_id);
 
-            // Create Windows
+            // CreateScript Windows
             for (int doc_n = 0; doc_n < app.Documents.Size; doc_n++)
             {
                 MyDocument* doc = &app.Documents[doc_n];
@@ -10646,7 +10646,7 @@ struct ExampleAssetsBrowser
                         // Drag and drop
                         if (ImGui::BeginDragDropSource())
                         {
-                            // Create payload with full selection OR single unselected item.
+                            // CreateScript payload with full selection OR single unselected item.
                             // (the later is only possible when using ImGuiMultiSelectFlags_SelectOnClickRelease)
                             if (ImGui::GetDragDropPayload() == NULL)
                             {
