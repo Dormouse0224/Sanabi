@@ -173,7 +173,7 @@ void CKeyMgr::Tick()
         ScreenToClient(CEngine::GetInst()->GetMainWndHwnd(), &point);
 
         // 커맨드 갱신
-        m_CommandTimeout += CTimeMgr::GetInst()->GetDeltaTime();
+        m_CommandTimeout += DT;
         if (m_CommandTimeout > 0.3)
         {
             m_CommandTimeout = 0.f;

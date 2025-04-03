@@ -58,10 +58,6 @@ void CPlayerScript::Tick()
 		pBody->addForce(PxVec3(0.f, 200.f, 0.f), PxForceMode::eVELOCITY_CHANGE);
 		GetOwner()->FindChild(L"ParticleChild")->ParticleRender()->SetActiveState(true);
 	}
-	//if (KEY_PRESSED(Keyboard::UP))
-	//	vPos.y += 100.f * DT;
-	//if (KEY_PRESSED(Keyboard::DOWN))
-	//	vPos.y -= 100.f * DT;
 
 
 
@@ -104,12 +100,12 @@ void CPlayerScript::Tick()
 }
 
 
-void CPlayerScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _Other, CCollider2D* _OtherCollider)
+void CPlayerScript::BeginOverlap(CGameObject* _Other)
 {
 
 }
 
-void CPlayerScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _Other, CCollider2D* _OtherCollider)
+void CPlayerScript::Overlap(CGameObject* _Other)
 {
 	if (_Other->GetLayerIdx() == 4)
 	{
@@ -117,19 +113,10 @@ void CPlayerScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _Other, CCol
 	}
 }
 
-void CPlayerScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _Other, CCollider2D* _OtherCollider)
+void CPlayerScript::EndOverlap(CGameObject* _Other)
 {
 }
 
-int CPlayerScript::Load(fstream& _Stream)
-{
-	return 0;
-}
-
-int CPlayerScript::Save(fstream& _Stream)
-{
-	return 0;
-}
 
 CScript* CPlayerScript::Instantiate()
 {

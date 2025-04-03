@@ -10,6 +10,26 @@ CTileRender::CTileRender()
 	: CRenderComponent(COMPONENT_TYPE::TILERENDER)
 	, m_Col(0)
 	, m_Row(0)
+	, m_TileSize()
+	, m_AtlasTex()
+	, m_vecTileLT{}
+	, m_GpuBuffer(nullptr)
+{
+	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+
+	CreateTileRenderMtrl();
+
+	m_GpuBuffer = new CStructuredBuffer;
+}
+
+CTileRender::CTileRender(const CTileRender& _Other)
+	: CRenderComponent(_Other)
+	, m_Col(_Other.m_Col)
+	, m_Row(_Other.m_Row)
+	, m_TileSize(_Other.m_TileSize)
+	, m_AtlasTex(_Other.m_AtlasTex)
+	, m_vecTileLT{ _Other.m_vecTileLT }
+	, m_GpuBuffer(nullptr)
 {
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 

@@ -1,28 +1,32 @@
 #pragma once
 
+class CLevel;
 
 class CLevelMgr
 	: public Singleton<CLevelMgr>
 {
 	SINGLE(CLevelMgr);
 private:
-	class CLevel*	m_CurLevel;
-	bool			m_LevelUpdated;
+	CLevel*	m_CurLevel;
+	CLevel*	m_PlayStartLevel;
+	bool			m_LevelModified;
 
-public:
-	CLevel* GetCurrentLevel() { return m_CurLevel; }
-
-	void SetCurrentLevel(CLevel* _Level) { m_CurLevel = _Level; }
 
 public:
 	void Init();
 	void Progress();
 
-	bool GetLevelUpdated() { return m_LevelUpdated; }
+	CLevel* GetCurrentLevel() { return m_CurLevel; }
+	bool GetLevelModified() { return m_LevelModified; }
+	const CLevel* GetPlayStartLevel() { return m_PlayStartLevel; }
 
-	void SetLevelUpdated(bool _b) { m_LevelUpdated = _b; }
+	void SetCurrentLevel(CLevel* _Level) { m_CurLevel = _Level; }
+	void SetLevelModified(bool _b) { m_LevelModified = _b; }
+	void SetPlayStartLevel(CLevel* _Level) { m_PlayStartLevel = _Level; }
 
 	// 현재 레벨에 신규 게임 오브젝트 객체를 추가합니다.
 	void AddGameObject(wstring _Name, LAYER _Layer);
+	void ChangeLevel(CLevel* _NextLevel);
+
 };
 

@@ -8,8 +8,12 @@
 
 CTransform::CTransform()
 	: CComponent(COMPONENT_TYPE::TRANSFORM)
+	, m_RelativePos(Vec3(0.f, 0.f, 0.f))
 	, m_RelativeScale(Vec3(1.f, 1.f, 1.f))
 	, m_RelativeRot(Vec4(0.f, 0.f, 0.f, 1.f))
+	, m_RelativeDir{}
+	, m_WorldDir{}
+	, m_matWorld()
 	, m_IndependentScale(false)
 {
 	m_RelativeDir[(UINT)DIR::RIGHT] = Vec3(1.f, 0.f, 0.f);

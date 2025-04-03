@@ -13,13 +13,42 @@
 
 CGameObject::CGameObject()
 	: m_Com{}
+	, m_vecScript{}
 	, m_RenderCom(nullptr)
 	, m_Parent(nullptr)
+	, m_vecChild{}
 	, m_LayerIdx(-1)
 	, m_Dead(false)
-	, m_vecScript{}
-	, m_vecChild{}
 {
+}
+
+CGameObject::CGameObject(const CGameObject& _Other)
+	: CEntity(_Other)
+	, m_Com{}
+	, m_vecScript{}
+	, m_RenderCom(nullptr)
+	, m_Parent(nullptr)
+	, m_vecChild{}
+	, m_LayerIdx(_Other.m_LayerIdx)
+	, m_Dead(false)
+{
+	for (int i = 0; i < (UINT)COMPONENT_TYPE::COMPONENT_END; ++i)
+	{
+		if (_Other.m_Com[i])
+			AddComponent(_Other.m_Com[i]->Clone());
+	}
+
+	for (const auto& script : _Other.m_vecScript)
+	{
+		AddComponent(script->Clone());
+	}
+
+	for (const auto& child : _Other.m_vecChild)
+	{
+		CGameObject* mychild = child->Clone();
+		mychild->m_Parent = this;
+		m_vecChild.push_back(mychild);
+	}
 }
 
 CGameObject::~CGameObject()
@@ -27,7 +56,10 @@ CGameObject::~CGameObject()
 	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::COMPONENT_END; ++i)
 	{
 		if (nullptr != m_Com[i])
+		{
 			delete m_Com[i];
+			m_Com[i] = nullptr;
+		}
 	}
 	Delete_Vec(m_vecScript);
 	Delete_Vec(m_vecChild);

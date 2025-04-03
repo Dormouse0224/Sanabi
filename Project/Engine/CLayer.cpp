@@ -4,8 +4,22 @@
 #include "CGameObject.h"
 
 CLayer::CLayer()
-	: m_LayerIdx(-1)
+	: m_vecParentObjects{}
+	, m_vecObjects{}
+	, m_LayerIdx(-1)
 {
+}
+
+CLayer::CLayer(const CLayer& _Other)
+	: CEntity(_Other)
+	, m_vecParentObjects{}
+	, m_vecObjects{}
+	, m_LayerIdx(_Other.m_LayerIdx)
+{
+	for (const auto& Object : _Other.m_vecParentObjects)
+	{
+		AddGameObject(Object->Clone(), true);
+	}
 }
 
 CLayer::~CLayer()
@@ -82,3 +96,4 @@ void CLayer::AddGameObject(CGameObject* _Parent, bool _bChildMove)
 		}
 	}
 }
+

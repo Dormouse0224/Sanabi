@@ -11,6 +11,7 @@
 #define CONTEXT CDevice::GetInst()->GetContext().Get()
 
 #define DT CTimeMgr::GetInst()->GetDeltaTime()
+#define EngineDT CTimeMgr::GetInst()->GetEngineDeltaTime()
 #define KEY_CHECK(key)		CKeyMgr::GetInst()->GetKeyState(key)
 #define KEY_TAP(key)		(CKeyMgr::GetInst()->GetKeyState(key) == Key_state::TAP)
 #define KEY_PRESSED(key)	(CKeyMgr::GetInst()->GetKeyState(key) == Key_state::PRESSED)

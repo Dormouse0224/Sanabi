@@ -22,16 +22,8 @@
 #include "TestLevel.h"
 
 TestLevel::TestLevel()
+	: CLevel()
 {
-
-	// Level 생성
-	CLevel* TestLv = new CLevel;
-
-	for (int i = 0; i < (UINT)LAYER::END; ++i)
-	{
-		TestLv->GetLayer(i)->SetName(LAYER_WSTR[i]);
-	}
-
 	// 카메라 역할 오브젝트 생성
 	CGameObject* pCamObj = new CGameObject;
 	pCamObj->SetName(L"MainCamera");
@@ -132,7 +124,7 @@ TestLevel::TestLevel()
 	pChild->ParticleRender()->SetMaxSpeed(500.f);
 	pChild->ParticleRender()->SetMinLife(2.f);
 	pChild->ParticleRender()->SetMaxLife(4.f);
-	pChild->ParticleRender()->SetSpaceType(1);
+	pChild->ParticleRender()->SetSpaceType(0);
 
 	// 부모 자식 연결
 	pObject->AddChild(pChild);
@@ -168,7 +160,7 @@ TestLevel::TestLevel()
 	pObject->ParticleRender()->SetMaxSpeed(100.f);
 	pObject->ParticleRender()->SetMinLife(5.f);
 	pObject->ParticleRender()->SetMaxLife(10.f);
-	pObject->ParticleRender()->SetSpaceType(1);
+	pObject->ParticleRender()->SetSpaceType(0);
 	pObject->ParticleRender()->SetActiveState(true);
 	pObject->ParticleRender()->SetGravityState(false);
 
@@ -278,6 +270,9 @@ TestLevel::TestLevel()
 	//CCollisionMgr::GetInst()->CollisionLayerCheck(4, 5);
 	//CCollisionMgr::GetInst()->CollisionLayerCheck(3, 6);
 
-	CLevelMgr::GetInst()->SetCurrentLevel(TestLv);
+	CLevelMgr::GetInst()->SetCurrentLevel(this);
+}
 
+TestLevel::~TestLevel()
+{
 }

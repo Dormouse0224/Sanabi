@@ -25,13 +25,6 @@ struct tDebugShapeInfo
 	bool		DepthTest;
 };
 
-struct tTask
-{
-	TASK_TYPE Type;
-	DWORD_PTR Param0;
-	DWORD_PTR Param1;
-};
-
 
 // =============
 // Particle ฐüทร
@@ -131,10 +124,9 @@ struct tGlobal
 	Vec2	g_Resolution;
 	float   g_DT;
 	float   g_EngineDT;
-	float   g_AccTime;
+	float	g_Time;
+	float	g_EngineTime;
 	int     g_Light2DCount;
 	int     g_Light3DCount;
-
-	int		padding;
 };
 extern tGlobal g_global;

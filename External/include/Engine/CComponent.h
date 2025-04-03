@@ -11,6 +11,7 @@ class CComponent :
     friend class CGameObject;
 public:
     CComponent(COMPONENT_TYPE _Type);
+    CComponent(const CComponent& _Origin);
     ~CComponent();
     virtual CComponent* Clone() = 0;
 
@@ -25,7 +26,6 @@ public:
 protected:
     GET_OTHER_COMPONENT(Transform);
     GET_OTHER_COMPONENT(Camera);
-    GET_OTHER_COMPONENT(Collider2D);
     GET_OTHER_COMPONENT(PhysxActor);
 
     GET_OTHER_COMPONENT(MeshRender);

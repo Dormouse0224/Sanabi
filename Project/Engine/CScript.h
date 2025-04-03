@@ -8,6 +8,7 @@ class CScript :
 {
 public:
     CScript();
+    CScript(const CScript& _Origin);
     ~CScript();
     virtual CScript* Clone() = 0;
 
@@ -15,11 +16,8 @@ public:
     virtual void Tick() = 0;
     virtual void FinalTick() final {}
 
-    virtual void BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _Other, CCollider2D* _OtherCollider) {}
-    virtual void Overlap(CCollider2D* _OwnCollider, CGameObject* _Other, CCollider2D* _OtherCollider) {}
-    virtual void EndOverlap(CCollider2D* _OwnCollider, CGameObject* _Other, CCollider2D* _OtherCollider) {}
-
-protected:
-    //virtual CScript* Instantiate() = 0;
+    virtual void BeginOverlap(CGameObject* _Other) {}
+    virtual void Overlap(CGameObject* _Other) {}
+    virtual void EndOverlap(CGameObject* _Other) {}
 };
 

@@ -9,48 +9,48 @@ class CParticleRender :
 {
 public:
     CParticleRender();
+    CParticleRender(const CParticleRender& _Other);
     ~CParticleRender();
     CLONE(CParticleRender);
 
 private:
-    CStructuredBuffer*      m_ParticleBuffer;
-    CStructuredBuffer*      m_SpawnBuffer;
-    CStructuredBuffer*      m_ModuleBuffer;
+    CStructuredBuffer*          m_ParticleBuffer;
+    CStructuredBuffer*          m_SpawnBuffer;
+    CStructuredBuffer*          m_ModuleBuffer;
 
-    AssetPtr<CParticleTickCS>    m_TickCS;
-    UINT                    m_MaxParticle;      // 파티클 최대 개수
+    AssetPtr<CParticleTickCS>   m_TickCS;
+    UINT                        m_MaxParticle;      // 파티클 최대 개수
 
-    tParticleModule         m_Module;           // 파티클 제어 설정값
-    bool                    m_ModuleChanged;    // 모듈 데이터 변경점 여부
-    float                   m_AccTime;          // 누적시간 체크
-    int                     m_SpawnCount;
-    bool                    m_Active;
-    bool                    m_Gravity;
+    tParticleModule             m_Module;           // 파티클 제어 설정값
+    float                       m_AccTime;          // 누적시간 체크
+    int                         m_SpawnCount;
+    bool                        m_Active;
+    bool                        m_Gravity;
 
-    AssetPtr<CTexture2D>    m_ParticleTex;
+    AssetPtr<CTexture2D>        m_ParticleTex;
 
-    map<UINT, CGameObject*> m_mapParticleObj;
+    map<UINT, CGameObject*>     m_mapParticleObj;
 
 public:
-    void SetSpawnRate(float _Rate) { m_Module.SpawnRate = _Rate; m_ModuleChanged = true; }
+    void SetSpawnRate(float _Rate) { m_Module.SpawnRate = _Rate; }
     void SetSpawnCount(float _Count) { m_SpawnCount = _Count; }
     void SetParticleTex(const AssetPtr<CTexture2D>& _Tex) { m_ParticleTex = _Tex; }
-    float GetSpawnRate() { return m_Module.SpawnRate; m_ModuleChanged = true; }
-    void SetStartColor(Vec4 _Color) { m_Module.StartColor = _Color; m_ModuleChanged = true; }
-    void SetEndColor(Vec4 _Color) { m_Module.EndColor = _Color; m_ModuleChanged = true; }
-    void SetMinScale(Vec3 _Scale) { m_Module.MinScale = _Scale; m_ModuleChanged = true; }
-    void SetMaxScale(Vec3 _Scale) { m_Module.MaxScale = _Scale; m_ModuleChanged = true; }
-    void SetMinSpeed(float _Speed) { m_Module.MinSpeed = _Speed; m_ModuleChanged = true; }
-    void SetMaxSpeed(float _Speed) { m_Module.MaxSpeed = _Speed; m_ModuleChanged = true; }
-    void SetMinLife(float _MinLife) { m_Module.MinLife = _MinLife; m_ModuleChanged = true; }
-    void SetMaxLife(float _MaxLife) { m_Module.MaxLife = _MaxLife; m_ModuleChanged = true; }
+    float GetSpawnRate() { return m_Module.SpawnRate; }
+    void SetStartColor(Vec4 _Color) { m_Module.StartColor = _Color; }
+    void SetEndColor(Vec4 _Color) { m_Module.EndColor = _Color; }
+    void SetMinScale(Vec3 _Scale) { m_Module.MinScale = _Scale; }
+    void SetMaxScale(Vec3 _Scale) { m_Module.MaxScale = _Scale; }
+    void SetMinSpeed(float _Speed) { m_Module.MinSpeed = _Speed; }
+    void SetMaxSpeed(float _Speed) { m_Module.MaxSpeed = _Speed; }
+    void SetMinLife(float _MinLife) { m_Module.MinLife = _MinLife; }
+    void SetMaxLife(float _MaxLife) { m_Module.MaxLife = _MaxLife; }
     // 0 : Box, 1 : Sphere
-    void SetSpawnShape(int _Shape) { m_Module.SpawnShape = _Shape; m_ModuleChanged = true; }
-    void SetSpawnShapeScale(Vec3 _Scale) { m_Module.SpawnShapeScale = _Scale; m_ModuleChanged = true; }
-    void SetSpawnDir(Vec3 _Dir) { m_Module.SpawnDir = _Dir; m_ModuleChanged = true; }
-    void SetSpawnDirRandomize(float _Randomize) { m_Module.SpawnDirRandomize = _Randomize; m_ModuleChanged = true; }
+    void SetSpawnShape(int _Shape) { m_Module.SpawnShape = _Shape; }
+    void SetSpawnShapeScale(Vec3 _Scale) { m_Module.SpawnShapeScale = _Scale; }
+    void SetSpawnDir(Vec3 _Dir) { m_Module.SpawnDir = _Dir; }
+    void SetSpawnDirRandomize(float _Randomize) { m_Module.SpawnDirRandomize = _Randomize; }
     // 0 : Local, 1 : World;
-    void SetSpaceType(int _Type) { m_Module.SpaceType = _Type; m_ModuleChanged = true; }
+    void SetSpaceType(int _Type) { m_Module.SpaceType = _Type; }
     void SetActiveState(bool _b) { m_Active = _b; }
     void SetGravityState(bool _b) { m_Gravity = _b; }
 

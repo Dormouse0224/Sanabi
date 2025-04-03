@@ -16,21 +16,49 @@ CPhysxActor::CPhysxActor()
     : CComponent(COMPONENT_TYPE::PHYSXACTOR)
     , m_Body(nullptr)
     , m_Type(RIGID_TYPE::NONE)
-    , m_Density(1.f)
     , m_LockFlag(0)
     , m_Gravity(false)
+    , m_Density(1.f)
+    , m_vecDesc{}
+    , m_vecScale{}
+    , m_vecOffset{}
+    , m_DelayedInit(false)
 {
 
+}
+
+CPhysxActor::CPhysxActor(const CPhysxActor& _Other)
+    : CComponent(_Other)
+    , m_Body(nullptr)
+    , m_Type(_Other.m_Type)
+    , m_LockFlag(_Other.m_LockFlag)
+    , m_Gravity(_Other.m_Gravity)
+    , m_Density(_Other.m_Density)
+    , m_vecDesc{ _Other.m_vecDesc }
+    , m_vecScale{ _Other.m_vecScale }
+    , m_vecOffset{ _Other.m_vecOffset }
+    , m_DelayedInit(true)
+{
+   
 }
 
 CPhysxActor::~CPhysxActor()
 {
-
+    CPhysxMgr::GetInst()->RemoveRigidBody(GetOwner());
 }
 
 void CPhysxActor::FinalTick()
 {
+    if (m_DelayedInit)
+    {
+        m_DelayedInit = false;
+        // m_Body 세팅
+        SetRigidBody(m_Type, m_LockFlag, m_Gravity, m_Density);
 
+        // body 에 충돌체 추가
+        for (int i = 0; i < m_vecDesc.size(); ++i)
+            AttachCollider(m_vecDesc[i], m_vecScale[i], m_vecOffset[i]);
+    }
 }
 
 void CPhysxActor::SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag, bool _Gravity, float _Density, PxVec3 _InitVel)
@@ -174,6 +202,7 @@ int CPhysxActor::Load(fstream& _Stream)
         _Stream.read(reinterpret_cast<char*>(&m_vecDesc[i]), sizeof(COLLIDER_DESC));
         _Stream.read(reinterpret_cast<char*>(&m_vecScale[i]), sizeof(PxVec3));
         _Stream.read(reinterpret_cast<char*>(&m_vecOffset[i]), sizeof(PxVec3));
+        AttachCollider(m_vecDesc[i], m_vecScale[i], m_vecOffset[i]);
     }
 
     return S_OK;

@@ -19,8 +19,8 @@ public:
     CLONE_DISABLE(CFlipbook);
 
 private:
-    vector<AssetPtr<CSprite>>    m_vecSprite;
-    vector<AssetPtr<CTexture2D>>   m_vecTex;
+    vector<AssetPtr<CSprite>>       m_vecSprite;
+    vector<AssetPtr<CTexture2D>>    m_vecTex;
 
     SceneType               m_SceneType;
 

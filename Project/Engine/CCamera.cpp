@@ -19,12 +19,31 @@ CCamera::CCamera()
 	, m_ViewY(1.f)
 	, m_FOV(XM_PI / 2.f)
 	, m_Far(10000.f)
+	, m_matView()
+	, m_matProj()
 	, m_Priority(-1)
+	, m_Registered(false)
 	, m_LayerCheck(0)
 {
 	Vec2 vResolution = CDevice::GetInst()->GetRenderResolution();
 	m_ViewX = vResolution.x;
 	m_ViewY = vResolution.y;
+}
+
+
+CCamera::CCamera(const CCamera& _Origin)
+	: CComponent(_Origin)
+	, m_ProjType(_Origin.m_ProjType)
+	, m_ViewX(_Origin.m_ViewX)
+	, m_ViewY(_Origin.m_ViewY)
+	, m_FOV(_Origin.m_FOV)
+	, m_Far(_Origin.m_Far)
+	, m_matView(_Origin.m_matView)
+	, m_matProj(_Origin.m_matProj)
+	, m_Priority(_Origin.m_Priority)
+	, m_Registered(false)
+	, m_LayerCheck(_Origin.m_LayerCheck)
+{
 }
 
 CCamera::~CCamera()
@@ -40,6 +59,9 @@ void CCamera::SetPriority(int _Priority)
 
 void CCamera::FinalTick()
 {
+	if (!m_Registered && m_Priority != -1)
+		CRenderMgr::GetInst()->RegisterCamera(this, m_Priority);
+
 	// 뷰행렬 계산
 	// 이동
 	Vec3 vCamPos = Transform()->GetRelativePos();
@@ -128,6 +150,7 @@ int CCamera::Load(fstream& _Stream)
 	_Stream.read(reinterpret_cast<char*>(&m_Priority), sizeof(int));		// 카메라 우선순위, -1 : 미등록 카메라, 0 : 메인 카메라, 1 ~> : 서브 카메라
 	_Stream.read(reinterpret_cast<char*>(&m_LayerCheck), sizeof(UINT));		// 카메라가 렌더링할 레이어 비트설정
 
+	CRenderMgr::GetInst()->RegisterCamera(this, m_Priority);
 
 	return S_OK;
 }
@@ -156,7 +179,8 @@ int CCamera::Save(fstream& _Stream)
 void CCamera::SortObject()
 {
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-
+	if (!pCurLevel)
+		return;
 
 	for (UINT i = 0; i < (UINT)LAYER::END; ++i)
 	{

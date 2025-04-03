@@ -6,7 +6,7 @@
 #define IS_ATLAS_TEX    g_int_0
 #define IS_SINGLE_TEX   g_int_1
 
-#define ATLAS_TEX       g_tex_0
+#define TEXTURE         g_tex_0
 
 #define LeftTop         g_vec2_0
 #define Slice           g_vec2_1
@@ -50,12 +50,12 @@ float4 PS_Flipbook(VS_OUT _in) : SV_Target
             discard;
         }
         
-        vColor = ATLAS_TEX.Sample(g_sam_1, vUV);
+        vColor = TEXTURE.Sample(g_sam_1, vUV);
     }
     else if (1 == IS_SINGLE_TEX)
     {
         float2 vUV = _in.vUV;
-        vColor = ATLAS_TEX.Sample(g_sam_1, vUV);
+        vColor = TEXTURE.Sample(g_sam_1, vUV);
     }
     
     if (0.f == vColor.a)

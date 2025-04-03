@@ -14,6 +14,7 @@ class CGameObject :
     friend class CTaskMgr;
 public:
     CGameObject();
+    CGameObject(const CGameObject& _Other);
     ~CGameObject();
     CLONE(CGameObject);
 
@@ -47,7 +48,6 @@ public:
 
     class CTransform*   Transform() { return (CTransform*)GetComponent(COMPONENT_TYPE::TRANSFORM); }
     class CCamera*      Camera() { return (CCamera*)GetComponent(COMPONENT_TYPE::CAMERA); }
-    class CCollider2D*  Collider2D() { return (CCollider2D*)GetComponent(COMPONENT_TYPE::COLLIDER2D); }
     class CPhysxActor*  PhysxActor() { return (CPhysxActor*)GetComponent(COMPONENT_TYPE::PHYSXACTOR); }
 
     class CMeshRender*      MeshRender() { return (CMeshRender*)GetComponent(COMPONENT_TYPE::MESHRENDER); }

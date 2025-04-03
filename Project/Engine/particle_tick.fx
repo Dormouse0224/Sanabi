@@ -51,7 +51,7 @@ void CS_ParticleTick(int3 _ID : SV_DispatchThreadID)
     else
     {
         // 파티클의 수명이 다하면 비활성화 시킨다.
-        g_Buffer[_ID.x].Age += g_EngineDT;
+        g_Buffer[_ID.x].Age += g_DT;
         if (g_Buffer[_ID.x].Life < g_Buffer[_ID.x].Age)
         {
             g_Buffer[_ID.x].Active = false;
@@ -61,7 +61,7 @@ void CS_ParticleTick(int3 _ID : SV_DispatchThreadID)
         // Local 타입 파티클인 경우 위치 직접 조작
         if (g_Module[0].SpaceType == 0)
         {
-            g_Buffer[_ID.x].LocalPos += g_Buffer[_ID.x].Velocity * 0.01f;
+            g_Buffer[_ID.x].LocalPos += g_Buffer[_ID.x].Velocity * g_DT;
         }
         
     }

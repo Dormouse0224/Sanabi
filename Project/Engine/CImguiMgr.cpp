@@ -6,11 +6,13 @@
 #include "CLevelMgr.h"
 #include "CPathMgr.h"
 #include "CAssetMgr.h"
+#include "CTaskMgr.h"
 
 #include "CEngine.h"
 #include "CInspector.h"
 #include "COutliner.h"
 #include "CContentViewer.h"
+#include "CLevel.h"
 
 CImguiMgr::CImguiMgr()
     : m_DebugMenuBar(true)
@@ -104,21 +106,58 @@ void CImguiMgr::DebugMenuBar()
             ImGui::EndMenu();
         }
 
+        if (ImGui::BeginMenu("Edit"))
+        {
+            ImGui::SeparatorText("Separator");
+            if (ImGui::BeginMenu("Level"))
+            {
+                if (ImGui::MenuItem("Add GameObject"))
+                {
+                    m_AddGameObjectMenuActive = true;
+                }
+
+                if (ImGui::BeginMenu("Change State"))
+                {
+                    LEVEL_STATE state = LEVEL_STATE::NONE;
+                    if (CLevelMgr::GetInst()->GetCurrentLevel())
+                        state = CLevelMgr::GetInst()->GetCurrentLevel()->GetState();
+                    if (ImGui::MenuItem("Play", nullptr, state == LEVEL_STATE::PLAY, state != LEVEL_STATE::NONE))
+                    {
+                        CTaskMgr::GetInst()->AddTask(TASK_TYPE::CHANGE_LEVEL_STATE, static_cast<DWORD_PTR>(LEVEL_STATE::PLAY), NULL);
+                    }
+                    if (ImGui::MenuItem("Stop", nullptr, state == LEVEL_STATE::STOP, state != LEVEL_STATE::NONE))
+                    {
+                        CTaskMgr::GetInst()->AddTask(TASK_TYPE::CHANGE_LEVEL_STATE, static_cast<DWORD_PTR>(LEVEL_STATE::STOP), NULL);
+                    }
+                    if (ImGui::MenuItem("Pause", nullptr, state == LEVEL_STATE::PAUSE, state != LEVEL_STATE::NONE))
+                    {
+                        CTaskMgr::GetInst()->AddTask(TASK_TYPE::CHANGE_LEVEL_STATE, static_cast<DWORD_PTR>(LEVEL_STATE::PAUSE), NULL);
+                    }
+
+                    ImGui::EndMenu();
+                }
+
+                ImGui::EndMenu();
+            }
+
+            ImGui::EndMenu();
+        }
+
         if (ImGui::BeginMenu("Tool"))
         {
             ImGui::MenuItem("Demo Window", nullptr, &m_DemoActive);
 
-            if (ImGui::MenuItem("Inspector", nullptr))
+            if (ImGui::MenuItem("Inspector"))
             {
                 m_Inspector->SetActive(true);
             }
 
-            if (ImGui::MenuItem("Outliner", nullptr))
+            if (ImGui::MenuItem("Outliner"))
             {
                 m_Outliner->SetActive(true);
             }
 
-            if (ImGui::MenuItem("Content Viewer", nullptr))
+            if (ImGui::MenuItem("Content Viewer"))
             {
                 m_ContentViewer->SetActive(true);
             }
@@ -126,14 +165,6 @@ void CImguiMgr::DebugMenuBar()
             ImGui::EndMenu();
         }
 
-        if (ImGui::BeginMenu("Edit"))
-        {
-            if (ImGui::MenuItem("Add GameObject", nullptr))
-            {
-                m_AddGameObjectMenuActive = true;
-            }
-            ImGui::EndMenu();
-        }
         ImGui::EndMainMenuBar();
     }
 

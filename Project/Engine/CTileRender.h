@@ -10,6 +10,7 @@ class CTileRender :
 {
 public:
     CTileRender();
+    CTileRender(const CTileRender& _Other);
     ~CTileRender();
     CLONE(CTileRender);
 

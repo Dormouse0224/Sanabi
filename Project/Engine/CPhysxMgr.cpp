@@ -121,6 +121,8 @@ void CPhysxMgr::Render()
 {
     // 디버그 렌더링 정보를 정점 정보로 치환 후, 정점 버퍼를 생성
     const PxRenderBuffer& RenderBuffer = m_Scene->getRenderBuffer();
+    if (RenderBuffer.getNbLines() == 0)
+        return;
 
     ComPtr<ID3D11Buffer> VB = nullptr;
 
@@ -201,6 +203,9 @@ void CPhysxMgr::AddRigidBody(CGameObject* _Object, PxRigidActor* _Actor)
 void CPhysxMgr::RemoveRigidBody(CGameObject* _Object)
 {
     map<CGameObject*, PxRigidActor*>::iterator iter = m_mapRigidBody.find(_Object);
+    if (iter == m_mapRigidBody.end())
+        return;
+
     PxActor* pActor = iter->second;
     m_Scene->removeActor(*pActor);
     pActor->release();

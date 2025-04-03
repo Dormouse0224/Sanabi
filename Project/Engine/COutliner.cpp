@@ -27,7 +27,7 @@ COutliner::~COutliner()
 void COutliner::Update()
 {
 	// 레벨이 업데이트되면 레벨 오브젝트 목록 갱신
-	if (CLevelMgr::GetInst()->GetLevelUpdated())
+	if (CLevelMgr::GetInst()->GetLevelModified())
 	{
 		Renew();
 	}
@@ -48,6 +48,8 @@ void COutliner::Renew()
 	m_ObjTree->GetRoot()->Clear();
 
 	CLevel* pLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	if (!pLevel)
+		return;
 
 	for (int i = 0; i < (UINT)LAYER::END; ++i)
 	{

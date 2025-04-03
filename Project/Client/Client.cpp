@@ -5,6 +5,7 @@
 #include "Client.h"
 #include "Engine/CDevice.h"
 #include "Engine/CImguiMgr.h"
+#include "Engine/CTaskMgr.h"
 
 #include "SanabiScript/TestLevel.h"
 
@@ -40,7 +41,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return 0;
     }
     // 테스트레벨 생성
-    TestLevel();
+    new TestLevel;
 
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));

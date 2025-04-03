@@ -42,9 +42,6 @@ CComponent* CComponentMgr::CreateComp(COMPONENT_TYPE _Type)
     case COMPONENT_TYPE::CAMERA:
         return new CCamera;
         break;
-    case COMPONENT_TYPE::COLLIDER2D:
-        return new CCollider2D;
-        break;
     case COMPONENT_TYPE::PHYSXACTOR:
         return new CPhysxActor;
         break;

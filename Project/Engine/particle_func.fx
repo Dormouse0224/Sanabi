@@ -10,7 +10,7 @@ float3 GetRandom(float _NomalizedThreadID, in Texture2D _NoiseTex)
 {
     float2 vUV = (float2) 0.f;
         
-    vUV.x = _NomalizedThreadID + g_AccTime * 0.1f;
+    vUV.x = _NomalizedThreadID + g_EngineTime * 0.1f;
     vUV.y = 0.5f + sin(vUV.x * 100.f * PI) * 0.5f;
         
     float3 vRandom = _NoiseTex.SampleLevel(g_sam_0, vUV, 0);

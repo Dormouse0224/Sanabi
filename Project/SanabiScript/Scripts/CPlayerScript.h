@@ -14,13 +14,13 @@ private:
 
 public:
     virtual void Tick() override;
-    virtual void BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _Other, CCollider2D* _OtherCollider) override;
-    virtual void Overlap(CCollider2D* _OwnCollider, CGameObject* _Other, CCollider2D* _OtherCollider) override;
-    virtual void EndOverlap(CCollider2D* _OwnCollider, CGameObject* _Other, CCollider2D* _OtherCollider) override;
+    virtual void BeginOverlap(CGameObject* _Other) override;
+    virtual void Overlap(CGameObject* _Other) override;
+    virtual void EndOverlap(CGameObject* _Other) override;
 
 public:
-    virtual int Load(fstream& _Stream) override;
-    virtual int Save(fstream& _Stream) override;
+    virtual int Load(fstream& _Stream) override { return S_OK; }
+    virtual int Save(fstream& _Stream) override { return S_OK; }
 
 protected:
     static CScript* Instantiate();

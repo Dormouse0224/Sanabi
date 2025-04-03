@@ -7,6 +7,7 @@ class CCamera :
     friend class CRenderMgr;
 public:
     CCamera();
+    CCamera(const CCamera& _Origin);
     ~CCamera();
     CLONE(CCamera);
 
@@ -21,6 +22,7 @@ private:
     Matrix      m_matProj;      // 투영행렬
 
     int         m_Priority;     // 카메라 우선순위, -1 : 미등록 카메라, 0 : 메인 카메라, 1 ~> : 서브 카메라
+    bool        m_Registered;
 
     UINT        m_LayerCheck;   // 카메라가 렌더링할 레이어 비트설정
 
@@ -45,6 +47,7 @@ public:
     float GetViewY() { return m_ViewY; }
     float GetFOV() { return (m_FOV / XM_PI) * 180.f; }
     float GetFar() { return m_Far; }
+    int GetPriority() { return m_Priority; }
     bool GetLayerState(LAYER _LayerIdx) { return m_LayerCheck & (1 << (UINT)_LayerIdx); }
 
     void CheckLayer(LAYER _LayerIdx) { m_LayerCheck ^= (1 << (UINT)_LayerIdx); }

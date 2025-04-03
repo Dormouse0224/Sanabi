@@ -11,29 +11,56 @@
 CParticleRender::CParticleRender()
 	: CRenderComponent(COMPONENT_TYPE::PARTICLERENDER)
 	, m_ParticleBuffer(nullptr)
+	, m_SpawnBuffer(nullptr)
+	, m_ModuleBuffer(nullptr)
+	, m_TickCS(nullptr)
 	, m_MaxParticle(1000)
 	, m_Module{}
 	, m_AccTime(0.f)
-	, m_ModuleChanged(true)
-	, m_ParticleTex(nullptr)
+	, m_SpawnCount()
 	, m_Active(false)
 	, m_Gravity(true)
+	, m_ParticleTex(nullptr)
 {
+	m_ParticleBuffer = new CStructuredBuffer;
+	m_ParticleBuffer->Create(sizeof(tParticle), m_MaxParticle, SB_TYPE::SRV_UAV, true);
+
 	m_SpawnBuffer = new CStructuredBuffer;
 	m_SpawnBuffer->Create(sizeof(tSpawnCount), 1, SB_TYPE::SRV_UAV, true);
 
 	m_ModuleBuffer = new CStructuredBuffer;
 	m_ModuleBuffer->Create(sizeof(tParticleModule), 1, SB_TYPE::SRV_ONLY, true);
 
-	m_ParticleBuffer = new CStructuredBuffer;
-	m_ParticleBuffer->Create(sizeof(tParticle), m_MaxParticle, SB_TYPE::SRV_UAV, true);
 
 	CreateMtrl();
 
 	// 파티클 Tick 컴퓨트 쉐이더
-	AssetPtr<CParticleTickCS> pCS = CAssetMgr::GetInst()->Load<CParticleTickCS>(L"EA_ParticleTickCS");
+	m_TickCS = CAssetMgr::GetInst()->Load<CParticleTickCS>(L"EA_ParticleTickCS").Get();
+}
 
-	m_TickCS = pCS.Get();
+CParticleRender::CParticleRender(const CParticleRender& _Other)
+	: CRenderComponent(_Other)
+	, m_ParticleBuffer(nullptr)
+	, m_SpawnBuffer(nullptr)
+	, m_ModuleBuffer(nullptr)
+	, m_TickCS(_Other.m_TickCS)
+	, m_MaxParticle(_Other.m_MaxParticle)
+	, m_Module(_Other.m_Module)
+	, m_AccTime(0.f)
+	, m_SpawnCount(_Other.m_SpawnCount)
+	, m_Active(_Other.m_Active)
+	, m_Gravity(_Other.m_Gravity)
+	, m_ParticleTex(_Other.m_ParticleTex)
+{
+	m_ParticleBuffer = new CStructuredBuffer;
+	m_ParticleBuffer->Create(sizeof(tParticle), m_MaxParticle, SB_TYPE::SRV_UAV, true);
+
+	m_SpawnBuffer = new CStructuredBuffer;
+	m_SpawnBuffer->Create(sizeof(tSpawnCount), 1, SB_TYPE::SRV_UAV, true);
+
+	m_ModuleBuffer = new CStructuredBuffer;
+	m_ModuleBuffer->Create(sizeof(tParticleModule), 1, SB_TYPE::SRV_ONLY, true);
+
 }
 
 CParticleRender::~CParticleRender()
@@ -59,19 +86,12 @@ CParticleRender::~CParticleRender()
 
 void CParticleRender::FinalTick()
 {
-
-	m_ModuleChanged = true;
 	m_Module.ObjectWorldPos = Transform()->GetWorldPos();
 
 	// 이번 프레임 파티클 활성화 개수 계산
 	CalcSpawnCount();
 
-	// 파티클 모듈 변경점 반영
-	if (m_ModuleChanged)
-	{
-		m_ModuleChanged = false;
-		m_ModuleBuffer->SetData(&m_Module);
-	}
+	m_ModuleBuffer->SetData(&m_Module);
 
 	m_TickCS->SetSpawnBuffer(m_SpawnBuffer);
 	m_TickCS->SetParticleBuffer(m_ParticleBuffer);
@@ -112,10 +132,11 @@ void CParticleRender::FinalTick()
 			else if (vecParticle[i].Active == false && vecParticle[i].PrevActive == true)
 			{
 				map<UINT, CGameObject*>::iterator iter = m_mapParticleObj.find(vecParticle[i].EntityID);
+				if (iter == m_mapParticleObj.end())
+					continue;
 				CGameObject* pParticle = iter->second;
 				if (pParticle)
 				{
-					CPhysxMgr::GetInst()->RemoveRigidBody(pParticle);
 					delete pParticle;
 					pParticle = nullptr;
 				}
@@ -173,7 +194,6 @@ int CParticleRender::Load(fstream& _Stream)
 
 	_Stream.read(reinterpret_cast<char*>(&m_MaxParticle), sizeof(UINT));
 	_Stream.read(reinterpret_cast<char*>(&m_Module), sizeof(tParticleModule));
-	_Stream.read(reinterpret_cast<char*>(&m_ModuleChanged), sizeof(bool));
 	_Stream.read(reinterpret_cast<char*>(&m_AccTime), sizeof(float));
 	_Stream.read(reinterpret_cast<char*>(&m_SpawnCount), sizeof(int));
 	_Stream.read(reinterpret_cast<char*>(&m_Active), sizeof(bool));
@@ -201,7 +221,6 @@ int CParticleRender::Save(fstream& _Stream)
 
 	_Stream.write(reinterpret_cast<char*>(&m_MaxParticle), sizeof(UINT));
 	_Stream.write(reinterpret_cast<char*>(&m_Module), sizeof(tParticleModule));
-	_Stream.write(reinterpret_cast<char*>(&m_ModuleChanged), sizeof(bool));
 	_Stream.write(reinterpret_cast<char*>(&m_AccTime), sizeof(float));
 	_Stream.write(reinterpret_cast<char*>(&m_SpawnCount), sizeof(int));
 	_Stream.write(reinterpret_cast<char*>(&m_Active), sizeof(bool));
@@ -279,5 +298,11 @@ void CParticleRender::CalcSpawnCount()
 				m_SpawnBuffer->SetData(&count);
 			}
 		}
+	}
+	else
+	{
+		tSpawnCount count = {};
+		count.SpawnCount = 0;
+		m_SpawnBuffer->SetData(&count);
 	}
 }

@@ -5,12 +5,15 @@
 #include "CConstBuffer.h"
 #include "CCamera.h"
 #include "CTransform.h"
+#include "CLevel.h"
+#include "CRenderComponent.h"
+#include "CLayer.h"
+
 
 #include "CAssetMgr.h"
-#include "CRenderComponent.h"
-
 #include "CTimeMgr.h"
 #include "CPhysxMgr.h"
+#include "CLevelMgr.h"
 
 CRenderMgr::CRenderMgr()
 {
@@ -36,9 +39,11 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, UINT _Priority)
 	if (m_vecCam[_Priority] != nullptr)
 	{
 		m_vecCam[_Priority]->m_Priority = -1;
+		m_vecCam[_Priority]->m_Registered = false;
 	}
 
 	m_vecCam[_Priority] = _Cam;
+	m_vecCam[_Priority]->m_Registered = true;
 }
 
 
@@ -127,7 +132,7 @@ void CRenderMgr::DebugRender()
 		m_DebugObject->Render();
 
 		// 노출 시간이 넘어선 정보는 제거한다.
-		(*iter).CurTime += DT;
+		(*iter).CurTime += EngineDT;
 		if ((*iter).Duration < (*iter).CurTime)
 			iter = m_vecDebugInfo.erase(iter);
 		else

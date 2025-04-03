@@ -56,6 +56,7 @@ void GS_Particle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _Stream)
     
     float3 vScale = m_Buffer[InstID].WorldScale.xyz;
     
+    // 빌보드 효과를 구현하기 위해 View 변환 적용 후 정점 생성. (빌보드 미적용 시 World 변환 이후 정점을 생성하면 됨)
     output[0].vPosition.xyz = float3(vViewPos.x - vScale.x / 2.f, vViewPos.y + vScale.y / 2.f, vViewPos.z);
     output[1].vPosition.xyz = float3(vViewPos.x + vScale.x / 2.f, vViewPos.y + vScale.y / 2.f, vViewPos.z);
     output[2].vPosition.xyz = float3(vViewPos.x + vScale.x / 2.f, vViewPos.y - vScale.y / 2.f, vViewPos.z);

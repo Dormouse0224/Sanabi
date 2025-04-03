@@ -42,6 +42,7 @@ class CPhysxActor :
 {
 public:
     CPhysxActor();
+    CPhysxActor(const CPhysxActor& _Other);
     ~CPhysxActor();
     CLONE(CPhysxActor);
 
@@ -55,6 +56,10 @@ private:
     vector<COLLIDER_DESC>   m_vecDesc;
     vector<PxVec3>          m_vecScale;
     vector<PxVec3>          m_vecOffset;
+
+    // 복사 생성 시 Body 와 Collider 생성이 불가능(Owner Object 가 설정되지 않은 타이밍이기 때문)하므로, 이후 FinalTick 에서 마저 초기화를 진행한다.
+    // 오직 복사 생성 시에만 true 가 입력되며, FinalTick 에서 추가 초기화 진행 후 false 가 된다.
+    bool                    m_DelayedInit;  
 
 public:
     virtual void Begin() {};
