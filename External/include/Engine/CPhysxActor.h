@@ -2,6 +2,8 @@
 #include "CComponent.h"
 #include "CPhysxMgr.h"
 
+typedef void (*ContactFunc)(CGameObject*);
+
 struct COLLIDER_DESC
 {
     PxShapeFlag::Enum   ShapeFlag;
@@ -59,7 +61,11 @@ private:
 
     // 복사 생성 시 Body 와 Collider 생성이 불가능(Owner Object 가 설정되지 않은 타이밍이기 때문)하므로, 이후 FinalTick 에서 마저 초기화를 진행한다.
     // 오직 복사 생성 시에만 true 가 입력되며, FinalTick 에서 추가 초기화 진행 후 false 가 된다.
-    bool                    m_DelayedInit;  
+    bool                    m_DelayedInit;
+
+    ContactFunc             m_ContactBegin;
+    ContactFunc             m_ContactTick;
+    ContactFunc             m_ContactEnd;
 
 public:
     virtual void Begin() {};
@@ -79,7 +85,16 @@ public:
 
     void AddCollider(COLLIDER_DESC _desc, PxVec3 _Scale = PxVec3(1.f), PxVec3 _Offset = PxVec3(0.f));
     void UpdatePosition(Vec3 _Pos);
+    void UpdateRotation(Vec3 _Pos);
     void CkeckLockFlag(LOCK_FLAG _Flag);
+
+    void SetContactBegin(ContactFunc _Func) { m_ContactBegin = _Func; }
+    void SetContactTick(ContactFunc _Func) { m_ContactTick = _Func; }
+    void SetContactEnd(ContactFunc _Func) { m_ContactEnd = _Func; }
+
+    void ContactBegin(CGameObject* _Other) { if (m_ContactBegin) { m_ContactBegin(_Other); } }
+    void ContactTick(CGameObject* _Other) { if (m_ContactTick) { m_ContactTick(_Other); } }
+    void ContactEnd(CGameObject* _Other) { if (m_ContactEnd) { m_ContactEnd(_Other); } }
 
     virtual int Load(fstream& _Stream) override;
     virtual int Save(fstream& _Stream) override;

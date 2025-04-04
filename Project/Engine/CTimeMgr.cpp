@@ -10,6 +10,7 @@ CTimeMgr::CTimeMgr()
 	: m_Frequency{}
 	, m_PrevCount{}
 	, m_CurCount{}
+	, m_LocalTime()
 	, m_FPS(0)
 	, m_DT(0.f)
 	, m_Time(0.f)
@@ -35,6 +36,9 @@ void CTimeMgr::Init()
 
 void CTimeMgr::Tick()
 {
+	// 로컬 시간 기록
+	GetLocalTime(&m_LocalTime);
+
 	// 현재시점 Count 값
 	QueryPerformanceCounter(&m_CurCount);
 

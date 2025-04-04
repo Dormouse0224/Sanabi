@@ -18,7 +18,7 @@ CPrefab::~CPrefab()
 	delete m_PrefabObject;
 }
 
-void CPrefab::SaveAsPrefab(CGameObject* _Obj)
+void CPrefab::ConvertToPrefab(CGameObject* _Obj)
 {
 	m_PrefabObject = _Obj->Clone();
 	CAssetMgr::GetInst()->AddAsset(_Obj->GetName(), this);

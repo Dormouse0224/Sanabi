@@ -36,7 +36,7 @@ public:
 
     void SetRelativeRotation(Vec4 _Rotation);
     void SetRelativeRotation(float _x, float _y, float _z);
-    void SetRelativeRotation(PxQuat _Rotation);
+    //void SetRelativeRotation(PxQuat _Rotation);
 
     void SetIndependentScale(bool _Scale) { m_IndependentScale = _Scale; }
 
@@ -47,7 +47,7 @@ public:
     Vec3 GetWorldScale();
 
     Vec4 GetRelativeRotation();
-    Vec3 GetWorldRotation();
+    //Vec3 GetWorldRotation();
 
     Vec3 GetRelativeDir(DIR _DirType) { return m_RelativeDir[(UINT)_DirType]; }
     Vec3 GetWorldDir(DIR _DirType) { return m_WorldDir[(UINT)_DirType]; }

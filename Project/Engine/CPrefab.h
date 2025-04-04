@@ -16,7 +16,7 @@ private:
 
 public:
     // 게임 오브젝트를 프리펩으로 저장합니다.
-    void SaveAsPrefab(CGameObject* _Obj);
+    void ConvertToPrefab(CGameObject* _Obj);
     // 프리펩으로 게임 오브젝트 인스턴스를 생성합니다.
     CGameObject* Instantiate();
 

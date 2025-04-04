@@ -8,6 +8,7 @@
 #include "CTransformUI.h"
 #include "CCameraUI.h"
 #include "CPhysxActorUI.h"
+#include "CComponentMgr.h"
 
 #include "CEngine.h"
 #include "CAsset.h"
@@ -129,10 +130,52 @@ void CInspector::Render()
 
 		// 오브젝트 프리펩화
 		ImGui::Separator();
-		if (ImGui::Button("Save Asset as File"))
+		if (ImGui::Button("Convert Object To Prefab"))
 		{
 			AssetPtr<CPrefab> prefab = new CPrefab;
-			prefab->SaveAsPrefab(m_TargetObj);
+			prefab->ConvertToPrefab(m_TargetObj);
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("Add Component"))
+		{
+			ImGui::OpenPopup("AddComponent");
+		}
+		if (ImGui::BeginPopupModal("AddComponent", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			float tab = 130.f;
+			ImGui::Text("Add component to GameObject.");
+			ImGui::Text("Do not enter extention.");
+			ImGui::Text("Directory folders and extention will automatically decided.");
+			ImGui::NewLine();
+
+			// 레이어 입력
+			ImGui::Text("Component select");
+			static int ComIdx = 0;
+			string ComStr[static_cast<int>(COMPONENT_TYPE::COMPONENT_END)] = {};
+			const char* Com[static_cast<int>(COMPONENT_TYPE::COMPONENT_END)] = {};
+			for (int i = 0; i < static_cast<int>(COMPONENT_TYPE::COMPONENT_END); ++i)
+			{
+				ComStr[i] = to_str(COMPONENT_TYPE_WSTR[i]);
+				Com[i] = ComStr[i].c_str();
+			}
+			ImGui::Combo("##Component", &ComIdx, Com, static_cast<int>(COMPONENT_TYPE::COMPONENT_END));
+
+			// 저장/취소 버튼
+			if (ImGui::Button("Add"))
+			{
+				m_TargetObj->AddComponent(CComponentMgr::GetInst()->CreateComp(static_cast<COMPONENT_TYPE>(ComIdx)));
+				ComIdx = 0;
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel"))
+			{
+				ComIdx = 0;
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
 		}
 	}
 		break;
@@ -161,7 +204,7 @@ void CInspector::Render()
 			ImGui::Text("Directory folders and extention will automatically decided.");
 			ImGui::NewLine();
 
-			// 오브젝트 이름 입력
+			// 에셋 이름 입력
 			ImGui::Text("Name: ");
 			ImGui::SameLine(tab);
 			static char Name[255] = {};
@@ -186,6 +229,7 @@ void CInspector::Render()
 
 			ImGui::EndPopup();
 		}
+
 	}
 		break;
 	}

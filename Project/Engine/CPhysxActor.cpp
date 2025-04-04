@@ -68,6 +68,9 @@ void CPhysxActor::SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag, bool _Gravity, 
     m_Gravity = _Gravity;
     m_Density = _Density;
 
+    if(m_Type == RIGID_TYPE::NONE || GetOwner() == nullptr || GetOwner()->Transform() == nullptr)
+        return;
+
     // 오브젝트 좌표 가져오기
     PxTransform Trans(PxVec3(GetOwner()->Transform()->GetRelativePos().x, GetOwner()->Transform()->GetRelativePos().y, GetOwner()->Transform()->GetRelativePos().z));
 
@@ -106,16 +109,32 @@ void CPhysxActor::SetRigidType(RIGID_TYPE _Type)
     if (m_Type == _Type)
         return;
 
-    if (m_Type != RIGID_TYPE::STATIC && _Type != RIGID_TYPE::STATIC)
+    if ((m_Type == RIGID_TYPE::KINEMATIC && _Type == RIGID_TYPE::DYNAMIC)
+        || (m_Type == RIGID_TYPE::DYNAMIC && _Type == RIGID_TYPE::KINEMATIC))
     {
         // Dynamic <-> Kinematic 인 경우 플래그만 토글시킨다
         PxRigidDynamic* pBody = (PxRigidDynamic*)m_Body;
         pBody->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, !(pBody->getRigidBodyFlags() & PxRigidBodyFlag::eKINEMATIC));
         m_Type = _Type;
     }
+    else if (_Type == RIGID_TYPE::NONE)
+    {
+        // None 타입으로 변경 시 기존 강체를 제거한다.
+        CPhysxMgr::GetInst()->RemoveRigidBody(GetOwner());
+    }
+    else if (m_Type == RIGID_TYPE::NONE)
+    {
+        // None 타입에서 새로 생성하는 경우 강체를 만든다.
+        SetRigidBody(_Type);
+
+        for (int i = 0; i < m_vecDesc.size(); ++i)
+        {
+            AttachCollider(m_vecDesc[i], m_vecScale[i], m_vecOffset[i]);
+        }
+    }
     else
     {
-        // 둘 중 하나가 Static 인 경우 기존 강체를 제거하고 동적 액터로 새로 등록한다
+        // 둘 중 하나가 Static 인 경우 기존 강체를 제거하고 신규 강체로 새로 등록한다
         CPhysxMgr::GetInst()->RemoveRigidBody(GetOwner());
         SetRigidBody(_Type);
 
@@ -165,6 +184,16 @@ void CPhysxActor::UpdatePosition(Vec3 _Pos)
     }
 }
 
+void CPhysxActor::UpdateRotation(Vec3 _Pos)
+{
+    // Scene 에 등록된 강체가 존재하는 경우, 해당 강체의 Scene 에서의 방향을 업데이트
+    if (m_Body)
+    {
+        //PxTransform Trans = PxTransform(m_Body->getGlobalPose().p, );
+        //m_Body->setGlobalPose(Trans);
+    }
+}
+
 void CPhysxActor::CkeckLockFlag(LOCK_FLAG _Flag)
 {
     // 다이나믹 액터가 아니면 즉시 리턴
@@ -188,7 +217,7 @@ int CPhysxActor::Load(fstream& _Stream)
     _Stream.read(reinterpret_cast<char*>(&m_Gravity), sizeof(bool));
     _Stream.read(reinterpret_cast<char*>(&m_Density), sizeof(float));
 
-    // 데이터를 통해 m_Body 작성
+    // 데이터를 통해 m_Body 작성 (AddComponent를 실행한 후 Load 가 처리되기 때문에 Owner 가 존재함)
     SetRigidBody(m_Type, m_LockFlag, m_Gravity, m_Density);
 
     // RigidBody 의 Collider 정보 불러오기

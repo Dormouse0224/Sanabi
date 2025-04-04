@@ -3,6 +3,7 @@
 
 #include "CTaskMgr.h"
 #include "CLevelMgr.h"
+#include "CTimeMgr.h"
 
 #include "CLevel.h"
 #include "CInspector.h"
@@ -34,7 +35,10 @@ void CImguiMgr::DebugMenuBar()
                 if (ImGui::MenuItem("Save", nullptr))
                 {
                     CLevel* Level = CLevelMgr::GetInst()->GetCurrentLevel();
-                    if (Level) { Level->Save(L"Level_" + to_wstring(Level->GetID())); }
+                    SYSTEMTIME time = CTimeMgr::GetInst()->GetTime();
+                    if (Level) { Level->Save(L"Level_" + to_wstring(Level->GetID()) + L"_"
+                        + to_wstring(time.wYear) + L"-" + to_wstring(time.wMonth) + L"-" + to_wstring(time.wDay) + L"-"
+                        + to_wstring(time.wHour) + L"-" + to_wstring(time.wMinute) + L"-" + to_wstring(time.wSecond)); }
                 }
                 if (ImGui::MenuItem("Save As..", nullptr))
                 {

@@ -171,8 +171,8 @@ int CTransform::Save(fstream& _Stream)
 void CTransform::SetRelativeRotation(Vec4 _RotationRad)
 {
 	m_RelativeRot = (_RotationRad / 180.f) * XM_PI;
-	//m_RelativeRot = _Rotation;
-	//m_RelativeRot.Normalize();
+	if (PhysxActor())
+		PhysxActor()->UpdateRotation(m_RelativeRot);
 }
 
 void CTransform::SetRelativeRotation(float _xRad, float _yRad, float _zRad)

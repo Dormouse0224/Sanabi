@@ -88,10 +88,11 @@ void CGameObject::AddComponent(CComponent* _Component)
 	}
 	else
 	{
-		// 이미 가지고 있는 컴포넌트인 경우
-		assert(!m_Com[(UINT)Type]);
-		m_Com[(UINT)Type] = _Component;
+		// 이미 가지고 있는 컴포넌트인 경우 입력 무시
+		if (m_Com[(UINT)Type])
+			return;
 
+		m_Com[(UINT)Type] = _Component;
 		if (dynamic_cast<CRenderComponent*>(_Component))
 		{
 			// 하나의 GameObject 는 한종류의 RenderComonent 만 가질 수 있다.

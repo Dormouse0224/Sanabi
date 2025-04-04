@@ -132,7 +132,8 @@ void CImguiMgr::AddGameObjectMenuPopup()
 
         if (ImGui::Button("Add"))
         {
-            CLevelMgr::GetInst()->AddGameObject(to_wstr(string(Name)), static_cast<LAYER>(layeridx));
+            if (CLevelMgr::GetInst()->GetCurrentLevel())
+                CLevelMgr::GetInst()->AddGameObject(to_wstr(string(Name)), static_cast<LAYER>(layeridx));
             layeridx = 0;
             memset(Name, 0, sizeof(Name));
             ImGui::CloseCurrentPopup();

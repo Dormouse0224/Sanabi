@@ -46,7 +46,18 @@ public:
 	PxPhysics* GetPhysics() { return m_Physics; }
 
 	PxRigidActor* FindRigidBody(CGameObject* _Object);
+
+	/// <summary>
+	/// 시뮬레이션에 해당 오브젝트를 키값으로 하여 강체 액터를 등록합니다.
+	/// </summary>
+	/// <param name="_Object"></param>
+	/// <param name="_Actor"></param>
 	void AddRigidBody(CGameObject* _Object, PxRigidActor* _Actor);
+
+	/// <summary>
+	/// 시뮬레이션에 해당 오브젝트로 등록된 강체 Actor를 찾아 제거합니다.
+	/// </summary>
+	/// <param name="_Object"></param>
 	void RemoveRigidBody(CGameObject* _Object);
 };
 
