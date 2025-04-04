@@ -180,7 +180,15 @@ void CPhysxActor::UpdatePosition(Vec3 _Pos)
     if (m_Body)
     {
         PxTransform Trans = PxTransform(_Pos.x, _Pos.y, _Pos.z, m_Body->getGlobalPose().q);
-        m_Body->setGlobalPose(Trans);
+        if (m_Type == RIGID_TYPE::DYNAMIC || m_Type == RIGID_TYPE::KINEMATIC)
+        {
+            static_cast<PxRigidDynamic*>(m_Body)->setKinematicTarget(Trans);
+        }
+        else
+        {
+            m_Body->setGlobalPose(Trans);
+        }
+        
     }
 }
 
