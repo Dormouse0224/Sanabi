@@ -20,7 +20,7 @@ CImguiMgr::CImguiMgr()
     , m_AddGameObjectMenuActive(false)
     , m_SaveLevelActive(false)
 {
-
+    int a = 0;
 }
 
 CImguiMgr::~CImguiMgr()
@@ -28,9 +28,12 @@ CImguiMgr::~CImguiMgr()
     SetCurrentDirectory(CPathMgr::GetBinPath());
 
     // Cleanup
-    ImGui_ImplDX11_Shutdown();
-    ImGui_ImplWin32_Shutdown();
-    ImGui::DestroyContext();
+    if (ImGui::GetCurrentContext() != nullptr)
+    {
+        ImGui_ImplDX11_Shutdown();
+        ImGui_ImplWin32_Shutdown();
+        ImGui::DestroyContext();
+    }
 
     for (auto& ui : m_mapImguiObj)
     {
