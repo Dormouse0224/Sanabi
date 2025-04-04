@@ -22,7 +22,5 @@ public:
     virtual int Load(fstream& _Stream) override { return S_OK; }
     virtual int Save(fstream& _Stream) override { return S_OK; }
 
-protected:
-    static CScript* Instantiate();
 };
 

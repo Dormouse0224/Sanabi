@@ -20,6 +20,7 @@ private:
 	bool						m_DebugMenuBar;
 	bool						m_DemoActive;
 	bool						m_AddGameObjectMenuActive;
+	bool						m_SaveLevelActive;
 
 	CInspector*					m_Inspector;
 	COutliner*					m_Outliner;
@@ -31,8 +32,10 @@ public:
 	void AddImguiObj(CImguiObject* _ImguiObj);
 	void DebugMenuBar();
 
-	void AddGameObjectMenu();
+	void AddGameObjectMenuPopup();
+	void SaveLevelPopup();
 	void LoadAsset();
+	void LoadLevel();
 
 	CInspector* GetInspector() { return m_Inspector; }
 	COutliner* GetOutliner() { return m_Outliner; }

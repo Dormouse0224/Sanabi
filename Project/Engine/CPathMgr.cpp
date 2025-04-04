@@ -32,3 +32,9 @@ void CPathMgr::Init()
 	}
 	wcscpy_s(g_SolutionPath, 255, szBuff);
 }
+
+void CPathMgr::CreateParentDir(std::filesystem::path _Path)
+{
+	if (!std::filesystem::exists(_Path.parent_path()))
+		std::filesystem::create_directories(_Path.parent_path());
+}

@@ -17,6 +17,8 @@
 CImguiMgr::CImguiMgr()
     : m_DebugMenuBar(true)
     , m_DemoActive(false)
+    , m_AddGameObjectMenuActive(false)
+    , m_SaveLevelActive(false)
 {
 
 }
@@ -98,9 +100,20 @@ void CImguiMgr::DebugMenuBar()
     {
         if (ImGui::BeginMenu("File"))
         {
+            ImGui::SeparatorText("Asset");
             if (ImGui::MenuItem("Asset Load", nullptr))
             {
                 LoadAsset();
+            }
+
+            ImGui::SeparatorText("Level");
+            if (ImGui::MenuItem("Level Save", nullptr))
+            {
+                m_SaveLevelActive = true;
+            }
+            if (ImGui::MenuItem("Level Load", nullptr))
+            {
+                LoadLevel();
             }
 
             ImGui::EndMenu();
@@ -108,7 +121,6 @@ void CImguiMgr::DebugMenuBar()
 
         if (ImGui::BeginMenu("Edit"))
         {
-            ImGui::SeparatorText("Separator");
             if (ImGui::BeginMenu("Level"))
             {
                 if (ImGui::MenuItem("Add GameObject"))
@@ -168,10 +180,12 @@ void CImguiMgr::DebugMenuBar()
         ImGui::EndMainMenuBar();
     }
 
-    AddGameObjectMenu();
+
+    SaveLevelPopup();
+    AddGameObjectMenuPopup();
 }
 
-void CImguiMgr::AddGameObjectMenu()
+void CImguiMgr::AddGameObjectMenuPopup()
 {
     if (m_AddGameObjectMenuActive)
     {
@@ -221,6 +235,45 @@ void CImguiMgr::AddGameObjectMenu()
         ImGui::EndPopup();
     }
     
+}
+
+void CImguiMgr::SaveLevelPopup()
+{
+    if (m_SaveLevelActive)
+    {
+        m_SaveLevelActive = false;
+        ImGui::OpenPopup("SaveLevel");
+    }
+
+    if (ImGui::BeginPopupModal("SaveLevel", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        float tab = 130.f;
+        ImGui::Text("Save current level as file.");
+        ImGui::NewLine();
+
+        // 오브젝트 이름 입력
+        ImGui::Text("Name: ");
+        ImGui::SameLine(tab);
+        static char Name[255] = {};
+        ImGui::InputText("##Name", Name, 255);
+        std::wstring WName = to_wstr(std::string(Name));
+
+        if (ImGui::Button("Add"))
+        {
+            CLevelMgr::GetInst()->GetCurrentLevel()->Save(WName);
+            memset(Name, 0, sizeof(Name));
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Cancel"))
+        {
+            memset(Name, 0, sizeof(Name));
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
+
 }
 
 void CImguiMgr::LoadAsset()
@@ -277,6 +330,45 @@ void CImguiMgr::LoadAsset()
             CAssetMgr::GetInst()->Load<CSprite>(RelativePath);
         else if (EXT == ".flip")
             CAssetMgr::GetInst()->Load<CFlipbook>(RelativePath);
+        else
+            MessageBoxW(nullptr, L"지원하지 않는 파일 형식입니다.", L"Asset Load Error", MB_OK);
+    }
+}
+
+void CImguiMgr::LoadLevel()
+{
+    // 에셋 파일 열기
+    WCHAR filepath[255] = {};
+    WCHAR filename[255] = {};
+    wstring ContentDir = CPathMgr::GetContentDir();
+    OPENFILENAME Desc = {};
+    Desc.lStructSize = sizeof(OPENFILENAME);
+    Desc.hwndOwner = CEngine::GetInst()->GetMainWndHwnd();
+    Desc.lpstrFilter = L"ALL\0*.*\0";
+    Desc.lpstrFile = filepath;
+    Desc.nMaxFile = 255;
+    Desc.lpstrFileTitle = filename;
+    Desc.nMaxFileTitle = 255;
+    Desc.lpstrInitialDir = ContentDir.c_str();
+    Desc.lpstrTitle = L"레벨 파일 로드";
+    Desc.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
+
+    if (GetOpenFileName(&Desc))
+    {
+        std::wstring path = filepath;
+        if (path.find(CPathMgr::GetContentDir()) == std::wstring::npos)
+        {
+            MessageBoxW(nullptr, L"파일 경로가 Content 디렉토리가 아닙니다.", L"Level Load Error", MB_OK);
+            return;
+        }
+        std::filesystem::path RelativePath = path.substr(ContentDir.size());
+        std::filesystem::path EXT = RelativePath.extension();
+        if (EXT == ".level")
+        {
+            CLevel* NewLevel = new CLevel;
+            NewLevel->Load(RelativePath);
+            CTaskMgr::GetInst()->AddTask(TASK_TYPE::CHANGE_LEVEL, reinterpret_cast<DWORD_PTR>(NewLevel), NULL);
+        }
         else
             MessageBoxW(nullptr, L"지원하지 않는 파일 형식입니다.", L"Asset Load Error", MB_OK);
     }

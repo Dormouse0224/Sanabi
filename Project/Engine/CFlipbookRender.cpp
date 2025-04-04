@@ -118,6 +118,7 @@ int CFlipbookRender::Load(fstream& _Stream)
 		_Stream.read(reinterpret_cast<char*>(&size), sizeof(int));
 		FlipbookName.resize(size);
 		_Stream.read(reinterpret_cast<char*>(FlipbookName.data()), sizeof(wchar_t) * size);
+		m_vecFlipbook.push_back(CAssetMgr::GetInst()->Load<CFlipbook>(FlipbookName));
 	}
 
 	return S_OK;

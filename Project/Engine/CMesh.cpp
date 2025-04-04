@@ -94,8 +94,7 @@ void CMesh::Render_Particle(UINT _Count)
 int CMesh::Save(const wstring& _FileName)
 {
 	std::filesystem::path path = CPathMgr::GetContentDir() + std::wstring(L"Mesh\\") + _FileName + std::wstring(L".mesh");
-	if (!std::filesystem::exists(path.parent_path()))
-		std::filesystem::create_directories(path.parent_path());
+	CPathMgr::CreateParentDir(path);
 	std::fstream file(path, std::ios::out | std::ios::binary);
 
 	// 정점 버퍼 정보 저장

@@ -6,7 +6,9 @@
 #include "Engine/CDevice.h"
 #include "Engine/CImguiMgr.h"
 #include "Engine/CTaskMgr.h"
+#include "Engine/CComponentMgr.h"
 
+#include "SanabiScript/CScriptInit.h"
 #include "SanabiScript/TestLevel.h"
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
@@ -40,8 +42,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     {
         return 0;
     }
+
+    // 스크립트 라이브러리에서 만든 스크립트 엔진에 등록
+    CComponentMgr::GetInst()->SetScriptInitFunc(&CScriptInit::ScriptInit);
+
     // 테스트레벨 생성
-    new TestLevel;
+    //new TestLevel;
 
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));

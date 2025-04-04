@@ -20,7 +20,6 @@
 CPlayerScript::CPlayerScript()
 	: m_Idle(false)
 {
-	CComponentMgr::GetInst()->Register(typeid(CPlayerScript).name(), &CPlayerScript::Instantiate);
 }
 
 CPlayerScript::~CPlayerScript()
@@ -116,10 +115,3 @@ void CPlayerScript::Overlap(CGameObject* _Other)
 void CPlayerScript::EndOverlap(CGameObject* _Other)
 {
 }
-
-
-CScript* CPlayerScript::Instantiate()
-{
-	return new CPlayerScript;
-}
-

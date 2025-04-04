@@ -36,9 +36,11 @@ public:
     CLayer* GetLayer(int _LayerIdx) { return m_Layer[_LayerIdx]; }
     LEVEL_STATE GetState() { return m_State; }
 
-
     // 모든 레이어 모든 오브젝트를 클리어합니다.
     void Deregister();
+
+    int Save(wstring _FileName);
+    int Load(wstring _FilePath);
 
 private:
     void SetState(LEVEL_STATE _State);

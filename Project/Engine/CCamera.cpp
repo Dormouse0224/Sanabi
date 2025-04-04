@@ -150,7 +150,7 @@ int CCamera::Load(fstream& _Stream)
 	_Stream.read(reinterpret_cast<char*>(&m_Priority), sizeof(int));		// 카메라 우선순위, -1 : 미등록 카메라, 0 : 메인 카메라, 1 ~> : 서브 카메라
 	_Stream.read(reinterpret_cast<char*>(&m_LayerCheck), sizeof(UINT));		// 카메라가 렌더링할 레이어 비트설정
 
-	CRenderMgr::GetInst()->RegisterCamera(this, m_Priority);
+	//CRenderMgr::GetInst()->RegisterCamera(this, m_Priority);
 
 	return S_OK;
 }

@@ -35,5 +35,8 @@ public:
     void RegisterGameObject(CGameObject* _Object) { m_vecObjects.push_back(_Object); }
     void ClearVecObjects() { m_vecObjects.clear(); }
 
+    int Save(fstream& _File);
+    int Load(fstream& _File);
+
 };
 

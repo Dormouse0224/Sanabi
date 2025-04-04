@@ -40,8 +40,7 @@ void CMaterial::Binding()
 int CMaterial::Save(const wstring& _FileName)
 {
 	std::filesystem::path path = CPathMgr::GetContentDir() + std::wstring(L"Material\\") + _FileName + std::wstring(L".mtrl");
-	if (!std::filesystem::exists(path.parent_path()))
-		std::filesystem::create_directories(path.parent_path());
+	CPathMgr::CreateParentDir(path);
 	std::fstream file(path, std::ios::out | std::ios::binary);
 
 	// 재질이 사용하는 그래픽 셰이더의 키값(이름) 저장

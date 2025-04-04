@@ -4,6 +4,7 @@
 
 CComponentMgr::CComponentMgr()
     : m_Registry{}
+    , m_InitFunc(nullptr)
 {
 }
 

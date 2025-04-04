@@ -71,8 +71,7 @@ void CSprite::SetBackground(Vec2 _BackgroundPixel)
 int CSprite::Save(const wstring& _FileName)
 {
     std::filesystem::path path = CPathMgr::GetContentDir() + std::wstring(L"Sprite\\") + _FileName + std::wstring(L".sprite");
-    if (!std::filesystem::exists(path.parent_path()))
-        std::filesystem::create_directories(path.parent_path());
+    CPathMgr::CreateParentDir(path);
     std::fstream file(path, std::ios::out | std::ios::binary);
 
     // 아틀라스 텍스쳐의 키값(이름) 저장

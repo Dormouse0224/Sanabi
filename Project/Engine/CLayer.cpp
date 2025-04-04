@@ -97,3 +97,38 @@ void CLayer::AddGameObject(CGameObject* _Parent, bool _bChildMove)
 	}
 }
 
+int CLayer::Save(fstream& _File)
+{
+	if (!_File.is_open())
+		return E_FAIL;
+
+	_File.write(reinterpret_cast<char*>(&m_LayerIdx), sizeof(int));
+
+	int count = m_vecParentObjects.size();
+	_File.write(reinterpret_cast<char*>(&count), sizeof(int));
+	for (int i = 0; i < count; ++i)
+	{
+		m_vecParentObjects[i]->Save(_File);
+	}
+
+	return S_OK;
+}
+
+int CLayer::Load(fstream& _File)
+{
+	if (!_File.is_open())
+		return E_FAIL;
+
+	_File.read(reinterpret_cast<char*>(&m_LayerIdx), sizeof(int));
+
+	int count = 0;
+	_File.read(reinterpret_cast<char*>(&count), sizeof(int));
+	m_vecParentObjects.resize(count);
+	for (int i = 0; i < count; ++i)
+	{
+		m_vecParentObjects[i] = new CGameObject;
+		m_vecParentObjects[i]->Load(_File);
+	}
+
+	return S_OK;
+}

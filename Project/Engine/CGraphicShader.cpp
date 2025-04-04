@@ -211,8 +211,7 @@ void CGraphicShader::Binding()
 int CGraphicShader::Save(const wstring& _FileName)
 {
 	std::filesystem::path path = CPathMgr::GetContentDir() + std::wstring(L"GraphicShader\\") + _FileName + std::wstring(L".shader");
-	if (!std::filesystem::exists(path.parent_path()))
-		std::filesystem::create_directories(path.parent_path());
+	CPathMgr::CreateParentDir(path);
 	std::fstream file(path, std::ios::out | std::ios::binary);
 
 	// hlsl 파일 경로 및 셰이더 함수 이름 정보 저장

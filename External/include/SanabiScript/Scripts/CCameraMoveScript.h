@@ -20,8 +20,5 @@ private:
     void Move_Perspective();
     void Move_OrthoGraphic();
 
-protected:
-    static CScript* Instantiate();
-
 };
 

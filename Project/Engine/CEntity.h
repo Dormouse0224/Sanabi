@@ -21,6 +21,9 @@ public:
 
 	UINT GetID() { return m_ID; }
 
+	void SaveName(fstream& _Stream);
+	void LoadName(fstream& _Stream);
+
 };
 
 

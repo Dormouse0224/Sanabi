@@ -134,7 +134,9 @@
     </Link>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)
-call ScriptHeaderCopy.bat</Command>
+call ScriptHeaderCopy.bat
+cd $(SolutionDir)CodeGen\
+call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -158,10 +160,13 @@ call ScriptHeaderCopy.bat</Command>
     </Link>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)
-call ScriptHeaderCopy.bat</Command>
+call ScriptHeaderCopy.bat
+cd $(SolutionDir)CodeGen\
+call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CScriptInit.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Scripts\CCameraMoveScript.h" />
@@ -169,6 +174,7 @@ call ScriptHeaderCopy.bat</Command>
     <ClInclude Include="TestLevel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CScriptInit.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

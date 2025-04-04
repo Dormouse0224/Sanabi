@@ -173,6 +173,9 @@ int CGameObject::Save(fstream& _Stream)
 	if (!_Stream.is_open())
 		return E_FAIL;
 
+	// 자신의 이름 저장
+	SaveName(_Stream);
+
 	// 보유한 컴포넌트 정보 저장
 	int ComCount = 0;
 	for (int i = 0; i < (UINT)COMPONENT_TYPE::COMPONENT_END; ++i)
@@ -197,7 +200,7 @@ int CGameObject::Save(fstream& _Stream)
 		std::string ClassName = typeid(*m_vecScript[i]).name();
 		int size = ClassName.size();
 		_Stream.write(reinterpret_cast<char*>(&size), sizeof(int));
-		_Stream.write(reinterpret_cast<char*>(ClassName.data()), sizeof(wchar_t) * size);
+		_Stream.write(reinterpret_cast<char*>(ClassName.data()), sizeof(char) * size);
 
 		if (FAILED(m_vecScript[i]->Save(_Stream)))
 			return E_FAIL;
@@ -220,8 +223,12 @@ int CGameObject::Load(fstream& _Stream)
 	if (!_Stream.is_open())
 		return E_FAIL;
 
+	// 자신의 이름 불러오기
+	LoadName(_Stream);
+
 	// 보유한 컴포넌트 정보 불러오기
 	int ComCount = 0;
+	std::streampos pos = _Stream.tellg();
 	_Stream.read(reinterpret_cast<char*>(&ComCount), sizeof(int));
 	for (int i = 0; i < ComCount; ++i)
 	{
@@ -235,15 +242,15 @@ int CGameObject::Load(fstream& _Stream)
 	// 보유한 스크립트 정보 불러오기
 	int count = 0;
 	_Stream.read(reinterpret_cast<char*>(&count), sizeof(int));
-	m_vecScript.resize(count);
+	//m_vecScript.resize(count);
 	for (int i = 0; i < count; ++i)
 	{
 		std::string ClassName = {};
 		int size = 0;
 		_Stream.read(reinterpret_cast<char*>(&size), sizeof(int));
 		ClassName.resize(size);
-		_Stream.read(reinterpret_cast<char*>(ClassName.data()), sizeof(wchar_t) * size);
-		m_vecScript[i] = CComponentMgr::GetInst()->CreateScript(ClassName);
+		_Stream.read(reinterpret_cast<char*>(ClassName.data()), sizeof(char) * size);
+		AddComponent(CComponentMgr::GetInst()->CreateScript(ClassName));
 
 		if (m_vecScript[i])
 		{

@@ -28,8 +28,7 @@ int CFlipbook::GetSceneCount()
 int CFlipbook::Save(const wstring& _FileName)
 {
     std::filesystem::path path = CPathMgr::GetContentDir() + std::wstring(L"Flipbook\\") + _FileName + std::wstring(L".flip");
-    if (!std::filesystem::exists(path.parent_path()))
-        std::filesystem::create_directories(path.parent_path());
+    CPathMgr::CreateParentDir(path);
     std::fstream file(path, std::ios::out | std::ios::binary);
 
     // 플립북 타입 저장

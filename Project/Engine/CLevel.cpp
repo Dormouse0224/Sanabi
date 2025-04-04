@@ -6,6 +6,7 @@
 
 #include "CTaskMgr.h"
 #include "CLevelMgr.h"
+#include "CPathMgr.h"
 
 CLevel::CLevel()
 	: m_Layer{}
@@ -100,6 +101,41 @@ void CLevel::Deregister()
 	{
 		m_Layer[i]->ClearVecObjects();
 	}
+}
+
+int CLevel::Save(wstring _FileName)
+{
+	std::filesystem::path path = CPathMgr::GetContentDir() + std::wstring(L"Level\\") + _FileName + std::wstring(L".level");
+	CPathMgr::CreateParentDir(path);
+	std::fstream file(path, std::ios::out | std::ios::binary);
+	if (!file.is_open())
+		return E_FAIL;
+
+	for (int i = 0; i < static_cast<int>(LAYER::END); ++i)
+	{
+		if (FAILED(m_Layer[i]->Save(file)))
+			return E_FAIL;
+	}
+
+	file.close();
+	return S_OK;
+}
+
+int CLevel::Load(wstring _FilePath)
+{
+	std::filesystem::path path = CPathMgr::GetContentDir() + _FilePath;
+	std::fstream file(path, std::ios::in | std::ios::binary);
+	if (!file.is_open())
+		return E_FAIL;
+
+	for (int i = 0; i < static_cast<int>(LAYER::END); ++i)
+	{
+		if (FAILED(m_Layer[i]->Load(file)))
+			return E_FAIL;
+	}
+
+	file.close();
+	return S_OK;
 }
 
 void CLevel::AddGameObject(CGameObject* _Object, int _LayerIdx, bool _bChildMove)

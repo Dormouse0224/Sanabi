@@ -12,6 +12,7 @@ public:
 	static const wchar_t* GetContentDir() { return g_ContentDir; }
 	static const wchar_t* GetBinPath() { return g_BinPath; }
 	static const wchar_t* GetSolutionPath() { return g_SolutionPath; }
+	static void CreateParentDir(std::filesystem::path _Path);
 
 private:
 	CPathMgr() {}

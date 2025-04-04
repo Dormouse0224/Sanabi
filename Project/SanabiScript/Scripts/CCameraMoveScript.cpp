@@ -9,7 +9,6 @@
 CCameraMoveScript::CCameraMoveScript()
 	: m_CamSpeed(500.f)
 {
-	CComponentMgr::GetInst()->Register(typeid(CCameraMoveScript).name(), &CCameraMoveScript::Instantiate);
 }
 
 CCameraMoveScript::~CCameraMoveScript()
@@ -93,9 +92,4 @@ void CCameraMoveScript::Move_OrthoGraphic()
 		vPos.x += EngineDT * m_CamSpeed;
 
 	Transform()->SetRelativePos(vPos);
-}
-
-CScript* CCameraMoveScript::Instantiate()
-{
-	return new CCameraMoveScript;
 }
