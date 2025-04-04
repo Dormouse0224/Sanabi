@@ -734,6 +734,9 @@
     <ClCompile Include="CComponentMgr.cpp">
       <Filter>04. Manager\11. Component</Filter>
     </ClCompile>
+    <ClCompile Include="CImguiMgr_Menu.cpp">
+      <Filter>04. Manager\09. ImguiMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">

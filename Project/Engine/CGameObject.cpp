@@ -3,13 +3,15 @@
 #include "components.h"
 #include "CScript.h"
 
-#include "CRenderComponent.h"
-
 #include "CLevelMgr.h"
-#include "CLevel.h"
-#include "CLayer.h"
+#include "CImguiMgr.h"
 #include "CPathMgr.h"
 #include "CComponentMgr.h"
+
+#include "CLevel.h"
+#include "CLayer.h"
+#include "CRenderComponent.h"
+#include "CInspector.h"
 
 CGameObject::CGameObject()
 	: m_Com{}
@@ -53,6 +55,16 @@ CGameObject::CGameObject(const CGameObject& _Other)
 
 CGameObject::~CGameObject()
 {
+	// Inspector 가 표시중인 경우 표시 해제
+	CInspector* Inspector = CImguiMgr::GetInst()->GetInspector();
+	if (Inspector)
+	{
+		if (Inspector->GetTargetObject() == this)
+		{
+			Inspector->SetTargetObject(nullptr);
+		}
+	}
+
 	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::COMPONENT_END; ++i)
 	{
 		if (nullptr != m_Com[i])
@@ -63,6 +75,7 @@ CGameObject::~CGameObject()
 	}
 	Delete_Vec(m_vecScript);
 	Delete_Vec(m_vecChild);
+
 }
 
 void CGameObject::AddComponent(CComponent* _Component)

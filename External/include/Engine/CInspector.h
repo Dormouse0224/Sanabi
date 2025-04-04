@@ -34,6 +34,8 @@ public:
 
     CGameObject* GetTargetObject() { return m_TargetObj; }
 
+    void SetTargetObject(CGameObject* _Target) { m_TargetObj = _Target; }
+
     void SetTarget(CEntity* _Obj, TARGET_TYPE _Type);
 };
 
