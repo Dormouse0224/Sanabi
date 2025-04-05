@@ -120,7 +120,7 @@ void CRenderMgr::DebugRender()
 		{
 			m_DebugObject->Transform()->SetRelativePos((*iter).WorldPos);
 			m_DebugObject->Transform()->SetRelativeScale((*iter).WorldScale);
-			m_DebugObject->Transform()->SetRelativeRotation((*iter).WorldRotation);
+			m_DebugObject->Transform()->SetRelativeRot((*iter).WorldRotation);
 			m_DebugObject->Transform()->FinalTick();
 		}
 		else

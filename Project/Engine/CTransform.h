@@ -12,7 +12,7 @@ public:
 private:
     Vec3    m_RelativePos;  // 위치
     Vec3    m_RelativeScale;// 크기
-    Vec4    m_RelativeRot;  // 회전
+    Vec4    m_RelativeRot;  // 회전(Quaternion)
 
     Vec3    m_RelativeDir[(UINT)DIR::END]; // 오브젝트의 방향정보
     Vec3    m_WorldDir[(UINT)DIR::END]; // 오브젝트의 방향정보
@@ -34,8 +34,9 @@ public:
     void SetRelativeScale(Vec3 _Scale) { m_RelativeScale = _Scale; }
     void SetRelativeScale(float _x, float _y, float _z) { m_RelativeScale = Vec3(_x, _y, _z); }
 
-    void SetRelativeRotation(Vec4 _Rotation);
-    void SetRelativeRotation(float _x, float _y, float _z);
+    void SetRelativeRot(Vec4 _RotationQuat);
+    void SetRelativeRot(Vec3 _RotationDeg);
+    void SetRelativeRot(float _x, float _y, float _z);
     //void SetRelativeRotation(PxQuat _Rotation);
 
     void SetIndependentScale(bool _Scale) { m_IndependentScale = _Scale; }
@@ -46,7 +47,7 @@ public:
     Vec3 GetRelativeScale() { return m_RelativeScale; }
     Vec3 GetWorldScale();
 
-    Vec4 GetRelativeRotation();
+    Vec3 GetRelativeRot();
     //Vec3 GetWorldRotation();
 
     Vec3 GetRelativeDir(DIR _DirType) { return m_RelativeDir[(UINT)_DirType]; }

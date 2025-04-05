@@ -75,6 +75,7 @@ void CPhysxMgr::Init()
     // 디버그 렌더링 목록
     m_Scene->setVisualizationParameter(PxVisualizationParameter::eSCALE, 1.0f);
     m_Scene->setVisualizationParameter(PxVisualizationParameter::eBODY_AXES, 10.0f);
+    m_Scene->setVisualizationParameter(PxVisualizationParameter::eACTOR_AXES, 10.0f);
     m_Scene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_SHAPES, 1.0f);
 
     // 충돌 이벤트 콜백 등록
@@ -115,6 +116,7 @@ void CPhysxMgr::Tick()
         PxVec3 Pos = ((PxRigidDynamic*)(vecDynamicActor[i]))->getGlobalPose().p;
         PxQuat Rot = ((PxRigidDynamic*)(vecDynamicActor[i]))->getGlobalPose().q;
         pObject->Transform()->SetRelativePos(Pos.x, Pos.y, Pos.z);
+        pObject->Transform()->SetRelativeRot(Vec4(Rot.x, Rot.y, Rot.z, Rot.w));
     }
 }
 

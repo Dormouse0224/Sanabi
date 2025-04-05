@@ -180,7 +180,7 @@ void CPhysxActor::UpdatePosition(Vec3 _Pos)
     if (m_Body)
     {
         PxTransform Trans = PxTransform(_Pos.x, _Pos.y, _Pos.z, m_Body->getGlobalPose().q);
-        if (m_Type == RIGID_TYPE::DYNAMIC || m_Type == RIGID_TYPE::KINEMATIC)
+        if (m_Type == RIGID_TYPE::KINEMATIC)
         {
             static_cast<PxRigidDynamic*>(m_Body)->setKinematicTarget(Trans);
         }
@@ -192,13 +192,21 @@ void CPhysxActor::UpdatePosition(Vec3 _Pos)
     }
 }
 
-void CPhysxActor::UpdateRotation(Vec3 _Pos)
+void CPhysxActor::UpdateRotation(Vec4 _RotQuat)
 {
     // Scene 에 등록된 강체가 존재하는 경우, 해당 강체의 Scene 에서의 방향을 업데이트
     if (m_Body)
     {
-        //PxTransform Trans = PxTransform(m_Body->getGlobalPose().p, );
-        //m_Body->setGlobalPose(Trans);
+        PxQuat Quat(_RotQuat.x, _RotQuat.y, _RotQuat.z, _RotQuat.w);
+        PxTransform Trans = PxTransform(m_Body->getGlobalPose().p, Quat);
+        if (m_Type == RIGID_TYPE::KINEMATIC)
+        {
+            static_cast<PxRigidDynamic*>(m_Body)->setKinematicTarget(Trans);
+        }
+        else
+        {
+            m_Body->setGlobalPose(Trans);
+        }
     }
 }
 

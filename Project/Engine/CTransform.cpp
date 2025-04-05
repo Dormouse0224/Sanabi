@@ -32,16 +32,17 @@ void CTransform::FinalTick()
 	Matrix matScale = XMMatrixScaling(m_RelativeScale.x, m_RelativeScale.y, m_RelativeScale.z);
 
 	// Rotation
-	Matrix matRotation = XMMatrixRotationX(m_RelativeRot.x);
-	matRotation *= XMMatrixRotationY(m_RelativeRot.y);
-	matRotation *= XMMatrixRotationZ(m_RelativeRot.z);
-	//Matrix matRotation = XMMatrixRotationQuaternion(m_RelativeRot);
+	//Matrix matRotationP = XMMatrixRotationX(m_RelativeRot.x);
+	//Matrix matRotationY = XMMatrixRotationY(m_RelativeRot.y);
+	//Matrix matRotationR = XMMatrixRotationZ(m_RelativeRot.z);
+	Matrix matRot = XMMatrixRotationQuaternion(m_RelativeRot);
 
 	// Translation
 	Matrix matTrans = XMMatrixTranslation(m_RelativePos.x, m_RelativePos.y, m_RelativePos.z);
 
 	// 크기 회전 이동 부모 순서로 적용
-	m_matWorld = matScale * matRotation * matTrans;
+	//Matrix matRot = matRotationR * matRotationP * matRotationY;
+	m_matWorld = matScale * matRot * matTrans;
 
 	// 오브젝트의 방향정보 계산
 	m_RelativeDir[(UINT)DIR::RIGHT] = Vec3(1.f, 0.f, 0.f);
@@ -53,7 +54,7 @@ void CTransform::FinalTick()
 	// XMVector3TransformNormal() w 동차좌표값을 0으로 확장
 	for (int i = 0; i < (int)DIR::END; ++i)
 	{
-		m_WorldDir[i] = m_RelativeDir[i] = XMVector3TransformNormal(m_RelativeDir[i], matRotation);
+		m_WorldDir[i] = m_RelativeDir[i] = XMVector3TransformNormal(m_RelativeDir[i], matRot);
 	}
 
 	// 부모 오브젝트가 있는 경우, 부모의 월드행렬을 누적시킨다.
@@ -131,9 +132,32 @@ Vec3 CTransform::GetWorldScale()
 	return vWorldScale;
 }
 
-Vec4 CTransform::GetRelativeRotation()
+Vec3 CTransform::GetRelativeRot()
 {
-	Vec4 vRotation = (m_RelativeRot / XM_PI) * 180.f;
+	/*float rad = acos(m_RelativeRot.w) * 2;
+	float pitch = asin(2 * (m_RelativeRot.w * m_RelativeRot.y - m_RelativeRot.x * m_RelativeRot.z));
+	float yaw = atan2(2 * (m_RelativeRot.w * m_RelativeRot.x + m_RelativeRot.y * m_RelativeRot.z), 1 - 2 * (pow(m_RelativeRot.y, 2) + pow(m_RelativeRot.z, 2)));
+	float roll = atan2(2 * (m_RelativeRot.w * m_RelativeRot.z + m_RelativeRot.x * m_RelativeRot.y), 1 - 2 * (pow(m_RelativeRot.z, 2) + pow(m_RelativeRot.x, 2)));*/
+
+	const Vec4& q = m_RelativeRot;
+
+	// ZYX 회전 순서 (Roll → Yaw → Pitch)
+	float sinr_cosp = 2.0f * (q.w * q.x + q.y * q.z);
+	float cosr_cosp = 1.0f - 2.0f * (q.x * q.x + q.y * q.y);
+	float pitch = atan2(sinr_cosp, cosr_cosp); // X축 회전
+
+	float sinp = 2.0f * (q.w * q.y - q.z * q.x);
+	float yaw;
+	if (abs(sinp) >= 1.0f)
+		yaw = copysign(XM_PI / 2.0f, sinp); // clamp to 90 deg if out of range
+	else
+		yaw = asin(sinp); // Y축 회전
+
+	float siny_cosp = 2.0f * (q.w * q.z + q.x * q.y);
+	float cosy_cosp = 1.0f - 2.0f * (q.y * q.y + q.z * q.z);
+	float roll = atan2(siny_cosp, cosy_cosp); // Z축 회전
+
+	Vec3 vRotation(pitch * 180 / XM_PI, yaw * 180 / XM_PI, roll * 180 / XM_PI);
 	return vRotation;
 }
 
@@ -168,15 +192,29 @@ int CTransform::Save(fstream& _Stream)
 	return S_OK;
 }
 
-void CTransform::SetRelativeRotation(Vec4 _RotationRad)
+void CTransform::SetRelativeRot(Vec4 _RotationQuat)
 {
-	m_RelativeRot = (_RotationRad / 180.f) * XM_PI;
+	m_RelativeRot = _RotationQuat;
 	if (PhysxActor())
 		PhysxActor()->UpdateRotation(m_RelativeRot);
 }
 
-void CTransform::SetRelativeRotation(float _xRad, float _yRad, float _zRad)
+void CTransform::SetRelativeRot(Vec3 _RotationDeg)
 {
-	m_RelativeRot = Vec4(Vec3(_xRad, _yRad, _zRad) / 180.f * XM_PI, 1.f);
-	//m_RelativeRot = XMQuaternionRotationRollPitchYaw(_x / 180.f * XM_PI, _y / 180.f * XM_PI, _z / 180.f * XM_PI);
+	if (_RotationDeg.y > 10)
+		int a = 0;
+	Vec3 rad = _RotationDeg / 180.f * XM_PI;
+	Vec4 QuatP(sin(rad.x / 2.f), 0, 0, cos(rad.x/ 2.f));
+	Vec4 QuatY(0, sin(rad.y / 2.f), 0, cos(rad.y/ 2.f));
+	Vec4 QuatR(0, 0, sin(rad.z / 2.f), cos(rad.z / 2.f));
+	m_RelativeRot = XMQuaternionMultiply(QuatP, XMQuaternionMultiply(QuatY, QuatR));
+	Vec3 v = GetRelativeRot();
+	if (PhysxActor())
+		PhysxActor()->UpdateRotation(m_RelativeRot);
+}
+
+void CTransform::SetRelativeRot(float _xDeg, float _yDeg, float _zDeg)
+{
+	//m_RelativeRot = Vec3(_xDeg, _yDeg, _zDeg) / 180.f * XM_PI;
+	m_RelativeRot = XMQuaternionRotationRollPitchYaw(_xDeg / 180.f * XM_PI, _yDeg / 180.f * XM_PI, _zDeg / 180.f * XM_PI);
 }

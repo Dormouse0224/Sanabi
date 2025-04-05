@@ -44,6 +44,7 @@ public:
 	void Render();
 
 	PxPhysics* GetPhysics() { return m_Physics; }
+	PxScene* GetScene() { return m_Scene; }
 
 	PxRigidActor* FindRigidBody(CGameObject* _Object);
 

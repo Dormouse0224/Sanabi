@@ -66,19 +66,19 @@ void CCameraMoveScript::Move_Perspective()
 		return;
 
 	Vec2 vDragDir = CKeyMgr::GetInst()->GetDragDir();
-	Vec4 vRot = Transform()->GetRelativeRotation();
+	Vec3 vRot = Transform()->GetRelativeRot();
 	//Vec4 q1 = XMQuaternionRotationAxis(XMVectorSet(1, 0, 0, 0), XMConvertToRadians(vDragDir.y * EngineDT * 100.f));
 	//Vec4 q2 = XMQuaternionRotationAxis(XMVectorSet(0, 1, 0, 0), XMConvertToRadians(vDragDir.x * EngineDT * 100.f));
-	vRot.x += vDragDir.y * EngineDT * 100.f;
-	vRot.y += vDragDir.x * EngineDT * 100.f;
+	vRot.x += vDragDir.y * EngineDT * 10.f;
+	vRot.y += vDragDir.x * EngineDT * 10.f;
 	//vRot = XMQuaternionMultiply(vRot, XMQuaternionMultiply(q1, q2));
-	Transform()->SetRelativeRotation(vRot);
+	Transform()->SetRelativeRot(vRot);
 }
 
 void CCameraMoveScript::Move_OrthoGraphic()
 {
 	Vec4 vRot = Vec4(0.f, 0.f, 0.f, 1.f);
-	Transform()->SetRelativeRotation(vRot);
+	Transform()->SetRelativeRot(vRot);
 
 	Vec3 vPos = Transform()->GetRelativePos();
 

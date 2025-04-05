@@ -46,10 +46,10 @@ void CTransformUI::Render_Com()
 
     ImGui::Text("Rotation");
     ImGui::SameLine(tab);
-    float Rotation[3] = { pTransform->GetRelativeRotation().x,  pTransform->GetRelativeRotation().y,  pTransform->GetRelativeRotation().z };
+    float Rotation[3] = { pTransform->GetRelativeRot().x,  pTransform->GetRelativeRot().y,  pTransform->GetRelativeRot().z };
     if (ImGui::DragFloat3("##Rotation", Rotation))
     {
-        pTransform->SetRelativeRotation(Vec4(Vec3(Rotation), pTransform->GetRelativeRotation().w));
+        pTransform->SetRelativeRot(Vec3(Rotation));
     }
     ImGui::Spacing();
 

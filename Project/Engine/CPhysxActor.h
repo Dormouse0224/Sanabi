@@ -85,7 +85,7 @@ public:
 
     void AddCollider(COLLIDER_DESC _desc, PxVec3 _Scale = PxVec3(1.f), PxVec3 _Offset = PxVec3(0.f));
     void UpdatePosition(Vec3 _Pos);
-    void UpdateRotation(Vec3 _Pos);
+    void UpdateRotation(Vec4 _RotQuat);
     void CkeckLockFlag(LOCK_FLAG _Flag);
 
     void SetContactBegin(ContactFunc _Func) { m_ContactBegin = _Func; }
