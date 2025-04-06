@@ -23,7 +23,7 @@ public:
     virtual void Update() final;
     virtual void Render() final;
 
-private:
+public:
     virtual void Update_Com() = 0;
     virtual void Render_Com() = 0;
 };

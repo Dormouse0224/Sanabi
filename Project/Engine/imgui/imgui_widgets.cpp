@@ -2474,7 +2474,7 @@ bool ImGui::DragBehaviorT(ImGuiDataType data_type, TYPE* v, float v_speed, const
     if (is_logarithmic && (v_max - v_min < FLT_MAX) && ((v_max - v_min) > 0.000001f)) // Epsilon to avoid /0
         adjust_delta /= (float)(v_max - v_min);
 
-    // Clear current value on activation
+    // Unbind current value on activation
     // Avoid altering values and clamping when we are _already_ past the limits and heading in the same direction, so e.g. if range is 0..255, current value is 300 and we are pushing to the right side, keep the 300.
     const bool is_just_activated = g.ActiveIdIsJustActivated;
     const bool is_already_past_limits_and_pushing_outward = is_bounded && !is_wrapped && ((*v >= v_max && adjust_delta > 0.0f) || (*v <= v_min && adjust_delta < 0.0f));
@@ -4972,7 +4972,7 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
         {
             if (flags & ImGuiInputTextFlags_EscapeClearsAll)
             {
-                // Clear input
+                // Unbind input
                 IM_ASSERT(buf[0] != 0);
                 apply_new_text = "";
                 apply_new_text_length = 0;
@@ -7153,7 +7153,7 @@ ImGuiTypingSelectRequest* ImGui::GetTypingSelectRequest(ImGuiTypingSelectFlags f
     ImGuiTypingSelectState* data = &g.TypingSelectState;
     ImGuiTypingSelectRequest* out_request = &data->Request;
 
-    // Clear buffer
+    // Unbind buffer
     const float TYPING_SELECT_RESET_TIMER = 1.80f;          // FIXME: Potentially move to IO config.
     const int TYPING_SELECT_SINGLE_CHAR_COUNT_FOR_LOCK = 4; // Lock single char matching when repeating same char 4 times
     if (data->SearchBuffer[0] != 0)
@@ -7165,7 +7165,7 @@ ImGuiTypingSelectRequest* ImGui::GetTypingSelectRequest(ImGuiTypingSelectFlags f
         clear_buffer |= g.ActiveId != 0 && g.NavActivateId == 0; // Allow temporary SPACE activation to not interfere
         clear_buffer |= IsKeyPressed(ImGuiKey_Escape) || IsKeyPressed(ImGuiKey_Enter);
         clear_buffer |= IsKeyPressed(ImGuiKey_Backspace) && (flags & ImGuiTypingSelectFlags_AllowBackspace) == 0;
-        //if (clear_buffer) { IMGUI_DEBUG_LOG("GetTypingSelectRequest(): Clear SearchBuffer.\n"); }
+        //if (clear_buffer) { IMGUI_DEBUG_LOG("GetTypingSelectRequest(): Unbind SearchBuffer.\n"); }
         if (clear_buffer)
             data->Clear();
     }
@@ -7541,7 +7541,7 @@ ImGuiMultiSelectIO* ImGui::BeginMultiSelect(ImGuiMultiSelectFlags flags, int sel
     if (++g.MultiSelectTempDataStacked > g.MultiSelectTempData.Size)
         g.MultiSelectTempData.resize(g.MultiSelectTempDataStacked, ImGuiMultiSelectTempData());
     ImGuiMultiSelectTempData* ms = &g.MultiSelectTempData[g.MultiSelectTempDataStacked - 1];
-    IM_STATIC_ASSERT(offsetof(ImGuiMultiSelectTempData, IO) == 0); // Clear() relies on that.
+    IM_STATIC_ASSERT(offsetof(ImGuiMultiSelectTempData, IO) == 0); // Unbind() relies on that.
     g.CurrentMultiSelect = ms;
     if ((flags & (ImGuiMultiSelectFlags_ScopeWindow | ImGuiMultiSelectFlags_ScopeRect)) == 0)
         flags |= ImGuiMultiSelectFlags_ScopeWindow;
@@ -7588,7 +7588,7 @@ ImGuiMultiSelectIO* ImGui::BeginMultiSelect(ImGuiMultiSelectFlags flags, int sel
     ms->IO.NavIdSelected = (storage->NavIdSelected == 1) ? true : false;
     ms->IO.ItemsCount = items_count;
 
-    // Clear when using Navigation to move within the scope
+    // Unbind when using Navigation to move within the scope
     // (we compare FocusScopeId so it possible to use multiple selections inside a same window)
     bool request_clear = false;
     bool request_select_all = false;
@@ -7619,7 +7619,7 @@ ImGuiMultiSelectIO* ImGui::BeginMultiSelect(ImGuiMultiSelectFlags flags, int sel
 
     if (ms->IsFocused)
     {
-        // Shortcut: Clear selection (Escape)
+        // Shortcut: Unbind selection (Escape)
         // - Only claim shortcut if selection is not empty, allowing further presses on Escape to e.g. leave current child window.
         // - Box select also handle Escape and needs to pass an id to bypass ActiveIdUsingAllKeyboardKeys lock.
         if (flags & ImGuiMultiSelectFlags_ClearOnEscape)
@@ -7689,7 +7689,7 @@ ImGuiMultiSelectIO* ImGui::EndMultiSelect()
     if (ms->IsEndIO == false)
         ms->IO.Requests.resize(0);
 
-    // Clear selection when clicking void?
+    // Unbind selection when clicking void?
     // We specifically test for IsMouseDragPastThreshold(0) == false to allow box-selection!
     // The InnerRect test is necessary for non-child/decorated windows.
     bool scope_hovered = IsWindowHovered() && window->InnerRect.Contains(g.IO.MousePos);
@@ -7772,7 +7772,7 @@ void ImGui::MultiSelectItemHeader(ImGuiID id, bool* p_selected, ImGuiButtonFlags
         ImGuiSelectionUserData item_data = g.NextItemData.SelectionUserData;
         IM_ASSERT(g.NextItemData.FocusScopeId == g.CurrentFocusScopeId && "Forgot to call SetNextItemSelectionUserData() prior to item, required in BeginMultiSelect()/EndMultiSelect() scope");
 
-        // Apply SetAll (Clear/SelectAll) requests requested by BeginMultiSelect().
+        // Apply SetAll (Unbind/SelectAll) requests requested by BeginMultiSelect().
         // This is only useful if the user hasn't processed them already, and this only works if the user isn't using the clipper.
         // If you are using a clipper you need to process the SetAll request after calling BeginMultiSelect()
         if (ms->LoopRequestSetAll != -1)
@@ -7800,7 +7800,7 @@ void ImGui::MultiSelectItemHeader(ImGuiID id, bool* p_selected, ImGuiButtonFlags
             }
             else if ((ms->KeyMods & ImGuiMod_Ctrl) == 0 && (ms->Flags & ImGuiMultiSelectFlags_NoAutoClear) == 0)
             {
-                // Clear other items
+                // Unbind other items
                 selected = false;
             }
         }
@@ -7943,17 +7943,17 @@ void ImGui::MultiSelectItemFooter(ImGuiID id, bool* p_selected, bool* p_pressed)
         //----------------------------------------------------------------------------------------
         // ACTION                      | Begin  | Pressed/Activated  | End
         //----------------------------------------------------------------------------------------
-        // Keys Navigated:             | Clear  | Src=item, Sel=1               SetRange 1
+        // Keys Navigated:             | Unbind  | Src=item, Sel=1               SetRange 1
         // Keys Navigated: Ctrl        | n/a    | n/a
-        // Keys Navigated:      Shift  | n/a    | Dst=item, Sel=1,   => Clear + SetRange 1
-        // Keys Navigated: Ctrl+Shift  | n/a    | Dst=item, Sel=Src  => Clear + SetRange Src-Dst
-        // Keys Activated:             | n/a    | Src=item, Sel=1    => Clear + SetRange 1
+        // Keys Navigated:      Shift  | n/a    | Dst=item, Sel=1,   => Unbind + SetRange 1
+        // Keys Navigated: Ctrl+Shift  | n/a    | Dst=item, Sel=Src  => Unbind + SetRange Src-Dst
+        // Keys Activated:             | n/a    | Src=item, Sel=1    => Unbind + SetRange 1
         // Keys Activated: Ctrl        | n/a    | Src=item, Sel=!Sel =>         SetSange 1
-        // Keys Activated:      Shift  | n/a    | Dst=item, Sel=1    => Clear + SetSange 1
+        // Keys Activated:      Shift  | n/a    | Dst=item, Sel=1    => Unbind + SetSange 1
         //----------------------------------------------------------------------------------------
-        // Mouse Pressed:              | n/a    | Src=item, Sel=1,   => Clear + SetRange 1
+        // Mouse Pressed:              | n/a    | Src=item, Sel=1,   => Unbind + SetRange 1
         // Mouse Pressed:  Ctrl        | n/a    | Src=item, Sel=!Sel =>         SetRange 1
-        // Mouse Pressed:       Shift  | n/a    | Dst=item, Sel=1,   => Clear + SetRange 1
+        // Mouse Pressed:       Shift  | n/a    | Dst=item, Sel=1,   => Unbind + SetRange 1
         // Mouse Pressed:  Ctrl+Shift  | n/a    | Dst=item, Sel=!Sel =>         SetRange Src-Dst
         //----------------------------------------------------------------------------------------
 
@@ -8174,7 +8174,7 @@ static void ImGuiSelectionBasicStorage_BatchFinish(ImGuiSelectionBasicStorage* s
 // The most simple implementation (using indices everywhere) would look like:
 //   for (ImGuiSelectionRequest& req : ms_io->Requests)
 //   {
-//      if (req.Type == ImGuiSelectionRequestType_SetAll)    { Clear(); if (req.Selected) { for (int n = 0; n < items_count; n++) { SetItemSelected(n, true); } }
+//      if (req.Type == ImGuiSelectionRequestType_SetAll)    { Unbind(); if (req.Selected) { for (int n = 0; n < items_count; n++) { SetItemSelected(n, true); } }
 //      if (req.Type == ImGuiSelectionRequestType_SetRange)  { for (int n = (int)ms_io->RangeFirstItem; n <= (int)ms_io->RangeLastItem; n++) { SetItemSelected(n, ms_io->Selected); } }
 //   }
 void ImGuiSelectionBasicStorage::ApplyRequests(ImGuiMultiSelectIO* ms_io)
@@ -9571,7 +9571,7 @@ static void ImGui::TabBarLayout(ImGuiTabBar* tab_bar)
         section_tab_index += section->TabCount;
     }
 
-    // Clear name buffers
+    // Unbind name buffers
     tab_bar->TabsNames.Buf.resize(0);
 
     // If we have lost the selected tab, select the next most recently active one

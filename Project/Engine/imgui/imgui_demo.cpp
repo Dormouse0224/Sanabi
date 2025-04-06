@@ -1474,9 +1474,9 @@ static void ShowDemoWindowWidgets(ImGuiDemoWindowData* demo_data)
         ImGui::CheckboxFlags("ImGuiComboFlags_PopupAlignLeft", &flags, ImGuiComboFlags_PopupAlignLeft);
         ImGui::SameLine(); HelpMarker("Only makes a difference if the popup is larger than the combo");
         if (ImGui::CheckboxFlags("ImGuiComboFlags_NoArrowButton", &flags, ImGuiComboFlags_NoArrowButton))
-            flags &= ~ImGuiComboFlags_NoPreview;     // Clear incompatible flags
+            flags &= ~ImGuiComboFlags_NoPreview;     // Unbind incompatible flags
         if (ImGui::CheckboxFlags("ImGuiComboFlags_NoPreview", &flags, ImGuiComboFlags_NoPreview))
-            flags &= ~(ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_WidthFitPreview); // Clear incompatible flags
+            flags &= ~(ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_WidthFitPreview); // Unbind incompatible flags
         if (ImGui::CheckboxFlags("ImGuiComboFlags_WidthFitPreview", &flags, ImGuiComboFlags_WidthFitPreview))
             flags &= ~ImGuiComboFlags_NoPreview;
 
@@ -3331,7 +3331,7 @@ static void ShowDemoWindowMultiSelect(ImGuiDemoWindowData* demo_data)
                 sprintf(buf, "Object %d", n);
                 if (ImGui::Selectable(buf, selection[n]))
                 {
-                    if (!ImGui::GetIO().KeyCtrl) // Clear selection when CTRL is not held
+                    if (!ImGui::GetIO().KeyCtrl) // Unbind selection when CTRL is not held
                         memset(selection, 0, sizeof(selection));
                     selection[n] ^= 1; // Toggle current item
                 }

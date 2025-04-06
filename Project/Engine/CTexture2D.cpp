@@ -90,7 +90,7 @@ void CTexture2D::Binding_CS_UAV(UINT _RegisterNum)
 	CONTEXT->CSSetUnorderedAccessViews(_RegisterNum, 1, m_UAV.GetAddressOf(), &i);
 }
 
-void CTexture2D::Clear_CS_SRV(int _RegisterNum)
+void CTexture2D::Unbind_CS_SRV(int _RegisterNum)
 {
 	if (_RegisterNum == -1)
 	{
@@ -105,7 +105,7 @@ void CTexture2D::Clear_CS_SRV(int _RegisterNum)
 	}
 }
 
-void CTexture2D::Clear_CS_UAV()
+void CTexture2D::Unbind_CS_UAV()
 {
 	ID3D11UnorderedAccessView* pUAV = nullptr;
 	UINT i = -1;

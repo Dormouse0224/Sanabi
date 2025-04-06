@@ -15,6 +15,8 @@ private:
     AssetPtr<CSprite>    m_Sprite;
 
 public:
+    AssetPtr<CSprite> GetSprite() { return m_Sprite; }
+
     void SetSprite(AssetPtr<CSprite> _Sprite) { m_Sprite = _Sprite; }
 
 

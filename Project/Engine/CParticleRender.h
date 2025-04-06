@@ -1,5 +1,6 @@
 #pragma once
 #include "CRenderComponent.h"
+#include "CParticleRenderUI.h"
 #include "CParticleTickCS.h"
 
 class CStructuredBuffer;
@@ -7,6 +8,7 @@ class CStructuredBuffer;
 class CParticleRender :
     public CRenderComponent
 {
+    friend class CParticleRenderUI;
 public:
     CParticleRender();
     CParticleRender(const CParticleRender& _Other);
@@ -20,7 +22,6 @@ private:
 
     AssetPtr<CParticleTickCS>   m_TickCS;
     UINT                        m_MaxParticle;      // 파티클 최대 개수
-
     tParticleModule             m_Module;           // 파티클 제어 설정값
     float                       m_AccTime;          // 누적시간 체크
     int                         m_SpawnCount;
@@ -30,6 +31,7 @@ private:
     AssetPtr<CTexture2D>        m_ParticleTex;
 
     map<UINT, CGameObject*>     m_mapParticleObj;
+    int                         m_PrevSpaceType;
 
 public:
     void SetSpawnRate(float _Rate) { m_Module.SpawnRate = _Rate; }

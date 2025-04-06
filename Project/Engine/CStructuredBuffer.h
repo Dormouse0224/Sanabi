@@ -22,8 +22,8 @@ private:
     ComPtr<ID3D11Buffer>                m_SB_Write; // 쓰기 버퍼
     ComPtr<ID3D11Buffer>                m_SB_Read;  // 읽기 버퍼
 
-    ComPtr<ID3D11ShaderResourceView>    m_SRV;  // t 레지스터 바인딩
-    ComPtr<ID3D11UnorderedAccessView>   m_UAV;  // u 레지스터 바인딩(ComputeShader 전용)
+    ComPtr<ID3D11ShaderResourceView>    m_SRV;  // t 레지스터 바인딩 리소스
+    ComPtr<ID3D11UnorderedAccessView>   m_UAV;  // u 레지스터 바인딩 리소스 (ComputeShader 전용)
     D3D11_BUFFER_DESC                   m_Desc; // 버퍼 생성 옵션
 
     SB_TYPE                             m_Type;
@@ -46,13 +46,13 @@ public:
     void GetData(void* _Dst, UINT _ElementSize = 0, UINT _ElementCount = 0);
 
     void Binding(int _RegisterNum);
-    void Clear(int _RegisterNum);
+    void Unbind(int _RegisterNum);
 
     void Binding_CS_SRV(int _RegisterNum);
-    void Clear_CS_SRV();
+    void Unbind_CS_SRV();
 
     void Binding_CS_UAV(int _RegisterNum);
-    void Clear_CS_UAV();
+    void Unbind_CS_UAV();
 
 
 };

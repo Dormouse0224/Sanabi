@@ -504,6 +504,27 @@
     <ClInclude Include="CComponentMgr.h">
       <Filter>04. Manager\11. Component</Filter>
     </ClInclude>
+    <ClInclude Include="CMeshRenderUI.h">
+      <Filter>09. ImguiObject\ComponentUI\RenderComponentUI\01. MeshRenderUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpriteRenderUI.h">
+      <Filter>09. ImguiObject\ComponentUI\RenderComponentUI\02. SpriterenderUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CFlipbookRenderUI.h">
+      <Filter>09. ImguiObject\ComponentUI\RenderComponentUI\03. FlipbookRenderUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CTileRnederUI.h">
+      <Filter>09. ImguiObject\ComponentUI\RenderComponentUI\04. TileRenderUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CParticleRenderUI.h">
+      <Filter>09. ImguiObject\ComponentUI\RenderComponentUI\05. ParticleRenderUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CRenderComponentUI.h">
+      <Filter>09. ImguiObject\ComponentUI\RenderComponentUI</Filter>
+    </ClInclude>
+    <ClInclude Include="uilist.h">
+      <Filter>01. Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CEngine.cpp">
@@ -736,6 +757,24 @@
     </ClCompile>
     <ClCompile Include="CImguiMgr_Menu.cpp">
       <Filter>04. Manager\09. ImguiMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshRenderUI.cpp">
+      <Filter>09. ImguiObject\ComponentUI\RenderComponentUI\01. MeshRenderUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpriteRenderUI.cpp">
+      <Filter>09. ImguiObject\ComponentUI\RenderComponentUI\02. SpriterenderUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CFlipbookRenderUI.cpp">
+      <Filter>09. ImguiObject\ComponentUI\RenderComponentUI\03. FlipbookRenderUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileRnederUI.cpp">
+      <Filter>09. ImguiObject\ComponentUI\RenderComponentUI\04. TileRenderUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CParticleRenderUI.cpp">
+      <Filter>09. ImguiObject\ComponentUI\RenderComponentUI\05. ParticleRenderUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderComponentUI.cpp">
+      <Filter>09. ImguiObject\ComponentUI\RenderComponentUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

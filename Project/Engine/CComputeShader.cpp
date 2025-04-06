@@ -108,7 +108,7 @@ int CComputeShader::Execute()
 	for (int i = 0; i < TEX_PARAM::TEX_END; ++i)
 	{
 		if (m_CSTex[i].first != nullptr)
-			m_CSTex[i].first->Clear_CS_SRV(m_CSTex[i].second);
+			m_CSTex[i].first->Unbind_CS_SRV(m_CSTex[i].second);
 	}
 	CONTEXT->CSSetShader(nullptr, nullptr, 0);
 }

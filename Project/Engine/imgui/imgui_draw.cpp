@@ -2396,7 +2396,7 @@ ImFontConfig::ImFontConfig()
 // - ImFontAtlas::ClearInputData()
 // - ImFontAtlas::ClearTexData()
 // - ImFontAtlas::ClearFonts()
-// - ImFontAtlas::Clear()
+// - ImFontAtlas::Unbind()
 // - ImFontAtlas::GetTexDataAsAlpha8()
 // - ImFontAtlas::GetTexDataAsRGBA32()
 // - ImFontAtlas::AddFont()
@@ -2877,7 +2877,7 @@ static bool ImFontAtlasBuildWithStbTruetype(ImFontAtlas* atlas)
 
     ImFontAtlasBuildInit(atlas);
 
-    // Clear atlas
+    // Unbind atlas
     atlas->TexID = (ImTextureID)NULL;
     atlas->TexWidth = atlas->TexHeight = 0;
     atlas->TexUvScale = ImVec2(0.0f, 0.0f);

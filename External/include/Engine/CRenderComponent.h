@@ -1,5 +1,6 @@
 #pragma once
 #include "CComponent.h"
+#include "CRenderComponentUI.h"
 
 #include "CMesh.h"
 #include "CMaterial.h"
@@ -7,6 +8,7 @@
 class CRenderComponent :
     public CComponent
 {
+    friend class CRenderComponentUI;
 public:
     CRenderComponent(COMPONENT_TYPE _Type);
     CRenderComponent(const CRenderComponent& _Other);

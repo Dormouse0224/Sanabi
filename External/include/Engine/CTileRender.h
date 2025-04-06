@@ -1,5 +1,6 @@
 #pragma once
 #include "CRenderComponent.h"
+#include "CTileRnederUI.h"
 
 #include "CSprite.h"
 #include "CTexture2D.h"
@@ -8,6 +9,7 @@
 class CTileRender :
     public CRenderComponent
 {
+    friend class CTileRnederUI;
 public:
     CTileRender();
     CTileRender(const CTileRender& _Other);

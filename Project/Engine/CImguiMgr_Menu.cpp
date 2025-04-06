@@ -36,9 +36,9 @@ void CImguiMgr::DebugMenuBar()
                 {
                     CLevel* Level = CLevelMgr::GetInst()->GetCurrentLevel();
                     SYSTEMTIME time = CTimeMgr::GetInst()->GetTime();
-                    if (Level) { Level->Save(L"Level_" + to_wstring(Level->GetID()) + L"_"
-                        + to_wstring(time.wYear) + L"-" + to_wstring(time.wMonth) + L"-" + to_wstring(time.wDay) + L"-"
-                        + to_wstring(time.wHour) + L"-" + to_wstring(time.wMinute) + L"-" + to_wstring(time.wSecond)); }
+                    wchar_t wstr[50];
+                    swprintf_s(wstr, L"%04d%02d%02d_%02d%02d%02d", time.wYear, time.wMonth, time.wDay, time.wHour, time.wMinute, time.wSecond);
+                    if (Level) { Level->Save(L"Level_" + to_wstring(Level->GetID()) + L"_" + wstring(wstr)); }
                 }
                 if (ImGui::MenuItem("Save As..", nullptr))
                 {

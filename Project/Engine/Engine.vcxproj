@@ -170,6 +170,7 @@ call EngineHeaderCopy.bat</Command>
     <ClInclude Include="CContentViewer.h" />
     <ClInclude Include="CFlipbook.h" />
     <ClInclude Include="CFlipbookRender.h" />
+    <ClInclude Include="CFlipbookRenderUI.h" />
     <ClInclude Include="CFlipbookUI.h" />
     <ClInclude Include="CGraphicShaderUI.h" />
     <ClInclude Include="CImguiMgr.h" />
@@ -177,24 +178,29 @@ call EngineHeaderCopy.bat</Command>
     <ClInclude Include="CInspector.h" />
     <ClInclude Include="CListUI.h" />
     <ClInclude Include="CMaterialUI.h" />
+    <ClInclude Include="CMeshRenderUI.h" />
     <ClInclude Include="CMeshUI.h" />
     <ClInclude Include="COutliner.h" />
     <ClInclude Include="CParticleRender.h" />
+    <ClInclude Include="CParticleRenderUI.h" />
     <ClInclude Include="CParticleTickCS.h" />
     <ClInclude Include="CPhysxActor.h" />
     <ClInclude Include="CPhysxActorUI.h" />
     <ClInclude Include="CPhysxMgr.h" />
     <ClInclude Include="CPrefab.h" />
     <ClInclude Include="CComponentMgr.h" />
+    <ClInclude Include="CRenderComponentUI.h" />
     <ClInclude Include="CSetColorCS.h" />
     <ClInclude Include="CSimulationEvent.h" />
     <ClInclude Include="CSound.h" />
     <ClInclude Include="CSprite.h" />
     <ClInclude Include="CSpriteRender.h" />
+    <ClInclude Include="CSpriteRenderUI.h" />
     <ClInclude Include="CSpriteUI.h" />
     <ClInclude Include="CStructuredBuffer.h" />
     <ClInclude Include="CTexture2DUI.h" />
     <ClInclude Include="CTileRender.h" />
+    <ClInclude Include="CTileRnederUI.h" />
     <ClInclude Include="CTransformUI.h" />
     <ClInclude Include="CTreeUI.h" />
     <ClInclude Include="imgui\imconfig.h" />
@@ -245,6 +251,7 @@ call EngineHeaderCopy.bat</Command>
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="singleton.h" />
     <ClInclude Include="struct.h" />
+    <ClInclude Include="uilist.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAsset.cpp" />
@@ -266,6 +273,7 @@ call EngineHeaderCopy.bat</Command>
     <ClCompile Include="CEntity.cpp" />
     <ClCompile Include="CFlipbook.cpp" />
     <ClCompile Include="CFlipbookRender.cpp" />
+    <ClCompile Include="CFlipbookRenderUI.cpp" />
     <ClCompile Include="CFlipbookUI.cpp" />
     <ClCompile Include="CGameObject.cpp" />
     <ClCompile Include="CGraphicShader.cpp" />
@@ -283,9 +291,11 @@ call EngineHeaderCopy.bat</Command>
     <ClCompile Include="CMaterialUI.cpp" />
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CMeshRender.cpp" />
+    <ClCompile Include="CMeshRenderUI.cpp" />
     <ClCompile Include="CMeshUI.cpp" />
     <ClCompile Include="COutliner.cpp" />
     <ClCompile Include="CParticleRender.cpp" />
+    <ClCompile Include="CParticleRenderUI.cpp" />
     <ClCompile Include="CParticleTickCS.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
     <ClCompile Include="CPhysxActor.cpp" />
@@ -293,6 +303,7 @@ call EngineHeaderCopy.bat</Command>
     <ClCompile Include="CPhysxMgr.cpp" />
     <ClCompile Include="CPrefab.cpp" />
     <ClCompile Include="CRenderComponent.cpp" />
+    <ClCompile Include="CRenderComponentUI.cpp" />
     <ClCompile Include="CRenderMgr.cpp" />
     <ClCompile Include="CRenderMgr_Init.cpp" />
     <ClCompile Include="CScript.cpp" />
@@ -303,12 +314,14 @@ call EngineHeaderCopy.bat</Command>
     <ClCompile Include="CSound.cpp" />
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="CSpriteRender.cpp" />
+    <ClCompile Include="CSpriteRenderUI.cpp" />
     <ClCompile Include="CSpriteUI.cpp" />
     <ClCompile Include="CStructuredBuffer.cpp" />
     <ClCompile Include="CTaskMgr.cpp" />
     <ClCompile Include="CTexture2D.cpp" />
     <ClCompile Include="CTexture2DUI.cpp" />
     <ClCompile Include="CTileRender.cpp" />
+    <ClCompile Include="CTileRnederUI.cpp" />
     <ClCompile Include="CTimeMgr.cpp" />
     <ClCompile Include="CTransform.cpp" />
     <ClCompile Include="CTransformUI.cpp" />

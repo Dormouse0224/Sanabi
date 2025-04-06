@@ -5,22 +5,13 @@
 
 #include "CGameObject.h"
 #include "CComponentUI.h"
-#include "CTransformUI.h"
-#include "CCameraUI.h"
-#include "CPhysxActorUI.h"
 #include "CComponentMgr.h"
 
 #include "CEngine.h"
 #include "CAsset.h"
 #include "assets.h"
+#include "uilist.h"
 #include "CAssetUI.h"
-#include "CMeshUI.h"
-#include "CMaterialUI.h"
-#include "CTexture2DUI.h"
-#include "CComputeShaderUI.h"
-#include "CGraphicShaderUI.h"
-#include "CSpriteUI.h"
-#include "CFlipbookUI.h"
 
 CInspector::CInspector(wstring _Name)
 	: CImguiObject(_Name)
@@ -32,6 +23,11 @@ CInspector::CInspector(wstring _Name)
 	m_ComponentUI[(UINT)COMPONENT_TYPE::TRANSFORM] = new CTransformUI;
 	m_ComponentUI[(UINT)COMPONENT_TYPE::CAMERA] = new CCameraUI;
 	m_ComponentUI[(UINT)COMPONENT_TYPE::PHYSXACTOR] = new CPhysxActorUI;
+	m_ComponentUI[(UINT)COMPONENT_TYPE::MESHRENDER] = new CMeshRenderUI;
+	m_ComponentUI[(UINT)COMPONENT_TYPE::SPRITERENDER] = new CSpriteRenderUI;
+	m_ComponentUI[(UINT)COMPONENT_TYPE::FLIPBOOKRENDER] = new CFlipbookRenderUI;
+	m_ComponentUI[(UINT)COMPONENT_TYPE::TILERENDER] = new CParticleRenderUI;
+	m_ComponentUI[(UINT)COMPONENT_TYPE::PARTICLERENDER] = new CParticleRenderUI;
 
 	m_AssetUI[(UINT)ASSET_TYPE::MESH] = new CMeshUI;
 	m_AssetUI[(UINT)ASSET_TYPE::MATERIAL] = new CMaterialUI;

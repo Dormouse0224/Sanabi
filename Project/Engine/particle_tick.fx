@@ -30,10 +30,11 @@ void CS_ParticleTick(int3 _ID : SV_DispatchThreadID)
             int Origin = 0;
         
             // Atomic 함수, 스레드가 하나씩 순차적으로 실행
+            // dest 와 compareval 이 일치하면, val을 dest에 넣고 dest 에 있던 값을 originval에 넣음
             InterlockedCompareExchange(g_Spawn[0].SpawnCount, SpawnCount, Input, Origin);
             //InterlockedExchange(g_Spawn[0].SpawnCount, Input, Origin);
         
-            // 최초 진입한 스레드만 Origin 값을 1을 가져온다.
+            // InterlockedCompareExchange 에서 성공한 스레드는 이전 dest 값(SpawnCount) 을 originval 에 받고, 실패한 스레드는 그대로 0
             if (Origin == SpawnCount)
             {
                 g_Buffer[_ID.x].Active = true;

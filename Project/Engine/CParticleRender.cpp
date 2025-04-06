@@ -21,6 +21,7 @@ CParticleRender::CParticleRender()
 	, m_Active(false)
 	, m_Gravity(true)
 	, m_ParticleTex(nullptr)
+	, m_PrevSpaceType(m_Module.SpaceType)
 {
 	m_ParticleBuffer = new CStructuredBuffer;
 	m_ParticleBuffer->Create(sizeof(tParticle), m_MaxParticle, SB_TYPE::SRV_UAV, true);
@@ -51,6 +52,7 @@ CParticleRender::CParticleRender(const CParticleRender& _Other)
 	, m_Active(_Other.m_Active)
 	, m_Gravity(_Other.m_Gravity)
 	, m_ParticleTex(_Other.m_ParticleTex)
+	, m_PrevSpaceType(m_Module.SpaceType)
 {
 	m_ParticleBuffer = new CStructuredBuffer;
 	m_ParticleBuffer->Create(sizeof(tParticle), m_MaxParticle, SB_TYPE::SRV_UAV, true);
@@ -87,6 +89,26 @@ CParticleRender::~CParticleRender()
 void CParticleRender::FinalTick()
 {
 	m_Module.ObjectWorldPos = Transform()->GetWorldPos();
+	// 최대 파티클 수 변경되었을 때 파티클 구조화 버퍼 재할당
+	if (m_ParticleBuffer->GetElementCount() != m_MaxParticle)
+	{
+		delete m_ParticleBuffer;
+		m_ParticleBuffer = new CStructuredBuffer;
+		m_ParticleBuffer->Create(sizeof(tParticle), m_MaxParticle, SB_TYPE::SRV_UAV, true);
+	}
+
+	// Space Type 변경 확인
+	if (m_Module.SpaceType != m_PrevSpaceType)
+	{
+		if (m_PrevSpaceType)
+		{
+			// 이전에 World 인 경우
+			for (const auto& pair : m_mapParticleObj)
+				delete pair.second;
+
+		}
+	}
+	m_PrevSpaceType = m_Module.SpaceType;
 
 	// 이번 프레임 파티클 활성화 개수 계산
 	CalcSpawnCount();
@@ -108,6 +130,7 @@ void CParticleRender::FinalTick()
 	{
 		if (m_Module.SpaceType == 1)
 		{
+			// World 타입 파티클의 경우 활성화 시 강체를 추가
 			if (vecParticle[i].Active == true && vecParticle[i].PrevActive == false)
 			{
 				CGameObject* pParticle = new CGameObject;
@@ -180,10 +203,10 @@ void CParticleRender::Render()
 	// 파티클 인스턴싱 렌더링
 	GetMesh()->Render_Particle(m_MaxParticle);
 
-	// 파티클 버퍼 Clear
-	m_ParticleBuffer->Clear(20);
-	// 모듈버퍼 Clear
-	m_ModuleBuffer->Clear(21);
+	// 파티클 버퍼 Unbind
+	m_ParticleBuffer->Unbind(20);
+	// 모듈버퍼 Unbind
+	m_ModuleBuffer->Unbind(21);
 }
 
 int CParticleRender::Load(fstream& _Stream)
@@ -194,7 +217,6 @@ int CParticleRender::Load(fstream& _Stream)
 
 	_Stream.read(reinterpret_cast<char*>(&m_MaxParticle), sizeof(UINT));
 	_Stream.read(reinterpret_cast<char*>(&m_Module), sizeof(tParticleModule));
-	_Stream.read(reinterpret_cast<char*>(&m_AccTime), sizeof(float));
 	_Stream.read(reinterpret_cast<char*>(&m_SpawnCount), sizeof(int));
 	_Stream.read(reinterpret_cast<char*>(&m_Active), sizeof(bool));
 	_Stream.read(reinterpret_cast<char*>(&m_Gravity), sizeof(bool));
@@ -221,7 +243,6 @@ int CParticleRender::Save(fstream& _Stream)
 
 	_Stream.write(reinterpret_cast<char*>(&m_MaxParticle), sizeof(UINT));
 	_Stream.write(reinterpret_cast<char*>(&m_Module), sizeof(tParticleModule));
-	_Stream.write(reinterpret_cast<char*>(&m_AccTime), sizeof(float));
 	_Stream.write(reinterpret_cast<char*>(&m_SpawnCount), sizeof(int));
 	_Stream.write(reinterpret_cast<char*>(&m_Active), sizeof(bool));
 	_Stream.write(reinterpret_cast<char*>(&m_Gravity), sizeof(bool));
@@ -281,6 +302,7 @@ void CParticleRender::CalcSpawnCount()
 	{
 		if (m_Module.SpawnRate == 0)
 		{
+			// 일회성 스폰
 			m_Active = false;
 			tSpawnCount count = {};
 			count.SpawnCount = m_SpawnCount;
@@ -288,6 +310,7 @@ void CParticleRender::CalcSpawnCount()
 		}
 		else
 		{
+			// 주기 스폰
 			m_AccTime += DT;
 			float Term = 1.f / m_Module.SpawnRate;
 			if (Term < m_AccTime)

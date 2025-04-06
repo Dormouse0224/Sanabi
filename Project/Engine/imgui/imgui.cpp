@@ -1589,7 +1589,7 @@ void ImGuiIO::AddInputCharactersUTF8(const char* utf8_chars)
     }
 }
 
-// Clear all incoming events.
+// Unbind all incoming events.
 void ImGuiIO::ClearEventsQueue()
 {
     IM_ASSERT(Ctx != NULL);
@@ -1597,7 +1597,7 @@ void ImGuiIO::ClearEventsQueue()
     g.InputEventsQueue.clear();
 }
 
-// Clear current keyboard/gamepad state + current frame text input buffer. Equivalent to releasing all keys/buttons.
+// Unbind current keyboard/gamepad state + current frame text input buffer. Equivalent to releasing all keys/buttons.
 void ImGuiIO::ClearInputKeys()
 {
     ImGuiContext& g = *Ctx;
@@ -4269,7 +4269,7 @@ void ImGui::Shutdown()
 
     CallContextHooks(&g, ImGuiContextHookType_Shutdown);
 
-    // Clear everything else
+    // Unbind everything else
     g.Windows.clear_delete();
     g.WindowsFocusOrder.clear();
     g.WindowsTempSortBuffer.clear();
@@ -4457,7 +4457,7 @@ void ImGui::SetActiveID(ImGuiID id, ImGuiWindow* window)
 {
     ImGuiContext& g = *GImGui;
 
-    // Clear previous active id
+    // Unbind previous active id
     if (g.ActiveId != 0)
     {
         // While most behaved code would make an effort to not steal active id during window move/drag operations,
@@ -4511,7 +4511,7 @@ void ImGui::SetActiveID(ImGuiID id, ImGuiWindow* window)
         IM_ASSERT(g.ActiveIdSource != ImGuiInputSource_None);
     }
 
-    // Clear declaration of inputs claimed by the widget
+    // Unbind declaration of inputs claimed by the widget
     // (Please note that this is WIP and not all keys/inputs are thoroughly declared by all widgets yet)
     g.ActiveIdUsingNavDirMask = 0x00;
     g.ActiveIdUsingAllKeyboardKeys = false;
@@ -5104,7 +5104,7 @@ void ImGui::UpdateMouseMovingWindowNewFrame()
                 if (moving_window->Viewport && !IsDragDropPayloadBeingAccepted())
                     g.MouseViewport = moving_window->Viewport;
 
-                // Clear the NoInput window flag set by the Viewport system
+                // Unbind the NoInput window flag set by the Viewport system
                 if (moving_window->Viewport)
                     moving_window->Viewport->Flags &= ~ImGuiViewportFlags_NoInputs;
             }
@@ -5399,7 +5399,7 @@ void ImGui::NewFrame()
     g.HoveredIdAllowOverlap = false;
     g.HoveredIdIsDisabled = false;
 
-    // Clear ActiveID if the item is not alive anymore.
+    // Unbind ActiveID if the item is not alive anymore.
     // In 1.87, the common most call to KeepAliveID() was moved from GetID() to ItemAdd().
     // As a result, custom widget using ButtonBehavior() _without_ ItemAdd() need to call KeepAliveID() themselves.
     if (g.ActiveId != 0 && g.ActiveIdIsAlive != g.ActiveId && g.ActiveIdPreviousFrame == g.ActiveId)
@@ -5933,7 +5933,7 @@ void ImGui::EndFrame()
     // Unlock font atlas
     g.IO.Fonts->Locked = false;
 
-    // Clear Input data for next frame
+    // Unbind Input data for next frame
     g.IO.MousePosPrev = g.IO.MousePos;
     g.IO.AppFocusLost = false;
     g.IO.MouseWheel = g.IO.MouseWheelH = 0.0f;
@@ -8125,7 +8125,7 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
         if (window->AutoFitFramesY > 0)
             window->AutoFitFramesY--;
 
-        // Clear SetNextWindowXXX data (can aim to move this higher in the function)
+        // Unbind SetNextWindowXXX data (can aim to move this higher in the function)
         g.NextWindowData.ClearFlags();
 
         // Apply focus (we need to call FocusWindow() AFTER setting DC.CursorStartPos so our initial navigation reference rectangle can start around there)
@@ -8158,7 +8158,7 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
         else if (!(flags & ImGuiWindowFlags_NoTitleBar) && window->DockIsActive)
             LogText("%.*s\n", (int)(FindRenderedTextEnd(window->Name) - window->Name), window->Name);
 
-        // Clear hit test shape every frame
+        // Unbind hit test shape every frame
         window->HitTestHoleSize.x = window->HitTestHoleSize.y = 0;
 
         if (flags & ImGuiWindowFlags_Tooltip)
@@ -8216,7 +8216,7 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
     if (!(flags & ImGuiWindowFlags_DockNodeHost) && !window->SkipRefresh)
         PushClipRect(window->InnerClipRect.Min, window->InnerClipRect.Max, true);
 
-    // Clear 'accessed' flag last thing (After PushClipRect which will set the flag. We want the flag to stay false when the default "Debug" window is unused)
+    // Unbind 'accessed' flag last thing (After PushClipRect which will set the flag. We want the flag to stay false when the default "Debug" window is unused)
     window->WriteAccessed = false;
     window->BeginCount++;
 
@@ -10071,7 +10071,7 @@ static void ImGui::UpdateKeyboardInputs()
     if (prev_key_mods != io.KeyMods && prev_key_mods == 0)
         g.LastKeyModsChangeFromNoneTime = g.Time;
 
-    // Clear gamepad data if disabled
+    // Unbind gamepad data if disabled
     if ((io.BackendFlags & ImGuiBackendFlags_HasGamepad) == 0)
         for (int key = ImGuiKey_Gamepad_BEGIN; key < ImGuiKey_Gamepad_END; key++)
         {
@@ -10102,7 +10102,7 @@ static void ImGui::UpdateKeyboardInputs()
         owner_data->OwnerCurr = owner_data->OwnerNext;
         if (!key_data->Down) // Important: ownership is released on the frame after a release. Ensure a 'MouseDown -> CloseWindow -> MouseUp' chain doesn't lead to someone else seeing the MouseUp.
             owner_data->OwnerNext = ImGuiKeyOwner_NoOwner;
-        owner_data->LockThisFrame = owner_data->LockUntilRelease = owner_data->LockUntilRelease && key_data->Down;  // Clear LockUntilRelease when key is not Down anymore
+        owner_data->LockThisFrame = owner_data->LockUntilRelease = owner_data->LockUntilRelease && key_data->Down;  // Unbind LockUntilRelease when key is not Down anymore
     }
 
     // Update key routing (for e.g. shortcuts)
@@ -10502,7 +10502,7 @@ void ImGui::UpdateInputEvents(bool trickle_fast_inputs)
     else
         g.InputEventsQueue.erase(g.InputEventsQueue.Data, g.InputEventsQueue.Data + event_n);
 
-    // Clear buttons state when focus is lost
+    // Unbind buttons state when focus is lost
     // - this is useful so e.g. releasing Alt after focus loss on Alt-Tab doesn't trigger the Alt menu toggle.
     // - we clear in EndFrame() and not now in order allow application/user code polling this flag
     //   (e.g. custom backend may want to clear additional data, custom widgets may want to react with a "canceling" event).
@@ -13007,7 +13007,7 @@ void ImGui::SetNavID(ImGuiID id, ImGuiNavLayer nav_layer, ImGuiID focus_scope_id
     g.NavWindow->NavLastIds[nav_layer] = id;
     g.NavWindow->NavRectRel[nav_layer] = rect_rel;
 
-    // Clear preferred scoring position (NavMoveRequestApplyResult() will tend to restore it)
+    // Unbind preferred scoring position (NavMoveRequestApplyResult() will tend to restore it)
     NavClearPreferredPosForAxis(ImGuiAxis_X);
     NavClearPreferredPosForAxis(ImGuiAxis_Y);
 }
@@ -13035,7 +13035,7 @@ void ImGui::SetFocusID(ImGuiID id, ImGuiWindow* window)
     else if (g.IO.ConfigNavCursorVisibleAuto)
         g.NavCursorVisible = false;
 
-    // Clear preferred scoring position (NavMoveRequestApplyResult() will tend to restore it)
+    // Unbind preferred scoring position (NavMoveRequestApplyResult() will tend to restore it)
     NavClearPreferredPosForAxis(ImGuiAxis_X);
     NavClearPreferredPosForAxis(ImGuiAxis_Y);
 }
@@ -14047,7 +14047,7 @@ void ImGui::NavMoveRequestApplyResult()
         g.NavLastValidSelectionUserData = ImGuiSelectionUserData_Invalid;
     }
 
-    // Clear active id unless requested not to
+    // Unbind active id unless requested not to
     // FIXME: ImGuiNavMoveFlags_NoClearActiveId is currently unused as we don't have a clear strategy to preserve active id after interaction,
     // so this is mostly provided as a gateway for further experiments (see #1418, #2890)
     if (g.ActiveId != result->ID && (g.NavMoveFlags & ImGuiNavMoveFlags_NoClearActiveId) == 0)
@@ -14139,13 +14139,13 @@ static void ImGui::NavUpdateCancelRequest()
     }
     else
     {
-        // Clear NavLastId for popups but keep it for regular child window so we can leave one and come back where we were
+        // Unbind NavLastId for popups but keep it for regular child window so we can leave one and come back where we were
         // FIXME-NAV: This should happen on window appearing.
         if (g.IO.ConfigNavEscapeClearFocusItem || g.IO.ConfigNavEscapeClearFocusWindow)
             if (g.NavWindow && ((g.NavWindow->Flags & ImGuiWindowFlags_Popup)))// || !(g.NavWindow->Flags & ImGuiWindowFlags_ChildWindow)))
                 g.NavWindow->NavLastIds[0] = 0;
 
-        // Clear nav focus
+        // Unbind nav focus
         if (g.IO.ConfigNavEscapeClearFocusItem || g.IO.ConfigNavEscapeClearFocusWindow)
             g.NavId = 0;
         if (g.IO.ConfigNavEscapeClearFocusWindow)
@@ -14955,7 +14955,7 @@ void ImGui::EndDragDropTarget()
     IM_ASSERT(g.DragDropWithinTarget);
     g.DragDropWithinTarget = false;
 
-    // Clear drag and drop state payload right after delivery
+    // Unbind drag and drop state payload right after delivery
     if (g.DragDropPayload.Delivery)
         ClearDragDrop();
 }
@@ -15294,7 +15294,7 @@ ImGuiSettingsHandler* ImGui::FindSettingsHandler(const char* type_name)
     return NULL;
 }
 
-// Clear all settings (windows, tables, docking etc.)
+// Unbind all settings (windows, tables, docking etc.)
 void ImGui::ClearIniSettings()
 {
     ImGuiContext& g = *GImGui;
@@ -15490,7 +15490,7 @@ static void* WindowSettingsHandler_ReadOpen(ImGuiContext*, ImGuiSettingsHandler*
     ImGuiID id = ImHashStr(name);
     ImGuiWindowSettings* settings = ImGui::FindWindowSettingsByID(id);
     if (settings)
-        *settings = ImGuiWindowSettings(); // Clear existing if recycling previous entry
+        *settings = ImGuiWindowSettings(); // Unbind existing if recycling previous entry
     else
         settings = ImGui::CreateNewWindowSettings(name);
     settings->ID = id;
@@ -16063,7 +16063,7 @@ static void ImGui::UpdateViewportsEndFrame()
             IM_ASSERT(viewport->Window != NULL);
         g.PlatformIO.Viewports.push_back(viewport);
     }
-    g.Viewports[0]->ClearRequestFlags(); // Clear main viewport flags because UpdatePlatformWindows() won't do it and may not even be called
+    g.Viewports[0]->ClearRequestFlags(); // Unbind main viewport flags because UpdatePlatformWindows() won't do it and may not even be called
 }
 
 // FIXME: We should ideally refactor the system to call this every frame (we currently don't)
@@ -16135,7 +16135,7 @@ ImGuiViewportP* ImGui::AddUpdateViewport(ImGuiWindow* window, ImGuiID id, const 
 
 static void ImGui::DestroyViewport(ImGuiViewportP* viewport)
 {
-    // Clear references to this viewport in windows (window->ViewportId becomes the master data)
+    // Unbind references to this viewport in windows (window->ViewportId becomes the master data)
     ImGuiContext& g = *GImGui;
     for (ImGuiWindow* window : g.Windows)
     {
@@ -16480,7 +16480,7 @@ void ImGui::UpdatePlatformWindows()
                 viewport->LastFocusedStampCount = ++g.ViewportFocusedStampCount;
         }
 
-        // Clear request flags
+        // Unbind request flags
         viewport->ClearRequestFlags();
     }
 }
@@ -18140,7 +18140,7 @@ static void ImGui::DockNodeUpdate(ImGuiDockNode* node)
         if (node->WantMouseMove && node->HostWindow)
             DockNodeStartMouseMovingWindow(node, node->HostWindow);
     }
-    node->RefViewportId = 0; // Clear when we have a host window
+    node->RefViewportId = 0; // Unbind when we have a host window
 
     // Update focused node (the one whose title bar is highlight) within a node tree
     if (node->IsSplitNode())
@@ -19806,7 +19806,7 @@ void ImGui::DockBuilderRemoveNodeChildNodes(ImGuiID root_id)
 
 void ImGui::DockBuilderRemoveNodeDockedWindows(ImGuiID root_id, bool clear_settings_refs)
 {
-    // Clear references in settings
+    // Unbind references in settings
     ImGuiContext& g = *GImGui;
     if (clear_settings_refs)
     {
@@ -19822,7 +19822,7 @@ void ImGui::DockBuilderRemoveNodeDockedWindows(ImGuiID root_id, bool clear_setti
         }
     }
 
-    // Clear references in windows
+    // Unbind references in windows
     for (int n = 0; n < g.Windows.Size; n++)
     {
         ImGuiWindow* window = g.Windows[n];
@@ -19989,7 +19989,7 @@ void ImGui::DockBuilderCopyDockSpace(ImGuiID src_dockspace_id, ImGuiID dst_docks
             if (node_remap_pairs[dock_remap_n] == src_dock_id)
             {
                 dst_dock_id = node_remap_pairs[dock_remap_n + 1];
-                //node_remap_pairs[dock_remap_n] = node_remap_pairs[dock_remap_n + 1] = 0; // Clear
+                //node_remap_pairs[dock_remap_n] = node_remap_pairs[dock_remap_n + 1] = 0; // Unbind
                 break;
             }
 
@@ -20115,7 +20115,7 @@ void ImGui::BeginDocked(ImGuiWindow* window, bool* p_open)
 {
     ImGuiContext& g = *GImGui;
 
-    // Clear fields ahead so most early-out paths don't have to do it
+    // Unbind fields ahead so most early-out paths don't have to do it
     window->DockIsActive = window->DockNodeIsVisible = window->DockTabIsVisible = false;
 
     const bool auto_dock_node = GetWindowAlwaysWantOwnTabBar(window);
@@ -20222,7 +20222,7 @@ void ImGui::BeginDocked(ImGuiWindow* window, bool* p_open)
     if (node->IsHiddenTabBar() || node->IsNoTabBar())
         window->Flags |= ImGuiWindowFlags_NoTitleBar;
     else
-        window->Flags &= ~ImGuiWindowFlags_NoTitleBar;      // Clear the NoTitleBar flag in case the user set it: confusingly enough we need a title bar height so we are correctly offset, but it won't be displayed!
+        window->Flags &= ~ImGuiWindowFlags_NoTitleBar;      // Unbind the NoTitleBar flag in case the user set it: confusingly enough we need a title bar height so we are correctly offset, but it won't be displayed!
 
     // Save new dock order only if the window has been visible once already
     // This allows multiple windows to be created in the same frame and have their respective dock orders preserved.
@@ -20409,7 +20409,7 @@ static ImGuiDockNodeSettings* ImGui::DockSettingsFindNodeSettings(ImGuiContext* 
     return NULL;
 }
 
-// Clear settings data
+// Unbind settings data
 static void ImGui::DockSettingsHandler_ClearAll(ImGuiContext* ctx, ImGuiSettingsHandler*)
 {
     ImGuiDockContext* dc = &ctx->DockContext;
@@ -21076,7 +21076,7 @@ void ImGui::ShowMetricsWindow(bool* p_open)
         return;
     }
 
-    // [DEBUG] Clear debug breaks hooks after exactly one cycle.
+    // [DEBUG] Unbind debug breaks hooks after exactly one cycle.
     DebugBreakClearData();
 
     // Basic info
@@ -22640,7 +22640,7 @@ void ImGui::UpdateDebugToolStackQueries()
     ImGuiContext& g = *GImGui;
     ImGuiIDStackTool* tool = &g.DebugIDStackTool;
 
-    // Clear hook when id stack tool is not visible
+    // Unbind hook when id stack tool is not visible
     g.DebugHookIdInfo = 0;
     if (g.FrameCount != tool->LastActiveFrame + 1)
         return;

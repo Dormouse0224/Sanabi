@@ -41,5 +41,5 @@ void CSetColorCS::CalcGroupNum()
 
 void CSetColorCS::Clear()
 {
-	m_TargetTex->Clear_CS_UAV();
+	m_TargetTex->Unbind_CS_UAV();
 }

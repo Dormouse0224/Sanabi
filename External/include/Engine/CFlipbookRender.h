@@ -1,11 +1,13 @@
 #pragma once
 #include "CRenderComponent.h"
+#include "CFlipbookRenderUI.h"
 
 #include "CFlipbook.h"
 
 class CFlipbookRender :
     public CRenderComponent
 {
+    friend class CFlipbookRenderUI;
 public:
     CFlipbookRender();
     ~CFlipbookRender();

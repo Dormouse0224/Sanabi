@@ -13,6 +13,11 @@ CStructuredBuffer::CStructuredBuffer()
 
 CStructuredBuffer::~CStructuredBuffer()
 {
+	m_SB.Reset();
+	m_SB_Write.Reset();
+	m_SB_Read.Reset();
+	m_SRV.Reset();
+	m_UAV.Reset();
 }
 
 int CStructuredBuffer::Create(UINT _ElementSize, UINT _ElementCount
@@ -171,7 +176,7 @@ void CStructuredBuffer::Binding(int _RegisterNum)
 	CONTEXT->PSSetShaderResources(_RegisterNum, 1, m_SRV.GetAddressOf());
 }
 
-void CStructuredBuffer::Clear(int _RegisterNum)
+void CStructuredBuffer::Unbind(int _RegisterNum)
 {
 	ID3D11ShaderResourceView* pSRV = nullptr;
 	CONTEXT->VSSetShaderResources(_RegisterNum, 1, &pSRV);
@@ -196,14 +201,14 @@ void CStructuredBuffer::Binding_CS_UAV(int _RegisterNum)
 	CONTEXT->CSSetUnorderedAccessViews(_RegisterNum, 1, m_UAV.GetAddressOf(), &i);
 }
 
-void CStructuredBuffer::Clear_CS_SRV()
+void CStructuredBuffer::Unbind_CS_SRV()
 {
 	ID3D11ShaderResourceView* pSRV = nullptr;
 	CONTEXT->CSSetShaderResources(m_RecentSRV_CS, 1, &pSRV);
 	m_RecentSRV_CS = -1;
 }
 
-void CStructuredBuffer::Clear_CS_UAV()
+void CStructuredBuffer::Unbind_CS_UAV()
 {
 	ID3D11UnorderedAccessView* pUAV = nullptr;
 	UINT i = -1;
