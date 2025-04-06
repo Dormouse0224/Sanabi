@@ -3,6 +3,7 @@
 #include "CAsset.h"
 #include "assets.h"
 #include "CPathMgr.h"
+#include "CEngine.h"
 
 class CAssetMgr
 	: public Singleton<CAssetMgr>
@@ -33,6 +34,9 @@ public:
 	AssetPtr<T> FindAsset(const wstring& _RelativePath);
 	template<typename T>
 	AssetPtr<T> Load(const wstring& _RelativePath);
+	// 로드 할 에셋의 확장자를 입력해 파일 탐색기로 에셋을 로드합니다. 텍스쳐, 사운드의 경우 입력을 무시하고 자동으로 로드합니다.
+	template<typename T>
+	AssetPtr<T> LoadFromFile(const wstring& _Extention);
 	/// <param name="_BindFlag">flags of D3D11_BIND_FLAG</param>
 	AssetPtr<CTexture2D> CreateTexture(const wstring& _Key, UINT _Width, UINT _Height, DXGI_FORMAT _Format, UINT _BindFlag, D3D11_USAGE _Usage = D3D11_USAGE_DEFAULT);
 	AssetPtr<CTexture2D> CreateTexture(const wstring& _Key, ComPtr<ID3D11Texture2D> _Tex2D);
@@ -116,4 +120,73 @@ inline AssetPtr<T> CAssetMgr::Load(const wstring& _RelativePath)
 
 		return pAsset;
 	}
+}
+
+template<typename T>
+inline AssetPtr<T> CAssetMgr::LoadFromFile(const wstring& _Extention)
+{
+	wstring filter;
+	if (is_same_v<T, CTexture2D> || is_same_v<T, CSound>)
+	{
+		filter = L"ALL\0*.*\0";
+	}
+	else
+	{
+		filter = L"L\"" + _Extention.substr(1) + L"\0*" + _Extention + L"\0\"";
+	}
+	// 에셋 파일 열기
+	WCHAR filepath[255] = {};
+	WCHAR filename[255] = {};
+	wstring ContentDir = CPathMgr::GetContentDir();
+	OPENFILENAME Desc = {};
+	Desc.lStructSize = sizeof(OPENFILENAME);
+	Desc.hwndOwner = CEngine::GetInst()->GetMainWndHwnd();
+	Desc.lpstrFilter = filter.c_str();
+	Desc.lpstrFile = filepath;
+	Desc.nMaxFile = 255;
+	Desc.lpstrFileTitle = filename;
+	Desc.nMaxFileTitle = 255;
+	Desc.lpstrInitialDir = ContentDir.c_str();
+	Desc.lpstrTitle = L"파일로부터 에셋 로드";
+	Desc.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
+
+	if (GetOpenFileName(&Desc))
+	{
+		std::wstring path = filepath;
+		if (path.find(CPathMgr::GetContentDir()) == std::wstring::npos)
+		{
+			MessageBoxW(nullptr, L"파일 경로가 Content 디렉토리가 아닙니다.", L"Asset Load Error", MB_OK);
+			return nullptr;
+		}
+		std::filesystem::path RelativePath = path.substr(ContentDir.size());
+		std::filesystem::path EXT = RelativePath.extension();
+		if (is_same_v<T, CTexture2D>)
+		{
+			if (EXT == L".dds" || EXT == L".DDS"
+				|| EXT == L".tga" || EXT == L".TGA"
+				|| EXT == L".png" || EXT == L".PNG"
+				|| EXT == L".jpg" || EXT == L".JPG"
+				|| EXT == L".jpeg" || EXT == L".JPEG"
+				|| EXT == L".bmp" || EXT == L".BMP")
+				return CAssetMgr::GetInst()->Load<T>(RelativePath);
+		}
+		else if (is_same_v<T, CSound>)
+		{
+			if (EXT == L".wav" || EXT == L".WAV"
+				|| EXT == L".mp3" || EXT == L".MP3"
+				|| EXT == L".aac" || EXT == L".AAC"
+				|| EXT == L".ogg" || EXT == L".OGG"
+				|| EXT == L".flac" || EXT == L".FLAC"
+				|| EXT == L".wma" || EXT == L".WMA")
+				return CAssetMgr::GetInst()->Load<T>(RelativePath);
+		}
+		else
+		{
+			if (EXT == _Extention)
+				return CAssetMgr::GetInst()->Load<T>(RelativePath);
+			else
+				MessageBoxW(nullptr, L"지원하지 않는 파일 형식입니다.", L"Asset Load Error", MB_OK);
+		}
+	}
+	return nullptr;
 }

@@ -4,6 +4,7 @@
 #include "CGraphicShader.h"
 #include "CTexture2D.h"
 #include "CMaterial.h"
+#include "CGraphicShader.h"
 
 CMaterialUI::CMaterialUI()
 	: CAssetUI(ASSET_TYPE_WSTR[(UINT)ASSET_TYPE::MATERIAL])
@@ -29,6 +30,19 @@ void CMaterialUI::Render_Ast()
 	ImGui::SameLine(tab);
 	string str = to_str(pMaterial->GetShader()->GetName());
 	ImGui::InputText("##GraphicShader", const_cast<char*>(str.c_str()), str.size() + 1, ImGuiInputTextFlags_ReadOnly);
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentViewer"))
+		{
+			CAsset* Asset = *reinterpret_cast<CAsset**>(payload->Data);
+			AssetPtr<CGraphicShader> pGS = dynamic_cast<CGraphicShader*>(Asset);
+			if (pGS.Get())
+			{
+				pMaterial->SetShader(pGS);
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
 	
 	// 전달된 텍스쳐 데이터
 	vector<tTexData> vecTexData = pGS->GetTexData();
@@ -38,6 +52,19 @@ void CMaterialUI::Render_Ast()
 		string label = "##TextureData_" + to_string(data.m_Param);
 		string name = to_str(pMaterial->GetTexParam(static_cast<TEX_PARAM>(data.m_Param))->GetName());
 		ImGui::InputText(label.c_str(), const_cast<char*>(name.c_str()), name.size() + 1, ImGuiInputTextFlags_ReadOnly);
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentViewer"))
+			{
+				CAsset* Asset = *reinterpret_cast<CAsset**>(payload->Data);
+				AssetPtr<CTexture2D> pTex = dynamic_cast<CTexture2D*>(Asset);
+				if (pTex.Get())
+				{
+					pMaterial->SetTexParam(data.m_Param, pTex);
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
 		if (ImGui::BeginItemTooltip())
 		{
 			ImTextureID TexID = (ImTextureID)pMaterial->GetTexParam(static_cast<TEX_PARAM>(data.m_Param))->GetSRV().Get();

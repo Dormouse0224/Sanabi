@@ -34,6 +34,7 @@ CInspector::CInspector(wstring _Name)
 	m_AssetUI[(UINT)ASSET_TYPE::TEXTURE2D] = new CTexture2DUI;
 	m_AssetUI[(UINT)ASSET_TYPE::COMPUTE_SHADER] = new CComputeShaderUI;
 	m_AssetUI[(UINT)ASSET_TYPE::GRAPHIC_SHADER] = new CGraphicShaderUI;
+	m_AssetUI[(UINT)ASSET_TYPE::PREFAB] = new CPrefabUI;
 	m_AssetUI[(UINT)ASSET_TYPE::SPRITE] = new CSpriteUI;
 	m_AssetUI[(UINT)ASSET_TYPE::FLIPBOOK] = new CFlipbookUI;
 }

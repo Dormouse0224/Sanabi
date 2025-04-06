@@ -189,6 +189,7 @@ call EngineHeaderCopy.bat</Command>
     <ClInclude Include="CPhysxMgr.h" />
     <ClInclude Include="CPrefab.h" />
     <ClInclude Include="CComponentMgr.h" />
+    <ClInclude Include="CPrefabUI.h" />
     <ClInclude Include="CRenderComponentUI.h" />
     <ClInclude Include="CSetColorCS.h" />
     <ClInclude Include="CSimulationEvent.h" />
@@ -302,6 +303,7 @@ call EngineHeaderCopy.bat</Command>
     <ClCompile Include="CPhysxActorUI.cpp" />
     <ClCompile Include="CPhysxMgr.cpp" />
     <ClCompile Include="CPrefab.cpp" />
+    <ClCompile Include="CPrefabUI.cpp" />
     <ClCompile Include="CRenderComponent.cpp" />
     <ClCompile Include="CRenderComponentUI.cpp" />
     <ClCompile Include="CRenderMgr.cpp" />

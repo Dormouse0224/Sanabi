@@ -15,6 +15,9 @@ private:
     CGameObject* m_PrefabObject;
 
 public:
+    CGameObject* GetPrefabObject() { return m_PrefabObject; }
+
+
     // 게임 오브젝트를 프리펩으로 저장합니다.
     void ConvertToPrefab(CGameObject* _Obj);
     // 프리펩으로 게임 오브젝트 인스턴스를 생성합니다.

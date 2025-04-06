@@ -525,6 +525,9 @@
     <ClInclude Include="uilist.h">
       <Filter>01. Header</Filter>
     </ClInclude>
+    <ClInclude Include="CPrefabUI.h">
+      <Filter>09. ImguiObject\AssetUI\07. PrefabUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CEngine.cpp">
@@ -775,6 +778,9 @@
     </ClCompile>
     <ClCompile Include="CRenderComponentUI.cpp">
       <Filter>09. ImguiObject\ComponentUI\RenderComponentUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CPrefabUI.cpp">
+      <Filter>09. ImguiObject\AssetUI\07. PrefabUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

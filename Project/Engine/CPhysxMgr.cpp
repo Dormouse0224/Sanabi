@@ -47,10 +47,14 @@ CPhysxMgr::CPhysxMgr()
 
 CPhysxMgr::~CPhysxMgr()
 {
-    m_Scene->release();
-    m_Physics->release();
-    m_Dispatcher->release();
-    m_Foundation->release();
+    if(m_Scene)
+        m_Scene->release();
+    if (m_Physics)
+        m_Physics->release();
+    if (m_Dispatcher)
+        m_Dispatcher->release();
+    if (m_Foundation)
+        m_Foundation->release();
 
     delete m_EventCallback;
 }

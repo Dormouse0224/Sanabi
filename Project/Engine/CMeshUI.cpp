@@ -4,6 +4,8 @@
 
 #include "CAssetMgr.h"
 #include "CTaskMgr.h"
+#include "CKeyMgr.h"
+#include "CTimeMgr.h"
 
 #include "CGameObject.h"
 #include "CTransform.h"
@@ -77,9 +79,17 @@ void CMeshUI::Render_Ast()
 	VertexRender();
 	Vec3 VertexPos = m_MeshCam->Transform()->GetRelativePos();
 	float Pos[3] = { VertexPos.x, VertexPos.y, VertexPos.z };
+	ImGui::Text("View Pos: ");
+	ImGui::SameLine();
 	if (ImGui::DragFloat3("##Pos", Pos, 0.01f))
 	{
 		m_MeshCam->Transform()->SetRelativePos(Pos[0], Pos[1], Pos[2]);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Init"))
+	{
+		m_VertexObject->Transform()->SetRelativePos(Vec3(0, 0, 0));
+		m_VertexObject->Transform()->SetRelativeRot(Vec3(0, 0, 0));
 	}
 }
 
@@ -116,5 +126,16 @@ void CMeshUI::VertexRender()
 	// ImGui 이미지 UI에 SRV 전달해서 렌더링
 	ImGui::Image((ImTextureID)m_VertexRTTex->GetSRV().Get(), ImVec2(300, 300), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
 
+	// 마우스 조작
+	if (ImGui::IsItemHovered() && ImGui::IsMouseDragging(ImGuiMouseButton_Left))
+	{
+		Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
+		Vec3 vObjDir = m_VertexObject->Transform()->GetRelativeRot();
 
+		vObjDir.y += vDrag.x * EngineDT * 1000.f;
+		vObjDir.x += vDrag.y * EngineDT * 1000.f;
+
+		m_VertexObject->Transform()->SetRelativeRot(vObjDir);
+		ImGui::Text("Dragging on the button!");
+	}
 }

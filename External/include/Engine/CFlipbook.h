@@ -40,6 +40,24 @@ public:
         }
     }
 
+    void DeleteScene(int _SceneIdx)
+    {
+        if (m_SceneType == SceneType::TEXTURE)
+        {
+            if (m_vecTex.size() <= _SceneIdx)
+                return;
+
+            m_vecTex.erase(m_vecTex.begin() + _SceneIdx);
+        }
+        else
+        {
+            if (m_vecSprite.size() <= _SceneIdx)
+                return;
+
+            m_vecSprite.erase(m_vecSprite.begin() + _SceneIdx);
+        }
+    }
+
     int GetSceneCount();
 
     template<typename T>
@@ -47,10 +65,14 @@ public:
     {
         if constexpr (is_same_v<CSprite, T>)
         {
+            if (_Idx >= m_vecSprite.size() || _Idx < 0)
+                return nullptr;
             return m_vecSprite[_Idx];
         }
         else if constexpr (is_same_v<CTexture2D, T>)
         {
+            if (_Idx >= m_vecTex.size() || _Idx < 0)
+                return nullptr;
             return m_vecTex[_Idx];
         }
     }

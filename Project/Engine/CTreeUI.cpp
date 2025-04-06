@@ -42,8 +42,16 @@ void TreeNode::Render()
 	if (m_vecChild.empty())
 		flag |= ImGuiTreeNodeFlags_Leaf;
 
+
 	if (ImGui::TreeNodeEx(m_Name.c_str(), flag))
 	{
+		if (ImGui::BeginDragDropSource())
+		{
+			ImGui::SetDragDropPayload(to_str(m_Owner->GetName()).c_str(), &m_Data, sizeof(DWORD_PTR));
+			ImGui::Text(m_Name.c_str());
+			ImGui::EndDragDropSource();
+		}
+
 		// 트리 노드가 열려있을 때 클릭 감지
 		DoubleClickCheck();
 
@@ -60,12 +68,6 @@ void TreeNode::Render()
 		DoubleClickCheck();
 	}
 
-	if (ImGui::BeginDragDropSource())
-	{
-		ImGui::SetDragDropPayload(to_str(m_Owner->GetName()).c_str(), &m_Data, sizeof(DWORD_PTR));
-		ImGui::Text(m_Name.c_str());
-		ImGui::EndDragDropSource();
-	}
 }
 
 void TreeNode::Clear()

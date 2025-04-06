@@ -6,6 +6,7 @@
 #include "CTexture2DUI.h"
 #include "CComputeShaderUI.h"
 #include "CGraphicShaderUI.h"
+#include "CPrefabUI.h"
 #include "CSpriteUI.h"
 #include "CFlipbookUI.h"
 

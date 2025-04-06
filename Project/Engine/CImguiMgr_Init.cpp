@@ -60,6 +60,7 @@ void CImguiMgr::Init()
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesJapanese());
     //IM_ASSERT(font != nullptr);
 
+    io.ConfigWindowsMoveFromTitleBarOnly = true;
 
     // Inspector 생성 및 추가
     m_Inspector = new CInspector(L"Inspector");
