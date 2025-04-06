@@ -21,7 +21,7 @@ CPrefab::~CPrefab()
 void CPrefab::ConvertToPrefab(CGameObject* _Obj)
 {
 	m_PrefabObject = _Obj->Clone();
-	CAssetMgr::GetInst()->AddAsset(_Obj->GetName(), this);
+	CAssetMgr::GetInst()->AddAsset(m_PrefabObject->GetName() + L"_" + to_wstring(m_PrefabObject->GetID()), this);
 }
 
 CGameObject* CPrefab::Instantiate()

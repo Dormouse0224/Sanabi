@@ -32,7 +32,11 @@ void CAssetMgr::AddAsset(const wstring& _Key, AssetPtr<CAsset> _Asset)
 
 	map<wstring, AssetPtr<CAsset>>::iterator iter = m_mapAsset[(UINT)Type].find(_Key);
 
-	assert(iter == m_mapAsset[(UINT)Type].end());
+	if (iter != m_mapAsset[(UINT)Type].end())
+	{
+		MessageBoxW(nullptr, L"해당 이름의 에셋은 이미 등록되어 있습니다.", L"Add Asset Error", MB_OK);
+		return;
+	}
 
 	_Asset->m_Key = _Key;
 	_Asset->SetName(_Key);
