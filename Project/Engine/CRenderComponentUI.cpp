@@ -31,7 +31,19 @@ void CRenderComponentUI::Render_RCom()
     }
     ImGui::InputText("##Mesh", const_cast<char*>(MeshName.c_str())
         , MeshName.size() + 1, ImGuiInputTextFlags_ReadOnly);
-
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentViewer"))
+        {
+            CAsset* Asset = *reinterpret_cast<CAsset**>(payload->Data);
+            AssetPtr<CMesh> pMesh = dynamic_cast<CMesh*>(Asset);
+            if (pMesh.Get())
+            {
+                m_TargetObj->GetRenderComponent()->SetMesh(pMesh);
+            }
+        }
+        ImGui::EndDragDropTarget();
+    }
 
     ImGui::Text("Default Material");
     std::string DefaultMtrlName = "NO EXIST";
@@ -41,6 +53,19 @@ void CRenderComponentUI::Render_RCom()
     }
     ImGui::InputText("##DefaultMtrl", const_cast<char*>(DefaultMtrlName.c_str())
         , DefaultMtrlName.size() + 1, ImGuiInputTextFlags_ReadOnly);
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentViewer"))
+        {
+            CAsset* Asset = *reinterpret_cast<CAsset**>(payload->Data);
+            AssetPtr<CMaterial> pMtrl = dynamic_cast<CMaterial*>(Asset);
+            if (pMtrl.Get())
+            {
+                m_TargetObj->GetRenderComponent()->SetMaterial(pMtrl);
+            }
+        }
+        ImGui::EndDragDropTarget();
+    }
 
     if (UsingDynamic)
     {

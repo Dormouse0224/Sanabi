@@ -10,7 +10,7 @@
 CContentViewer::CContentViewer(wstring _Name)
 	: CImguiObject(_Name)
 {
-	m_AssetTree = new CTreeUI(L"AssetTree");
+	m_AssetTree = new CTreeUI(L"ContentViewer");
 	m_AssetTree->SetDoubleClickFunc((DELEGATE_1)&CContentViewer::ClickEventCallback, this);
 }
 

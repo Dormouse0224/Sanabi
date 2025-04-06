@@ -59,6 +59,13 @@ void TreeNode::Render()
 		// 트리 노드가 닫혀있을 때 클릭 감지
 		DoubleClickCheck();
 	}
+
+	if (ImGui::BeginDragDropSource())
+	{
+		ImGui::SetDragDropPayload(to_str(m_Owner->GetName()).c_str(), &m_Data, sizeof(DWORD_PTR));
+		ImGui::Text(m_Name.c_str());
+		ImGui::EndDragDropSource();
+	}
 }
 
 void TreeNode::Clear()

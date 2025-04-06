@@ -80,6 +80,9 @@ CGameObject::~CGameObject()
 
 void CGameObject::AddComponent(CComponent* _Component)
 {
+	if (!_Component)
+		return;
+
 	COMPONENT_TYPE Type = _Component->GetType();
 
 	if (Type == COMPONENT_TYPE::SCRIPT)
@@ -92,15 +95,20 @@ void CGameObject::AddComponent(CComponent* _Component)
 		if (m_Com[(UINT)Type])
 			return;
 
-		m_Com[(UINT)Type] = _Component;
 		if (dynamic_cast<CRenderComponent*>(_Component))
 		{
 			// 하나의 GameObject 는 한종류의 RenderComonent 만 가질 수 있다.
+			// 이미 RenderComponent 를 보유중인 경우
 			if (nullptr != m_RenderCom)
-				assert(nullptr);
+			{
+				MessageBoxW(nullptr, L"이미 Render Component 를 보유중입니다.", L"Add Component Error", MB_OK);
+				return;
+			}
 
 			m_RenderCom = (CRenderComponent*)_Component;
 		}
+
+		m_Com[(UINT)Type] = _Component;
 	}
 
 	_Component->m_Owner = this;
