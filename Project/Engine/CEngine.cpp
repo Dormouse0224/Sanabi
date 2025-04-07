@@ -109,6 +109,9 @@ int CEngine::CreateMainWindow()
     AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, !!GetMenu(m_hMainWnd));
     SetWindowPos(m_hMainWnd, nullptr, 0, 0, rt.right - rt.left, rt.bottom - rt.top, 0);
 
+    GetClientRect(m_hMainWnd, &rt);
+    m_vResolution = Vec2(static_cast<float>(rt.right - rt.left), static_cast<float>(rt.bottom - rt.top));
+
     return S_OK;
 }
 

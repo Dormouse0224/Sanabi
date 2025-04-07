@@ -22,6 +22,9 @@ CDevice::~CDevice()
         if (nullptr != m_ConstBuffer[i])
             delete m_ConstBuffer[i];
     }
+
+    // 전체화면 해제
+    m_SwapChain->SetFullscreenState(false, nullptr);
 }
 
 int CDevice::Init(HWND _OutputWnd, Vec2 _vResolution)
