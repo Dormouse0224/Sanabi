@@ -7,7 +7,7 @@
 CSpriteRender::CSpriteRender()
 	: CRenderComponent(COMPONENT_TYPE::SPRITERENDER)
 {
-	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"RectMesh", true));
 
 	CreateSpriteMaterial();
 }
@@ -76,7 +76,7 @@ int CSpriteRender::Save(fstream& _Stream)
 
 void CSpriteRender::CreateSpriteMaterial()
 {
-	if (nullptr == CAssetMgr::GetInst()->FindAsset<CGraphicShader>(L"SpriteShader"))
+	if (nullptr == CAssetMgr::GetInst()->Load<CGraphicShader>(L"SpriteShader", true))
 	{
 		// SpriteShader
 		AssetPtr<CGraphicShader> pShader = new CGraphicShader;
@@ -87,13 +87,13 @@ void CSpriteRender::CreateSpriteMaterial()
 		CAssetMgr::GetInst()->AddAsset(L"SpriteShader", pShader.Get());
 	}
 
-	if (nullptr == CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpriteMtrl"))
+	if (nullptr == CAssetMgr::GetInst()->Load<CMaterial>(L"SpriteMtrl", true))
 	{
 		// SpriteMtrl
 		AssetPtr<CMaterial> pMtrl = new CMaterial;
-		pMtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicShader>(L"SpriteShader"));
+		pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"SpriteShader", true));
 		CAssetMgr::GetInst()->AddAsset(L"SpriteMtrl", pMtrl.Get());
 	}
 
-	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpriteMtrl"));
+	SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"SpriteMtrl", true));
 }

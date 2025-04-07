@@ -190,22 +190,22 @@ void CAssetMgr::CreateEngineMaterial()
 	//AddAsset(L"Std2DMtrl", pMtrl.Get());
 
 	AssetPtr<CMaterial> pMtrl = new CMaterial;
-	pMtrl->SetShader(FindAsset<CGraphicShader>(L"Std2DShader"));
+	pMtrl->SetShader(Load<CGraphicShader>(L"Std2DShader", true));
 	pMtrl->SetTexParam(TEX_0, Load<CTexture2D>(L"Texture2D\\Spr_SNB_IdleRand1 (1).png"));
 	AddAsset(L"SNB_Mtrl", pMtrl.Get());
 
 	pMtrl = new CMaterial;
-	pMtrl->SetShader(FindAsset<CGraphicShader>(L"Std2DShader"));
+	pMtrl->SetShader(Load<CGraphicShader>(L"Std2DShader", true));
 	pMtrl->SetTexParam(TEX_0, Load<CTexture2D>(L"Texture2D\\Spr_SNBArm_IdleRand1 (1).png"));
 	AddAsset(L"SNBArm_Mtrl", pMtrl.Get());
 
 	pMtrl = new CMaterial;
-	pMtrl->SetShader(FindAsset<CGraphicShader>(L"Std2DShader"));
+	pMtrl->SetShader(Load<CGraphicShader>(L"Std2DShader", true));
 	pMtrl->SetTexParam(TEX_0, Load<CTexture2D>(L"Texture2D\\Spr_CargoPlatform_Idle (lp) (1).png"));
 	AddAsset(L"CargoPlatform_Mtrl", pMtrl.Get());
 
 	pMtrl = new CMaterial;
-	pMtrl->SetShader(FindAsset<CGraphicShader>(L"Std2DShader"));
+	pMtrl->SetShader(Load<CGraphicShader>(L"Std2DShader", true));
 	pMtrl->SetTexParam(TEX_0, Load<CTexture2D>(L"Texture2D\\Chap2_Mid_A01.png"));
 	AddAsset(L"Background_Mtrl", pMtrl.Get());
 }

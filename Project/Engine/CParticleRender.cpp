@@ -36,7 +36,7 @@ CParticleRender::CParticleRender()
 	CreateMtrl();
 
 	// 파티클 Tick 컴퓨트 쉐이더
-	m_TickCS = CAssetMgr::GetInst()->Load<CParticleTickCS>(L"EA_ParticleTickCS").Get();
+	m_TickCS = CAssetMgr::GetInst()->Load<CParticleTickCS>(L"EA_ParticleTickCS", true).Get();
 }
 
 CParticleRender::CParticleRender(const CParticleRender& _Other)
@@ -261,12 +261,12 @@ int CParticleRender::Save(fstream& _Stream)
 void CParticleRender::CreateMtrl()
 {
 	if (nullptr == GetMesh())
-		SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
+		SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"PointMesh", true));
 
 	if (nullptr != GetMaterial())
 		return;
 
-	AssetPtr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleMtrl");
+	AssetPtr<CMaterial> pMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"ParticleMtrl", true);
 	if (nullptr != pMtrl)
 	{
 		SetMaterial(pMtrl);

@@ -3,8 +3,11 @@
 
 #include "CTimeMgr.h"
 #include "CKeyMgr.h"
+#include "CLevelMgr.h"
+
 #include "CTransform.h"
 #include "CCamera.h"
+#include "CLevel.h"
 
 CEditorCamScript::CEditorCamScript()
 	: m_CamSpeedLin(500.f)
@@ -18,8 +21,12 @@ CEditorCamScript::~CEditorCamScript()
 
 void CEditorCamScript::Tick()
 {
+	CLevel* pLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	if (pLevel == nullptr || pLevel->GetState() != LEVEL_STATE::STOP)
+		return;
+
 	// 카메라 컴포넌트가 없으면 종료
-	if (/*!GetOwner() || */!Camera())
+	if (!Camera())
 		return;
 
 	PROJ_TYPE type = Camera()->GetProjType();

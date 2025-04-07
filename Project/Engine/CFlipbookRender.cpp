@@ -10,7 +10,7 @@
 CFlipbookRender::CFlipbookRender()
 	: CRenderComponent(COMPONENT_TYPE::FLIPBOOKRENDER)
 {
-	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"RectMesh", true));
 
 	CreateFlipbookMaterial();
 }
@@ -145,7 +145,7 @@ int CFlipbookRender::Save(fstream& _Stream)
 
 void CFlipbookRender::CreateFlipbookMaterial()
 {
-	if (nullptr == CAssetMgr::GetInst()->FindAsset<CGraphicShader>(L"FlipbookShader"))
+	if (nullptr == CAssetMgr::GetInst()->Load<CGraphicShader>(L"FlipbookShader", true))
 	{
 		// FlipbookShader
 		AssetPtr<CGraphicShader> pShader = new CGraphicShader;
@@ -163,15 +163,15 @@ void CFlipbookRender::CreateFlipbookMaterial()
 		CAssetMgr::GetInst()->AddAsset(L"FlipbookShader", pShader.Get());
 	}
 
-	if (nullptr == CAssetMgr::GetInst()->FindAsset<CMaterial>(L"FlipbookMtrl"))
+	if (nullptr == CAssetMgr::GetInst()->Load<CMaterial>(L"FlipbookMtrl", true))
 	{
 		// FlipbookMtrl
 		AssetPtr<CMaterial> pMtrl = new CMaterial;
-		pMtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicShader>(L"FlipbookShader"));
+		pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"FlipbookShader", true));
 		CAssetMgr::GetInst()->AddAsset(L"FlipbookMtrl", pMtrl.Get());
 	}
 
-	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"FlipbookMtrl"));
+	SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"FlipbookMtrl", true));
 }
 
 void CFlipbookRender::AddFlipbook(int _Idx, AssetPtr<CFlipbook> _Flipbook)

@@ -3,8 +3,11 @@
 
 #include "Engine\CTimeMgr.h"
 #include "Engine\CKeyMgr.h"
+#include "Engine\CLevelMgr.h"
+
 #include "Engine\CTransform.h"
 #include "Engine\CCamera.h"
+#include "Engine\CLevel.h"
 
 CCameraMoveScript::CCameraMoveScript()
 	: m_CamSpeed(500.f)
@@ -17,8 +20,11 @@ CCameraMoveScript::~CCameraMoveScript()
 
 void CCameraMoveScript::Tick()
 {
+	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::PLAY)
+		return;
+
 	// 카메라 컴포넌트가 없으면 종료
-	if (/*!GetOwner() || */!Camera())
+	if (!Camera())
 		return;
 
 	PROJ_TYPE type = Camera()->GetProjType();

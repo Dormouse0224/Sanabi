@@ -106,10 +106,10 @@ void CRenderMgr::DebugRender()
 		switch ((*iter).Shape)
 		{
 		case DEBUG_SHAPE::RECT:
-			m_DebugObject->GetRenderComponent()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh_Debug"));
+			m_DebugObject->GetRenderComponent()->SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"RectMesh_Debug", true));
 			break;
 		case DEBUG_SHAPE::CIRCLE:
-			m_DebugObject->GetRenderComponent()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh_Debug"));
+			m_DebugObject->GetRenderComponent()->SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"CircleMesh_Debug", true));
 			break;
 		case DEBUG_SHAPE::LINE:
 			break;

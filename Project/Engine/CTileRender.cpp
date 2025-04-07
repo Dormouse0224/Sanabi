@@ -15,7 +15,7 @@ CTileRender::CTileRender()
 	, m_vecTileLT{}
 	, m_GpuBuffer(nullptr)
 {
-	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"RectMesh", true));
 
 	CreateTileRenderMtrl();
 
@@ -31,7 +31,7 @@ CTileRender::CTileRender(const CTileRender& _Other)
 	, m_vecTileLT{ _Other.m_vecTileLT }
 	, m_GpuBuffer(nullptr)
 {
-	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"RectMesh", true));
 
 	CreateTileRenderMtrl();
 
@@ -176,7 +176,7 @@ void CTileRender::SetTile(UINT _Col, UINT _Row, Vec2 _LT)
 
 void CTileRender::CreateTileRenderMtrl()
 {
-	if (nullptr == CAssetMgr::GetInst()->FindAsset<CGraphicShader>(L"TileRenderShader"))
+	if (nullptr == CAssetMgr::GetInst()->Load<CGraphicShader>(L"TileRenderShader", true))
 	{
 		// TileRenderShader
 		AssetPtr<CGraphicShader> pShader = new CGraphicShader;
@@ -187,15 +187,15 @@ void CTileRender::CreateTileRenderMtrl()
 		CAssetMgr::GetInst()->AddAsset(L"TileRenderShader", pShader.Get());
 	}
 
-	if (nullptr == CAssetMgr::GetInst()->FindAsset<CMaterial>(L"TileRenderMtrl"))
+	if (nullptr == CAssetMgr::GetInst()->Load<CMaterial>(L"TileRenderMtrl", true))
 	{
 		// TileRenderMtrl
 		AssetPtr<CMaterial> pMtrl = new CMaterial;
-		pMtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicShader>(L"TileRenderShader"));
+		pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"TileRenderShader", true));
 		CAssetMgr::GetInst()->AddAsset(L"TileRenderMtrl", pMtrl.Get());
 	}
 
-	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"TileRenderMtrl"));
+	SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"TileRenderMtrl", true));
 }
 
 void CTileRender::UpdateBuffer()

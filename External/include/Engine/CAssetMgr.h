@@ -31,9 +31,7 @@ public:
 
 	void AddAsset(const wstring& _Key, AssetPtr<CAsset> _Asset);
 	template<typename T>
-	AssetPtr<T> FindAsset(const wstring& _RelativePath);
-	template<typename T>
-	AssetPtr<T> Load(const wstring& _RelativePath);
+	AssetPtr<T> Load(const wstring& _RelativePath, bool _IsEngineAsset = false);
 	// 로드 할 에셋의 확장자를 입력해 파일 탐색기로 에셋을 로드합니다. 텍스쳐, 사운드의 경우 입력을 무시하고 자동으로 로드합니다.
 	template<typename T>
 	AssetPtr<T> LoadFromFile(const wstring& _Extention);
@@ -41,7 +39,9 @@ public:
 	AssetPtr<CTexture2D> CreateTexture(const wstring& _Key, UINT _Width, UINT _Height, DXGI_FORMAT _Format, UINT _BindFlag, D3D11_USAGE _Usage = D3D11_USAGE_DEFAULT);
 	AssetPtr<CTexture2D> CreateTexture(const wstring& _Key, ComPtr<ID3D11Texture2D> _Tex2D);
 
-
+private:
+	template<typename T>
+	AssetPtr<T> FindAsset(const wstring& _RelativePath);
 };
 
 
@@ -82,7 +82,7 @@ inline AssetPtr<T> CAssetMgr::FindAsset(const wstring& _Key)
 }
 
 template<typename T>
-inline AssetPtr<T> CAssetMgr::Load(const wstring& _RelativePath)
+inline AssetPtr<T> CAssetMgr::Load(const wstring& _RelativePath, bool _IsEngineAsset)
 {
 	if constexpr (is_base_of<CComputeShader, T>::value)
 	{
@@ -94,6 +94,7 @@ inline AssetPtr<T> CAssetMgr::Load(const wstring& _RelativePath)
 		pAsset = new T;
 		pAsset->SetName(_RelativePath);
 		pAsset->SetData();
+		pAsset->Load(_RelativePath);
 		CAssetMgr::GetInst()->AddAsset(_RelativePath, pAsset.Get());
 
 
@@ -106,7 +107,8 @@ inline AssetPtr<T> CAssetMgr::Load(const wstring& _RelativePath)
 		if (nullptr != pAsset)
 			return pAsset;
 
-		//wstring ContentPath = CPathMgr::GetContentDir();
+		if (_IsEngineAsset)
+			return nullptr;
 
 		pAsset = new T;
 		if (FAILED(pAsset->Load(_RelativePath)))
