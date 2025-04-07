@@ -101,7 +101,7 @@ void CPhysxMgr::Init()
 void CPhysxMgr::Tick()
 {
     // 물리 시뮬레이션 실행
-    float DeltaTime = DT;
+    float DeltaTime = EngineDT;
     float LowerLimit = 1.f / 30.f;
     if (DeltaTime > LowerLimit)
         DeltaTime = LowerLimit;

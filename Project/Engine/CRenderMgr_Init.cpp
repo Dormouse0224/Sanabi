@@ -6,6 +6,7 @@
 
 #include "CAssetMgr.h"
 #include "assets.h"
+#include "CEditorCamScript.h"
 
 void CRenderMgr::Init()
 {
@@ -39,4 +40,15 @@ void CRenderMgr::Init()
 	m_DebugObject->AddComponent(new CTransform);
 	m_DebugObject->AddComponent(new CMeshRender);
 	m_DebugObject->MeshRender()->SetMaterial(pMtrl);
+
+
+	// ==================
+	// Editor Cam Object
+	// ==================
+	m_EditorCam = new CGameObject;
+	m_EditorCam->AddComponent(new CTransform);
+	m_EditorCam->AddComponent(new CCamera);
+	m_EditorCam->AddComponent(new CEditorCamScript);
+	m_EditorCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
+	m_EditorCam->Camera()->CheckLayerAll();
 }

@@ -168,6 +168,7 @@ call EngineHeaderCopy.bat</Command>
     <ClInclude Include="CComponentUI.h" />
     <ClInclude Include="CComputeShaderUI.h" />
     <ClInclude Include="CContentViewer.h" />
+    <ClInclude Include="CEditorCamScript.h" />
     <ClInclude Include="CFlipbook.h" />
     <ClInclude Include="CFlipbookRender.h" />
     <ClInclude Include="CFlipbookRenderUI.h" />
@@ -270,6 +271,7 @@ call EngineHeaderCopy.bat</Command>
     <ClCompile Include="CConstBuffer.cpp" />
     <ClCompile Include="CContentViewer.cpp" />
     <ClCompile Include="CDevice.cpp" />
+    <ClCompile Include="CEditorCamScript.cpp" />
     <ClCompile Include="CEngine.cpp" />
     <ClCompile Include="CEntity.cpp" />
     <ClCompile Include="CFlipbook.cpp" />

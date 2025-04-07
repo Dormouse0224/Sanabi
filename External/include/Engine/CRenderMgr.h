@@ -12,6 +12,7 @@ private:
 	// SetPriority 함수에서 카메라의 Priority 값을 입력받고 RegisterCamera 함수를 통해 이 벡터에 등록된다.
 	vector<CCamera*>		m_vecCam;
 	CGameObject*			m_DebugObject;
+	CGameObject*			m_EditorCam;
 
 	vector<tDebugShapeInfo> m_vecDebugInfo;
 

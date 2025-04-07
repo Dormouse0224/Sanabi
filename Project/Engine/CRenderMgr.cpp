@@ -24,6 +24,9 @@ CRenderMgr::~CRenderMgr()
 {
 	if (nullptr != m_DebugObject)
 		delete m_DebugObject;
+
+	if (nullptr != m_EditorCam)
+		delete m_EditorCam;
 }
 
 void CRenderMgr::RegisterCamera(CCamera* _Cam, UINT _Priority)
@@ -62,6 +65,9 @@ void CRenderMgr::Tick()
 	pGlobal->Binding();
 	pGlobal->Binding_CS();
 
+	m_EditorCam->Tick();
+	m_EditorCam->FinalTick(false);
+
 	// Main Rendering	
 	Render();
 
@@ -76,9 +82,18 @@ void CRenderMgr::Render()
 {
 	CDevice::GetInst()->ClearTarget();
 
-	for (size_t i = 0; i < m_vecCam.size(); ++i)
+	// 현재 레벨이 없거나 Stop 이면 에디터 카메라를 사용, 아니면 레벨의 카메라 오브젝트를 사용.
+	CLevel* pLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	if (pLevel == nullptr || pLevel->GetState() == LEVEL_STATE::STOP)
 	{
-		m_vecCam[i]->Render();
+		m_EditorCam->Camera()->Render();
+	}
+	else
+	{
+		for (size_t i = 0; i < m_vecCam.size(); ++i)
+		{
+			m_vecCam[i]->Render();
+		}
 	}
 }
 
