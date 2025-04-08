@@ -105,7 +105,8 @@ void CLevel::Deregister()
 
 int CLevel::Save(wstring _FileName)
 {
-	std::filesystem::path path = CPathMgr::GetContentDir() + std::wstring(L"Level\\") + _FileName + std::wstring(L".level");
+	wstring RelativePath = std::wstring(L"Level\\") + _FileName + std::wstring(L".level");
+	std::filesystem::path path = CPathMgr::GetContentDir() + RelativePath;
 	CPathMgr::CreateParentDir(path);
 	std::fstream file(path, std::ios::out | std::ios::binary);
 	if (!file.is_open())
@@ -118,6 +119,15 @@ int CLevel::Save(wstring _FileName)
 	}
 
 	file.close();
+
+	// 기존에 등록된 레벨 중 같은 이름의 레벨이 있다면 업데이트
+	CLevel* pLevel = CLevelMgr::GetInst()->FindLevel(RelativePath);
+	if (pLevel)
+	{
+		CLevelMgr::GetInst()->DeleteLevel(RelativePath);
+		CLevelMgr::GetInst()->AddLevelList(RelativePath, this);
+	}
+
 	return S_OK;
 }
 
@@ -135,6 +145,10 @@ int CLevel::Load(wstring _FilePath)
 	}
 
 	file.close();
+
+	// LevelMgr LevelList 에 추가
+	//CLevelMgr::GetInst()->AddLevelList(_FilePath, this);
+
 	return S_OK;
 }
 

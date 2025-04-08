@@ -20,6 +20,12 @@ CLevelMgr::~CLevelMgr()
 
 	delete m_PlayStartLevel;
 	m_PlayStartLevel = nullptr;
+
+	for (const auto& pair : m_mapLevelList)
+	{
+		delete pair.second;
+	}
+	m_mapLevelList.clear();
 }
 
 void CLevelMgr::Init()
@@ -45,6 +51,27 @@ void CLevelMgr::Progress()
 
 }
 
+CLevel* CLevelMgr::FindLevel(wstring _RelativePath)
+{
+	const auto iter = m_mapLevelList.find(_RelativePath);
+	if (iter == m_mapLevelList.end())
+		return nullptr;
+	else
+		return iter->second->Clone();
+}
+
+void CLevelMgr::DeleteLevel(wstring _RelativePath)
+{
+	const auto iter = m_mapLevelList.find(_RelativePath);
+	if (iter == m_mapLevelList.end())
+		return;
+	else
+	{
+		delete iter->second;
+		m_mapLevelList.erase(iter);
+	}
+}
+
 CGameObject* CLevelMgr::AddGameObject(wstring _Name, LAYER _Layer)
 {
 	CGameObject* pObject = new CGameObject;
@@ -57,11 +84,15 @@ CGameObject* CLevelMgr::AddGameObject(wstring _Name, LAYER _Layer)
 
 void CLevelMgr::ChangeLevel(CLevel* _NextLevel)
 {
+	// 레벨이 변경되면서, Render Manager 가 관리하던 이전 레벨의 카메라 목록을 클리어한다.
+	CRenderMgr::GetInst()->ClearCamera();
+
+	// 물리 시뮬레이션 객체를 모두 제거한다.
+	CPhysxMgr::GetInst()->ClearScene();
+
+
 	if (m_CurLevel == _NextLevel)
 		return;
-
-	CPhysxMgr::GetInst()->GetScene()->simulate(0.f);
-	CPhysxMgr::GetInst()->GetScene()->fetchResults(true);
 
 	delete m_CurLevel;
 
@@ -69,10 +100,4 @@ void CLevelMgr::ChangeLevel(CLevel* _NextLevel)
 
 	if (m_CurLevel == m_PlayStartLevel)
 		m_PlayStartLevel = nullptr;
-
-	// 레벨이 변경되면서, Render Manager 가 관리하던 이전 레벨의 카메라 목록을 클리어한다.
-	CRenderMgr::GetInst()->ClearCamera();
-
-	// 물리 시뮬레이션 객체를 모두 제거한다.
-	CPhysxMgr::GetInst()->ClearScene();
 }

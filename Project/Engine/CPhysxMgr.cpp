@@ -128,6 +128,8 @@ void CPhysxMgr::Tick()
 
 void CPhysxMgr::Render()
 {
+    PxU32 s = m_Scene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC);
+    PxU32 ss = m_Scene->getNbActors(PxActorTypeFlag::eRIGID_STATIC);
     // 디버그 렌더링 정보를 정점 정보로 치환 후, 정점 버퍼를 생성
     const PxRenderBuffer& RenderBuffer = m_Scene->getRenderBuffer();
     if (RenderBuffer.getNbLines() == 0)
@@ -196,6 +198,8 @@ PxRigidActor* CPhysxMgr::FindRigidBody(CGameObject* _Object)
 
 void CPhysxMgr::AddRigidBody(CGameObject* _Object, PxRigidActor* _Actor)
 {
+    PxU32 s = m_Scene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC);
+    PxU32 ss = m_Scene->getNbActors(PxActorTypeFlag::eRIGID_STATIC);
     m_Scene->addActor(*_Actor);
     m_mapRigidBody.insert(make_pair(_Object, _Actor));
 }

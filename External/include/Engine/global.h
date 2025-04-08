@@ -1,7 +1,9 @@
 #pragma once
 
 #include <Windows.h>
-#define _HAS_STD_BYTE 0
+#define _HAS_STD_BYTE 0		// using namespace std; 의 오류 해결용
+//#define _CRTDBG_MAP_ALLOC
+//#include <crtdbg.h>
 #include <commdlg.h>
 #include <iostream>
 #include <fstream>
