@@ -13,7 +13,15 @@ CTaskMgr::CTaskMgr()
 
 CTaskMgr::~CTaskMgr()
 {
-
+	for (const auto& task : m_vecTask)
+	{
+		if (task.Type == TASK_TYPE::DELETE_OBJECT)
+		{
+			delete reinterpret_cast<CGameObject*>(task.Param0);
+		}
+	}
+	for (const auto& obj : m_vecGC)
+		delete obj;
 }
 
 void CTaskMgr::Tick()
