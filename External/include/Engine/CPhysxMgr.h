@@ -60,5 +60,7 @@ public:
 	/// </summary>
 	/// <param name="_Object"></param>
 	void RemoveRigidBody(CGameObject* _Object);
+
+	void ClearScene();
 };
 

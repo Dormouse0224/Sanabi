@@ -21,6 +21,7 @@ private:
 	bool						m_DemoActive;
 	bool						m_AddGameObjectMenuActive;
 	bool						m_SaveLevelActive;
+	bool						m_CreateMaterialActive;
 
 	CInspector*					m_Inspector;
 	COutliner*					m_Outliner;
@@ -34,6 +35,7 @@ public:
 
 	void AddGameObjectMenuPopup();
 	void SaveLevelPopup();
+	void CreateMaterialPopup();
 	void LoadAsset();
 	void LoadLevel();
 

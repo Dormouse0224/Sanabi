@@ -9,6 +9,7 @@
 #include "CInspector.h"
 #include "COutliner.h"
 #include "CContentViewer.h"
+#include "CMaterial.h"
 
 void CImguiMgr::DebugMenuBar()
 {
@@ -16,10 +17,19 @@ void CImguiMgr::DebugMenuBar()
     {
         if (ImGui::BeginMenu("File"))
         {
-            ImGui::SeparatorText("Asset");
-            if (ImGui::MenuItem("Asset Load", nullptr))
+            if (ImGui::BeginMenu("Asset"))
             {
-                LoadAsset();
+                if (ImGui::MenuItem("Asset Load", nullptr))
+                {
+                    LoadAsset();
+                }
+
+				if (ImGui::MenuItem("Asset Create", nullptr))
+				{
+                    m_CreateMaterialActive = true;
+				}
+
+				ImGui::EndMenu();
             }
 
             if (ImGui::BeginMenu("Level"))
@@ -118,6 +128,8 @@ void CImguiMgr::DebugMenuBar()
     }
 
 
+    // 팝업함수 호출
     SaveLevelPopup();
     AddGameObjectMenuPopup();
+    CreateMaterialPopup();
 }

@@ -29,6 +29,7 @@ public:
     void SetTexParam(TEX_PARAM _Param, const AssetPtr<CTexture2D>& _Tex) { m_arrTex[_Param] = _Tex; }
 
     void Binding();
+    static AssetPtr<CMaterial> Create(wstring _Name);
 
     virtual int Save(const wstring& _FileName) override;
     virtual int Load(const wstring& _FilePath) override;

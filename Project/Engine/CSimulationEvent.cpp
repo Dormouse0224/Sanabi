@@ -33,6 +33,8 @@ void CSimulationEvent::onContact(const PxContactPairHeader& pairHeader, const Px
 
         CGameObject* go_0 = reinterpret_cast<CGameObject*>(pairHeader.actors[0]->userData);
         CGameObject* go_1 = reinterpret_cast<CGameObject*>(pairHeader.actors[0]->userData);
+        if (go_0->IsDead() || go_1->IsDead())
+            return;
 
         if (cp.events & PxPairFlag::eNOTIFY_TOUCH_FOUND)
         {

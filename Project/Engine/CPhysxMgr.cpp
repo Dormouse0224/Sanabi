@@ -100,6 +100,8 @@ void CPhysxMgr::Init()
 
 void CPhysxMgr::Tick()
 {
+    PxU32 s = m_Scene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC);
+    PxU32 ss = m_Scene->getNbActors(PxActorTypeFlag::eRIGID_STATIC);
     // 물리 시뮬레이션 실행
     float DeltaTime = EngineDT;
     float LowerLimit = 1.f / 30.f;
@@ -210,4 +212,12 @@ void CPhysxMgr::RemoveRigidBody(CGameObject* _Object)
     pActor = nullptr;
 
     m_mapRigidBody.erase(iter);
+}
+
+void CPhysxMgr::ClearScene()
+{
+    int NbActors = m_Scene->getNbActors(PxActorTypeFlag::eRIGID_STATIC | PxActorTypeFlag::eRIGID_DYNAMIC);
+    vector<PxActor*> vecActors(NbActors);
+    m_Scene->getActors(PxActorTypeFlag::eRIGID_STATIC | PxActorTypeFlag::eRIGID_DYNAMIC, vecActors.data(), NbActors);
+    m_Scene->removeActors(vecActors.data(), NbActors);
 }

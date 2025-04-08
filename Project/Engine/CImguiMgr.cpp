@@ -192,6 +192,45 @@ void CImguiMgr::SaveLevelPopup()
 
 }
 
+void CImguiMgr::CreateMaterialPopup()
+{
+    if (m_CreateMaterialActive)
+    {
+        m_CreateMaterialActive = false;
+        ImGui::OpenPopup("CreateMaterial");
+    }
+
+    if (ImGui::BeginPopupModal("CreateMaterial", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        float tab = 130.f;
+        ImGui::Text("Create new material.");
+        ImGui::NewLine();
+
+        // 오브젝트 이름 입력
+        ImGui::Text("Name: ");
+        ImGui::SameLine(tab);
+        static char Name[255] = {};
+        ImGui::InputText("##Name", Name, 255);
+        std::wstring WName = to_wstr(std::string(Name));
+
+        if (ImGui::Button("Create"))
+        {
+            CMaterial::Create(WName);
+            memset(Name, 0, sizeof(Name));
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Cancel"))
+        {
+            memset(Name, 0, sizeof(Name));
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
+
+}
+
 void CImguiMgr::LoadAsset()
 {
     // 에셋 파일 열기

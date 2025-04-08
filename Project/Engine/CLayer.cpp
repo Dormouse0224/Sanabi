@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CLayer.h"
 
+#include "CTaskMgr.h"
+
 #include "CGameObject.h"
 
 CLayer::CLayer()
@@ -24,7 +26,9 @@ CLayer::CLayer(const CLayer& _Other)
 
 CLayer::~CLayer()
 {
-	Delete_Vec(m_vecParentObjects);
+	for (int i = 0; i < m_vecParentObjects.size(); ++i)
+		CTaskMgr::GetInst()->AddTask(TASK_TYPE::DELETE_OBJECT, reinterpret_cast<DWORD_PTR>(m_vecParentObjects[i]), NULL);
+	//Delete_Vec(m_vecParentObjects);
 }
 
 void CLayer::Begin()

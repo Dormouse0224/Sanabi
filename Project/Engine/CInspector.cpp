@@ -188,6 +188,7 @@ void CInspector::Render()
 			pAssetUI->Render();
 		}
 
+		// 에셋을 파일로 저장
 		ImGui::Separator();
 		if (ImGui::Button("Save Asset as File"))
 		{

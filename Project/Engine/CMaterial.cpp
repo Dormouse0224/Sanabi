@@ -37,6 +37,14 @@ void CMaterial::Binding()
 	pBuffer->Binding();
 }
 
+AssetPtr<CMaterial> CMaterial::Create(wstring _Name)
+{
+	AssetPtr<CMaterial> pNewMtrl = new CMaterial;
+	pNewMtrl->SetName(_Name);
+	pNewMtrl->Save(_Name);
+	return AssetPtr<CMaterial>();
+}
+
 int CMaterial::Save(const wstring& _FileName)
 {
 	std::filesystem::path path = CPathMgr::GetContentDir() + std::wstring(L"Material\\") + _FileName + std::wstring(L".mtrl");
@@ -44,7 +52,9 @@ int CMaterial::Save(const wstring& _FileName)
 	std::fstream file(path, std::ios::out | std::ios::binary);
 
 	// 재질이 사용하는 그래픽 셰이더의 키값(이름) 저장
-	std::wstring ShaderName = m_Shader->GetName();
+	std::wstring ShaderName = L"";
+	if (m_Shader.Get())
+		ShaderName = m_Shader->GetName();
 	int size = ShaderName.size();
 	file.write(reinterpret_cast<char*>(&size), sizeof(int));
 	file.write(reinterpret_cast<char*>(ShaderName.data()), sizeof(wchar_t) * size);
@@ -80,12 +90,15 @@ int CMaterial::Load(const wstring& _FilePath)
 	file.read(reinterpret_cast<char*>(ShaderName.data()), sizeof(wchar_t) * size);
 
 	// 그래픽 셰이더 로딩
-	m_Shader = CAssetMgr::GetInst()->Load<CGraphicShader>(ShaderName);
-	if (m_Shader == nullptr)
+	if (!ShaderName.empty())
 	{
-		file.close();
-		MessageBoxW(nullptr, L"그래픽 셰이더 로딩에 실패했습니다.", L"Material Load Error", MB_OK);
-		return E_FAIL;
+		m_Shader = CAssetMgr::GetInst()->Load<CGraphicShader>(ShaderName);
+		if (m_Shader == nullptr)
+		{
+			file.close();
+			MessageBoxW(nullptr, L"그래픽 셰이더 로딩에 실패했습니다.", L"Material Load Error", MB_OK);
+			return E_FAIL;
+		}
 	}
 
 	// 재질이 사용하는 텍스쳐의 키값(이름) 불러오기

@@ -2,6 +2,7 @@
 #include "CLevelMgr.h"
 
 #include "CRenderMgr.h"
+#include "CPhysxMgr.h"
 
 #include "CLevel.h"
 #include "CGameObject.h"
@@ -59,6 +60,9 @@ void CLevelMgr::ChangeLevel(CLevel* _NextLevel)
 	if (m_CurLevel == _NextLevel)
 		return;
 
+	CPhysxMgr::GetInst()->GetScene()->simulate(0.f);
+	CPhysxMgr::GetInst()->GetScene()->fetchResults(true);
+
 	delete m_CurLevel;
 
 	m_CurLevel = _NextLevel;
@@ -68,4 +72,7 @@ void CLevelMgr::ChangeLevel(CLevel* _NextLevel)
 
 	// 레벨이 변경되면서, Render Manager 가 관리하던 이전 레벨의 카메라 목록을 클리어한다.
 	CRenderMgr::GetInst()->ClearCamera();
+
+	// 물리 시뮬레이션 객체를 모두 제거한다.
+	CPhysxMgr::GetInst()->ClearScene();
 }
