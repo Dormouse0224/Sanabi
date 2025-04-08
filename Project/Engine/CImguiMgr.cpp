@@ -13,6 +13,8 @@
 #include "COutliner.h"
 #include "CContentViewer.h"
 #include "CLevel.h"
+#include "CGameObject.h"
+#include "CTransform.h"
 
 CImguiMgr::CImguiMgr()
     : m_DebugMenuBar(true)
@@ -133,7 +135,7 @@ void CImguiMgr::AddGameObjectMenuPopup()
         if (ImGui::Button("Add"))
         {
             if (CLevelMgr::GetInst()->GetCurrentLevel())
-                CLevelMgr::GetInst()->AddGameObject(to_wstr(string(Name)), static_cast<LAYER>(layeridx));
+                CLevelMgr::GetInst()->AddGameObject(to_wstr(string(Name)), static_cast<LAYER>(layeridx))->AddComponent(new CTransform);
             layeridx = 0;
             memset(Name, 0, sizeof(Name));
             ImGui::CloseCurrentPopup();

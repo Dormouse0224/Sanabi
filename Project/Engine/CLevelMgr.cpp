@@ -44,12 +44,14 @@ void CLevelMgr::Progress()
 
 }
 
-void CLevelMgr::AddGameObject(wstring _Name, LAYER _Layer)
+CGameObject* CLevelMgr::AddGameObject(wstring _Name, LAYER _Layer)
 {
 	CGameObject* pObject = new CGameObject;
 	pObject->SetName(_Name);
 	m_CurLevel->AddGameObject(pObject, static_cast<int>(_Layer), true);
 	m_LevelModified = true;
+
+	return pObject;
 }
 
 void CLevelMgr::ChangeLevel(CLevel* _NextLevel)

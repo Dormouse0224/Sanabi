@@ -11,12 +11,12 @@ class CComponentMgr
 	SINGLE(CComponentMgr);
 private:
 	std::map<std::string, CreateFunc>	m_Registry;
-	ScriptInit							m_InitFunc;
+	ScriptInit							m_ScriptInitFunc;
 
 public:
-	void Init() { if (m_InitFunc) { m_InitFunc(); } }
+	void Init();
 
-	void SetScriptInitFunc(ScriptInit _InitFunc) { m_InitFunc = _InitFunc; Init(); }
+	void SetScriptInitFunc(ScriptInit _ScriptInitFunc) { m_ScriptInitFunc = _ScriptInitFunc; Init(); }
 
 	void Register(const std::string& className, CreateFunc func);
 

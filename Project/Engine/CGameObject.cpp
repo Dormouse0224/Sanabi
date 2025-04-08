@@ -264,7 +264,6 @@ int CGameObject::Load(fstream& _Stream)
 	// 보유한 스크립트 정보 불러오기
 	int count = 0;
 	_Stream.read(reinterpret_cast<char*>(&count), sizeof(int));
-	//m_vecScript.resize(count);
 	for (int i = 0; i < count; ++i)
 	{
 		std::string ClassName = {};

@@ -102,9 +102,9 @@ void CSound::RemoveChannel(FMOD::Channel* _pTargetChannel)
 
 int CSound::Load(const wstring& _FilePath)
 {
-	string path(_FilePath.begin(), _FilePath.end());
+	wstring path = CPathMgr::GetContentDir() + _FilePath;
 
-	if (FMOD_OK != CEngine::GetInst()->GetFMODSystem()->createSound(path.c_str(), FMOD_DEFAULT, nullptr, &m_Sound))
+	if (FMOD_OK != CEngine::GetInst()->GetFMODSystem()->createSound(to_str(path).c_str(), FMOD_DEFAULT, nullptr, &m_Sound))
 	{
 		assert(nullptr);
 	}

@@ -25,15 +25,27 @@ public:
 protected:
     ComPtr<ID3DBlob>                m_ErrBlob;
 
-    vector<tConstData>              m_vecConstData;
-    vector<tTexData>                m_vecTexData;
+    vector<tConstData*>              m_vecConstData;
+    vector<tTexData*>                m_vecTexData;
 
 public:
-    const vector<tConstData>& GetConstData() { return m_vecConstData; }
-    const vector<tTexData>& GetTexData() { return m_vecTexData; }
+    vector<tConstData*> GetConstData() { return m_vecConstData; }
+    vector<tTexData*> GetTexData() { return m_vecTexData; }
 
-    void SetConstData(CONST_PARAM _Param, string _Desc) { m_vecConstData.push_back(tConstData{ _Param, _Desc }); }
-    void SetTexData(TEX_PARAM _Param, string _Desc) { m_vecTexData.push_back(tTexData{ _Param, _Desc }); }
+    void SetConstData(CONST_PARAM _Param, string _Desc)
+    {
+        tConstData* data = new tConstData;
+        data->m_Param = _Param;
+        data->m_Desc = _Desc;
+        m_vecConstData.push_back(data);
+    }
+    void SetTexData(TEX_PARAM _Param, string _Desc)
+    {
+        tTexData* data = new tTexData;
+        data->m_Param = _Param;
+        data->m_Desc = _Desc;
+        m_vecTexData.push_back(data);
+    }
 
 };
 

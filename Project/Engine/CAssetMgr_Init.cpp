@@ -174,7 +174,50 @@ void CAssetMgr::CreateEngineGraphicShader()
 	AddAsset(L"Std2DAlphaBlendShader", pShader.Get());
 
 
+	// FlipbookShader
+	pShader = new CGraphicShader;
+	pShader->CreateVertexShader(L"HLSL\\Engine\\flipbook.fx", "VS_Flipbook");
+	pShader->CreatePixelShader(L"HLSL\\Engine\\flipbook.fx", "PS_Flipbook");
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+	pShader->SetTexData(TEX_0, "Atlas Texture");
+	pShader->SetConstData(INT_0, "Atlas Tex Flag");
+	pShader->SetConstData(INT_1, "Single Tex Flag");
+	pShader->SetConstData(VEC2_0, "LeftTop");
+	pShader->SetConstData(VEC2_1, "Slice");
+	pShader->SetConstData(VEC2_2, "Background");
+	pShader->SetConstData(VEC2_3, "Offset");
+	CAssetMgr::GetInst()->AddAsset(L"FlipbookShader", pShader.Get());
 
+	// 파티클 렌더링 쉐이더 및 재질
+	pShader = new CGraphicShader;
+	pShader->SetName(L"ParticleRenderShader");
+	pShader->CreateVertexShader(L"HLSL\\Engine\\particle.fx", "VS_Particle");
+	pShader->CreateGeometryShader(L"HLSL\\Engine\\particle.fx", "GS_Particle");
+	pShader->CreatePixelShader(L"HLSL\\Engine\\particle.fx", "PS_Particle");
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+	pShader->SetBSType(BS_TYPE::ALPHABLEND);
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_WRITE);
+	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	CAssetMgr::GetInst()->AddAsset(pShader->GetName(), pShader.Get());
+
+	// SpriteShader
+	pShader = new CGraphicShader;
+	pShader->CreateVertexShader(L"HLSL\\Engine\\sprite.fx", "VS_Sprite");
+	pShader->CreatePixelShader(L"HLSL\\Engine\\sprite.fx", "PS_Sprite");
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+	CAssetMgr::GetInst()->AddAsset(L"SpriteShader", pShader.Get());
+
+
+	// TileRenderShader
+	pShader = new CGraphicShader;
+	pShader->CreateVertexShader(L"HLSL\\Engine\\tilerender.fx", "VS_TileRender");
+	pShader->CreatePixelShader(L"HLSL\\Engine\\tilerender.fx", "PS_TileRender");
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+	CAssetMgr::GetInst()->AddAsset(L"TileRenderShader", pShader.Get());
 
 }
 
@@ -185,11 +228,11 @@ void CAssetMgr::CreateEngineComputeShader()
 void CAssetMgr::CreateEngineMaterial()
 {
 	// Std2DMtrl
-	//Ptr<CMaterial> pMtrl = new CMaterial;
-	//pMtrl->SetShader(FindAsset<CGraphicShader>(L"Std2DShader"));
-	//AddAsset(L"Std2DMtrl", pMtrl.Get());
-
 	AssetPtr<CMaterial> pMtrl = new CMaterial;
+	pMtrl->SetShader(Load<CGraphicShader>(L"Std2DShader", true));
+	AddAsset(L"Std2DMtrl", pMtrl.Get());
+
+	pMtrl = new CMaterial;
 	pMtrl->SetShader(Load<CGraphicShader>(L"Std2DShader", true));
 	pMtrl->SetTexParam(TEX_0, Load<CTexture2D>(L"Texture2D\\Spr_SNB_IdleRand1 (1).png"));
 	AddAsset(L"SNB_Mtrl", pMtrl.Get());
@@ -208,56 +251,32 @@ void CAssetMgr::CreateEngineMaterial()
 	pMtrl->SetShader(Load<CGraphicShader>(L"Std2DShader", true));
 	pMtrl->SetTexParam(TEX_0, Load<CTexture2D>(L"Texture2D\\Chap2_Mid_A01.png"));
 	AddAsset(L"Background_Mtrl", pMtrl.Get());
+
+	// FlipbookMtrl
+	pMtrl = new CMaterial;
+	pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"FlipbookShader", true));
+	CAssetMgr::GetInst()->AddAsset(L"FlipbookMtrl", pMtrl.Get());
+
+	pMtrl = new CMaterial;
+	pMtrl->SetName(L"ParticleMtrl");
+	pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"ParticleRenderShader", true));
+	CAssetMgr::GetInst()->AddAsset(pMtrl->GetName(), pMtrl.Get());
+
+	// SpriteMtrl
+	pMtrl = new CMaterial;
+	pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"SpriteShader", true));
+	CAssetMgr::GetInst()->AddAsset(L"SpriteMtrl", pMtrl.Get());
+
+	// TileRenderMtrl
+	pMtrl = new CMaterial;
+	pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"TileRenderShader", true));
+	CAssetMgr::GetInst()->AddAsset(L"TileRenderMtrl", pMtrl.Get());
+
 }
 
 
 void CAssetMgr::CreateEngineSprite()
 {
-	//Ptr<CSprite> pSprite = nullptr;
-
-	//Vec2 LeftTopPixel = Vec2(0.f, 520.f);
-	//Vec2 SlicePixel = Vec2(120.f, 130.f);
-	//int FrmCount = 10;
-
-	//for (int i = 0; i < FrmCount; ++i)
-	//{
-	//	pSprite = new CSprite;
-	//	pSprite->SetAtlasTex(CAssetMgr::GetInst()->FindAsset<CTexture2D>(L"Link"));
-	//	pSprite->SetLeftTop(LeftTopPixel + Vec2(120.f * i, 0.f));
-	//	pSprite->SetSlice(SlicePixel);
-	//	pSprite->SetBackground(Vec2(300.f, 300.f));
-
-	//	if (i == 4)
-	//	{
-	//		pSprite->SetOffset(Vec2(50.f, 0.f));
-	//	}
-
-	//	wchar_t szName[255] = {};
-	//	swprintf_s(szName, 255, L"LinkSprite_%d", i);
-
-	//	AddAsset(szName, pSprite.Get());
-	//}
-
-	// Tile Sprite
-	//Ptr<CTexture2D> pAtlas = CAssetMgr::GetInst()->Load<CTexture2D>(L"Tile", L"Texture\\TILE.bmp");
-
-	//for (int Row = 0; Row < 6; ++Row)
-	//{
-	//	for (int Col = 0; Col < 8; ++Col)
-	//	{
-	//		pSprite = new CSprite;
-	//		pSprite->SetAtlasTex(pAtlas);
-	//		pSprite->SetLeftTop(Vec2(Col * 64.f, Row * 64.f));
-	//		pSprite->SetSlice(Vec2(64.f, 64.f));
-
-	//		// 0 ~ 47 까지 뒤에 숫자를 붙인다.
-	//		int Idx = Row * 8 + Col;
-	//		wchar_t szName[255] = {};
-	//		swprintf_s(szName, 255, L"TileSprite_%d", Idx);
-	//		AddAsset(szName, pSprite.Get());
-	//	}
-	//}
-
 
 	// 플립북 에셋 등록
 	AssetPtr<CFlipbook> pFlipbook = new CFlipbook;

@@ -22,21 +22,21 @@ void CComputeShaderUI::Render_Ast()
 	float tab = 150.f;
 
 	// 전달된 상수 데이터
-	vector<tConstData> vecConstData = pCS->GetConstData();
+	vector<tConstData*> vecConstData = pCS->GetConstData();
 	tMtrlConst Const = pCS->GetConstParam();
-	for (tConstData data : vecConstData)
+	for (tConstData* data : vecConstData)
 	{
-		ImGui::Text(data.m_Desc.c_str());
+		ImGui::Text(data->m_Desc.c_str());
 		ImGui::SameLine(tab);
-		string label = "##ConstData" + to_string(data.m_Param);
-		switch (data.m_Param)
+		string label = "##ConstData" + to_string(data->m_Param);
+		switch (data->m_Param)
 		{
 		case INT_0:
 		case INT_1:
 		case INT_2:
 		case INT_3:
 		{
-			ImGui::InputInt(label.c_str(), &Const.iArr[data.m_Param - INT_0], 1, 100, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputInt(label.c_str(), &Const.iArr[data->m_Param - INT_0], 1, 100, ImGuiInputTextFlags_ReadOnly);
 		}
 		break;
 		case FLOAT_0:
@@ -44,7 +44,7 @@ void CComputeShaderUI::Render_Ast()
 		case FLOAT_2:
 		case FLOAT_3:
 		{
-			ImGui::InputFloat(label.c_str(), &Const.fArr[data.m_Param - FLOAT_0], 0, 0, "%.3f", ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat(label.c_str(), &Const.fArr[data->m_Param - FLOAT_0], 0, 0, "%.3f", ImGuiInputTextFlags_ReadOnly);
 		}
 		break;
 		case VEC2_0:
@@ -52,7 +52,7 @@ void CComputeShaderUI::Render_Ast()
 		case VEC2_2:
 		case VEC2_3:
 		{
-			float vec[2] = { Const.v2Arr[data.m_Param - VEC2_0].x, Const.v2Arr[data.m_Param - VEC2_0].y };
+			float vec[2] = { Const.v2Arr[data->m_Param - VEC2_0].x, Const.v2Arr[data->m_Param - VEC2_0].y };
 			ImGui::InputFloat2(label.c_str(), vec, "%.3f", ImGuiInputTextFlags_ReadOnly);
 		}
 		break;
@@ -61,7 +61,7 @@ void CComputeShaderUI::Render_Ast()
 		case VEC4_2:
 		case VEC4_3:
 		{
-			Vec4 v4 = Const.v4Arr[data.m_Param - VEC4_0];
+			Vec4 v4 = Const.v4Arr[data->m_Param - VEC4_0];
 			float vec[4] = { v4.x, v4.y, v4.z, v4.w };
 			ImGui::InputFloat4(label.c_str(), vec, "%.3f", ImGuiInputTextFlags_ReadOnly);
 		}
@@ -73,7 +73,7 @@ void CComputeShaderUI::Render_Ast()
 		{
 			if (ImGui::BeginTable(label.c_str(), 4, ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders))
 			{
-				Matrix mat = Const.matArr[data.m_Param - MAT_0];
+				Matrix mat = Const.matArr[data->m_Param - MAT_0];
 				for (int row = 0; row < 4; ++row)
 				{
 					ImGui::TableNextRow();
@@ -92,14 +92,14 @@ void CComputeShaderUI::Render_Ast()
 	}
 
 	// 전달된 텍스쳐 데이터
-	vector<tTexData> vecTexData = pCS->GetTexData();
-	for (tTexData data : vecTexData)
+	vector<tTexData*> vecTexData = pCS->GetTexData();
+	for (tTexData* data : vecTexData)
 	{
-		auto pTexPair = pCS->GetCSTex(static_cast<TEX_PARAM>(data.m_Param));
+		auto pTexPair = pCS->GetCSTex(static_cast<TEX_PARAM>(data->m_Param));
 		if (pTexPair.first.Get())
 		{
-			ImGui::Text(data.m_Desc.c_str());
-			string label = "##TextureData_" + to_string(data.m_Param);
+			ImGui::Text(data->m_Desc.c_str());
+			string label = "##TextureData_" + to_string(data->m_Param);
 			string name = to_str(pTexPair.first->GetName());
 			ImGui::InputText(label.c_str(), const_cast<char*>(name.c_str()), name.size() + 1, ImGuiInputTextFlags_ReadOnly);
 			if (ImGui::BeginItemTooltip())

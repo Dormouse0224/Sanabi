@@ -57,8 +57,8 @@ int CEngine::Init(HINSTANCE _Inst, UINT _Width, UINT _Height)
     CPathMgr::Init();
     CKeyMgr::GetInst()->Init();
     CTimeMgr::GetInst()->Init();
-    CAssetMgr::GetInst()->Init();
     CPhysxMgr::GetInst()->Init();
+    CAssetMgr::GetInst()->Init();
     CLevelMgr::GetInst()->Init();
     CRenderMgr::GetInst()->Init();
     CImguiMgr::GetInst()->Init();

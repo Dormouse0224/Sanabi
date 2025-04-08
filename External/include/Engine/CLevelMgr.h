@@ -1,6 +1,7 @@
 #pragma once
 
 class CLevel;
+class CGameObject;
 
 class CLevelMgr
 	: public Singleton<CLevelMgr>
@@ -25,7 +26,7 @@ public:
 	void SetPlayStartLevel(CLevel* _Level) { m_PlayStartLevel = _Level; }
 
 	// 현재 레벨에 신규 게임 오브젝트 객체를 추가합니다.
-	void AddGameObject(wstring _Name, LAYER _Layer);
+	CGameObject* AddGameObject(wstring _Name, LAYER _Layer);
 	void ChangeLevel(CLevel* _NextLevel);
 
 };

@@ -17,6 +17,8 @@ private:
 public:
 	void Init();
 	void Tick();
+
+private:
 	void CreateEngineMesh();
 	void CreateEngineGraphicShader();
 	void CreateEngineComputeShader();
@@ -32,12 +34,15 @@ public:
 	void AddAsset(const wstring& _Key, AssetPtr<CAsset> _Asset);
 	template<typename T>
 	AssetPtr<T> Load(const wstring& _RelativePath, bool _IsEngineAsset = false);
-	// 로드 할 에셋의 확장자를 입력해 파일 탐색기로 에셋을 로드합니다. 텍스쳐, 사운드의 경우 입력을 무시하고 자동으로 로드합니다.
 	template<typename T>
 	AssetPtr<T> LoadFromFile(const wstring& _Extention);
 	/// <param name="_BindFlag">flags of D3D11_BIND_FLAG</param>
 	AssetPtr<CTexture2D> CreateTexture(const wstring& _Key, UINT _Width, UINT _Height, DXGI_FORMAT _Format, UINT _BindFlag, D3D11_USAGE _Usage = D3D11_USAGE_DEFAULT);
 	AssetPtr<CTexture2D> CreateTexture(const wstring& _Key, ComPtr<ID3D11Texture2D> _Tex2D);
+	// 파일 경로로부터 확장자를 통해 에셋 타입을 반환합니다.
+	ASSET_TYPE GetAssetType(const wstring& _RelativePath);
+
+	void ContentLoad();
 
 private:
 	template<typename T>
@@ -124,6 +129,7 @@ inline AssetPtr<T> CAssetMgr::Load(const wstring& _RelativePath, bool _IsEngineA
 	}
 }
 
+// 로드 할 에셋의 확장자를 입력해 파일 탐색기로 에셋을 로드합니다. 텍스쳐, 사운드의 경우 입력을 무시하고 자동으로 로드합니다.
 template<typename T>
 inline AssetPtr<T> CAssetMgr::LoadFromFile(const wstring& _Extention)
 {

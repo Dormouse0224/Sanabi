@@ -28,7 +28,9 @@ void CMaterialUI::Render_Ast()
 	// 사용하는 그래픽 셰이더
 	ImGui::Text("Graphic Shader");
 	ImGui::SameLine(tab);
-	string str = to_str(pMaterial->GetShader()->GetName());
+	string str = "No GraphicShader Exist";
+	if (pGS.Get())
+		str = to_str(pGS->GetName());
 	ImGui::InputText("##GraphicShader", const_cast<char*>(str.c_str()), str.size() + 1, ImGuiInputTextFlags_ReadOnly);
 	if (ImGui::BeginDragDropTarget())
 	{
@@ -45,12 +47,15 @@ void CMaterialUI::Render_Ast()
 	}
 	
 	// 전달된 텍스쳐 데이터
-	vector<tTexData> vecTexData = pGS->GetTexData();
-	for (tTexData data : vecTexData)
+	vector<tTexData*> vecTexData = pGS->GetTexData();
+	for (tTexData* data : vecTexData)
 	{
-		ImGui::Text(data.m_Desc.c_str());
-		string label = "##TextureData_" + to_string(data.m_Param);
-		string name = to_str(pMaterial->GetTexParam(static_cast<TEX_PARAM>(data.m_Param))->GetName());
+		ImGui::Text(data->m_Desc.c_str());
+		string label = "##TextureData_" + to_string(data->m_Param);
+		AssetPtr<CTexture2D> pTex = pMaterial->GetTexParam(static_cast<TEX_PARAM>(data->m_Param));
+		string name = "No Texture2D Exist";
+		if (pTex.Get())
+			name = to_str(pMaterial->GetTexParam(static_cast<TEX_PARAM>(data->m_Param))->GetName());
 		ImGui::InputText(label.c_str(), const_cast<char*>(name.c_str()), name.size() + 1, ImGuiInputTextFlags_ReadOnly);
 		if (ImGui::BeginDragDropTarget())
 		{
@@ -60,35 +65,38 @@ void CMaterialUI::Render_Ast()
 				AssetPtr<CTexture2D> pTex = dynamic_cast<CTexture2D*>(Asset);
 				if (pTex.Get())
 				{
-					pMaterial->SetTexParam(data.m_Param, pTex);
+					pMaterial->SetTexParam(data->m_Param, pTex);
 				}
 			}
 			ImGui::EndDragDropTarget();
 		}
 		if (ImGui::BeginItemTooltip())
 		{
-			ImTextureID TexID = (ImTextureID)pMaterial->GetTexParam(static_cast<TEX_PARAM>(data.m_Param))->GetSRV().Get();
-			ImGui::Image(TexID, ImVec2(300, 300), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
+			if (pTex.Get())
+			{
+				ImTextureID TexID = (ImTextureID)pTex->GetSRV().Get();
+				ImGui::Image(TexID, ImVec2(300, 300), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
+			}
 			ImGui::EndTooltip();
 		}		
 	}
 
 	// 전달된 상수 데이터
-	vector<tConstData> vecConstData = pGS->GetConstData();
+	vector<tConstData*> vecConstData = pGS->GetConstData();
 	tMtrlConst Const = pMaterial->GetConstParam();
-	for (tConstData data : vecConstData)
+	for (tConstData* data : vecConstData)
 	{
-		ImGui::Text(data.m_Desc.c_str());
+		ImGui::Text(data->m_Desc.c_str());
 		ImGui::SameLine(tab);
-		string label = "##ConstData" + to_string(data.m_Param);
-		switch (data.m_Param)
+		string label = "##ConstData" + to_string(data->m_Param);
+		switch (data->m_Param)
 		{
 		case INT_0:
 		case INT_1:
 		case INT_2:
 		case INT_3:
 		{
-			ImGui::InputInt(label.c_str(), &Const.iArr[data.m_Param - INT_0], 1, 100, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputInt(label.c_str(), &Const.iArr[data->m_Param - INT_0], 1, 100, ImGuiInputTextFlags_ReadOnly);
 		}
 			break;
 		case FLOAT_0:
@@ -96,7 +104,7 @@ void CMaterialUI::Render_Ast()
 		case FLOAT_2:
 		case FLOAT_3:
 		{
-			ImGui::InputFloat(label.c_str(), &Const.fArr[data.m_Param - FLOAT_0], 0, 0, "%.3f", ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat(label.c_str(), &Const.fArr[data->m_Param - FLOAT_0], 0, 0, "%.3f", ImGuiInputTextFlags_ReadOnly);
 		}
 			break;
 		case VEC2_0:
@@ -104,7 +112,7 @@ void CMaterialUI::Render_Ast()
 		case VEC2_2:
 		case VEC2_3:
 		{
-			float vec[2] = { Const.v2Arr[data.m_Param - VEC2_0].x, Const.v2Arr[data.m_Param - VEC2_0].y };
+			float vec[2] = { Const.v2Arr[data->m_Param - VEC2_0].x, Const.v2Arr[data->m_Param - VEC2_0].y };
 			ImGui::InputFloat2(label.c_str(), vec, "%.3f", ImGuiInputTextFlags_ReadOnly);
 		}
 			break;
@@ -113,7 +121,7 @@ void CMaterialUI::Render_Ast()
 		case VEC4_2:
 		case VEC4_3:
 		{
-			Vec4 v4 = Const.v4Arr[data.m_Param - VEC4_0];
+			Vec4 v4 = Const.v4Arr[data->m_Param - VEC4_0];
 			float vec[4] = { v4.x, v4.y, v4.z, v4.w };
 			ImGui::InputFloat4(label.c_str(), vec, "%.3f", ImGuiInputTextFlags_ReadOnly);
 		}
@@ -125,7 +133,7 @@ void CMaterialUI::Render_Ast()
 		{
 			if (ImGui::BeginTable(label.c_str(), 4, ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders))
 			{
-				Matrix mat = Const.matArr[data.m_Param - MAT_0];
+				Matrix mat = Const.matArr[data->m_Param - MAT_0];
 				for (int row = 0; row < 4; ++row)
 				{
 					ImGui::TableNextRow();

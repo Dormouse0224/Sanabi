@@ -1,15 +1,27 @@
 #include "pch.h"
 #include "CComponentMgr.h"
 #include "components.h"
+#include "CAssetMgr.h"
 
 CComponentMgr::CComponentMgr()
     : m_Registry{}
-    , m_InitFunc(nullptr)
+    , m_ScriptInitFunc(nullptr)
 {
 }
 
 CComponentMgr::~CComponentMgr()
 {
+}
+
+void CComponentMgr::Init()
+{
+    if (m_ScriptInitFunc)
+    {
+        m_ScriptInitFunc();
+    }
+
+    // 스크립트 등록까지 완료되면 콘텐츠 파일들을 로드한다. (프리펩 로딩에서 스크립트가 필요한 경우가 있음)
+    CAssetMgr::GetInst()->ContentLoad();
 }
 
 void CComponentMgr::Register(const std::string& className, CreateFunc func)

@@ -80,3 +80,99 @@ AssetPtr<CTexture2D> CAssetMgr::CreateTexture(const wstring& _Key, ComPtr<ID3D11
 	return pTex;
 }
 
+
+ASSET_TYPE CAssetMgr::GetAssetType(const wstring& _Path)
+{
+	path EXT = path(_Path).extension();
+
+	if (EXT == L".mesh")
+	{
+		return ASSET_TYPE::MESH;
+	}
+	else if (EXT == L".dds" || EXT == L".DDS"
+		|| EXT == L".tga" || EXT == L".TGA"
+		|| EXT == L".png" || EXT == L".PNG"
+		|| EXT == L".jpg" || EXT == L".JPG"
+		|| EXT == L".jpeg" || EXT == L".JPEG"
+		|| EXT == L".bmp" || EXT == L".BMP")
+	{
+		return ASSET_TYPE::TEXTURE2D;
+	}
+	else if (EXT == L".mtrl")
+	{
+		return ASSET_TYPE::MATERIAL;
+	}
+	else if (EXT == L".prefab")
+	{
+		return ASSET_TYPE::PREFAB;
+	}
+	else if (EXT == L".wav" || EXT == L".WAV"
+		|| EXT == L".mp3" || EXT == L".MP3"
+		|| EXT == L".aac" || EXT == L".AAC"
+		|| EXT == L".ogg" || EXT == L".OGG"
+		|| EXT == L".flac" || EXT == L".FLAC"
+		|| EXT == L".wma" || EXT == L".WMA")
+	{
+		return ASSET_TYPE::SOUND;
+	}
+	else if (EXT == L".shader")
+	{
+		return ASSET_TYPE::GRAPHIC_SHADER;
+	}
+	else if (EXT == L".sprite")
+	{
+		return ASSET_TYPE::SPRITE;
+	}
+	else if (EXT == L".flip")
+	{
+		return ASSET_TYPE::FLIPBOOK;
+	}
+
+	return ASSET_TYPE::ASSET_END;
+}
+
+
+void CAssetMgr::ContentLoad()
+{
+	for (const auto& file : std::filesystem::recursive_directory_iterator(CPathMgr::GetContentDir()))
+	{
+		if (file.is_regular_file())
+		{
+			std::filesystem::path rp = file.path().generic_wstring().substr(wstring(CPathMgr::GetContentDir()).size());
+			switch (CAssetMgr::GetInst()->GetAssetType(file.path()))
+			{
+			case ASSET_TYPE::MESH:
+				CAssetMgr::GetInst()->Load<CMesh>(rp);
+				break;
+			case ASSET_TYPE::MESHDATA:
+				break;
+			case ASSET_TYPE::TEXTURE2D:
+				CAssetMgr::GetInst()->Load<CTexture2D>(rp);
+				break;
+			case ASSET_TYPE::MATERIAL:
+				CAssetMgr::GetInst()->Load<CMaterial>(rp);
+				break;
+			case ASSET_TYPE::PREFAB:
+				CAssetMgr::GetInst()->Load<CPrefab>(rp);
+				break;
+			case ASSET_TYPE::SOUND:
+				CAssetMgr::GetInst()->Load<CSound>(rp);
+				break;
+			case ASSET_TYPE::GRAPHIC_SHADER:
+				CAssetMgr::GetInst()->Load<CGraphicShader>(rp);
+				break;
+			case ASSET_TYPE::COMPUTE_SHADER:
+				break;
+			case ASSET_TYPE::SPRITE:
+				CAssetMgr::GetInst()->Load<CSprite>(rp);
+				break;
+			case ASSET_TYPE::FLIPBOOK:
+				CAssetMgr::GetInst()->Load<CFlipbook>(rp);
+				break;
+			case ASSET_TYPE::ASSET_END:
+				break;
+			}
+
+		}
+	}
+}

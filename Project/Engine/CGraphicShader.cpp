@@ -258,8 +258,10 @@ int CGraphicShader::Load(const wstring& _FilePath)
 	{
 		int size = 0;
 		file.read(reinterpret_cast<char*>(&size), sizeof(int));
+		m_ShaderName[i].first.resize(size);
 		file.read(reinterpret_cast<char*>(m_ShaderName[i].first.data()), sizeof(wchar_t) * size);
 		file.read(reinterpret_cast<char*>(&size), sizeof(int));
+		m_ShaderName[i].second.resize(size);
 		file.read(reinterpret_cast<char*>(m_ShaderName[i].second.data()), sizeof(char) * size);
 	}
 
@@ -287,6 +289,8 @@ int CGraphicShader::Load(const wstring& _FilePath)
 	// hlsl 파일 경로 및 셰이더 함수 이름 정보로 각 셰이더 생성 및 컴파일
 	for (int i = 0; i < SHADER_TYPE_END; ++i)
 	{
+		if (m_ShaderName[i].first.empty())
+			continue;
 		switch (i)
 		{
 		case VERTEX_SHADER:

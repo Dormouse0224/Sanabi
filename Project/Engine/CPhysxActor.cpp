@@ -2,6 +2,11 @@
 #include "CPhysxActor.h"
 #include "CTransform.h"
 
+#include "CLevelMgr.h"
+
+#include "CLevel.h"
+#include "CLayer.h"
+
 wstring LOCK_FLAG_WSTR[] =
 {
     L"LINEAR_X",
@@ -233,8 +238,6 @@ int CPhysxActor::Load(fstream& _Stream)
     _Stream.read(reinterpret_cast<char*>(&m_Gravity), sizeof(bool));
     _Stream.read(reinterpret_cast<char*>(&m_Density), sizeof(float));
 
-    // 데이터를 통해 m_Body 작성 (AddComponent를 실행한 후 Load 가 처리되기 때문에 Owner 가 존재함)
-    SetRigidBody(m_Type, m_LockFlag, m_Gravity, m_Density);
 
     // RigidBody 의 Collider 정보 불러오기
     int count = 0;
@@ -247,7 +250,21 @@ int CPhysxActor::Load(fstream& _Stream)
         _Stream.read(reinterpret_cast<char*>(&m_vecDesc[i]), sizeof(COLLIDER_DESC));
         _Stream.read(reinterpret_cast<char*>(&m_vecScale[i]), sizeof(PxVec3));
         _Stream.read(reinterpret_cast<char*>(&m_vecOffset[i]), sizeof(PxVec3));
-        AttachCollider(m_vecDesc[i], m_vecScale[i], m_vecOffset[i]);
+    }
+    
+    // 현재 레벨에 오브젝트가 존재하는 경우에만 강체 및 충돌체를 생성함.
+    if (GetOwner()->GetLayerIdx() != -1 || CLevelMgr::GetInst()->GetCurrentLevel() != nullptr)
+    {
+        // 데이터를 통해 m_Body 작성 (AddComponent를 실행한 후 Load 가 처리되기 때문에 Owner 가 존재함)
+        SetRigidBody(m_Type, m_LockFlag, m_Gravity, m_Density);
+        for (int i = 0; i < count; ++i)
+        {
+            AttachCollider(m_vecDesc[i], m_vecScale[i], m_vecOffset[i]);
+        }
+    }
+    else
+    {
+        m_DelayedInit = true;
     }
 
     return S_OK;
