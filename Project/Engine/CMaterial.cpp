@@ -42,7 +42,7 @@ AssetPtr<CMaterial> CMaterial::Create(wstring _Name)
 	AssetPtr<CMaterial> pNewMtrl = new CMaterial;
 	pNewMtrl->SetName(_Name);
 	pNewMtrl->Save(_Name);
-	return AssetPtr<CMaterial>();
+	return pNewMtrl;
 }
 
 int CMaterial::Save(const wstring& _FileName)

@@ -24,9 +24,26 @@ void CImguiMgr::DebugMenuBar()
                     LoadAsset();
                 }
 
-				if (ImGui::MenuItem("Asset Create", nullptr))
+				if (ImGui::BeginMenu("Asset Create"))
 				{
-                    m_CreateMaterialActive = true;
+                    if (ImGui::MenuItem("Material", nullptr))
+                    {
+                        m_PopupFlag |= PopupFlags_CreateMaterial;
+                    }
+                    if (ImGui::MenuItem("Graphic Shader", nullptr))
+                    {
+
+                    }
+                    if (ImGui::MenuItem("Sprite", nullptr))
+                    {
+
+                    }
+                    if (ImGui::MenuItem("Flipbook", nullptr))
+                    {
+                        m_PopupFlag |= PopupFlags_CreateFlipbook;
+                    }
+
+                    ImGui::EndMenu();
 				}
 
 				ImGui::EndMenu();
@@ -37,22 +54,16 @@ void CImguiMgr::DebugMenuBar()
 
                 if (ImGui::MenuItem("New", nullptr))
                 {
-                    CLevel* Level = CLevelMgr::GetInst()->GetCurrentLevel();
-                    if (Level) { Level->Save(L"_autosave"); }
-                    CLevel* NewLevel = new CLevel;
-                    CTaskMgr::GetInst()->AddTask(TASK_TYPE::CHANGE_LEVEL, reinterpret_cast<DWORD_PTR>(NewLevel), NULL);
+                    m_PopupFlag |= PopupFlags_NewLevel;
                 }
                 if (ImGui::MenuItem("Save", nullptr))
                 {
                     CLevel* Level = CLevelMgr::GetInst()->GetCurrentLevel();
-                    SYSTEMTIME time = CTimeMgr::GetInst()->GetTime();
-                    wchar_t wstr[50];
-                    swprintf_s(wstr, L"%04d%02d%02d_%02d%02d%02d", time.wYear, time.wMonth, time.wDay, time.wHour, time.wMinute, time.wSecond);
-                    if (Level) { Level->Save(L"Level_" + to_wstring(Level->GetID()) + L"_" + wstring(wstr)); }
+                    if (Level) { Level->Save(Level->GetName()); }
                 }
                 if (ImGui::MenuItem("Save As..", nullptr))
                 {
-                    m_SaveLevelActive = true;
+                    m_PopupFlag |= PopupFlags_SaveLevel;
                 }
                 if (ImGui::MenuItem("Load", nullptr))
                 {
@@ -72,7 +83,7 @@ void CImguiMgr::DebugMenuBar()
             {
                 if (ImGui::MenuItem("Add GameObject"))
                 {
-                    m_AddGameObjectMenuActive = true;
+                    m_PopupFlag |= PopupFlags_AddGameObjectMenu;
                 }
 
                 if (ImGui::BeginMenu("Change State"))
@@ -129,7 +140,9 @@ void CImguiMgr::DebugMenuBar()
 
 
     // 팝업함수 호출
-    SaveLevelPopup();
     AddGameObjectMenuPopup();
+    NewLevelPopup();
+    SaveLevelPopup();
     CreateMaterialPopup();
+    CreateFlipbookPopup();
 }

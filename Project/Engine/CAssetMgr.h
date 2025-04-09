@@ -13,6 +13,7 @@ private:
 	map<wstring, AssetPtr<CAsset>>	m_mapAsset[(UINT)ASSET_TYPE::ASSET_END];
 	bool m_AssetModified;
 	bool m_Renew;
+	HANDLE m_DirNotifyHandle;
 
 public:
 	void Init();
@@ -43,6 +44,8 @@ public:
 	ASSET_TYPE GetAssetType(const wstring& _RelativePath);
 
 	void ContentLoad();
+	void ContentObserve();
+	void ContentReload();
 
 private:
 	template<typename T>
@@ -133,15 +136,6 @@ inline AssetPtr<T> CAssetMgr::Load(const wstring& _RelativePath, bool _IsEngineA
 template<typename T>
 inline AssetPtr<T> CAssetMgr::LoadFromFile(const wstring& _Extention)
 {
-	wstring filter;
-	if (is_same_v<T, CTexture2D> || is_same_v<T, CSound>)
-	{
-		filter = L"ALL\0*.*\0";
-	}
-	else
-	{
-		filter = L"L\"" + _Extention.substr(1) + L"\0*" + _Extention + L"\0\"";
-	}
 	// 에셋 파일 열기
 	WCHAR filepath[255] = {};
 	WCHAR filename[255] = {};
@@ -149,7 +143,7 @@ inline AssetPtr<T> CAssetMgr::LoadFromFile(const wstring& _Extention)
 	OPENFILENAME Desc = {};
 	Desc.lStructSize = sizeof(OPENFILENAME);
 	Desc.hwndOwner = CEngine::GetInst()->GetMainWndHwnd();
-	Desc.lpstrFilter = filter.c_str();
+	Desc.lpstrFilter = L"ALL\0*.*\0\0";
 	Desc.lpstrFile = filepath;
 	Desc.nMaxFile = 255;
 	Desc.lpstrFileTitle = filename;

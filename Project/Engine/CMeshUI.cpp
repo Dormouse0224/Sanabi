@@ -40,7 +40,7 @@ CMeshUI::CMeshUI()
 	m_VertexObject = new CGameObject;
 	m_VertexObject->AddComponent(new CTransform);
 	m_VertexObject->AddComponent(new CMeshRender);
-	m_VertexObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"DebugShapeMtrl", true));
+	m_VertexObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"EA_DebugShapeMtrl", true));
 	m_VertexObject->Transform()->SetRelativePos(0, 0, 1);
 }
 

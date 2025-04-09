@@ -4,6 +4,15 @@
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx11.h"
 
+enum PopupFlags_
+{
+	PopupFlags_AddGameObjectMenu	= (1<<0),
+	PopupFlags_NewLevel				= (1<<1),
+	PopupFlags_SaveLevel			= (1<<2),
+	PopupFlags_CreateMaterial		= (1<<3),
+	PopupFlags_CreateFlipbook		= (1<<4),
+};
+
 class CImguiObject;
 
 class CInspector;
@@ -19,9 +28,8 @@ private:
 
 	bool						m_DebugMenuBar;
 	bool						m_DemoActive;
-	bool						m_AddGameObjectMenuActive;
-	bool						m_SaveLevelActive;
-	bool						m_CreateMaterialActive;
+
+	ULONGLONG					m_PopupFlag;
 
 	CInspector*					m_Inspector;
 	COutliner*					m_Outliner;
@@ -34,8 +42,11 @@ public:
 	void DebugMenuBar();
 
 	void AddGameObjectMenuPopup();
+	void NewLevelPopup();
 	void SaveLevelPopup();
 	void CreateMaterialPopup();
+	void CreateFlipbookPopup();
+
 	void LoadAsset();
 	void LoadLevel();
 

@@ -8,13 +8,17 @@ void CAssetMgr::Init()
 {
 	CreateEngineMesh();
 
-	CreateEngineSprite();
+	//CreateEngineSprite();
 
 	CreateEngineGraphicShader();
 
-	CreateEngineComputeShader();
+	//CreateEngineComputeShader();
 
-	CreateEngineMaterial();
+	//CreateEngineMaterial();
+
+	m_DirNotifyHandle = FindFirstChangeNotification(CPathMgr::GetContentDir(), true
+													, FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME
+													| FILE_NOTIFY_CHANGE_LAST_WRITE | FILE_NOTIFY_CHANGE_CREATION);
 }
 
 void CAssetMgr::CreateEngineMesh()
@@ -29,7 +33,8 @@ void CAssetMgr::CreateEngineMesh()
 	vPoint.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
 	UINT Idx = 0;
 	pMesh->Create(&vPoint, 1, &Idx, 1);
-	AddAsset(L"PointMesh", pMesh.Get());
+	pMesh->SetEngineAsset(true);
+	AddAsset(L"EA_PointMesh", pMesh.Get());
 
 
 	// ========
@@ -39,7 +44,6 @@ void CAssetMgr::CreateEngineMesh()
 	// | \  |
 	// 3 -- 2
 	pMesh = new CMesh;
-	pMesh->SetName(L"RectMesh");
 
 	Vtx arrVtx[4] = {};
 	arrVtx[0].vPos = Vec3(-0.5f, 0.5f, 0.f);
@@ -62,7 +66,8 @@ void CAssetMgr::CreateEngineMesh()
 	UINT arrIdx[6] = { 0, 1, 2, 0, 2, 3 };
 
 	pMesh->Create(arrVtx, 4, arrIdx, 6);
-	AddAsset(L"RectMesh", pMesh.Get());
+	pMesh->SetEngineAsset(true);
+	AddAsset(L"EA_RectMesh", pMesh.Get());
 
 
 	// ==============
@@ -72,11 +77,11 @@ void CAssetMgr::CreateEngineMesh()
 	// | \  |
 	// 3 -- 2
 	pMesh = new CMesh;
-	pMesh->SetName(L"RectMesh_Debug");
 
 	arrIdx[0] = 0; arrIdx[1] = 1; arrIdx[2] = 2; arrIdx[3] = 3; arrIdx[4] = 0;
 	pMesh->Create(arrVtx, 4, arrIdx, 5);
-	AddAsset(L"RectMesh_Debug", pMesh.Get());
+	pMesh->SetEngineAsset(true);
+	AddAsset(L"EA_RectMesh_Debug", pMesh.Get());
 
 	// ==========
 	// CircleMesh
@@ -86,7 +91,6 @@ void CAssetMgr::CreateEngineMesh()
 
 
 	pMesh = new CMesh;
-	pMesh->SetName(L"CircleMesh");
 
 	// Circle 중심점
 	Vtx v;
@@ -118,21 +122,22 @@ void CAssetMgr::CreateEngineMesh()
 	}
 
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
-	AddAsset(L"CircleMesh", pMesh.Get());
+	pMesh->SetEngineAsset(true);
+	AddAsset(L"EA_CircleMesh", pMesh.Get());
 	vecIdx.clear();
 
 	// ================
 	// CircleMesh_Debug
 	// ================
 	pMesh = new CMesh;
-	pMesh->SetName(L"CircleMesh_Debug");
 
 	for (size_t i = 0; i < vecVtx.size() - 1; ++i)
 	{
 		vecIdx.push_back(i + 1);
 	}
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
-	AddAsset(L"CircleMesh_Debug", pMesh.Get());
+	pMesh->SetEngineAsset(true);
+	AddAsset(L"EA_CircleMesh_Debug", pMesh.Get());
 	vecVtx.clear();
 	vecIdx.clear();
 }
@@ -154,8 +159,9 @@ void CAssetMgr::CreateEngineGraphicShader()
 	pShader->SetDSType(DS_TYPE::LESS);
 	pShader->SetBSType(BS_TYPE::DEFAULT);
 	pShader->SetTexData(TEX_0, "Main Texture");
+	pShader->SetEngineAsset(true);
 
-	AddAsset(L"Std2DShader", pShader.Get());
+	AddAsset(L"EA_Std2DShader", pShader.Get());
 
 
 	// =====================
@@ -170,8 +176,9 @@ void CAssetMgr::CreateEngineGraphicShader()
 	pShader->SetDSType(DS_TYPE::NO_WRITE);
 	pShader->SetBSType(BS_TYPE::ALPHABLEND);
 	pShader->SetTexData(TEX_0, "Alpha Texture");
+	pShader->SetEngineAsset(true);
 
-	AddAsset(L"Std2DAlphaBlendShader", pShader.Get());
+	AddAsset(L"EA_Std2DAlphaBlendShader", pShader.Get());
 
 
 	// FlipbookShader
@@ -187,11 +194,11 @@ void CAssetMgr::CreateEngineGraphicShader()
 	pShader->SetConstData(VEC2_1, "Slice");
 	pShader->SetConstData(VEC2_2, "Background");
 	pShader->SetConstData(VEC2_3, "Offset");
-	CAssetMgr::GetInst()->AddAsset(L"FlipbookShader", pShader.Get());
+	pShader->SetEngineAsset(true);
+	AddAsset(L"EA_FlipbookShader", pShader.Get());
 
 	// 파티클 렌더링 쉐이더 및 재질
 	pShader = new CGraphicShader;
-	pShader->SetName(L"ParticleRenderShader");
 	pShader->CreateVertexShader(L"HLSL\\Engine\\particle.fx", "VS_Particle");
 	pShader->CreateGeometryShader(L"HLSL\\Engine\\particle.fx", "GS_Particle");
 	pShader->CreatePixelShader(L"HLSL\\Engine\\particle.fx", "PS_Particle");
@@ -200,7 +207,8 @@ void CAssetMgr::CreateEngineGraphicShader()
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::NO_WRITE);
 	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-	CAssetMgr::GetInst()->AddAsset(pShader->GetName(), pShader.Get());
+	pShader->SetEngineAsset(true);
+	AddAsset(L"EA_ParticleRenderShader", pShader.Get());
 
 	// SpriteShader
 	pShader = new CGraphicShader;
@@ -208,7 +216,8 @@ void CAssetMgr::CreateEngineGraphicShader()
 	pShader->CreatePixelShader(L"HLSL\\Engine\\sprite.fx", "PS_Sprite");
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
-	CAssetMgr::GetInst()->AddAsset(L"SpriteShader", pShader.Get());
+	pShader->SetEngineAsset(true); 
+	AddAsset(L"EA_SpriteShader", pShader.Get());
 
 
 	// TileRenderShader
@@ -217,7 +226,8 @@ void CAssetMgr::CreateEngineGraphicShader()
 	pShader->CreatePixelShader(L"HLSL\\Engine\\tilerender.fx", "PS_TileRender");
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
-	CAssetMgr::GetInst()->AddAsset(L"TileRenderShader", pShader.Get());
+	pShader->SetEngineAsset(true); 
+	AddAsset(L"EA_TileRenderShader", pShader.Get());
 
 }
 
@@ -227,50 +237,51 @@ void CAssetMgr::CreateEngineComputeShader()
 
 void CAssetMgr::CreateEngineMaterial()
 {
-	// Std2DMtrl
-	AssetPtr<CMaterial> pMtrl = new CMaterial;
-	pMtrl->SetShader(Load<CGraphicShader>(L"Std2DShader", true));
-	AddAsset(L"Std2DMtrl", pMtrl.Get());
+	//// Std2DMtrl
+	//AssetPtr<CMaterial> pMtrl = new CMaterial;
+	//pMtrl->SetShader(Load<CGraphicShader>(L"EA_Std2DShader", true));
+	//AddAsset(L"Std2DMtrl", pMtrl.Get());
 
-	pMtrl = new CMaterial;
-	pMtrl->SetShader(Load<CGraphicShader>(L"Std2DShader", true));
-	pMtrl->SetTexParam(TEX_0, Load<CTexture2D>(L"Texture2D\\Spr_SNB_IdleRand1 (1).png"));
-	AddAsset(L"SNB_Mtrl", pMtrl.Get());
+	//pMtrl = new CMaterial;
+	//pMtrl->SetShader(Load<CGraphicShader>(L"Std2DShader", true));
+	//pMtrl->SetTexParam(TEX_0, Load<CTexture2D>(L"Texture2D\\Spr_SNB_IdleRand1 (1).png"));
+	//pMtrl->SetEngineAsset(true);
+	//AddAsset(L"SNB_Mtrl", pMtrl.Get());
 
-	pMtrl = new CMaterial;
-	pMtrl->SetShader(Load<CGraphicShader>(L"Std2DShader", true));
-	pMtrl->SetTexParam(TEX_0, Load<CTexture2D>(L"Texture2D\\Spr_SNBArm_IdleRand1 (1).png"));
-	AddAsset(L"SNBArm_Mtrl", pMtrl.Get());
+	//pMtrl = new CMaterial;
+	//pMtrl->SetShader(Load<CGraphicShader>(L"Std2DShader", true));
+	//pMtrl->SetTexParam(TEX_0, Load<CTexture2D>(L"Texture2D\\Spr_SNBArm_IdleRand1 (1).png"));
+	//pMtrl->SetEngineAsset(true);
+	//AddAsset(L"SNBArm_Mtrl", pMtrl.Get());
 
-	pMtrl = new CMaterial;
-	pMtrl->SetShader(Load<CGraphicShader>(L"Std2DShader", true));
-	pMtrl->SetTexParam(TEX_0, Load<CTexture2D>(L"Texture2D\\Spr_CargoPlatform_Idle (lp) (1).png"));
-	AddAsset(L"CargoPlatform_Mtrl", pMtrl.Get());
+	//pMtrl = new CMaterial;
+	//pMtrl->SetShader(Load<CGraphicShader>(L"EA_Std2DShader", true));
+	//pMtrl->SetTexParam(TEX_0, Load<CTexture2D>(L"Texture2D\\Spr_CargoPlatform_Idle (lp) (1).png"));
+	//AddAsset(L"CargoPlatform_Mtrl", pMtrl.Get());
 
-	pMtrl = new CMaterial;
-	pMtrl->SetShader(Load<CGraphicShader>(L"Std2DShader", true));
-	pMtrl->SetTexParam(TEX_0, Load<CTexture2D>(L"Texture2D\\Chap2_Mid_A01.png"));
-	AddAsset(L"Background_Mtrl", pMtrl.Get());
+	//pMtrl = new CMaterial;
+	//pMtrl->SetShader(Load<CGraphicShader>(L"EA_Std2DShader", true));
+	//pMtrl->SetTexParam(TEX_0, Load<CTexture2D>(L"Texture2D\\Chap2_Mid_A01.png"));
+	//AddAsset(L"Background_Mtrl", pMtrl.Get());
 
-	// FlipbookMtrl
-	pMtrl = new CMaterial;
-	pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"FlipbookShader", true));
-	CAssetMgr::GetInst()->AddAsset(L"FlipbookMtrl", pMtrl.Get());
+	//// FlipbookMtrl
+	//pMtrl = new CMaterial;
+	//pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"EA_FlipbookShader", true));
+	//AddAsset(L"FlipbookMtrl", pMtrl.Get());
 
-	pMtrl = new CMaterial;
-	pMtrl->SetName(L"ParticleMtrl");
-	pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"ParticleRenderShader", true));
-	CAssetMgr::GetInst()->AddAsset(pMtrl->GetName(), pMtrl.Get());
+	//pMtrl = new CMaterial;
+	//pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"EA_ParticleRenderShader", true));
+	//AddAsset(L"ParticleMtrl", pMtrl.Get());
 
-	// SpriteMtrl
-	pMtrl = new CMaterial;
-	pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"SpriteShader", true));
-	CAssetMgr::GetInst()->AddAsset(L"SpriteMtrl", pMtrl.Get());
+	//// SpriteMtrl
+	//pMtrl = new CMaterial;
+	//pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"EA_SpriteShader", true));
+	//AddAsset(L"SpriteMtrl", pMtrl.Get());
 
-	// TileRenderMtrl
-	pMtrl = new CMaterial;
-	pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"TileRenderShader", true));
-	CAssetMgr::GetInst()->AddAsset(L"TileRenderMtrl", pMtrl.Get());
+	//// TileRenderMtrl
+	//pMtrl = new CMaterial;
+	//pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"EA_TileRenderShader", true));
+	//AddAsset(L"TileRenderMtrl", pMtrl.Get());
 
 }
 
@@ -278,40 +289,40 @@ void CAssetMgr::CreateEngineMaterial()
 void CAssetMgr::CreateEngineSprite()
 {
 
-	// 플립북 에셋 등록
-	AssetPtr<CFlipbook> pFlipbook = new CFlipbook;
-	for (int i = 0; i < 8; ++i)
-	{
-		wchar_t path[255] = {};
-		swprintf_s(path, 255, L"Texture2D\\Spr_SNB_Idle (lp) (%d).png", i + 1);
-		pFlipbook->AddScene<CTexture2D>(CAssetMgr::GetInst()->Load<CTexture2D>(path));
-	}
-	AddAsset(L"SNB_Idle_Flipbook", pFlipbook.Get());
+	//// 플립북 에셋 등록
+	//AssetPtr<CFlipbook> pFlipbook = new CFlipbook;
+	//for (int i = 0; i < 8; ++i)
+	//{
+	//	wchar_t path[255] = {};
+	//	swprintf_s(path, 255, L"Texture2D\\Spr_SNB_Idle (lp) (%d).png", i + 1);
+	//	pFlipbook->AddScene<CTexture2D>(CAssetMgr::GetInst()->Load<CTexture2D>(path));
+	//}
+	//AddAsset(L"SNB_Idle_Flipbook", pFlipbook.Get());
 
-	pFlipbook = new CFlipbook;
-	for (int i = 0; i < 8; ++i)
-	{
-		wchar_t path[255] = {};
-		swprintf_s(path, 255, L"Texture2D\\Spr_SNBArm_Idle (%d).png", i + 1);
-		pFlipbook->AddScene<CTexture2D>(CAssetMgr::GetInst()->Load<CTexture2D>(path));
-	}
-	AddAsset(L"SNBArm_Idle_Flipbook", pFlipbook.Get());
+	//pFlipbook = new CFlipbook;
+	//for (int i = 0; i < 8; ++i)
+	//{
+	//	wchar_t path[255] = {};
+	//	swprintf_s(path, 255, L"Texture2D\\Spr_SNBArm_Idle (%d).png", i + 1);
+	//	pFlipbook->AddScene<CTexture2D>(CAssetMgr::GetInst()->Load<CTexture2D>(path));
+	//}
+	//AddAsset(L"SNBArm_Idle_Flipbook", pFlipbook.Get());
 
-	pFlipbook = new CFlipbook;
-	for (int i = 0; i < 20; ++i)
-	{
-		wchar_t path[255] = {};
-		swprintf_s(path, 255, L"Texture2D\\Spr_SNB_Running (lp) (%d).png", i + 1);
-		pFlipbook->AddScene<CTexture2D>(CAssetMgr::GetInst()->Load<CTexture2D>(path));
-	}
-	AddAsset(L"SNB_Running_Flipbook", pFlipbook.Get());
+	//pFlipbook = new CFlipbook;
+	//for (int i = 0; i < 20; ++i)
+	//{
+	//	wchar_t path[255] = {};
+	//	swprintf_s(path, 255, L"Texture2D\\Spr_SNB_Running (lp) (%d).png", i + 1);
+	//	pFlipbook->AddScene<CTexture2D>(CAssetMgr::GetInst()->Load<CTexture2D>(path));
+	//}
+	//AddAsset(L"SNB_Running_Flipbook", pFlipbook.Get());
 
-	pFlipbook = new CFlipbook;
-	for (int i = 0; i < 20; ++i)
-	{
-		wchar_t path[255] = {};
-		swprintf_s(path, 255, L"Texture2D\\Spr_SNBArm_Running (lp) (%d).png", i + 1);
-		pFlipbook->AddScene<CTexture2D>(CAssetMgr::GetInst()->Load<CTexture2D>(path));
-	}
-	AddAsset(L"SNBArm_Running_Flipbook", pFlipbook.Get());
+	//pFlipbook = new CFlipbook;
+	//for (int i = 0; i < 20; ++i)
+	//{
+	//	wchar_t path[255] = {};
+	//	swprintf_s(path, 255, L"Texture2D\\Spr_SNBArm_Running (lp) (%d).png", i + 1);
+	//	pFlipbook->AddScene<CTexture2D>(CAssetMgr::GetInst()->Load<CTexture2D>(path));
+	//}
+	//AddAsset(L"SNBArm_Running_Flipbook", pFlipbook.Get());
 }

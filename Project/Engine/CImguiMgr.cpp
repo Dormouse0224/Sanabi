@@ -19,8 +19,7 @@
 CImguiMgr::CImguiMgr()
     : m_DebugMenuBar(true)
     , m_DemoActive(false)
-    , m_AddGameObjectMenuActive(false)
-    , m_SaveLevelActive(false)
+    , m_PopupFlag(0)
 {
     int a = 0;
 }
@@ -102,9 +101,9 @@ void CImguiMgr::AddImguiObj(CImguiObject* _ImguiObj)
 
 void CImguiMgr::AddGameObjectMenuPopup()
 {
-    if (m_AddGameObjectMenuActive)
+    if (m_PopupFlag & PopupFlags_AddGameObjectMenu)
     {
-        m_AddGameObjectMenuActive = false;
+        m_PopupFlag ^= PopupFlags_AddGameObjectMenu;
         ImGui::OpenPopup("AddGameObjectMenu");
     }
 
@@ -155,9 +154,9 @@ void CImguiMgr::AddGameObjectMenuPopup()
 
 void CImguiMgr::SaveLevelPopup()
 {
-    if (m_SaveLevelActive)
+    if (m_PopupFlag & PopupFlags_SaveLevel)
     {
-        m_SaveLevelActive = false;
+        m_PopupFlag ^= PopupFlags_SaveLevel;
         ImGui::OpenPopup("SaveLevel");
     }
 
@@ -192,11 +191,53 @@ void CImguiMgr::SaveLevelPopup()
 
 }
 
+void CImguiMgr::NewLevelPopup()
+{
+    if (m_PopupFlag & PopupFlags_NewLevel)
+    {
+        m_PopupFlag ^= PopupFlags_NewLevel;
+        ImGui::OpenPopup("CreateLevel");
+    }
+
+    if (ImGui::BeginPopupModal("CreateLevel", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        float tab = 130.f;
+        ImGui::Text("Create new level.");
+        ImGui::NewLine();
+
+        // 오브젝트 이름 입력
+        ImGui::Text("Name: ");
+        ImGui::SameLine(tab);
+        static char Name[255] = {};
+        ImGui::InputText("##Name", Name, 255);
+        std::wstring WName = to_wstr(std::string(Name));
+
+        if (ImGui::Button("Create"))
+        {
+            CLevel* Level = CLevelMgr::GetInst()->GetCurrentLevel();
+            if (Level) { Level->Save(Level->GetName()); }
+            CLevel* NewLevel = new CLevel;
+            NewLevel->SetName(WName);
+            CTaskMgr::GetInst()->AddTask(TASK_TYPE::CHANGE_LEVEL, reinterpret_cast<DWORD_PTR>(NewLevel), NULL);
+            memset(Name, 0, sizeof(Name));
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Cancel"))
+        {
+            memset(Name, 0, sizeof(Name));
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
+}
+
 void CImguiMgr::CreateMaterialPopup()
 {
-    if (m_CreateMaterialActive)
+    if (m_PopupFlag & PopupFlags_CreateMaterial)
     {
-        m_CreateMaterialActive = false;
+        m_PopupFlag ^= PopupFlags_CreateMaterial;
         ImGui::OpenPopup("CreateMaterial");
     }
 
@@ -229,6 +270,44 @@ void CImguiMgr::CreateMaterialPopup()
         ImGui::EndPopup();
     }
 
+}
+
+void CImguiMgr::CreateFlipbookPopup()
+{
+    if (m_PopupFlag & PopupFlags_CreateFlipbook)
+    {
+        m_PopupFlag ^= PopupFlags_CreateFlipbook;
+        ImGui::OpenPopup("CreateFlipbook");
+    }
+
+    if (ImGui::BeginPopupModal("CreateFlipbook", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        float tab = 130.f;
+        ImGui::Text("Create new flipbook.");
+        ImGui::NewLine();
+
+        // 오브젝트 이름 입력
+        ImGui::Text("Name: ");
+        ImGui::SameLine(tab);
+        static char Name[255] = {};
+        ImGui::InputText("##Name", Name, 255);
+        std::wstring WName = to_wstr(std::string(Name));
+
+        if (ImGui::Button("Create"))
+        {
+            CFlipbook::Create(WName);
+            memset(Name, 0, sizeof(Name));
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Cancel"))
+        {
+            memset(Name, 0, sizeof(Name));
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
 }
 
 void CImguiMgr::LoadAsset()

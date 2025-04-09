@@ -38,3 +38,9 @@ void CPathMgr::CreateParentDir(std::filesystem::path _Path)
 	if (!std::filesystem::exists(_Path.parent_path()))
 		std::filesystem::create_directories(_Path.parent_path());
 }
+
+const wstring CPathMgr::GetFileName(std::filesystem::path _Path)
+{
+	wstring wstr = _Path.filename().wstring().substr(0, _Path.filename().wstring().find(L'.'));
+	return wstr;
+}

@@ -2,6 +2,8 @@
 // Client.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
+#include "SanabiScript/TestLevel.h"
+
 #include "Client.h"
 #include "Engine/CDevice.h"
 #include "Engine/CImguiMgr.h"

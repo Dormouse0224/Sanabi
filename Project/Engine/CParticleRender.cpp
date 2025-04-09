@@ -261,7 +261,7 @@ int CParticleRender::Save(fstream& _Stream)
 void CParticleRender::CreateMtrl()
 {
 	if (nullptr == GetMesh())
-		SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"PointMesh", true));
+		SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"EA_PointMesh", true));
 
 	if (nullptr != GetMaterial())
 		return;

@@ -26,16 +26,22 @@ private:
 
 public:
     template<typename T>
-    void AddScene(AssetPtr<T> _Scene)
+    void AddScene(AssetPtr<T> _Scene, int _SceneIdx)
     {
         if constexpr (is_same_v<CSprite, T>)
         {
-            m_vecSprite.push_back(_Scene);
+            if (m_vecSprite.size() < _SceneIdx)
+                return;
+
+            m_vecSprite.insert(m_vecSprite.begin() + _SceneIdx, _Scene);
             m_SceneType = SceneType::SPRITE;
         }
         else if constexpr (is_same_v<CTexture2D, T>)
         {
-            m_vecTex.push_back(_Scene);
+            if (m_vecTex.size() < _SceneIdx)
+                return;
+
+            m_vecTex.insert(m_vecTex.begin() + _SceneIdx, _Scene);
             m_SceneType = SceneType::TEXTURE;
         }
     }
@@ -79,9 +85,14 @@ public:
 
     SceneType GetSceneType() { return m_SceneType; }
 
+
+    void SetSceneType(SceneType _Type) { m_SceneType = _Type; }
+
 public:
     virtual int Save(const wstring& _FileName) override;
     virtual int Load(const wstring& _FilePath) override;
+
+    static AssetPtr<CFlipbook> Create(const wstring& _Name);
 
 };
 

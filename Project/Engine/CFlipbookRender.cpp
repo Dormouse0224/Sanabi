@@ -10,9 +10,9 @@
 CFlipbookRender::CFlipbookRender()
 	: CRenderComponent(COMPONENT_TYPE::FLIPBOOKRENDER)
 {
-	SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"RectMesh", true));
+	SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"EA_RectMesh", true));
 
-	CreateFlipbookMaterial();
+	//CreateFlipbookMaterial();
 }
 
 CFlipbookRender::~CFlipbookRender()
@@ -143,43 +143,51 @@ int CFlipbookRender::Save(fstream& _Stream)
 	return S_OK;
 }
 
-void CFlipbookRender::CreateFlipbookMaterial()
+//void CFlipbookRender::CreateFlipbookMaterial()
+//{
+//	if (nullptr == CAssetMgr::GetInst()->Load<CGraphicShader>(L"EA_FlipbookShader", true))
+//	{
+//		// FlipbookShader
+//		AssetPtr<CGraphicShader> pShader = new CGraphicShader;
+//		pShader->CreateVertexShader(L"HLSL\\Engine\\flipbook.fx", "VS_Flipbook");
+//		pShader->CreatePixelShader(L"HLSL\\Engine\\flipbook.fx", "PS_Flipbook");
+//		pShader->SetRSType(RS_TYPE::CULL_NONE);
+//		pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+//		pShader->SetTexData(TEX_0, "Atlas Texture");
+//		pShader->SetConstData(INT_0, "Atlas Tex Flag");
+//		pShader->SetConstData(INT_1, "Single Tex Flag");
+//		pShader->SetConstData(VEC2_0, "LeftTop");
+//		pShader->SetConstData(VEC2_1, "Slice");
+//		pShader->SetConstData(VEC2_2, "Background");
+//		pShader->SetConstData(VEC2_3, "Offset");
+//		CAssetMgr::GetInst()->AddAsset(L"FlipbookShader", pShader.Get());
+//	}
+//
+//	if (nullptr == CAssetMgr::GetInst()->Load<CMaterial>(L"FlipbookMtrl", true))
+//	{
+//		// FlipbookMtrl
+//		AssetPtr<CMaterial> pMtrl = new CMaterial;
+//		pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"FlipbookShader", true));
+//		CAssetMgr::GetInst()->AddAsset(L"FlipbookMtrl", pMtrl.Get());
+//	}
+//
+//	SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"FlipbookMtrl", true));
+//}
+
+void CFlipbookRender::AddFlipbook(AssetPtr<CFlipbook> _Flipbook)
 {
-	if (nullptr == CAssetMgr::GetInst()->Load<CGraphicShader>(L"FlipbookShader", true))
-	{
-		// FlipbookShader
-		AssetPtr<CGraphicShader> pShader = new CGraphicShader;
-		pShader->CreateVertexShader(L"HLSL\\Engine\\flipbook.fx", "VS_Flipbook");
-		pShader->CreatePixelShader(L"HLSL\\Engine\\flipbook.fx", "PS_Flipbook");
-		pShader->SetRSType(RS_TYPE::CULL_NONE);
-		pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
-		pShader->SetTexData(TEX_0, "Atlas Texture");
-		pShader->SetConstData(INT_0, "Atlas Tex Flag");
-		pShader->SetConstData(INT_1, "Single Tex Flag");
-		pShader->SetConstData(VEC2_0, "LeftTop");
-		pShader->SetConstData(VEC2_1, "Slice");
-		pShader->SetConstData(VEC2_2, "Background");
-		pShader->SetConstData(VEC2_3, "Offset");
-		CAssetMgr::GetInst()->AddAsset(L"FlipbookShader", pShader.Get());
-	}
-
-	if (nullptr == CAssetMgr::GetInst()->Load<CMaterial>(L"FlipbookMtrl", true))
-	{
-		// FlipbookMtrl
-		AssetPtr<CMaterial> pMtrl = new CMaterial;
-		pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"FlipbookShader", true));
-		CAssetMgr::GetInst()->AddAsset(L"FlipbookMtrl", pMtrl.Get());
-	}
-
-	SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"FlipbookMtrl", true));
+	//if (m_vecFlipbook.size() <= _Idx)
+	//{
+	//	m_vecFlipbook.resize(_Idx + 1);
+	//}
+	if (_Flipbook.Get())
+		m_vecFlipbook.push_back(_Flipbook);
 }
 
-void CFlipbookRender::AddFlipbook(int _Idx, AssetPtr<CFlipbook> _Flipbook)
+void CFlipbookRender::DeleteFlipbook(int _FlipIdx)
 {
-	if (m_vecFlipbook.size() <= _Idx)
-	{
-		m_vecFlipbook.resize(_Idx + 1);
-	}
+	if (_FlipIdx >= m_vecFlipbook.size())
+		return;
 
-	m_vecFlipbook[_Idx] = _Flipbook;
+	m_vecFlipbook.erase(m_vecFlipbook.begin() + _FlipIdx);
 }

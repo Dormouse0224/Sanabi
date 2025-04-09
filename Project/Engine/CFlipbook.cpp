@@ -130,3 +130,11 @@ int CFlipbook::Load(const wstring& _FilePath)
 
     return S_OK;
 }
+
+AssetPtr<CFlipbook> CFlipbook::Create(const wstring& _Name)
+{
+    AssetPtr<CFlipbook> pNew = new CFlipbook;
+    pNew->SetName(_Name);
+    pNew->Save(_Name);
+    return pNew;
+}

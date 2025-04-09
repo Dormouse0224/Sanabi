@@ -22,15 +22,17 @@ void CRenderMgr::Init()
 	pShader->SetDSType(DS_TYPE::LESS);
 	pShader->SetBSType(BS_TYPE::ALPHABLEND);
 	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+	pShader->SetEngineAsset(true);
 
-	CAssetMgr::GetInst()->AddAsset(L"DebugShapeShader", pShader.Get());
+	CAssetMgr::GetInst()->AddAsset(L"EA_DebugShapeShader", pShader.Get());
 
 	// ==============
 	// DebugShapeMtrl
 	// ==============
 	AssetPtr<CMaterial> pMtrl = new CMaterial;
 	pMtrl->SetShader(pShader);
-	CAssetMgr::GetInst()->AddAsset(L"DebugShapeMtrl", pMtrl.Get());
+	pMtrl->SetEngineAsset(true);
+	CAssetMgr::GetInst()->AddAsset(L"EA_DebugShapeMtrl", pMtrl.Get());
 
 
 	// ==================

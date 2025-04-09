@@ -26,15 +26,24 @@ private:
 
 
 public:
-    void AddFlipbook(int _Idx, AssetPtr<CFlipbook> _Flipbook);
-    void Play(int _Idx, float _FPS, bool _Repeat, int _SpriteIdx = 0)
+    void AddFlipbook(AssetPtr<CFlipbook> _Flipbook);
+    void DeleteFlipbook(int _FlipIdx);
+    void Play(int _Idx)
     {
+        if (_Idx >= m_vecFlipbook.size())
+            return;
+        m_CurFlipbook = m_vecFlipbook[_Idx];
+    }
+    void Play(int _Idx, float _FPS, bool _Repeat, int _SceneIdx = 0)
+    {
+        if (_Idx >= m_vecFlipbook.size())
+            return;
         m_CurFlipbook = m_vecFlipbook[_Idx];
         m_FPS = _FPS;
         m_Time = 0.f;
         m_Finish = false;
         m_Repeat = _Repeat;
-        m_SceneIdx = 0;
+        m_SceneIdx = _SceneIdx;
     }
 
 

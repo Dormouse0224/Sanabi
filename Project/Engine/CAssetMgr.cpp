@@ -24,6 +24,7 @@ void CAssetMgr::Tick()
 		m_AssetModified = false;
 		m_Renew = true;
 	}
+	ContentObserve();
 }
 
 void CAssetMgr::AddAsset(const wstring& _Key, AssetPtr<CAsset> _Asset)
@@ -175,4 +176,37 @@ void CAssetMgr::ContentLoad()
 
 		}
 	}
+	m_AssetModified = true;
+}
+
+void CAssetMgr::ContentObserve()
+{
+	// 즉시 확인
+	DWORD dwStatus = WaitForSingleObject(m_DirNotifyHandle, 0);
+
+	// 지정된 이벤트가 발생했다.
+	if (dwStatus == WAIT_OBJECT_0)
+	{
+		ContentReload();
+
+		FindNextChangeNotification(m_DirNotifyHandle);
+	}
+}
+
+void CAssetMgr::ContentReload()
+{
+	for (auto& map : m_mapAsset)
+	{
+		for (auto iter = map.begin(); iter != map.end();)
+		{
+			if (iter->second->GetEngineAsset() == true)
+			{
+				++iter;
+				continue;
+			}
+
+			iter = map.erase(iter);
+		}
+	}
+	ContentLoad();
 }

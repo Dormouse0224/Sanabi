@@ -190,7 +190,18 @@ void CInspector::Render()
 
 		// 에셋을 파일로 저장
 		ImGui::Separator();
-		if (ImGui::Button("Save Asset as File"))
+		if (ImGui::Button("Save"))
+		{
+			if (m_TargetAsset->GetEngineAsset())
+				MessageBoxW(nullptr, L"엔진 에셋은 파일 저장을 지원하지 않습니다.", L"Asset Save Error", MB_OK);
+			else
+			{
+				m_TargetAsset->Save(CPathMgr::GetFileName(m_TargetAsset->GetName()));
+			}
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("Save As.."))
 		{
 			ImGui::OpenPopup("AssetSave");
 		}
