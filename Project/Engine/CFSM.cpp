@@ -9,7 +9,22 @@ CFSM::CFSM()
 	:CComponent(COMPONENT_TYPE::FSM)
 	, m_vecCondition{}
 	, m_CurrentState(nullptr)
+	, m_InitState(nullptr)
+	, m_mapStates{}
 {
+}
+
+CFSM::CFSM(const CFSM& _Other)
+	:CComponent(_Other)
+	, m_vecCondition{}
+	, m_CurrentState(nullptr)
+	, m_InitState(nullptr)
+	, m_mapStates{}
+{
+	for (const auto& cond : _Other.m_vecCondition)
+		AddCondition(typeid(*cond->m_OriginState).name(), typeid(*cond->m_DestState).name(), cond->m_FuncName);
+
+	m_InitState = CFSMMgr::GetInst()->CreateState(typeid(*_Other.m_InitState).name());
 }
 
 CFSM::~CFSM()

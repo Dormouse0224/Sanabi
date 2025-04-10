@@ -33,6 +33,7 @@ class CFSM :
     friend class CFSMUI;
 public:
     CFSM();
+    CFSM(const CFSM& _Other);
     ~CFSM();
     CLONE(CFSM);
 

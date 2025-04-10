@@ -259,6 +259,9 @@
     <Filter Include="09. ImguiObject\ComponentUI\04. FSMUI">
       <UniqueIdentifier>{b07d5837-44d1-4ba4-a13a-9aeb8023da5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="07. Component\05. UICom">
+      <UniqueIdentifier>{0f4a5d8d-2e15-490e-b02a-3341e712fbf3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CEngine.h">
@@ -543,6 +546,9 @@
     <ClInclude Include="CFSMUI.h">
       <Filter>09. ImguiObject\ComponentUI\04. FSMUI</Filter>
     </ClInclude>
+    <ClInclude Include="CUICom.h">
+      <Filter>07. Component\05. UICom</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CEngine.cpp">
@@ -805,6 +811,9 @@
     </ClCompile>
     <ClCompile Include="CFSMUI.cpp">
       <Filter>09. ImguiObject\ComponentUI\04. FSMUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CUICom.cpp">
+      <Filter>07. Component\05. UICom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

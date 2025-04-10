@@ -6,9 +6,9 @@ class CFSM_State :
 public:
     CFSM_State();
     ~CFSM_State();
-    virtual CFSM_State* Clone() = 0;
+    CLONE_DISABLE(CFSM_State);
 
-private:
+protected:
     // 상태 상수
     vector<int> m_vecInt;
     vector<float> m_vecFloat;

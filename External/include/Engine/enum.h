@@ -53,6 +53,7 @@ enum class COMPONENT_TYPE
 	CAMERA,
 	PHYSXACTOR,
 	FSM,
+	UICOM,
 	COLLIDER3D,
 	BOUNDINGBOX,
 
@@ -112,7 +113,9 @@ enum class SHADER_DOMAIN
 {
 	DOMAIN_QPAQUE,		// 불투명
 	DOMAIN_MASKED,		// 불투명 + 완전 투명
-	DOMAIN_TRANSPARENT, // 반투명 + 투명	
+	DOMAIN_TRANSPARENT, // 반투명 + 투명
+	DOMAIN_POSTPROCESS,	// 후처리
+	DOMAIN_UI,			// UI
 	DOMAIN_DEBUG,		// 디버그 렌더링
 };
 

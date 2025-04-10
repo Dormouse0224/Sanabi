@@ -2,6 +2,7 @@
 #include "CComponent.h"
 #include "CPhysxMgr.h"
 
+// 충돌 이벤트 발생 시 호출되는 함수
 typedef void (*ContactFunc)(CGameObject*);
 
 struct COLLIDER_DESC

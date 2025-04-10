@@ -119,6 +119,10 @@ void CCamera::Render()
 		m_vecTransparent[i]->Render();
 	}
 
+	// Postprocess
+
+	// UI
+
 	// 오브젝트 렌더링이 끝난 후 분류용 벡터 클리어
 	m_vecOpaque.clear();
 	m_vecMasked.clear();
@@ -212,6 +216,12 @@ void CCamera::SortObject()
 				break;
 			case SHADER_DOMAIN::DOMAIN_TRANSPARENT:
 				m_vecTransparent.push_back(vecObjects[j]);
+				break;
+			case SHADER_DOMAIN::DOMAIN_POSTPROCESS:
+				m_vecPostprocess.push_back(vecObjects[j]);
+				break;
+			case SHADER_DOMAIN::DOMAIN_UI:
+				m_vecUI.push_back(vecObjects[j]);
 				break;
 			}
 		}
