@@ -172,6 +172,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="Scripts\CCameraMoveScript.h" />
     <ClInclude Include="Scripts\CPlayerScript.h" />
     <ClInclude Include="TestLevel.h" />
+    <ClInclude Include="TriggerFunc.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CScriptInit.cpp" />
@@ -184,6 +185,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="Scripts\CCameraMoveScript.cpp" />
     <ClCompile Include="Scripts\CPlayerScript.cpp" />
     <ClCompile Include="TestLevel.cpp" />
+    <ClCompile Include="TriggerFunc.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

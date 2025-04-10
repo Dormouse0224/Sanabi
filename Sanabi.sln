@@ -16,6 +16,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SanabiScript", "Project\San
 		{3761E465-1280-4F03-8DBA-38924CF6510F} = {3761E465-1280-4F03-8DBA-38924CF6510F}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CodeGen", "Project\CodeGen\CodeGen.vcxproj", "{FD69567E-8FBB-45F0-AA9E-71872590AFDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -48,6 +50,14 @@ Global
 		{E868410F-A3A1-457E-B46E-C4F37FF8F443}.Release|x64.Build.0 = Release|x64
 		{E868410F-A3A1-457E-B46E-C4F37FF8F443}.Release|x86.ActiveCfg = Release|Win32
 		{E868410F-A3A1-457E-B46E-C4F37FF8F443}.Release|x86.Build.0 = Release|Win32
+		{FD69567E-8FBB-45F0-AA9E-71872590AFDD}.Debug|x64.ActiveCfg = Debug|x64
+		{FD69567E-8FBB-45F0-AA9E-71872590AFDD}.Debug|x64.Build.0 = Debug|x64
+		{FD69567E-8FBB-45F0-AA9E-71872590AFDD}.Debug|x86.ActiveCfg = Debug|Win32
+		{FD69567E-8FBB-45F0-AA9E-71872590AFDD}.Debug|x86.Build.0 = Debug|Win32
+		{FD69567E-8FBB-45F0-AA9E-71872590AFDD}.Release|x64.ActiveCfg = Release|x64
+		{FD69567E-8FBB-45F0-AA9E-71872590AFDD}.Release|x64.Build.0 = Release|x64
+		{FD69567E-8FBB-45F0-AA9E-71872590AFDD}.Release|x86.ActiveCfg = Release|Win32
+		{FD69567E-8FBB-45F0-AA9E-71872590AFDD}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -14,6 +14,7 @@ private:
 
 public:
 	int Init(HINSTANCE _Inst, UINT _Width, UINT _Height);
+	void Begin();
 	void Progress();
 
 	Vec2 GetResolution() { return m_vResolution; }

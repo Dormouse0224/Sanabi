@@ -6,7 +6,6 @@
 #include "Engine\CLayer.h"
 
 #include "Engine\CAssetMgr.h"
-#include "Engine\CCollisionMgr.h"
 #include "Engine\CPhysxMgr.h"
 #include "Engine\CTaskMgr.h"
 #include "Engine\CLevelMgr.h"

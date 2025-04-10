@@ -173,6 +173,9 @@ call EngineHeaderCopy.bat</Command>
     <ClInclude Include="CFlipbookRender.h" />
     <ClInclude Include="CFlipbookRenderUI.h" />
     <ClInclude Include="CFlipbookUI.h" />
+    <ClInclude Include="CFSM.h" />
+    <ClInclude Include="CFSMMgr.h" />
+    <ClInclude Include="CFSM_State.h" />
     <ClInclude Include="CGraphicShaderUI.h" />
     <ClInclude Include="CImguiMgr.h" />
     <ClInclude Include="CImguiObject.h" />
@@ -217,8 +220,6 @@ call EngineHeaderCopy.bat</Command>
     <ClInclude Include="CAsset.h" />
     <ClInclude Include="CAssetMgr.h" />
     <ClInclude Include="CCamera.h" />
-    <ClInclude Include="CCollider2D.h" />
-    <ClInclude Include="CCollisionMgr.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CComputeShader.h" />
     <ClInclude Include="CConstBuffer.h" />
@@ -262,8 +263,6 @@ call EngineHeaderCopy.bat</Command>
     <ClCompile Include="CAssetUI.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCameraUI.cpp" />
-    <ClCompile Include="CCollider2D.cpp" />
-    <ClCompile Include="CCollisionMgr.cpp" />
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CComponentUI.cpp" />
     <ClCompile Include="CComputeShader.cpp" />
@@ -278,6 +277,9 @@ call EngineHeaderCopy.bat</Command>
     <ClCompile Include="CFlipbookRender.cpp" />
     <ClCompile Include="CFlipbookRenderUI.cpp" />
     <ClCompile Include="CFlipbookUI.cpp" />
+    <ClCompile Include="CFSM.cpp" />
+    <ClCompile Include="CFSMMgr.cpp" />
+    <ClCompile Include="CFSM_State.cpp" />
     <ClCompile Include="CGameObject.cpp" />
     <ClCompile Include="CGraphicShader.cpp" />
     <ClCompile Include="CGraphicShaderUI.cpp" />

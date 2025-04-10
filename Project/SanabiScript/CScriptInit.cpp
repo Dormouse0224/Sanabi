@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CScriptInit.h"
+#include "TriggerFunc.h"
 #include "Engine\CComponentMgr.h"
+#include "Engine\CFSMMgr.h"
 
 // ========================================================
 // 이 코드는 CodeGen 코드 생성기에 의해 작성되었습니다.
@@ -12,8 +14,16 @@
 #include "Scripts\CCameraMoveScript.h"
 #include "Scripts\CPlayerScript.h"
 
+
 void CScriptInit::ScriptInit()
 {
 	REGISTER_SCRIPT(CCameraMoveScript);
 	REGISTER_SCRIPT(CPlayerScript);
 }
+
+void CScriptInit::FSMInit()
+{
+
+	REGISTER_TRIGGER(foo);
+}
+

@@ -4,7 +4,7 @@
 #include "CAssetMgr.h"
 
 CComponentMgr::CComponentMgr()
-    : m_Registry{}
+    : m_SrciptRegistry{}
     , m_ScriptInitFunc(nullptr)
 {
 }
@@ -19,29 +19,24 @@ void CComponentMgr::Init()
     {
         m_ScriptInitFunc();
     }
-
-    // 스크립트 등록까지 완료되면 콘텐츠 파일들을 로드한다. (프리펩 로딩에서 스크립트가 필요한 경우가 있음)
-    CAssetMgr::GetInst()->ContentLoad();
 }
 
-void CComponentMgr::Register(const std::string& className, CreateFunc func)
+void CComponentMgr::RegisterScript(const std::string& className, ScriptCreateFunc func)
 {
-    auto iter = m_Registry.find(className);
-    if (iter != m_Registry.end())
+    auto iter = m_SrciptRegistry.find(className);
+    if (iter != m_SrciptRegistry.end())
         return;
-    m_Registry.insert(make_pair(className, func));
+    m_SrciptRegistry.insert(make_pair(className, func));
 }
 
 CScript* CComponentMgr::CreateScript(const std::string& className)
 {
+    auto iter = m_SrciptRegistry.find(className);
+    if (iter != m_SrciptRegistry.end())
     {
-        auto iter = m_Registry.find(className);
-        if (iter != m_Registry.end())
-        {
-            return iter->second();
-        }
-        return nullptr;
+        return iter->second();
     }
+    return nullptr;
 }
 
 CComponent* CComponentMgr::CreateComp(COMPONENT_TYPE _Type)

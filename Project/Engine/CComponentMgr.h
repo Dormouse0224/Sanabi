@@ -2,7 +2,10 @@
 
 #include "CScript.h"
 
-typedef CScript* (*CreateFunc)();
+// 하위 라이브러리에서 구현된 스크립트의 자식 클래스를 생성해주는 함수입니다.
+typedef CScript* (*ScriptCreateFunc)();
+
+// ScriptCreateFunc 들을 CComponentMgr 의 레지스트리에 등록해주는 함수입니다.
 typedef void (*ScriptInit)();
 
 class CComponentMgr
@@ -10,15 +13,16 @@ class CComponentMgr
 {
 	SINGLE(CComponentMgr);
 private:
-	std::map<std::string, CreateFunc>	m_Registry;
-	ScriptInit							m_ScriptInitFunc;
+	std::map<std::string, ScriptCreateFunc>		m_SrciptRegistry;
+	ScriptInit									m_ScriptInitFunc;
 
 public:
 	void Init();
 
+	// Engine 하위 라이브러리에서 정의된 스크립트를 등록해주는 함수를 세팅하고, 초기화를 진행합니다.
 	void SetScriptInitFunc(ScriptInit _ScriptInitFunc) { m_ScriptInitFunc = _ScriptInitFunc; Init(); }
 
-	void Register(const std::string& className, CreateFunc func);
+	void RegisterScript(const std::string& className, ScriptCreateFunc func);
 
 	CScript* CreateScript(const std::string& className);
 	CComponent* CreateComp(COMPONENT_TYPE _Type);

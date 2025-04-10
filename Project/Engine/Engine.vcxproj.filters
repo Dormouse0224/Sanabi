@@ -37,9 +37,6 @@
     <Filter Include="07. Component\02. Camera">
       <UniqueIdentifier>{a19e3818-a22d-434a-9e55-a91c111f82c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="07. Component\03. Collider2D">
-      <UniqueIdentifier>{2aa79eec-d06b-4e59-81a2-692571a76b83}</UniqueIdentifier>
-    </Filter>
     <Filter Include="07. Component\RenderComponent\02. SpriteRender">
       <UniqueIdentifier>{74aaf065-60ed-400d-8745-290172c85041}</UniqueIdentifier>
     </Filter>
@@ -96,9 +93,6 @@
     </Filter>
     <Filter Include="04. Manager\06. Render">
       <UniqueIdentifier>{f3d6fb9d-3ea1-4a7b-8e43-f856d24e9c9d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Manager\07. CollisionMgr">
-      <UniqueIdentifier>{687768e5-2bf8-4a5f-99dc-cb5765db7dbe}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. Manager\08. TaskMgr">
       <UniqueIdentifier>{df4949ff-0f19-4a4f-9b53-9ec9b96eeaa7}</UniqueIdentifier>
@@ -171,9 +165,6 @@
     </Filter>
     <Filter Include="09. ImguiObject\ComponentUI">
       <UniqueIdentifier>{135bc060-339e-4b82-98cd-6395f614a0a4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="07. Component\04. PhysxActor">
-      <UniqueIdentifier>{89926b5f-3481-43a2-bc0c-4ccf2e845f97}</UniqueIdentifier>
     </Filter>
     <Filter Include="09. ImguiObject\ComponentUI\01. TransformUI">
       <UniqueIdentifier>{4de0edcb-5f3a-4013-91e5-10118f1b1e6f}</UniqueIdentifier>
@@ -255,6 +246,18 @@
     </Filter>
     <Filter Include="Scripts">
       <UniqueIdentifier>{941f2ffd-536b-46b1-8b50-7e087351fcd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07. Component\03. PhysxActor">
+      <UniqueIdentifier>{89926b5f-3481-43a2-bc0c-4ccf2e845f97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07. Component\04. FSM">
+      <UniqueIdentifier>{4a42efd6-fb57-4123-b5e1-35f647e2599c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Asset\10. FSM State">
+      <UniqueIdentifier>{58c9447d-a788-4edc-8991-387ab04ecd03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\12. FSMMgr">
+      <UniqueIdentifier>{0ffede52-49a0-4f07-a5e6-c186a40830de}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -366,12 +369,6 @@
     <ClInclude Include="CRenderMgr.h">
       <Filter>04. Manager\06. Render</Filter>
     </ClInclude>
-    <ClInclude Include="CCollider2D.h">
-      <Filter>07. Component\03. Collider2D</Filter>
-    </ClInclude>
-    <ClInclude Include="CCollisionMgr.h">
-      <Filter>04. Manager\07. CollisionMgr</Filter>
-    </ClInclude>
     <ClInclude Include="CTaskMgr.h">
       <Filter>04. Manager\08. TaskMgr</Filter>
     </ClInclude>
@@ -415,7 +412,7 @@
       <Filter>04. Manager\10. PhysxMgr</Filter>
     </ClInclude>
     <ClInclude Include="CPhysxActor.h">
-      <Filter>07. Component\04. PhysxActor</Filter>
+      <Filter>07. Component\03. PhysxActor</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imgui_impl_dx11.h">
       <Filter>09. ImguiObject\Imgui</Filter>
@@ -534,6 +531,15 @@
     <ClInclude Include="CEditorCamScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CFSM.h">
+      <Filter>07. Component\04. FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="CFSM_State.h">
+      <Filter>08. Asset\10. FSM State</Filter>
+    </ClInclude>
+    <ClInclude Include="CFSMMgr.h">
+      <Filter>04. Manager\12. FSMMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CEngine.cpp">
@@ -620,14 +626,8 @@
     <ClCompile Include="CRenderMgr_Init.cpp">
       <Filter>04. Manager\06. Render</Filter>
     </ClCompile>
-    <ClCompile Include="CCollider2D.cpp">
-      <Filter>07. Component\03. Collider2D</Filter>
-    </ClCompile>
     <ClCompile Include="func.cpp">
       <Filter>01. Header</Filter>
-    </ClCompile>
-    <ClCompile Include="CCollisionMgr.cpp">
-      <Filter>04. Manager\07. CollisionMgr</Filter>
     </ClCompile>
     <ClCompile Include="CTaskMgr.cpp">
       <Filter>04. Manager\08. TaskMgr</Filter>
@@ -672,7 +672,7 @@
       <Filter>04. Manager\10. PhysxMgr</Filter>
     </ClCompile>
     <ClCompile Include="CPhysxActor.cpp">
-      <Filter>07. Component\04. PhysxActor</Filter>
+      <Filter>07. Component\03. PhysxActor</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_impl_dx11.cpp">
       <Filter>09. ImguiObject\Imgui</Filter>
@@ -790,6 +790,15 @@
     </ClCompile>
     <ClCompile Include="CEditorCamScript.cpp">
       <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CFSM.cpp">
+      <Filter>07. Component\04. FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="CFSM_State.cpp">
+      <Filter>08. Asset\10. FSM State</Filter>
+    </ClCompile>
+    <ClCompile Include="CFSMMgr.cpp">
+      <Filter>04. Manager\12. FSMMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

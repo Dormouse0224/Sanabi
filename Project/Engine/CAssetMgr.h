@@ -22,9 +22,6 @@ public:
 private:
 	void CreateEngineMesh();
 	void CreateEngineGraphicShader();
-	void CreateEngineComputeShader();
-	void CreateEngineMaterial();
-	void CreateEngineSprite();
 
 public:
 	template<typename T>

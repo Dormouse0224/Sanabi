@@ -52,6 +52,7 @@ enum class COMPONENT_TYPE
 	TRANSFORM,
 	CAMERA,
 	PHYSXACTOR,
+	FSM,
 	COLLIDER3D,
 	BOUNDINGBOX,
 
@@ -83,6 +84,7 @@ enum class ASSET_TYPE
 	COMPUTE_SHADER, // °è»ê, GP(General Purpose)
 	SPRITE,
 	FLIPBOOK,
+	FSM_STATE,
 
 	ASSET_END,
 };

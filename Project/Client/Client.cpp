@@ -9,6 +9,7 @@
 #include "Engine/CImguiMgr.h"
 #include "Engine/CTaskMgr.h"
 #include "Engine/CComponentMgr.h"
+#include "Engine/CFSMMgr.h"
 
 #include "SanabiScript/CScriptInit.h"
 #include "SanabiScript/TestLevel.h"
@@ -45,12 +46,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return 0;
     }
 
-    // 스크립트 라이브러리에서 만든 스크립트 엔진에 등록
+    // 스크립트 라이브러리에서 만든 스크립트와 FSM 관련 엔진에 등록
     CComponentMgr::GetInst()->SetScriptInitFunc(&CScriptInit::ScriptInit);
+    CFSMMgr::GetInst()->SetFSMInitFunc(&CScriptInit::FSMInit);
 
     // 테스트레벨 생성
     //new TestLevel;
 
+    // 엔진 초기 작업
+    CEngine::GetInst()->Begin();
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
 

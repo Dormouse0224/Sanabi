@@ -8,13 +8,7 @@ void CAssetMgr::Init()
 {
 	CreateEngineMesh();
 
-	//CreateEngineSprite();
-
 	CreateEngineGraphicShader();
-
-	//CreateEngineComputeShader();
-
-	//CreateEngineMaterial();
 
 	m_DirNotifyHandle = FindFirstChangeNotification(CPathMgr::GetContentDir(), true
 													, FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME
@@ -229,100 +223,4 @@ void CAssetMgr::CreateEngineGraphicShader()
 	pShader->SetEngineAsset(true); 
 	AddAsset(L"EA_TileRenderShader", pShader.Get());
 
-}
-
-void CAssetMgr::CreateEngineComputeShader()
-{
-}
-
-void CAssetMgr::CreateEngineMaterial()
-{
-	//// Std2DMtrl
-	//AssetPtr<CMaterial> pMtrl = new CMaterial;
-	//pMtrl->SetShader(Load<CGraphicShader>(L"EA_Std2DShader", true));
-	//AddAsset(L"Std2DMtrl", pMtrl.Get());
-
-	//pMtrl = new CMaterial;
-	//pMtrl->SetShader(Load<CGraphicShader>(L"Std2DShader", true));
-	//pMtrl->SetTexParam(TEX_0, Load<CTexture2D>(L"Texture2D\\Spr_SNB_IdleRand1 (1).png"));
-	//pMtrl->SetEngineAsset(true);
-	//AddAsset(L"SNB_Mtrl", pMtrl.Get());
-
-	//pMtrl = new CMaterial;
-	//pMtrl->SetShader(Load<CGraphicShader>(L"Std2DShader", true));
-	//pMtrl->SetTexParam(TEX_0, Load<CTexture2D>(L"Texture2D\\Spr_SNBArm_IdleRand1 (1).png"));
-	//pMtrl->SetEngineAsset(true);
-	//AddAsset(L"SNBArm_Mtrl", pMtrl.Get());
-
-	//pMtrl = new CMaterial;
-	//pMtrl->SetShader(Load<CGraphicShader>(L"EA_Std2DShader", true));
-	//pMtrl->SetTexParam(TEX_0, Load<CTexture2D>(L"Texture2D\\Spr_CargoPlatform_Idle (lp) (1).png"));
-	//AddAsset(L"CargoPlatform_Mtrl", pMtrl.Get());
-
-	//pMtrl = new CMaterial;
-	//pMtrl->SetShader(Load<CGraphicShader>(L"EA_Std2DShader", true));
-	//pMtrl->SetTexParam(TEX_0, Load<CTexture2D>(L"Texture2D\\Chap2_Mid_A01.png"));
-	//AddAsset(L"Background_Mtrl", pMtrl.Get());
-
-	//// FlipbookMtrl
-	//pMtrl = new CMaterial;
-	//pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"EA_FlipbookShader", true));
-	//AddAsset(L"FlipbookMtrl", pMtrl.Get());
-
-	//pMtrl = new CMaterial;
-	//pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"EA_ParticleRenderShader", true));
-	//AddAsset(L"ParticleMtrl", pMtrl.Get());
-
-	//// SpriteMtrl
-	//pMtrl = new CMaterial;
-	//pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"EA_SpriteShader", true));
-	//AddAsset(L"SpriteMtrl", pMtrl.Get());
-
-	//// TileRenderMtrl
-	//pMtrl = new CMaterial;
-	//pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"EA_TileRenderShader", true));
-	//AddAsset(L"TileRenderMtrl", pMtrl.Get());
-
-}
-
-
-void CAssetMgr::CreateEngineSprite()
-{
-
-	//// 플립북 에셋 등록
-	//AssetPtr<CFlipbook> pFlipbook = new CFlipbook;
-	//for (int i = 0; i < 8; ++i)
-	//{
-	//	wchar_t path[255] = {};
-	//	swprintf_s(path, 255, L"Texture2D\\Spr_SNB_Idle (lp) (%d).png", i + 1);
-	//	pFlipbook->AddScene<CTexture2D>(CAssetMgr::GetInst()->Load<CTexture2D>(path));
-	//}
-	//AddAsset(L"SNB_Idle_Flipbook", pFlipbook.Get());
-
-	//pFlipbook = new CFlipbook;
-	//for (int i = 0; i < 8; ++i)
-	//{
-	//	wchar_t path[255] = {};
-	//	swprintf_s(path, 255, L"Texture2D\\Spr_SNBArm_Idle (%d).png", i + 1);
-	//	pFlipbook->AddScene<CTexture2D>(CAssetMgr::GetInst()->Load<CTexture2D>(path));
-	//}
-	//AddAsset(L"SNBArm_Idle_Flipbook", pFlipbook.Get());
-
-	//pFlipbook = new CFlipbook;
-	//for (int i = 0; i < 20; ++i)
-	//{
-	//	wchar_t path[255] = {};
-	//	swprintf_s(path, 255, L"Texture2D\\Spr_SNB_Running (lp) (%d).png", i + 1);
-	//	pFlipbook->AddScene<CTexture2D>(CAssetMgr::GetInst()->Load<CTexture2D>(path));
-	//}
-	//AddAsset(L"SNB_Running_Flipbook", pFlipbook.Get());
-
-	//pFlipbook = new CFlipbook;
-	//for (int i = 0; i < 20; ++i)
-	//{
-	//	wchar_t path[255] = {};
-	//	swprintf_s(path, 255, L"Texture2D\\Spr_SNBArm_Running (lp) (%d).png", i + 1);
-	//	pFlipbook->AddScene<CTexture2D>(CAssetMgr::GetInst()->Load<CTexture2D>(path));
-	//}
-	//AddAsset(L"SNBArm_Running_Flipbook", pFlipbook.Get());
 }

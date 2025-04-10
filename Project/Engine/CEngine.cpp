@@ -8,7 +8,6 @@
 #include "CAssetMgr.h"
 #include "CLevelMgr.h"
 #include "CRenderMgr.h"
-#include "CCollisionMgr.h"
 #include "CTaskMgr.h"
 #include "CPhysxMgr.h"
 #include "CImguiMgr.h"
@@ -64,6 +63,12 @@ int CEngine::Init(HINSTANCE _Inst, UINT _Width, UINT _Height)
     CImguiMgr::GetInst()->Init();
 
     return S_OK;
+}
+
+void CEngine::Begin()
+{
+    // 스크립트, FSM 등록까지 완료되면 콘텐츠 파일들을 로드한다. (프리펩 로딩에서 스크립트가 필요한 경우가 있음)
+    CAssetMgr::GetInst()->ContentLoad();
 }
 
 void CEngine::Progress()

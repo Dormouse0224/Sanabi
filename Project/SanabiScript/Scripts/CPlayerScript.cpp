@@ -11,7 +11,6 @@
 #include "Engine\CTaskMgr.h"
 #include "Engine\CPhysxMgr.h"
 
-#include "Engine\CCollider2D.h"
 #include "Engine\CMeshRender.h"
 #include "Engine\CFlipbookRender.h"
 #include "Engine\CParticleRender.h"

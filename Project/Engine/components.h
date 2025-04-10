@@ -3,7 +3,6 @@
 // 일반 컴포넌트
 #include "CTransform.h"
 #include "CCamera.h"
-#include "CCollider2D.h"
 #include "CPhysxActor.h"
 
 // 렌더 컴포넌트
