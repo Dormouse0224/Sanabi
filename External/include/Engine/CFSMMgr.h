@@ -22,6 +22,8 @@ public:
 	void Init();
 
 	TriggerFunc GetTriggerFunc(string _FuncName);
+	vector<const char*> GetStateRegistryList();
+	vector<const char*> GetTriggerRegistryList();
 
 	// Engine 하위 라이브러리에서 정의된 State 를 등록해주는 함수를 세팅하고, 초기화를 진행합니다.
 	void SetFSMInitFunc(FSMInit _ScriptInitFunc) { m_FSMInitFunc = _ScriptInitFunc; Init(); }

@@ -4,6 +4,7 @@
 #include "CTransform.h"
 #include "CCamera.h"
 #include "CPhysxActor.h"
+#include "CFSM.h"
 
 // ·»´õ ÄÄÆ÷³ÍÆ®
 #include "CMeshRender.h"

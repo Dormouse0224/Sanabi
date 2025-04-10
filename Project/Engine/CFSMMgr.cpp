@@ -29,6 +29,22 @@ TriggerFunc CFSMMgr::GetTriggerFunc(string _FuncName)
         return iter->second;
 }
 
+vector<const char*> CFSMMgr::GetStateRegistryList()
+{
+    vector<const char*> vec;
+    for (const auto& pair : m_StateRegistry)
+        vec.push_back(pair.first.data());
+    return vec;
+}
+
+vector<const char*> CFSMMgr::GetTriggerRegistryList()
+{
+    vector<const char*> vec;
+    for (const auto& pair : m_TriggerRegistry)
+        vec.push_back(pair.first.data());
+    return vec;
+}
+
 void CFSMMgr::RegisterState(const std::string& className, StateCreateFunc func)
 {
     auto iter = m_StateRegistry.find(className);

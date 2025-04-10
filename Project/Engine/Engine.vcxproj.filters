@@ -172,12 +172,6 @@
     <Filter Include="09. ImguiObject\ComponentUI\02. CameraUI">
       <UniqueIdentifier>{d866d89e-d5ed-49f2-8178-92ae3765afd0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="09. ImguiObject\ComponentUI\03. Collider2DUI">
-      <UniqueIdentifier>{9708f2df-974b-41ce-9072-50e4530277dd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="09. ImguiObject\ComponentUI\04. PhysxActorUI">
-      <UniqueIdentifier>{a33f974a-215c-4c98-9264-78f59eaec836}</UniqueIdentifier>
-    </Filter>
     <Filter Include="09. ImguiObject\ComponentUI\RenderComponentUI">
       <UniqueIdentifier>{5015dbfc-d071-4387-b060-5f90791c38d4}</UniqueIdentifier>
     </Filter>
@@ -258,6 +252,12 @@
     </Filter>
     <Filter Include="04. Manager\12. FSMMgr">
       <UniqueIdentifier>{0ffede52-49a0-4f07-a5e6-c186a40830de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\03. PhysxActorUI">
+      <UniqueIdentifier>{a33f974a-215c-4c98-9264-78f59eaec836}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\04. FSMUI">
+      <UniqueIdentifier>{b07d5837-44d1-4ba4-a13a-9aeb8023da5f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -469,7 +469,7 @@
       <Filter>09. ImguiObject\ComponentUI\02. CameraUI</Filter>
     </ClInclude>
     <ClInclude Include="CPhysxActorUI.h">
-      <Filter>09. ImguiObject\ComponentUI\04. PhysxActorUI</Filter>
+      <Filter>09. ImguiObject\ComponentUI\03. PhysxActorUI</Filter>
     </ClInclude>
     <ClInclude Include="CAssetUI.h">
       <Filter>09. ImguiObject\AssetUI</Filter>
@@ -539,6 +539,9 @@
     </ClInclude>
     <ClInclude Include="CFSMMgr.h">
       <Filter>04. Manager\12. FSMMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CFSMUI.h">
+      <Filter>09. ImguiObject\ComponentUI\04. FSMUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -729,7 +732,7 @@
       <Filter>09. ImguiObject\ComponentUI\02. CameraUI</Filter>
     </ClCompile>
     <ClCompile Include="CPhysxActorUI.cpp">
-      <Filter>09. ImguiObject\ComponentUI\04. PhysxActorUI</Filter>
+      <Filter>09. ImguiObject\ComponentUI\03. PhysxActorUI</Filter>
     </ClCompile>
     <ClCompile Include="CAssetUI.cpp">
       <Filter>09. ImguiObject\AssetUI</Filter>
@@ -799,6 +802,9 @@
     </ClCompile>
     <ClCompile Include="CFSMMgr.cpp">
       <Filter>04. Manager\12. FSMMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CFSMUI.cpp">
+      <Filter>09. ImguiObject\ComponentUI\04. FSMUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

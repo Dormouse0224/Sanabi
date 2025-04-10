@@ -20,6 +20,9 @@ CFSM::~CFSM()
 
 void CFSM::FinalTick()
 {
+	if (!m_CurrentState)
+		m_CurrentState = m_InitState;
+
 	// 등록된 조건 검사 실행
 	for (FSM_Condition* tCond : m_vecCondition)
 	{
@@ -33,6 +36,8 @@ void CFSM::FinalTick()
 		}
 	}
 
+	if (m_CurrentState)
+		m_CurrentState->Tick();
 }
 
 int CFSM::Load(fstream& _Stream)
@@ -42,19 +47,17 @@ int CFSM::Load(fstream& _Stream)
 	_Stream.read(reinterpret_cast<char*>(&size), sizeof(int));
 	for (int i = 0; i < size; ++i)
 	{
-		std::string ClassName = "";
+		std::string ClassNameOS = "";
 		int size = 0;
 		_Stream.read(reinterpret_cast<char*>(&size), sizeof(int));
-		ClassName.resize(size);
-		_Stream.read(reinterpret_cast<char*>(ClassName.data()), sizeof(char) * size);
-		CFSM_State* pOrigin = CFSMMgr::GetInst()->CreateState(ClassName);
+		ClassNameOS.resize(size);
+		_Stream.read(reinterpret_cast<char*>(ClassNameOS.data()), sizeof(char) * size);
 
-		ClassName = "";
+		std::string ClassNameDS = "";
 		size = 0;
 		_Stream.read(reinterpret_cast<char*>(&size), sizeof(int));
-		ClassName.resize(size);
-		_Stream.read(reinterpret_cast<char*>(ClassName.data()), sizeof(char) * size);
-		CFSM_State* pDest = CFSMMgr::GetInst()->CreateState(ClassName);
+		ClassNameDS.resize(size);
+		_Stream.read(reinterpret_cast<char*>(ClassNameDS.data()), sizeof(char) * size);
 
 		string FuncName = "";
 		int len = 0;
@@ -62,8 +65,16 @@ int CFSM::Load(fstream& _Stream)
 		FuncName.resize(len);
 		_Stream.read(reinterpret_cast<char*>(FuncName.data()), sizeof(char) * len);
 
-		AddCondition(pOrigin, pDest, FuncName);
+		AddCondition(ClassNameOS, ClassNameDS, FuncName);
 	}
+
+	// 초기 상태 불러오기
+	std::string ClassName = 0;
+	size = 0;
+	_Stream.read(reinterpret_cast<char*>(&size), sizeof(int));
+	ClassName.resize(0);
+	_Stream.read(reinterpret_cast<char*>(ClassName.data()), sizeof(char) * size);
+	SetInitState(ClassName);
 
 	return S_OK;
 }
@@ -90,38 +101,60 @@ int CFSM::Save(fstream& _Stream)
 		_Stream.write(reinterpret_cast<char*>(m_vecCondition[i]->m_FuncName.data()), sizeof(char) * len);
 	}
 
+	// 초기 상태 저장
+	std::string ClassName = typeid(*m_InitState).name();
+	size = ClassName.size();
+	_Stream.write(reinterpret_cast<char*>(&size), sizeof(int));
+	_Stream.write(reinterpret_cast<char*>(ClassName.data()), sizeof(char) * size);
+
 	return S_OK;
 }
 
-void CFSM::AddCondition(CFSM_State* _Origin, CFSM_State* _Dest, const string& _FuncName)
+void CFSM::SetInitState(string _StateName)
+{
+	auto iter = m_mapStates.find(_StateName);
+	if (iter != m_mapStates.end())
+	{
+		m_InitState = iter->second.first;
+	}
+}
+
+void CFSM::AddCondition(const string& _Origin, const string& _Dest, const string& _FuncName)
 {
 	TriggerFunc func = CFSMMgr::GetInst()->GetTriggerFunc(_FuncName);
-	if (func)
+	CFSM_State* pOS = nullptr;
+	CFSM_State* pDS = nullptr;
+	auto iterOS = m_mapStates.find(_Origin);
+	if (iterOS == m_mapStates.end())
+		pOS = CFSMMgr::GetInst()->CreateState(_Origin);
+	auto iterDS = m_mapStates.find(_Dest);
+	if (iterDS == m_mapStates.end())
+		pDS = CFSMMgr::GetInst()->CreateState(_Dest);
+	if (func != nullptr && pOS != nullptr && pDS != nullptr)
 	{
 		FSM_Condition* pCond = new FSM_Condition;
-		pCond->m_OriginState = _Origin;
-		pCond->m_DestState = _Dest;
+		pCond->m_OriginState = pOS;
+		pCond->m_DestState = pDS;
 		pCond->m_FuncName = _FuncName;
 		pCond->m_TriggerFunc = func;
 
-		auto iter = m_mapStates.find(typeid(*_Origin).name());
-		if (iter != m_mapStates.end())
+		
+		if (iterOS != m_mapStates.end())
 		{
-			++(iter->second.second);
+			++(iterOS->second.second);
 		}
 		else
 		{
-			m_mapStates.insert(make_pair(typeid(*_Origin).name(), make_pair(_Origin, 1)));
+			m_mapStates.insert(make_pair(_Origin, make_pair(pOS, 1)));
 		}
 
-		iter = m_mapStates.find(typeid(*_Dest).name());
-		if (iter != m_mapStates.end())
+		if (iterDS != m_mapStates.end())
 		{
-			++(iter->second.second);
+			++(iterDS->second.second);
 		}
 		else
 		{
-			m_mapStates.insert(make_pair(typeid(*_Dest).name(), make_pair(_Dest, 1)));
+			m_mapStates.insert(make_pair(_Dest, make_pair(pDS, 1)));
 		}
 	}
 }

@@ -30,6 +30,7 @@ struct FSM_Condition
 class CFSM :
     public CComponent
 {
+    friend class CFSMUI;
 public:
     CFSM();
     ~CFSM();
@@ -38,6 +39,7 @@ public:
 private:
     vector<FSM_Condition*>              m_vecCondition;
     CFSM_State*                         m_CurrentState;
+    CFSM_State*                         m_InitState;
     map<string, pair<CFSM_State*, int>> m_mapStates;    // FSM 컴포넌트가 사용하는 State 관리용 컨테이너. Condition 에서의 State 참조 수를 기록한다.
 
 public:
@@ -45,7 +47,9 @@ public:
     virtual int Load(fstream& _Stream) override;
     virtual int Save(fstream& _Stream) override;
 
-    void AddCondition(CFSM_State* _Origin, CFSM_State* _Dest, const string& _FuncName);
+    void SetInitState(string _StateName);
+
+    void AddCondition(const string& _Origin, const string& _Dest, const string& _FuncName);
     void DeleteCondition(int _Idx);
 
 };
