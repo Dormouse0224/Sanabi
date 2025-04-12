@@ -11,14 +11,9 @@ struct FSM_Condition
     FSM_Condition()
         : m_OriginState(nullptr)
         , m_DestState(nullptr)
+        , m_FuncName{}
         , m_TriggerFunc(nullptr)
     {
-    }
-
-    ~FSM_Condition()
-    {
-        delete m_OriginState;
-        delete m_DestState;
     }
 
     CFSM_State* m_OriginState;
@@ -44,6 +39,7 @@ private:
     map<string, pair<CFSM_State*, int>> m_mapStates;    // FSM 컴포넌트가 사용하는 State 관리용 컨테이너. Condition 에서의 State 참조 수를 기록한다.
 
 public:
+    virtual void Begin();
     virtual void FinalTick() override;
     virtual int Load(fstream& _Stream) override;
     virtual int Save(fstream& _Stream) override;

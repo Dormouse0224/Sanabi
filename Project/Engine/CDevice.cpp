@@ -3,6 +3,8 @@
 
 #include "CConstBuffer.h"
 #include "CTexture2D.h"
+
+#include "CLevelMgr.h"
 #include "CAssetMgr.h"
 
 
@@ -91,7 +93,11 @@ int CDevice::Init(HWND _OutputWnd, Vec2 _vResolution)
 
 void CDevice::ClearTarget()
 {
-    float Color[4] = { 0.3f, 0.3f, 0.3f, 1.f };
+    float rgb = 0.3f;
+    if (CLevel* pLevel = CLevelMgr::GetInst()->GetCurrentLevel(); pLevel)
+        if (pLevel->GetState() == LEVEL_STATE::PLAY)
+            rgb = 0.f;
+    float Color[4] = { rgb, rgb, rgb, 1.f };
     m_Context->ClearRenderTargetView(m_RenderTarget->GetRTV().Get(), Color);
     m_Context->ClearDepthStencilView(m_DepthStencil->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 }

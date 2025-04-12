@@ -168,6 +168,8 @@ call CodeGen.exe</Command>
   <ItemGroup>
     <ClInclude Include="CScriptInit.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="States\MainTitle_Bg_State_Loop.h" />
+    <ClInclude Include="States\MainTitle_Bg_State_Start.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Scripts\CCameraMoveScript.h" />
     <ClInclude Include="Scripts\CPlayerScript.h" />
@@ -176,6 +178,8 @@ call CodeGen.exe</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CScriptInit.cpp" />
+    <ClCompile Include="States\MainTitle_Bg_State_Loop.cpp" />
+    <ClCompile Include="States\MainTitle_Bg_State_Start.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

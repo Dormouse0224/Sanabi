@@ -52,6 +52,8 @@ CCamera::~CCamera()
 
 void CCamera::SetPriority(int _Priority)
 {
+	if (_Priority < 0)
+		return;
 	m_Priority = _Priority;
 	CRenderMgr::GetInst()->RegisterCamera(this, _Priority);
 }
@@ -59,7 +61,7 @@ void CCamera::SetPriority(int _Priority)
 
 void CCamera::FinalTick()
 {
-	if (!m_Registered && m_Priority != -1)
+	if (!m_Registered && m_Priority >= 0)
 		CRenderMgr::GetInst()->RegisterCamera(this, m_Priority);
 
 	// 뷰행렬 계산

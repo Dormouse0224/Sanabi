@@ -14,9 +14,6 @@ private:
 
 public:
     virtual void Tick() override;
-    virtual void BeginOverlap(CGameObject* _Other) override;
-    virtual void Overlap(CGameObject* _Other) override;
-    virtual void EndOverlap(CGameObject* _Other) override;
 
 public:
     virtual int Load(fstream& _Stream) override { return S_OK; }

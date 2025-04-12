@@ -96,21 +96,3 @@ void CPlayerScript::Tick()
 
 	pTrans->SetRelativePos(vPos);
 }
-
-
-void CPlayerScript::BeginOverlap(CGameObject* _Other)
-{
-
-}
-
-void CPlayerScript::Overlap(CGameObject* _Other)
-{
-	if (_Other->GetLayerIdx() == 4)
-	{
-		int a = 0;
-	}
-}
-
-void CPlayerScript::EndOverlap(CGameObject* _Other)
-{
-}

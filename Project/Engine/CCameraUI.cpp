@@ -73,6 +73,39 @@ void CCameraUI::Render_Com()
 
     //int         m_Priority;     // 카메라 우선순위, -1 : 미등록 카메라, 0 : 메인 카메라, 1 ~> : 서브 카메라
 
+    ImGui::Text("Camera Layer : %d", m_TargetObj->Camera()->GetPriority());
+    ImGui::SameLine();
+    if (ImGui::Button("Set Priority"))
+    {
+        ImGui::OpenPopup("SetPriority");
+    }
+    if (ImGui::BeginPopupModal("SetPriority"))
+    {
+        float tab = 130.f;
+        ImGui::Text("Set camera priority and register.");
+        ImGui::Text("0 is main camera, over 1 is sub camera.");
+        ImGui::Text("Below 0 will be ignored.");
+        ImGui::NewLine();
+
+        // Idx
+        static int Idx = 0;
+        ImGui::InputInt("##Idx", &Idx);
+
+        if (ImGui::Button("Apply"))
+        {
+            m_TargetObj->Camera()->SetPriority(Idx);
+            Idx = 0;
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Cancel"))
+        {
+            Idx = 0;
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+
     bool LayerCheck[(UINT)LAYER::END] = {};
     ImGui::Text("Camera Layer");
     if (ImGui::BeginTable("##CameraLayer", 1, ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders))

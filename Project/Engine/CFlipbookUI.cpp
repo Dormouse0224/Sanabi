@@ -25,6 +25,10 @@ void CFlipbookUI::Render_Ast()
     float tab = 130;
     static int sprite_current = 0;
     static int texture_current = 0;
+    if (sprite_current < 0)
+        sprite_current = 0;
+    if (texture_current < 0)
+        texture_current = 0;
 
     if (pFlipbook->GetSceneType() == SceneType::SPRITE)
     {

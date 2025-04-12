@@ -5,6 +5,7 @@
 #include "CCamera.h"
 #include "CPhysxActor.h"
 #include "CFSM.h"
+#include "CUICom.h"
 
 // ·»´õ ÄÄÆ÷³ÍÆ®
 #include "CMeshRender.h"

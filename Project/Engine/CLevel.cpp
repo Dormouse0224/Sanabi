@@ -106,8 +106,15 @@ void CLevel::Deregister()
 int CLevel::Save(wstring _FileName)
 {
 	wstring RelativePath = std::wstring(L"Level\\") + _FileName + std::wstring(L".level");
-	std::filesystem::path path = CPathMgr::GetContentDir() + RelativePath;
+	std::filesystem::path path = CPathMgr::GetContentDir() + RelativePath, backup = CPathMgr::GetContentDir() + RelativePath;
 	CPathMgr::CreateParentDir(path);
+
+	// 저장 실패를 대비해 백업
+	backup.replace_filename(_FileName + L"_backup.level");
+	if (filesystem::exists(path)) {
+		filesystem::copy_file(path, backup, filesystem::copy_options::overwrite_existing);
+	}
+
 	std::fstream file(path, std::ios::out | std::ios::binary);
 	if (!file.is_open())
 		return E_FAIL;
@@ -137,6 +144,10 @@ int CLevel::Load(wstring _FilePath)
 	std::fstream file(path, std::ios::in | std::ios::binary);
 	if (!file.is_open())
 		return E_FAIL;
+
+	wstring Name = path.filename().wstring();
+	Name = Name.substr(0, Name.find(path.extension()));
+	SetName(Name);
 
 	for (int i = 0; i < static_cast<int>(LAYER::END); ++i)
 	{

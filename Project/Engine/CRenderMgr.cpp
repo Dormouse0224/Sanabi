@@ -29,7 +29,7 @@ CRenderMgr::~CRenderMgr()
 		delete m_EditorCam;
 }
 
-void CRenderMgr::RegisterCamera(CCamera* _Cam, UINT _Priority)
+void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Priority)
 {
 	assert(_Priority >= 0);	// Priority 는 0 이상이어야 합니다.
 

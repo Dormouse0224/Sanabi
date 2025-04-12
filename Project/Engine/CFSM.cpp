@@ -23,31 +23,40 @@ CFSM::CFSM(const CFSM& _Other)
 {
 	for (const auto& cond : _Other.m_vecCondition)
 		AddCondition(typeid(*cond->m_OriginState).name(), typeid(*cond->m_DestState).name(), cond->m_FuncName);
-
-	m_InitState = CFSMMgr::GetInst()->CreateState(typeid(*_Other.m_InitState).name());
+	
+	m_InitState = m_mapStates.find(typeid(*_Other.m_InitState).name())->second.first;
 }
 
 CFSM::~CFSM()
 {
-	for (FSM_Condition* tCond : m_vecCondition)
-		delete tCond;
+	if (m_CurrentState)
+		m_CurrentState->End();
+	for (int i = 0; i < m_vecCondition.size(); ++i)
+		DeleteCondition(i);
+}
+
+void CFSM::Begin()
+{
+	m_CurrentState = m_InitState;
+	m_CurrentState->Begin();
 }
 
 void CFSM::FinalTick()
 {
-	if (!m_CurrentState)
-		m_CurrentState = m_InitState;
 
 	// 등록된 조건 검사 실행
 	for (FSM_Condition* tCond : m_vecCondition)
 	{
-		if (tCond->m_TriggerFunc(tCond->m_OriginState, tCond->m_DestState))
+		if (tCond->m_OriginState == m_CurrentState)
 		{
-			// 조건 만족 시 출발지/목적지 State 의 End/Begin 을 호출해 주고, 현재 State 를 갱신 후 반복문 즉시 종료
-			tCond->m_OriginState->End();
-			m_CurrentState = tCond->m_DestState;
-			tCond->m_DestState->Begin();
-			break;
+			if (tCond->m_TriggerFunc(tCond->m_OriginState, tCond->m_DestState))
+			{
+				// 조건 만족 시 출발지/목적지 State 의 End/Begin 을 호출해 주고, 현재 State 를 갱신 후 반복문 즉시 종료
+				tCond->m_OriginState->End();
+				m_CurrentState = tCond->m_DestState;
+				tCond->m_DestState->Begin();
+				break;
+			}
 		}
 	}
 
@@ -84,12 +93,15 @@ int CFSM::Load(fstream& _Stream)
 	}
 
 	// 초기 상태 불러오기
-	std::string ClassName = 0;
+	std::string ClassName = "";
 	size = 0;
 	_Stream.read(reinterpret_cast<char*>(&size), sizeof(int));
-	ClassName.resize(0);
-	_Stream.read(reinterpret_cast<char*>(ClassName.data()), sizeof(char) * size);
-	SetInitState(ClassName);
+	if (size > 0)
+	{
+		ClassName.resize(size);
+		_Stream.read(reinterpret_cast<char*>(ClassName.data()), sizeof(char) * size);
+		SetInitState(ClassName);
+	}
 
 	return S_OK;
 }
@@ -117,10 +129,17 @@ int CFSM::Save(fstream& _Stream)
 	}
 
 	// 초기 상태 저장
-	std::string ClassName = typeid(*m_InitState).name();
-	size = ClassName.size();
-	_Stream.write(reinterpret_cast<char*>(&size), sizeof(int));
-	_Stream.write(reinterpret_cast<char*>(ClassName.data()), sizeof(char) * size);
+	size = 0;
+	if (m_InitState)
+	{
+		std::string ClassName = typeid(*m_InitState).name();
+		size = ClassName.size();
+		_Stream.write(reinterpret_cast<char*>(&size), sizeof(int));
+		_Stream.write(reinterpret_cast<char*>(ClassName.data()), sizeof(char) * size);
+	}
+	else
+		_Stream.write(reinterpret_cast<char*>(&size), sizeof(int));
+
 
 	return S_OK;
 }
@@ -142,9 +161,13 @@ void CFSM::AddCondition(const string& _Origin, const string& _Dest, const string
 	auto iterOS = m_mapStates.find(_Origin);
 	if (iterOS == m_mapStates.end())
 		pOS = CFSMMgr::GetInst()->CreateState(_Origin);
+	else
+		pOS = iterOS->second.first;
 	auto iterDS = m_mapStates.find(_Dest);
 	if (iterDS == m_mapStates.end())
 		pDS = CFSMMgr::GetInst()->CreateState(_Dest);
+	else
+		pDS = iterDS->second.first;
 	if (func != nullptr && pOS != nullptr && pDS != nullptr)
 	{
 		FSM_Condition* pCond = new FSM_Condition;
@@ -152,7 +175,7 @@ void CFSM::AddCondition(const string& _Origin, const string& _Dest, const string
 		pCond->m_DestState = pDS;
 		pCond->m_FuncName = _FuncName;
 		pCond->m_TriggerFunc = func;
-
+		m_vecCondition.push_back(pCond);
 		
 		if (iterOS != m_mapStates.end())
 		{
@@ -160,6 +183,7 @@ void CFSM::AddCondition(const string& _Origin, const string& _Dest, const string
 		}
 		else
 		{
+			pOS->SetOwner(this);
 			m_mapStates.insert(make_pair(_Origin, make_pair(pOS, 1)));
 		}
 
@@ -169,6 +193,7 @@ void CFSM::AddCondition(const string& _Origin, const string& _Dest, const string
 		}
 		else
 		{
+			pDS->SetOwner(this);
 			m_mapStates.insert(make_pair(_Dest, make_pair(pDS, 1)));
 		}
 	}
@@ -182,6 +207,7 @@ void CFSM::DeleteCondition(int _Idx)
 		--(iter->second.second);
 		if (iter->second.second == 0)
 		{
+			delete iter->second.first;
 			m_mapStates.erase(iter);
 		}
 
@@ -189,9 +215,11 @@ void CFSM::DeleteCondition(int _Idx)
 		--(iter->second.second);
 		if (iter->second.second == 0)
 		{
+			delete iter->second.first;
 			m_mapStates.erase(iter);
 		}
 
+		delete m_vecCondition[_Idx];
 		m_vecCondition.erase(m_vecCondition.begin() + _Idx);
 	}
 }

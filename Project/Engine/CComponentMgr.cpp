@@ -53,6 +53,12 @@ CComponent* CComponentMgr::CreateComp(COMPONENT_TYPE _Type)
     case COMPONENT_TYPE::PHYSXACTOR:
         return new CPhysxActor;
         break;
+    case COMPONENT_TYPE::FSM:
+        return new CFSM;
+        break;
+    case COMPONENT_TYPE::UICOM:
+        return new CUICom;
+        break;
     case COMPONENT_TYPE::COLLIDER3D:
         break;
     case COMPONENT_TYPE::BOUNDINGBOX:
@@ -80,10 +86,7 @@ CComponent* CComponentMgr::CreateComp(COMPONENT_TYPE _Type)
         break;
     case COMPONENT_TYPE::LANDSCAPE:
         break;
-    case COMPONENT_TYPE::COMPONENT_END:
-        break;
-    case COMPONENT_TYPE::SCRIPT:
-        break;
+
     }
 
     return nullptr;

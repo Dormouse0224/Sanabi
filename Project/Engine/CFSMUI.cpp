@@ -49,10 +49,16 @@ void CFSMUI::Render_Com()
 	ImGui::NewLine();
 	ImGui::Text("Current State : ");
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(0.2f, 0.2f, 0.6f, 1.f), typeid(*m_TargetObj->FSM()->m_CurrentState).name());
+	if (m_TargetObj->FSM()->m_CurrentState)
+		ImGui::TextColored(ImVec4(0.2f, 0.2f, 0.6f, 1.f), typeid(*m_TargetObj->FSM()->m_CurrentState).name());
+	else
+		ImGui::Text("N/A");
 	ImGui::Text("Init State : ");
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(0.2f, 0.6f, 0.2f, 1.f), typeid(*m_TargetObj->FSM()->m_InitState).name());
+	if (m_TargetObj->FSM()->m_InitState)
+		ImGui::TextColored(ImVec4(0.2f, 0.6f, 0.2f, 1.f), typeid(*m_TargetObj->FSM()->m_InitState).name());
+	else
+		ImGui::Text("N/A");
 
 	if (ImGui::Button("Add Condition"))
 	{
@@ -70,11 +76,11 @@ void CFSMUI::Render_Com()
 		
 		// Dest State
 		static int DSIdx = 0;
-		ImGui::Combo("##OriginState", &DSIdx, CFSMMgr::GetInst()->GetStateRegistryList().data(), CFSMMgr::GetInst()->GetStateRegistryList().size());
+		ImGui::Combo("##DestState", &DSIdx, CFSMMgr::GetInst()->GetStateRegistryList().data(), CFSMMgr::GetInst()->GetStateRegistryList().size());
 
 		// Trigger Func
 		static int TFIdx = 0;
-		ImGui::Combo("##OriginState", &TFIdx, CFSMMgr::GetInst()->GetTriggerRegistryList().data(), CFSMMgr::GetInst()->GetTriggerRegistryList().size());
+		ImGui::Combo("##TriggerFunc", &TFIdx, CFSMMgr::GetInst()->GetTriggerRegistryList().data(), CFSMMgr::GetInst()->GetTriggerRegistryList().size());
 
 		if (ImGui::Button("Add"))
 		{

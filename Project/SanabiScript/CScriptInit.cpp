@@ -14,6 +14,8 @@
 #include "Scripts\CCameraMoveScript.h"
 #include "Scripts\CPlayerScript.h"
 
+#include "States\MainTitle_Bg_State_Loop.h"
+#include "States\MainTitle_Bg_State_Start.h"
 
 void CScriptInit::ScriptInit()
 {
@@ -23,7 +25,9 @@ void CScriptInit::ScriptInit()
 
 void CScriptInit::FSMInit()
 {
+	REGISTER_STATE(MainTitle_Bg_State_Loop);
+	REGISTER_STATE(MainTitle_Bg_State_Start);
 
-	REGISTER_TRIGGER(foo);
+	REGISTER_TRIGGER(MainTitle_Bg_Start_Loop);
 }
 
