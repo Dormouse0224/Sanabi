@@ -46,14 +46,14 @@ void CUICom::FinalTick()
 	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::MOUSE_LBTN) == Key_state::PRESSED && m_MouseHover && m_Clicked)
 	{
 		if (m_KeydownEvent)
-			m_KeydownEvent();
+			m_KeydownEvent(GetOwner());
 	}
 
 	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::MOUSE_LBTN) == Key_state::RELEASE && m_MouseHover && m_Clicked)
 	{
 		m_Clicked = false;
 		if (m_ClickEvent)
-			m_ClickEvent();
+			m_ClickEvent(GetOwner());
 	}
 
 	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::MOUSE_LBTN) == Key_state::NONE)

@@ -26,6 +26,7 @@
     <ClInclude Include="TriggerFunc.h" />
     <ClInclude Include="States\MainTitle_Bg_State_Start.h" />
     <ClInclude Include="States\MainTitle_Bg_State_Loop.h" />
+    <ClInclude Include="Scripts\MainTitleBgScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -42,5 +43,6 @@
     <ClCompile Include="TriggerFunc.cpp" />
     <ClCompile Include="States\MainTitle_Bg_State_Start.cpp" />
     <ClCompile Include="States\MainTitle_Bg_State_Loop.cpp" />
+    <ClCompile Include="Scripts\MainTitleBgScript.cpp" />
   </ItemGroup>
 </Project>

@@ -129,7 +129,7 @@ void CImguiMgr::AddGameObjectMenuPopup()
             layerstr[i] = to_str(LAYER_WSTR[i]);
             layer[i] = layerstr[i].c_str();
         }
-        ImGui::Combo("##Topology", &layeridx, layer, static_cast<int>(LAYER::END));
+        ImGui::Combo("##Layer", &layeridx, layer, static_cast<int>(LAYER::END));
 
         if (ImGui::Button("Add"))
         {
@@ -142,6 +142,7 @@ void CImguiMgr::AddGameObjectMenuPopup()
         ImGui::SameLine();
         if (ImGui::Button("Cancel"))
         {
+            layeridx = 0;
             memset(Name, 0, sizeof(Name));
             ImGui::CloseCurrentPopup();
         }

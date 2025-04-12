@@ -5,6 +5,7 @@
 #include "CLevelMgr.h"
 #include "CTimeMgr.h"
 
+#include "CEngine.h"
 #include "CLevel.h"
 #include "CInspector.h"
 #include "COutliner.h"
@@ -116,6 +117,13 @@ void CImguiMgr::DebugMenuBar()
         if (ImGui::BeginMenu("Tool"))
         {
             ImGui::MenuItem("Demo Window", nullptr, &m_DemoActive);
+
+            if (ImGui::MenuItem("Sound Clear"))
+            {
+                FMOD::ChannelGroup* master = nullptr;
+                CEngine::GetInst()->GetFMODSystem()->getMasterChannelGroup(&master);
+                master->stop();
+            }
 
             if (ImGui::MenuItem("Inspector"))
             {

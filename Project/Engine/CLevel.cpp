@@ -46,6 +46,14 @@ void CLevel::Begin()
 	}
 }
 
+void CLevel::End()
+{
+	for (UINT i = 0; i < (UINT)LAYER::END; ++i)
+	{
+		m_Layer[i]->End();
+	}
+}
+
 void CLevel::Tick()
 {
 	for (UINT i = 0; i < (UINT)LAYER::END; ++i)
@@ -84,6 +92,7 @@ void CLevel::SetState(LEVEL_STATE _State)
 	else if (_State == LEVEL_STATE::STOP)
 	{
 		m_State = _State;
+		End();
 		CTaskMgr::GetInst()->AddTask(TASK_TYPE::CHANGE_LEVEL, reinterpret_cast<DWORD_PTR>(CLevelMgr::GetInst()->GetPlayStartLevel()), NULL);
 	}
 	else

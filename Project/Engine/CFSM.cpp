@@ -29,16 +29,23 @@ CFSM::CFSM(const CFSM& _Other)
 
 CFSM::~CFSM()
 {
-	if (m_CurrentState)
-		m_CurrentState->End();
 	for (int i = 0; i < m_vecCondition.size(); ++i)
 		DeleteCondition(i);
 }
 
 void CFSM::Begin()
 {
-	m_CurrentState = m_InitState;
-	m_CurrentState->Begin();
+	if (m_InitState)
+	{
+		m_CurrentState = m_InitState;
+		m_CurrentState->Begin();
+	}
+}
+
+void CFSM::End()
+{
+	if (m_CurrentState)
+		m_CurrentState->Begin();
 }
 
 void CFSM::FinalTick()

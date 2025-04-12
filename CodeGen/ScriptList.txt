@@ -1,4 +1,5 @@
 CCameraMoveScript
 CPlayerScript
+MainTitleBgScript
 MainTitle_Bg_State_Loop
 MainTitle_Bg_State_Start

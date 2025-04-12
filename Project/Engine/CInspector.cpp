@@ -111,19 +111,72 @@ void CInspector::Render()
 			ImGui::InputText("##Layer", const_cast<char*>(to_str(LAYER_WSTR[m_TargetObj->GetLayerIdx()]).c_str())
 			, to_str(LAYER_WSTR[m_TargetObj->GetLayerIdx()]).size() + 1, ImGuiInputTextFlags_ReadOnly);
 
+		// 레이어 변경 버튼
+		ImGui::SameLine();
+		if (ImGui::Button("Change.."))
+		{
+			ImGui::OpenPopup("ChangeLayer");
+		}
+		if (ImGui::BeginPopupModal("ChangeLayer", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			float tab = 130.f;
+			ImGui::Text("Change layer.");
+			ImGui::NewLine();
+
+			// 레이어 입력
+			ImGui::Text("Layer select");
+			static int layeridx = 0;
+			string layerstr[static_cast<int>(LAYER::END)] = {};
+			const char* layer[static_cast<int>(LAYER::END)] = {};
+			for (int i = 0; i < static_cast<int>(LAYER::END); ++i)
+			{
+				layerstr[i] = to_str(LAYER_WSTR[i]);
+				layer[i] = layerstr[i].c_str();
+			}
+			ImGui::Combo("##Layer", &layeridx, layer, static_cast<int>(LAYER::END));
+
+			ImGui::Text("Move child?");
+			ImGui::SameLine();
+			static bool Childmove = false;
+			ImGui::Checkbox("##childmove", &Childmove);
+
+			if (ImGui::Button("Change"))
+			{
+				m_TargetObj->ChangeLayer(static_cast<LAYER>(layeridx), Childmove);
+				Childmove = false;
+				layeridx = 0;
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel"))
+			{
+				Childmove = false;
+				layeridx = 0;
+				ImGui::CloseCurrentPopup();
+			}
+
+
+			ImGui::EndPopup();
+		}
+
 		// 컴포넌트 정보 표기
+		ImGui::Separator(); ImGui::SeparatorText("Component"); ImGui::Separator();
 		for (int i = 0; i < (UINT)COMPONENT_TYPE::COMPONENT_END; ++i)
 		{
 			if (m_TargetObj->GetComponent((COMPONENT_TYPE)i))
 			{
 				if (m_ComponentUI[i] == nullptr)
 					continue;
-				m_TargetAsset;
 				m_ComponentUI[i]->Render();
 			}
 		}
 
 		// 스크립트 정보 표기
+		ImGui::Separator(); ImGui::SeparatorText("Script"); ImGui::Separator();
+		for (const auto pScript : m_TargetObj->GetScripts())
+		{
+			pScript->Render();
+		}
 
 
 		// 오브젝트 프리펩화
@@ -133,7 +186,8 @@ void CInspector::Render()
 			AssetPtr<CPrefab> prefab = new CPrefab;
 			prefab->ConvertToPrefab(m_TargetObj);
 		}
-
+		
+		// 컴포넌트 추가 버튼
 		ImGui::SameLine();
 		if (ImGui::Button("Add Component"))
 		{
@@ -143,8 +197,6 @@ void CInspector::Render()
 		{
 			float tab = 130.f;
 			ImGui::Text("Add component to GameObject.");
-			ImGui::Text("Do not enter extention.");
-			ImGui::Text("Directory folders and extention will automatically decided.");
 			ImGui::NewLine();
 
 			// 레이어 입력
@@ -175,6 +227,41 @@ void CInspector::Render()
 
 			ImGui::EndPopup();
 		}
+
+		// 컴포넌트 추가 버튼
+		ImGui::SameLine();
+		if (ImGui::Button("Add Script"))
+		{
+			ImGui::OpenPopup("AddScript");
+		}
+		if (ImGui::BeginPopupModal("AddScript", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			float tab = 130.f;
+			ImGui::Text("Add script to GameObject.");
+			ImGui::NewLine();
+
+			// 레이어 입력
+			ImGui::Text("Script select");
+			static int ScrIdx = 0;
+			vector<const char*> vec = CComponentMgr::GetInst()->GetScriptRegistryList();
+			ImGui::Combo("##Script", &ScrIdx, vec.data(), vec.size());
+
+			// 저장/취소 버튼
+			if (ImGui::Button("Add"))
+			{
+				m_TargetObj->AddComponent(CComponentMgr::GetInst()->CreateScript(vec[ScrIdx]));
+				ScrIdx = 0;
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel"))
+			{
+				ScrIdx = 0;
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
+		}
 	}
 		break;
 	case TARGET_TYPE::ASSET:
@@ -189,7 +276,7 @@ void CInspector::Render()
 			pAssetUI->Render();
 		}
 
-		// 에셋을 파일로 저장
+		// 에셋을 파일로 저장 버튼
 		ImGui::Separator();
 		if (ImGui::Button("Save"))
 		{
@@ -201,6 +288,7 @@ void CInspector::Render()
 			}
 		}
 
+		//  다른이름으로 저장 버튼
 		ImGui::SameLine();
 		if (ImGui::Button("Save As.."))
 		{

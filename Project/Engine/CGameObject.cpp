@@ -133,6 +133,25 @@ void CGameObject::Begin()
 	}
 }
 
+void CGameObject::End()
+{
+	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::COMPONENT_END; ++i)
+	{
+		if (nullptr != m_Com[i])
+			m_Com[i]->End();
+	}
+
+	for (size_t i = 0; i < m_vecScript.size(); ++i)
+	{
+		m_vecScript[i]->End();
+	}
+
+	for (size_t i = 0; i < m_vecChild.size(); ++i)
+	{
+		m_vecChild[i]->End();
+	}
+}
+
 void CGameObject::Tick()
 {
 	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::COMPONENT_END; ++i)
@@ -321,4 +340,14 @@ CGameObject* CGameObject::FindChild(wstring _Name)
 void CGameObject::Destroy()
 {
 	CTaskMgr::GetInst()->AddTask(TASK_TYPE::DELETE_OBJECT, (DWORD_PTR)this, (DWORD_PTR)nullptr);
+}
+
+void CGameObject::ChangeLayer(LAYER _Dest, bool _CHildMove)
+{
+	m_LayerIdx = static_cast<int>(_Dest);
+	if (_CHildMove)
+	{
+		for (const auto& pChild : m_vecChild)
+			pChild->ChangeLayer(_Dest, _CHildMove);
+	}
 }

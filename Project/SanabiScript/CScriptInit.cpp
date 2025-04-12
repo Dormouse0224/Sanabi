@@ -13,6 +13,7 @@
 
 #include "Scripts\CCameraMoveScript.h"
 #include "Scripts\CPlayerScript.h"
+#include "Scripts\MainTitleBgScript.h"
 
 #include "States\MainTitle_Bg_State_Loop.h"
 #include "States\MainTitle_Bg_State_Start.h"
@@ -21,6 +22,7 @@ void CScriptInit::ScriptInit()
 {
 	REGISTER_SCRIPT(CCameraMoveScript);
 	REGISTER_SCRIPT(CPlayerScript);
+	REGISTER_SCRIPT(MainTitleBgScript);
 }
 
 void CScriptInit::FSMInit()

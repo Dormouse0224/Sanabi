@@ -38,5 +38,9 @@ public:
 	CGameObject* AddGameObject(wstring _Name, LAYER _Layer);
 	void ChangeLevel(CLevel* _NextLevel);
 
+	CGameObject* FindObject(LAYER _Layer, wstring _Name);
+	CGameObject* DeleteObject(LAYER _Layer, wstring _Name);
+	CGameObject* AddObject(LAYER _Layer, wstring _Name);
+
 };
 

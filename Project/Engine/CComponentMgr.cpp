@@ -4,7 +4,7 @@
 #include "CAssetMgr.h"
 
 CComponentMgr::CComponentMgr()
-    : m_SrciptRegistry{}
+    : m_ScriptRegistry{}
     , m_ScriptInitFunc(nullptr)
 {
 }
@@ -21,18 +21,26 @@ void CComponentMgr::Init()
     }
 }
 
+vector<const char*> CComponentMgr::GetScriptRegistryList()
+{
+    vector<const char*> vec;
+    for (const auto& pair : m_ScriptRegistry)
+        vec.push_back(pair.first.data());
+    return vec;
+}
+
 void CComponentMgr::RegisterScript(const std::string& className, ScriptCreateFunc func)
 {
-    auto iter = m_SrciptRegistry.find(className);
-    if (iter != m_SrciptRegistry.end())
+    auto iter = m_ScriptRegistry.find(className);
+    if (iter != m_ScriptRegistry.end())
         return;
-    m_SrciptRegistry.insert(make_pair(className, func));
+    m_ScriptRegistry.insert(make_pair(className, func));
 }
 
 CScript* CComponentMgr::CreateScript(const std::string& className)
 {
-    auto iter = m_SrciptRegistry.find(className);
-    if (iter != m_SrciptRegistry.end())
+    auto iter = m_ScriptRegistry.find(className);
+    if (iter != m_ScriptRegistry.end())
     {
         return iter->second();
     }

@@ -15,5 +15,9 @@ public:
 public:
     virtual void Tick() = 0;
     virtual void FinalTick() final {}
+    virtual int Save(fstream& _Stream) = 0;
+    virtual int Load(fstream& _Stream) = 0;
+    void Render();
+    virtual void Render_Script();
 };
 

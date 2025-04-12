@@ -22,6 +22,7 @@ private:
 
 public:
     void Begin();
+    void End();
     void Tick();
     void FinalTick();
 

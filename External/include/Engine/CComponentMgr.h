@@ -13,11 +13,13 @@ class CComponentMgr
 {
 	SINGLE(CComponentMgr);
 private:
-	std::map<std::string, ScriptCreateFunc>		m_SrciptRegistry;
+	std::map<std::string, ScriptCreateFunc>		m_ScriptRegistry;
 	ScriptInit									m_ScriptInitFunc;
 
 public:
 	void Init();
+
+	vector<const char*> GetScriptRegistryList();
 
 	// Engine 하위 라이브러리에서 정의된 스크립트를 등록해주는 함수를 세팅하고, 초기화를 진행합니다.
 	void SetScriptInitFunc(ScriptInit _ScriptInitFunc) { m_ScriptInitFunc = _ScriptInitFunc; Init(); }

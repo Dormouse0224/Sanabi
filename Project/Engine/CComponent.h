@@ -38,6 +38,7 @@ protected:
 
 public:
     virtual void Begin() {};
+    virtual void End() {};
     virtual void Tick() {};
     virtual void FinalTick() = 0;
 

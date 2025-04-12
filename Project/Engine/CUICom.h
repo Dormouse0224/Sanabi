@@ -2,7 +2,7 @@
 #include "CComponent.h"
 
 // 이벤트 함수
-typedef void (*UIEventFunc)();
+typedef void (*UIEventFunc)(CGameObject* _Owner);
 
 class CUICom :
     public CComponent

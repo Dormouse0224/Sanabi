@@ -6,6 +6,7 @@
 
 #include "CLevel.h"
 #include "CGameObject.h"
+#include "CLayer.h"
 
 CLevelMgr::CLevelMgr()
 	: m_CurLevel(nullptr)
@@ -100,4 +101,15 @@ void CLevelMgr::ChangeLevel(CLevel* _NextLevel)
 
 	if (m_CurLevel == m_PlayStartLevel)
 		m_PlayStartLevel = nullptr;
+}
+
+CGameObject* CLevelMgr::FindObject(LAYER _Layer, wstring _Name)
+{
+	const auto& vec = m_CurLevel->GetLayer(static_cast<int>(_Layer))->GetObjects();
+	for (const auto pObj : vec)
+	{
+		if (pObj->GetName() == _Name)
+			return pObj;
+	}
+	return nullptr;
 }

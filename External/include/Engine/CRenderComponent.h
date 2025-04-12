@@ -27,10 +27,12 @@ private:
 public:
     void SetMesh(AssetPtr<CMesh> _Mesh) { m_Mesh = _Mesh; }
     void SetMaterial(AssetPtr<CMaterial> _Mtrl) { m_DefaultMtrl = _Mtrl; }
+    // 동일한 재질을 공유 사용중인 다른 오브젝트에 영향을 주지 않도록 해당 오브젝트 전용의 동적 재질을 생성합니다.
+    // 이미 동적 재질이 있으면 새로 생성하지 않으며, Level 이 Play 모드일 때만 활성화됩니다.
     void SetDynamic(bool _UsingDynamic);
 
     AssetPtr<CMesh> GetMesh() { return m_Mesh; }
-    // 현재 RenderComponent 의 Material 상태 여부에 따라 기본 재질 또는 동적 재질을 반환합니다.
+    // 현재 RenderComponent 의 동적 재질 사용 여부에 따라 기본 재질 또는 동적 재질을 반환합니다.
     AssetPtr<CMaterial> GetMaterial();
     
 

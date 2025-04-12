@@ -10,9 +10,23 @@
 
 CMaterial::CMaterial()
 	: CAsset(ASSET_TYPE::MATERIAL)
+	, m_Shader(nullptr)
+	, m_arrTex{}
 	, m_Const{}
 {
 
+}
+
+CMaterial::CMaterial(const CMaterial& _Other)
+	: CAsset(_Other)
+	, m_Shader(_Other.m_Shader)
+	, m_arrTex{}
+	, m_Const{}
+{
+	for (int i = 0; i < TEX_END; ++i)
+	{
+		SetTexParam(static_cast<TEX_PARAM>(i), _Other.m_arrTex[i]);
+	}
 }
 
 CMaterial::~CMaterial()

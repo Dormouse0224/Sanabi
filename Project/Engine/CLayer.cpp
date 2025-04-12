@@ -39,6 +39,14 @@ void CLayer::Begin()
 	}
 }
 
+void CLayer::End()
+{
+	for (size_t i = 0; i < m_vecParentObjects.size(); ++i)
+	{
+		m_vecParentObjects[i]->End();
+	}
+}
+
 void CLayer::Tick()
 {
 	for (size_t i = 0; i < m_vecParentObjects.size(); ++i)

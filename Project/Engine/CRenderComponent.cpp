@@ -30,7 +30,7 @@ void CRenderComponent::SetDynamic(bool _UsingDynamic)
 		if (LEVEL_STATE::PLAY != CLevelMgr::GetInst()->GetCurrentLevel()->GetState())
 			return;
 
-		if (m_DynamicMtrl != nullptr)
+		if (m_DynamicMtrl == nullptr)
 		{
 			m_DynamicMtrl = m_DefaultMtrl->Clone();
 		}

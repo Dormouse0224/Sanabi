@@ -11,6 +11,7 @@ class CAsset :
 
 public:
     CAsset(ASSET_TYPE _Type);
+    CAsset(const CAsset& _Other);
     ~CAsset();
     virtual CAsset* Clone() = 0;
 

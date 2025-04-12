@@ -40,9 +40,12 @@ private:
 
 public:
     virtual void Begin();
+    virtual void End();
     virtual void FinalTick() override;
     virtual int Load(fstream& _Stream) override;
     virtual int Save(fstream& _Stream) override;
+
+    CFSM_State* GetCurrentState() { return m_CurrentState; }
 
     void SetInitState(string _StateName);
 
