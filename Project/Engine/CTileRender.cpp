@@ -61,7 +61,8 @@ void CTileRender::Render()
 
 	GetMaterial()->Binding();
 
-	// 타일정보를 저장하고있는 구조화버퍼 바인딩
+	// 타일정보를 저장하고있는 구조화버퍼 바인딩 - 업데이트 오버헤드가 문제될 수도 있음
+	UpdateBuffer();
 	m_GpuBuffer->Binding(20);
 
 	// 렌더링 시작
