@@ -27,6 +27,7 @@
     <ClInclude Include="States\MainTitle_Bg_State_Start.h" />
     <ClInclude Include="States\MainTitle_Bg_State_Loop.h" />
     <ClInclude Include="Scripts\MainTitleBgScript.h" />
+    <ClInclude Include="Scripts\MainTitle_StartBtn_Script.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -44,5 +45,6 @@
     <ClCompile Include="States\MainTitle_Bg_State_Start.cpp" />
     <ClCompile Include="States\MainTitle_Bg_State_Loop.cpp" />
     <ClCompile Include="Scripts\MainTitleBgScript.cpp" />
+    <ClCompile Include="Scripts\MainTitle_StartBtn_Script.cpp" />
   </ItemGroup>
 </Project>

@@ -53,8 +53,11 @@ void DrawDebugCircle(Vec4 _Color, Vec3 _WorldPos, float _Radius, Vec3 _WorldRota
 bool IsRenderable(CGameObject* obj)
 {
 	auto* render = obj->GetRenderComponent();
-	return render &&
-		render->GetMesh().Get() &&
-		render->GetMaterial().Get() &&
-		render->GetMaterial()->GetShader().Get();
+	if (render != nullptr
+		&& render->GetMesh().Get() != nullptr
+		&& render->GetMaterial().Get() != nullptr
+		&& render->GetMaterial()->GetShader().Get() != nullptr)
+		return true;
+	else
+		return false;
 }

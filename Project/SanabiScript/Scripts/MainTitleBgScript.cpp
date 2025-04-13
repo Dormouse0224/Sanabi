@@ -43,6 +43,6 @@ void MainTitleBgScript::Tick()
 			}
 		}
 	}
-	GetOwner()->GetRenderComponent()->SetDynamic(true);
+	//GetOwner()->GetRenderComponent()->SetDynamic(true);
 	GetOwner()->GetRenderComponent()->GetMaterial()->SetScalarParam(FLOAT_0, m_Timer);
 }
