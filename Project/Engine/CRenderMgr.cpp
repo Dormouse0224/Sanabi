@@ -49,6 +49,12 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Priority)
 	m_vecCam[_Priority]->m_Registered = true;
 }
 
+void CRenderMgr::ResetEditorCamPos()
+{
+	m_EditorCam->Transform()->SetRelativePos(0, 0, 0);
+	m_EditorCam->Transform()->SetRelativeRot(0, 0, 0);
+}
+
 
 void CRenderMgr::Tick()
 {

@@ -211,7 +211,7 @@ void CCamera::SortObject()
 		for (size_t j = 0; j < vecObjects.size(); ++j)
 		{
 			// 레이어 안에있는 물체들 중에서 렌더링 기능이 없는 물체는 거른다.
-			if (IsRenderable(vecObjects[j]) && vecObjects[j]->GetComponent(COMPONENT_TYPE::UICOM) == nullptr)
+			if (!IsRenderable(vecObjects[j]) && vecObjects[j]->GetComponent(COMPONENT_TYPE::UICOM) == nullptr)
 				continue;
 
 			if (IsRenderable(vecObjects[j]))

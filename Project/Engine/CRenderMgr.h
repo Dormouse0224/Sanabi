@@ -21,6 +21,7 @@ public:
 	void RegisterCamera(CCamera* _Cam, int _Priority);
 	void AddDebugShapeInfo(const tDebugShapeInfo& _info) { m_vecDebugInfo.push_back(_info); }
 	void ClearCamera() { m_vecCam.clear(); }
+	void ResetEditorCamPos();
 
 public:
 	void Init();

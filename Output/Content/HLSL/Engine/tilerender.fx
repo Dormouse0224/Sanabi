@@ -6,6 +6,8 @@
 struct TileInfo
 {
     float2 vLeftTop;
+    
+    int padding[2];
 };
 
 StructuredBuffer<TileInfo> g_TileInfo : register(t20);
@@ -13,6 +15,7 @@ StructuredBuffer<TileInfo> g_TileInfo : register(t20);
 #define ATLAS_TEX g_tex_0
 
 #define TileSize   g_vec2_0
+#define AtlasSize  g_vec2_1
 
 #define MAX_COL   g_int_0
 #define MAX_ROW   g_int_1
@@ -35,7 +38,7 @@ VS_OUT VS_TileRender(VS_IN _in)
     VS_OUT output = (VS_OUT) 0.f;
                 
     
-    _in.vPos.xy += float2(0.5f, -0.5f);
+    //_in.vPos.xy += float2(0.5f, -0.5f);
     output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
     output.vUV = _in.vUV * float2(MAX_COL, MAX_ROW);
     
@@ -54,7 +57,7 @@ float4 PS_TileRender(VS_OUT _in) : SV_Target
     if (g_TileInfo[idx].vLeftTop.x == -1.f)
         vColor = float4(0.f, 0.f, 0.f, 0.f);
     else
-        vColor = ATLAS_TEX.Sample(g_sam_1, g_TileInfo[idx].vLeftTop + (TileSize * vSampleUV));
+        vColor = ATLAS_TEX.Sample(g_sam_1, (g_TileInfo[idx].vLeftTop + (TileSize * vSampleUV)) / AtlasSize);
     
     if (0.f == vColor.a)
         discard;

@@ -60,9 +60,12 @@ int CRenderComponent::RenderCom_Load(fstream& _Stream)
 	std::wstring MeshName = {};
 	int size = 0;
 	_Stream.read(reinterpret_cast<char*>(&size), sizeof(int));
-	MeshName.resize(size);
-	_Stream.read(reinterpret_cast<char*>(MeshName.data()), sizeof(wchar_t) * size);
-	m_Mesh = CAssetMgr::GetInst()->Load<CMesh>(MeshName);
+	if (size > 0)
+	{
+		MeshName.resize(size);
+		_Stream.read(reinterpret_cast<char*>(MeshName.data()), sizeof(wchar_t) * size);
+		m_Mesh = CAssetMgr::GetInst()->Load<CMesh>(MeshName);
+	}
 
 	std::wstring MtrlName = {};
 	size = 0;
@@ -82,10 +85,16 @@ int CRenderComponent::RenderCom_Save(fstream& _Stream)
 	if (!_Stream.is_open())
 		return E_FAIL;
 
-	std::wstring MeshName = m_Mesh->GetName();
-	int size = MeshName.size();
-	_Stream.write(reinterpret_cast<char*>(&size), sizeof(int));
-	_Stream.write(reinterpret_cast<char*>(MeshName.data()), sizeof(wchar_t) * size);
+	int size = 0;
+	if (m_Mesh.Get())
+	{
+		std::wstring MeshName = m_Mesh->GetName();
+		size = MeshName.size();
+		_Stream.write(reinterpret_cast<char*>(&size), sizeof(int));
+		_Stream.write(reinterpret_cast<char*>(MeshName.data()), sizeof(wchar_t) * size);
+	}
+	else
+		_Stream.write(reinterpret_cast<char*>(&size), sizeof(int));
 
 	size = 0;
 	if (m_DefaultMtrl.Get())

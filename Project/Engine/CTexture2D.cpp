@@ -67,6 +67,9 @@ int CTexture2D::Load(const wstring& _FilePath)
 	// SRV 로 Tex2D 주소를 알아낸다.
 	m_SRV->GetResource((ID3D11Resource**)m_Tex2D.GetAddressOf());
 
+	// Desc 정보 받아오기
+	m_Tex2D->GetDesc(&m_Desc);
+
 	DEBUG_NAME(m_Tex2D, "CTexture_Tex2D");
 
 	return S_OK;

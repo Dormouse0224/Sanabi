@@ -4,6 +4,7 @@
 #include "CTaskMgr.h"
 #include "CLevelMgr.h"
 #include "CTimeMgr.h"
+#include "CRenderMgr.h"
 
 #include "CEngine.h"
 #include "CLevel.h"
@@ -123,6 +124,11 @@ void CImguiMgr::DebugMenuBar()
                 FMOD::ChannelGroup* master = nullptr;
                 CEngine::GetInst()->GetFMODSystem()->getMasterChannelGroup(&master);
                 master->stop();
+            }
+
+            if (ImGui::MenuItem("Reset EditorCam"))
+            {
+                CRenderMgr::GetInst()->ResetEditorCamPos();
             }
 
             if (ImGui::MenuItem("Inspector"))
