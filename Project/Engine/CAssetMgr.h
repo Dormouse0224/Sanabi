@@ -26,6 +26,8 @@ private:
 public:
 	template<typename T>
 	ASSET_TYPE GetAssetType();
+	template<typename T>
+	vector<string> GetAssetList();
 	const map<wstring, AssetPtr<CAsset>>& GetAssets(ASSET_TYPE _Type) { return m_mapAsset[(UINT)_Type]; }
 	bool GetRenew() { return m_Renew; }
 
@@ -71,6 +73,10 @@ ASSET_TYPE CAssetMgr::GetAssetType()
 		return ASSET_TYPE::SPRITE;
 	else if constexpr (is_same_v<CFlipbook, T>)
 		return ASSET_TYPE::FLIPBOOK;
+	else if constexpr (is_same_v<CFSM_State, T>)
+		return ASSET_TYPE::FSM_STATE;
+	else if constexpr (is_same_v<CFont, T>)
+		return ASSET_TYPE::FONT;
 }
 
 template<typename T>
@@ -188,4 +194,14 @@ inline AssetPtr<T> CAssetMgr::LoadFromFile(const wstring& _Extention)
 		}
 	}
 	return nullptr;
+}
+
+template<typename T>
+vector<string> CAssetMgr::GetAssetList()
+{
+	ASSET_TYPE type = GetAssetType<T>();
+	vector<string> vec;
+	for (const auto& pair : m_mapAsset[static_cast<int>(type)])
+		vec.push_back(to_str(pair.first));
+	return vec;
 }

@@ -115,9 +115,6 @@
     <Filter Include="08. Asset">
       <UniqueIdentifier>{467337eb-7b4a-4ccc-a47d-c727a0ff492d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Asset\04. Texture">
-      <UniqueIdentifier>{afc9de93-8012-45e0-b1c9-3c191d68b750}</UniqueIdentifier>
-    </Filter>
     <Filter Include="08. Asset\05. Sound">
       <UniqueIdentifier>{74df685f-7dad-4487-a994-b5763f5c1e09}</UniqueIdentifier>
     </Filter>
@@ -129,12 +126,6 @@
     </Filter>
     <Filter Include="08. Asset\06. Shader\GraphicShader">
       <UniqueIdentifier>{0a0a8943-8404-4afe-a765-220c27817823}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Asset\07. Prefab">
-      <UniqueIdentifier>{547ee19f-168a-479c-b9d3-34bbcbba2469}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Asset\08. Sprite">
-      <UniqueIdentifier>{38a47a84-d5a0-4cfa-9503-2435d7232aa5}</UniqueIdentifier>
     </Filter>
     <Filter Include="08. Asset\09. Flipbook">
       <UniqueIdentifier>{6847000e-3d26-4f9f-86fc-510fd86244fd}</UniqueIdentifier>
@@ -195,9 +186,6 @@
     </Filter>
     <Filter Include="09. ImguiObject\AssetUI\01. MeshUI">
       <UniqueIdentifier>{1a792098-1f96-4c74-8f91-dd94f5b98bb1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Asset\03. Material">
-      <UniqueIdentifier>{aafd811d-32c8-4eb9-ac88-25f050d602e3}</UniqueIdentifier>
     </Filter>
     <Filter Include="08. Asset\02. MeshData">
       <UniqueIdentifier>{a550afc9-b1bf-4d5d-92e7-fe1f065b2eff}</UniqueIdentifier>
@@ -261,6 +249,24 @@
     </Filter>
     <Filter Include="07. Component\05. UICom">
       <UniqueIdentifier>{0f4a5d8d-2e15-490e-b02a-3341e712fbf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Asset\03. Texture">
+      <UniqueIdentifier>{afc9de93-8012-45e0-b1c9-3c191d68b750}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Asset\04. Material">
+      <UniqueIdentifier>{aafd811d-32c8-4eb9-ac88-25f050d602e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Asset\08. Prefab">
+      <UniqueIdentifier>{547ee19f-168a-479c-b9d3-34bbcbba2469}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Asset\07. Sprite">
+      <UniqueIdentifier>{38a47a84-d5a0-4cfa-9503-2435d7232aa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Asset\11. Font">
+      <UniqueIdentifier>{99941234-b784-4eec-b5be-02f29587b163}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\05. UIComUI">
+      <UniqueIdentifier>{63ff8a32-4414-4ef8-902a-79226d36451f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -361,13 +367,13 @@
       <Filter>07. Component\02. Camera</Filter>
     </ClInclude>
     <ClInclude Include="CTexture2D.h">
-      <Filter>08. Asset\04. Texture</Filter>
+      <Filter>08. Asset\03. Texture</Filter>
     </ClInclude>
     <ClInclude Include="CRenderComponent.h">
       <Filter>07. Component\RenderComponent</Filter>
     </ClInclude>
     <ClInclude Include="CMaterial.h">
-      <Filter>08. Asset\03. Material</Filter>
+      <Filter>08. Asset\04. Material</Filter>
     </ClInclude>
     <ClInclude Include="CRenderMgr.h">
       <Filter>04. Manager\06. Render</Filter>
@@ -394,7 +400,7 @@
       <Filter>08. Asset\09. Flipbook</Filter>
     </ClInclude>
     <ClInclude Include="CSprite.h">
-      <Filter>08. Asset\08. Sprite</Filter>
+      <Filter>08. Asset\07. Sprite</Filter>
     </ClInclude>
     <ClInclude Include="CParticleTickCS.h">
       <Filter>HLSL\03. Compute\ParticleTick</Filter>
@@ -499,7 +505,7 @@
       <Filter>09. ImguiObject\AssetUI\04. TextureUI</Filter>
     </ClInclude>
     <ClInclude Include="CPrefab.h">
-      <Filter>08. Asset\07. Prefab</Filter>
+      <Filter>08. Asset\08. Prefab</Filter>
     </ClInclude>
     <ClInclude Include="CSound.h">
       <Filter>08. Asset\05. Sound</Filter>
@@ -548,6 +554,12 @@
     </ClInclude>
     <ClInclude Include="CUICom.h">
       <Filter>07. Component\05. UICom</Filter>
+    </ClInclude>
+    <ClInclude Include="CFont.h">
+      <Filter>08. Asset\11. Font</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIComUI.h">
+      <Filter>09. ImguiObject\ComponentUI\05. UIComUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -618,13 +630,13 @@
       <Filter>01. Header</Filter>
     </ClCompile>
     <ClCompile Include="CTexture2D.cpp">
-      <Filter>08. Asset\04. Texture</Filter>
+      <Filter>08. Asset\03. Texture</Filter>
     </ClCompile>
     <ClCompile Include="CRenderComponent.cpp">
       <Filter>07. Component\RenderComponent</Filter>
     </ClCompile>
     <ClCompile Include="CMaterial.cpp">
-      <Filter>08. Asset\03. Material</Filter>
+      <Filter>08. Asset\04. Material</Filter>
     </ClCompile>
     <ClCompile Include="CAssetMgr_Init.cpp">
       <Filter>04. Manager\04. Asset</Filter>
@@ -660,7 +672,7 @@
       <Filter>08. Asset\09. Flipbook</Filter>
     </ClCompile>
     <ClCompile Include="CSprite.cpp">
-      <Filter>08. Asset\08. Sprite</Filter>
+      <Filter>08. Asset\07. Sprite</Filter>
     </ClCompile>
     <ClCompile Include="CParticleTickCS.cpp">
       <Filter>HLSL\03. Compute\ParticleTick</Filter>
@@ -765,7 +777,7 @@
       <Filter>09. ImguiObject\AssetUI\04. TextureUI</Filter>
     </ClCompile>
     <ClCompile Include="CPrefab.cpp">
-      <Filter>08. Asset\07. Prefab</Filter>
+      <Filter>08. Asset\08. Prefab</Filter>
     </ClCompile>
     <ClCompile Include="CSound.cpp">
       <Filter>08. Asset\05. Sound</Filter>
@@ -814,6 +826,12 @@
     </ClCompile>
     <ClCompile Include="CUICom.cpp">
       <Filter>07. Component\05. UICom</Filter>
+    </ClCompile>
+    <ClCompile Include="CFont.cpp">
+      <Filter>08. Asset\11. Font</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIComUI.cpp">
+      <Filter>09. ImguiObject\ComponentUI\05. UIComUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

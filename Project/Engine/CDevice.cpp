@@ -133,6 +133,8 @@ int CDevice::CreateSwapChain()
     ComPtr<IDXGIAdapter> pAdapter = nullptr;
     ComPtr<IDXGIFactory> pFactory = nullptr;
 
+    // 디바이스로부터 어댑터를 거쳐 팩토리를 얻어낸다.
+    // DXGI 기반 작업에서는 DXGI 디바이스가 필요하므로 기존 D3D11 디바이스에서 얻어온다.
     m_Device->QueryInterface(__uuidof(IDXGIDevice), (void**)&pDevice);
     pDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&pAdapter);
     pAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&pFactory);

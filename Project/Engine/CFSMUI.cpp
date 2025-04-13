@@ -26,7 +26,7 @@ void CFSMUI::Render_Com()
     CFSM_State* m_InitState;
 
 	// 조건 목록 표시
-	if (ImGui::BeginTable("##Conditions", 3, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders))
+	if (ImGui::BeginTable("##Conditions", 3, ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders))
 	{
 		ImGui::TableSetupColumn("Origin State");
 		ImGui::TableSetupColumn("Destination State");

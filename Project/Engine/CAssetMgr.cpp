@@ -128,6 +128,10 @@ ASSET_TYPE CAssetMgr::GetAssetType(const wstring& _Path)
 	{
 		return ASSET_TYPE::FLIPBOOK;
 	}
+	else if (EXT == L".spritefont")
+	{
+		return ASSET_TYPE::FONT;
+	}
 
 	return ASSET_TYPE::ASSET_END;
 }
@@ -146,6 +150,7 @@ void CAssetMgr::ContentLoad()
 				CAssetMgr::GetInst()->Load<CMesh>(rp);
 				break;
 			case ASSET_TYPE::MESHDATA:
+
 				break;
 			case ASSET_TYPE::TEXTURE2D:
 				CAssetMgr::GetInst()->Load<CTexture2D>(rp);
@@ -169,6 +174,12 @@ void CAssetMgr::ContentLoad()
 				break;
 			case ASSET_TYPE::FLIPBOOK:
 				CAssetMgr::GetInst()->Load<CFlipbook>(rp);
+				break;
+			case ASSET_TYPE::FSM_STATE:
+
+				break;
+			case ASSET_TYPE::FONT:
+				CAssetMgr::GetInst()->Load<CFont>(rp);
 				break;
 			case ASSET_TYPE::ASSET_END:
 				break;

@@ -122,13 +122,23 @@ void CCamera::Render()
 	}
 
 	// Postprocess
+	for (size_t i = 0; i < m_vecPostprocess.size(); ++i)
+	{
+		m_vecPostprocess[i]->Render();
+	}
 
 	// UI
+	for (size_t i = 0; i < m_vecUI.size(); ++i)
+	{
+		m_vecUI[i]->Render();
+	}
 
 	// 오브젝트 렌더링이 끝난 후 분류용 벡터 클리어
 	m_vecOpaque.clear();
 	m_vecMasked.clear();
 	m_vecTransparent.clear();
+	m_vecPostprocess.clear();
+	m_vecUI.clear();
 }
 
 void CCamera::Direct_Render(const vector<CGameObject*>& _vecObj)
@@ -201,30 +211,34 @@ void CCamera::SortObject()
 		for (size_t j = 0; j < vecObjects.size(); ++j)
 		{
 			// 레이어 안에있는 물체들 중에서 렌더링 기능이 없는 물체는 거른다.
-			if (vecObjects[j]->GetRenderComponent() == nullptr
-				|| vecObjects[j]->GetRenderComponent()->GetMesh() == nullptr
-				|| vecObjects[j]->GetRenderComponent()->GetMaterial() == nullptr
-				|| vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader() == nullptr)
+			if (IsRenderable(vecObjects[j]) && vecObjects[j]->GetComponent(COMPONENT_TYPE::UICOM) == nullptr)
 				continue;
 
-			// 2. 오브젝트가 사용하는 쉐이더의 도메인에 따라서 분류한다.
-			switch (vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader()->GetDomain())
+			if (IsRenderable(vecObjects[j]))
 			{
-			case SHADER_DOMAIN::DOMAIN_QPAQUE:
-				m_vecOpaque.push_back(vecObjects[j]);
-				break;
-			case SHADER_DOMAIN::DOMAIN_MASKED:
-				m_vecMasked.push_back(vecObjects[j]);
-				break;
-			case SHADER_DOMAIN::DOMAIN_TRANSPARENT:
-				m_vecTransparent.push_back(vecObjects[j]);
-				break;
-			case SHADER_DOMAIN::DOMAIN_POSTPROCESS:
-				m_vecPostprocess.push_back(vecObjects[j]);
-				break;
-			case SHADER_DOMAIN::DOMAIN_UI:
+				// 2. 오브젝트가 사용하는 쉐이더의 도메인에 따라서 분류한다.
+				switch (vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader()->GetDomain())
+				{
+				case SHADER_DOMAIN::DOMAIN_QPAQUE:
+					m_vecOpaque.push_back(vecObjects[j]);
+					break;
+				case SHADER_DOMAIN::DOMAIN_MASKED:
+					m_vecMasked.push_back(vecObjects[j]);
+					break;
+				case SHADER_DOMAIN::DOMAIN_TRANSPARENT:
+					m_vecTransparent.push_back(vecObjects[j]);
+					break;
+				case SHADER_DOMAIN::DOMAIN_POSTPROCESS:
+					m_vecPostprocess.push_back(vecObjects[j]);
+					break;
+				case SHADER_DOMAIN::DOMAIN_UI:
+					m_vecUI.push_back(vecObjects[j]);
+					break;
+				}
+			}
+			else
+			{
 				m_vecUI.push_back(vecObjects[j]);
-				break;
 			}
 		}
 	}

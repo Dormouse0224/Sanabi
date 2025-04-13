@@ -10,4 +10,5 @@
 #include "CPrefab.h"
 #include "CSprite.h"
 #include "CFlipbook.h"
-
+#include "CFSM_State.h"
+#include "CFont.h"

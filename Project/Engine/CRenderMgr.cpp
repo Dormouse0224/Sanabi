@@ -52,11 +52,8 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Priority)
 
 void CRenderMgr::Tick()
 {
-	CDevice::GetInst()->SetRenderTargetAndViewport();
 	//// Ãâ·Â ·»´õÅ¸°Ù ¹× Ãâ·Â ±íÀÌÅ¸°Ù ¼³Á¤
-	//AssetPtr<CTexture2D> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture2D>(L"RenderTarget");
-	//AssetPtr<CTexture2D> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture2D>(L"DepthStencil");
-	//CONTEXT->OMSetRenderTargets(1, pRTTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
+	CDevice::GetInst()->SetRenderTargetAndViewport();
 
 
 	// GlobalData Binding

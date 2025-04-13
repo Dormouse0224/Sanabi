@@ -86,6 +86,7 @@ enum class ASSET_TYPE
 	SPRITE,
 	FLIPBOOK,
 	FSM_STATE,
+	FONT,
 
 	ASSET_END,
 };

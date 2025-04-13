@@ -49,6 +49,7 @@ wstring ASSET_TYPE_WSTR[] =
 	L"SPRITE",
 	L"FLIPBOOK",
 	L"FSM_STATE",
+	L"FONT",
 };
 static_assert(sizeof(ASSET_TYPE_WSTR) / sizeof(ASSET_TYPE_WSTR[0]) == static_cast<int>(ASSET_TYPE::ASSET_END));
 

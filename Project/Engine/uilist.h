@@ -15,6 +15,7 @@
 #include "CCameraUI.h"
 #include "CPhysxActorUI.h"
 #include "CFSMUI.h"
+#include "CUIComUI.h"
 #include "CMeshRenderUI.h"
 #include "CSpriteRenderUI.h"
 #include "CFlipbookRenderUI.h"

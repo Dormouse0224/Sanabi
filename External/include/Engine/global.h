@@ -42,6 +42,15 @@ using namespace DirectX::SimpleMath;
 #pragma comment(lib, "DirectXTex/DirectXTex.lib")
 #endif
 
+// DirectXTK 스프라이트 폰트
+#include <DirectXTK/SpriteFont.h>
+#include <DirectXTK/SpriteBatch.h>
+#ifdef _DEBUG
+#pragma comment(lib, "DirectXTK/DirectXTK_d.lib")
+#else
+#pragma comment(lib, "DirectXTK/DirectXTK.lib")
+#endif
+
 // PhysX 라이브러리 링크
 #include <physx/PxPhysicsAPI.h>
 #ifdef _DEBUG

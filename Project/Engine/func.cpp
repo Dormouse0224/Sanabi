@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include "CRenderMgr.h"
+#include "CGameObject.h"
+#include "CRenderComponent.h"
 
 void DrawDebugRect(Vec4 _Color, Vec3 _WorldPos, Vec3 _WorldScale, Vec3 _WorldRotation
 	, bool _DepthTest, float _Duration)
@@ -46,4 +48,13 @@ void DrawDebugCircle(Vec4 _Color, Vec3 _WorldPos, float _Radius, Vec3 _WorldRota
 	info.DepthTest = _DepthTest;
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
+bool IsRenderable(CGameObject* obj)
+{
+	auto* render = obj->GetRenderComponent();
+	return render &&
+		render->GetMesh().Get() &&
+		render->GetMaterial().Get() &&
+		render->GetMaterial()->GetShader().Get();
 }

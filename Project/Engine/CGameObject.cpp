@@ -201,10 +201,12 @@ void CGameObject::FinalTick(bool _RigisterToLevel)
 
 void CGameObject::Render()
 {
-	if (!m_RenderCom)
-		return;
-
-	m_RenderCom->Render();
+	if (IsRenderable(this))
+		m_RenderCom->Render();
+	
+	if (auto pCom = m_Com[static_cast<int>(COMPONENT_TYPE::UICOM)]; pCom)
+		static_cast<CUICom*>(pCom)->Render();
+	
 }
 
 int CGameObject::Save(fstream& _Stream)
