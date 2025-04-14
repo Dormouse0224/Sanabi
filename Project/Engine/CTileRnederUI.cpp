@@ -238,7 +238,7 @@ void CTileRnederUI::TIlemapEditor(UINT& _Col, UINT& _Row, Vec2& _TileSize, Asset
                 ImVec2 uv_min(selectedSprite.x / _AtlasTex->GetWidth(), selectedSprite.y / _AtlasTex->GetHeight());
                 ImVec2 uv_max((selectedSprite.x + _TileSize.x) / _AtlasTex->GetWidth(), (selectedSprite.y + _TileSize.y) / _AtlasTex->GetHeight());
                 ImGui::Image(reinterpret_cast<ImTextureID>(_AtlasTex->GetSRV().Get())
-                    , ImVec2(ImageWidth, ImageWidth * (static_cast<float>(_AtlasTex->GetHeight()) / static_cast<float>(_AtlasTex->GetWidth())))
+                    , ImVec2(ImageWidth, ImageWidth * (_TileSize.y / _TileSize.x))
                     , uv_min, uv_max, ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
             }
             else

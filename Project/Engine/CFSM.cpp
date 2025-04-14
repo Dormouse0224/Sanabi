@@ -229,4 +229,6 @@ void CFSM::DeleteCondition(int _Idx)
 		delete m_vecCondition[_Idx];
 		m_vecCondition.erase(m_vecCondition.begin() + _Idx);
 	}
+
+	m_InitState = nullptr;
 }

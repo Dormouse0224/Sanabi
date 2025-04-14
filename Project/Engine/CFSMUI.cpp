@@ -71,14 +71,20 @@ void CFSMUI::Render_Com()
 		ImGui::NewLine();
 
 		// Origin State
+		ImGui::NewLine();
+		ImGui::Text("Origin State");
 		static int OSIdx = 0;
 		ImGui::Combo("##OriginState", &OSIdx, CFSMMgr::GetInst()->GetStateRegistryList().data(), CFSMMgr::GetInst()->GetStateRegistryList().size());
 		
 		// Dest State
+		ImGui::NewLine();
+		ImGui::Text("Dest State");
 		static int DSIdx = 0;
 		ImGui::Combo("##DestState", &DSIdx, CFSMMgr::GetInst()->GetStateRegistryList().data(), CFSMMgr::GetInst()->GetStateRegistryList().size());
 
 		// Trigger Func
+		ImGui::NewLine();
+		ImGui::Text("Trigger Func");
 		static int TFIdx = 0;
 		ImGui::Combo("##TriggerFunc", &TFIdx, CFSMMgr::GetInst()->GetTriggerRegistryList().data(), CFSMMgr::GetInst()->GetTriggerRegistryList().size());
 
