@@ -95,13 +95,13 @@ void CUIComUI::Render_Com()
 			pDesc->Independent = ind;
 
 			m_TargetObj->UICOM()->AddUIText(CAssetMgr::GetInst()->Load<CFont>(to_wstr(vec[FontIdx])), to_wstr(buff), pDesc);
-			FontIdx = 0; memset(buff, 0, 255); memset(color, 0, 4); scale = 1; ind = false;
+			FontIdx = 0; memset(buff, 0, sizeof(buff)); memset(color, 0, sizeof(color)); scale = 1; ind = false;
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Cancel"))
 		{
-			FontIdx = 0; memset(buff, 0, 255); memset(color, 0, 4); rot = 0; scale = 1; ind = false;
+			FontIdx = 0; memset(buff, 0, sizeof(buff)); memset(color, 0, sizeof(color)); rot = 0; scale = 1; ind = false;
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::EndPopup();

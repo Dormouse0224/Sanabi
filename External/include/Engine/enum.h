@@ -160,7 +160,10 @@ enum COLLISION_LAYER
 	eLANDSCAPE			= (1<<1),
 	eMONSTER			= (1<<2),
 	ePARTICLE			= (1<<3),
+
+	END = 4
 };
+extern std::wstring COLLISION_LAYER_WSTR[COLLISION_LAYER::END];
 
 // wstr 구조체 업데이트 할 것
 enum class LAYER

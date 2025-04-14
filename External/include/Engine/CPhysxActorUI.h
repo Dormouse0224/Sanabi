@@ -13,5 +13,8 @@ private:
 public:
     virtual void Update_Com();
     virtual void Render_Com();
+
+private:
+    void EditColliderDescPopup(int _Idx);
 };
 

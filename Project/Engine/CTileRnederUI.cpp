@@ -107,9 +107,8 @@ void CTileRnederUI::TIlemapEditor(UINT& _Col, UINT& _Row, Vec2& _TileSize, Asset
             ImGui::BeginChild("Tilemap", ImVec2(500, 500), ImGuiChildFlags_Borders);
             {
                 ImDrawList* draw_list = ImGui::GetWindowDrawList();
-                Vec2 TilemapPos(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y);
-                Vec2 origin = TilemapPos; // 그리기 시작 위치
-
+                Vec2 ViewerPos(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y);
+                Vec2 origin = ViewerPos; // 그리기 시작 위치
 
                 // 마우스 우클릭 키다운으로 드래그
                 if (ImGui::IsWindowHovered() && CKeyMgr::GetInst()->GetKeyState(Keyboard::MOUSE_RBTN) == Key_state::PRESSED)
@@ -121,15 +120,6 @@ void CTileRnederUI::TIlemapEditor(UINT& _Col, UINT& _Row, Vec2& _TileSize, Asset
                 // 뷰포트 사이즈
                 ImVec2 canvas_size = ImGui::GetContentRegionAvail();
 
-                // 현재 스크롤 오프셋
-                ImVec2 scroll = ImVec2(ImGui::GetScrollX(), ImGui::GetScrollY());
-
-                // 카메라 기준 현재 보이는 타일 범위 계산 (인덱스)
-                UINT tile_start_x = (UINT)(scroll.x / _TileSize.x);
-                UINT tile_end_x = min(_Col, (UINT)((scroll.x + canvas_size.x) / _TileSize.x) + 1);
-                UINT tile_start_y = (UINT)(scroll.y / _TileSize.y);
-                UINT tile_end_y = min(_Row, (UINT)((scroll.y + canvas_size.y) / _TileSize.y) + 1);
-
                 // 마우스가 가리키는 타일 체크
                 Vec2 MouseHoverTile(-1, -1);
                 if (ImGui::IsWindowFocused())
@@ -139,13 +129,13 @@ void CTileRnederUI::TIlemapEditor(UINT& _Col, UINT& _Row, Vec2& _TileSize, Asset
                     
                 }
 
-                // 보이는 영역만 타일 그리기
-                for (UINT y = tile_start_y; y < tile_end_y; ++y)
+                draw_list->PushClipRect(ImVec2(ViewerPos.x, ViewerPos.y), ImVec2(ViewerPos.x + canvas_size.x, ViewerPos.y + canvas_size.y), true);
+                for (UINT y = 0; y < _Row; ++y)
                 {
-                    for (UINT x = tile_start_x; x < tile_end_x; ++x)
+                    for (UINT x = 0; x < _Col; ++x)
                     {
-                        ImVec2 pos_min = ImVec2(origin.x + x * _TileSize.x - scroll.x,
-                            origin.y + y * _TileSize.y - scroll.y);
+                        ImVec2 pos_min = ImVec2(origin.x + x * _TileSize.x,
+                            origin.y + y * _TileSize.y);
                         ImVec2 pos_max = ImVec2(pos_min.x + _TileSize.x, pos_min.y + _TileSize.y);
 
                         // 기본 빈 타일 : 회색 테두리, 내부색 없음
@@ -158,6 +148,7 @@ void CTileRnederUI::TIlemapEditor(UINT& _Col, UINT& _Row, Vec2& _TileSize, Asset
                         draw_list->AddRect(pos_min, pos_max, edgeCol);
                     }
                 }
+                draw_list->PopClipRect();
 
                 // 클릭 발생 시 마우스가 가리키는 타일을 편집
                 if (ImGui::IsWindowHovered() && CKeyMgr::GetInst()->GetKeyState(Keyboard::MOUSE_LBTN) == Key_state::PRESSED)

@@ -53,6 +53,16 @@ wstring ASSET_TYPE_WSTR[] =
 };
 static_assert(sizeof(ASSET_TYPE_WSTR) / sizeof(ASSET_TYPE_WSTR[0]) == static_cast<int>(ASSET_TYPE::ASSET_END));
 
+wstring COLLISION_LAYER_WSTR[] =
+{
+	L"ePLAYER",
+	L"eLANDSCAPE",
+	L"eMONSTER",
+	L"ePARTICLE",
+
+};
+static_assert(sizeof(COLLISION_LAYER_WSTR) / sizeof(COLLISION_LAYER_WSTR[0]) == COLLISION_LAYER::END);
+
 wstring LAYER_WSTR[] =
 {
 	L"Default",

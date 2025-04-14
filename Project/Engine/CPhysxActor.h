@@ -7,7 +7,7 @@ typedef void (*ContactFunc)(CGameObject*);
 
 struct COLLIDER_DESC
 {
-    PxShapeFlag::Enum   ShapeFlag;
+    PxShapeFlags        ShapeFlag;
     PxReal              StaticFriction      = 0.f;
     PxReal              DynamicFriction     = 0.f;
     PxReal              Restitution         = 0.f;
@@ -56,6 +56,7 @@ private:
     bool                    m_Gravity;
     float                   m_Density;
 
+    vector<PxShape*>        m_vecShape;
     vector<COLLIDER_DESC>   m_vecDesc;
     vector<PxVec3>          m_vecScale;
     vector<PxVec3>          m_vecOffset;
@@ -78,13 +79,20 @@ public:
     RIGID_TYPE GetRigidType() { return m_Type; }
     bool GetGravity() { return m_Gravity; }
     float GetDensity() { return m_Density; }
+    int GetColliderCount() { return m_vecShape.size(); }
+    COLLIDER_DESC GetColliderDesc(int _Idx) { if (_Idx < m_vecDesc.size()) { return m_vecDesc[_Idx]; } }
+    PxVec3 GetColliderScale(int _Idx) { if (_Idx < m_vecScale.size()) { return m_vecScale[_Idx]; } }
+    PxVec3 GetColliderOffset(int _Idx) { if (_Idx < m_vecOffset.size()) { return m_vecOffset[_Idx]; } }
 
     void SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag = 0, bool _Gravity = false, float _Density = 1.f, PxVec3 _InitVel = PxVec3(0.f));
     void SetRigidType(RIGID_TYPE _Type);
     void SetGravity(bool _Gravity);
     void SetDensity(float _Density);
+    void SetColliderDesc(int _Idx, COLLIDER_DESC _Data);
+    void SetColliderOffset(int _Idx, PxVec3 _Data);
 
     void AddCollider(COLLIDER_DESC _desc, PxVec3 _Scale = PxVec3(1.f), PxVec3 _Offset = PxVec3(0.f));
+    void DeleteCollider(int _Idx);
     void UpdatePosition(Vec3 _Pos);
     void UpdateRotation(Vec4 _RotQuat);
     void CkeckLockFlag(LOCK_FLAG _Flag);

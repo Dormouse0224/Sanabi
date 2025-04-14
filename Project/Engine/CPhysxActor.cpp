@@ -170,6 +170,39 @@ void CPhysxActor::SetDensity(float _Density)
     }
 }
 
+void CPhysxActor::SetColliderDesc(int _Idx, COLLIDER_DESC _Data)
+{
+    if (_Idx < m_vecShape.size())
+    {
+        m_vecDesc[_Idx] = _Data;
+
+        m_vecShape[_Idx]->setFlags(_Data.ShapeFlag);
+
+        PxFilterData filterData;
+        filterData.word0 = _Data.FilterLayer_Self;
+        filterData.word1 = _Data.FilterLayer_Other;
+        m_vecShape[_Idx]->setSimulationFilterData(filterData);
+
+        PxMaterial* pMaterial;
+        m_vecShape[_Idx]->getMaterials(&pMaterial, 1);
+        if (pMaterial)
+        {
+            pMaterial->setStaticFriction(_Data.StaticFriction);
+            pMaterial->setDynamicFriction(_Data.DynamicFriction);
+            pMaterial->setRestitution(_Data.Restitution);
+        }
+    }
+}
+
+void CPhysxActor::SetColliderOffset(int _Idx, PxVec3 _Data)
+{
+    if (_Idx < m_vecShape.size())
+    {
+        m_vecOffset[_Idx] = _Data;
+        m_vecShape[_Idx]->setLocalPose(PxTransform(_Data));
+    }
+}
+
 void CPhysxActor::AddCollider(COLLIDER_DESC _Desc, PxVec3 _Scale, PxVec3 _Offset)
 {
     m_vecDesc.push_back(_Desc);
@@ -177,6 +210,21 @@ void CPhysxActor::AddCollider(COLLIDER_DESC _Desc, PxVec3 _Scale, PxVec3 _Offset
     m_vecOffset.push_back(_Offset);
 
     AttachCollider(_Desc, _Scale, _Offset);
+}
+
+void CPhysxActor::DeleteCollider(int _Idx)
+{
+    if (_Idx < m_vecShape.size())
+    {
+        m_vecDesc.erase(m_vecDesc.begin() + _Idx);
+        m_vecScale.erase(m_vecScale.begin() + _Idx);
+        m_vecOffset.erase(m_vecOffset.begin() + _Idx);
+
+        m_Body->detachShape(*m_vecShape[_Idx]);
+        m_vecShape[_Idx]->release();
+        m_vecShape.erase(m_vecShape.begin() + _Idx);
+    }
+
 }
 
 void CPhysxActor::UpdatePosition(Vec3 _Pos)
@@ -252,20 +300,6 @@ int CPhysxActor::Load(fstream& _Stream)
         _Stream.read(reinterpret_cast<char*>(&m_vecOffset[i]), sizeof(PxVec3));
     }
     
-    //// 현재 레벨에 오브젝트가 존재하는 경우에만 강체 및 충돌체를 생성함.
-    //if (GetOwner()->GetLayerIdx() != -1 || CLevelMgr::GetInst()->GetCurrentLevel() != nullptr)
-    //{
-    //    // 데이터를 통해 m_Body 작성 (AddComponent를 실행한 후 Load 가 처리되기 때문에 Owner 가 존재함)
-    //    SetRigidBody(m_Type, m_LockFlag, m_Gravity, m_Density);
-    //    for (int i = 0; i < count; ++i)
-    //    {
-    //        AttachCollider(m_vecDesc[i], m_vecScale[i], m_vecOffset[i]);
-    //    }
-    //}
-    //else
-    //{
-    //    
-    //}
     m_DelayedInit = true;
 
     return S_OK;
@@ -302,7 +336,8 @@ void CPhysxActor::AttachCollider(COLLIDER_DESC _Desc, PxVec3 _Scale, PxVec3 _Off
     PxMaterial* pMaterial = CPhysxMgr::GetInst()->GetPhysics()->createMaterial(_Desc.StaticFriction, _Desc.DynamicFriction, _Desc.Restitution);
     pMaterial->setRestitutionCombineMode(PxCombineMode::eMIN);
     PxShape* shape = CPhysxMgr::GetInst()->GetPhysics()->createShape(PxBoxGeometry(_Scale), *pMaterial);
-    shape->setFlag(_Desc.ShapeFlag, true);
+    shape->setFlags(_Desc.ShapeFlag);
+    shape->setFlag(PxShapeFlag::eVISUALIZATION, true);
 
     // 충돌 필터 레이어 설정
     PxFilterData filterData;
@@ -313,8 +348,9 @@ void CPhysxActor::AttachCollider(COLLIDER_DESC _Desc, PxVec3 _Scale, PxVec3 _Off
     // 오프셋 설정
     shape->setLocalPose(PxTransform(_Offset));
 
-    // 강체에 충돌체 추가
+    // 강체에 충돌체 추가, 관리 벡터에 등록
     m_Body->attachShape(*shape);
+    m_vecShape.push_back(shape);
 
     // 동적 액터인 경우 강체 형태와 밀도에 따라 질량을 업데이트
     if (PxConcreteType::eRIGID_DYNAMIC == m_Body->getConcreteType())

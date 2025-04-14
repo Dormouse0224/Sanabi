@@ -15,7 +15,6 @@ CTileRender::CTileRender()
 	, m_vecTileInfo{}
 	, m_GpuBuffer(nullptr)
 {
-	SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"RectMesh", true));
 
 	m_GpuBuffer = new CStructuredBuffer;
 }
@@ -29,7 +28,6 @@ CTileRender::CTileRender(const CTileRender& _Other)
 	, m_vecTileInfo{ _Other.m_vecTileInfo }
 	, m_GpuBuffer(nullptr)
 {
-	SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"RectMesh", true));
 
 	m_GpuBuffer = new CStructuredBuffer;
 }

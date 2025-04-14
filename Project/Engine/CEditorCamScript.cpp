@@ -4,10 +4,12 @@
 #include "CTimeMgr.h"
 #include "CKeyMgr.h"
 #include "CLevelMgr.h"
+#include "CImguiMgr.h"
 
 #include "CTransform.h"
 #include "CCamera.h"
 #include "CLevel.h"
+#include "CEngine.h"
 
 CEditorCamScript::CEditorCamScript()
 	: m_CamSpeedLin(500.f)
@@ -31,10 +33,14 @@ void CEditorCamScript::Tick()
 
 	PROJ_TYPE type = Camera()->GetProjType();
 
-	if (PROJ_TYPE::PERSPECTIVE == type)
-		Move_Perspective();
-	else
-		Move_OrthoGraphic();
+	// 메인 윈도우가 포커싱 중일 때만 조작
+	if (GetForegroundWindow() == CEngine::GetInst()->GetMainWndHwnd())
+	{
+		if (PROJ_TYPE::PERSPECTIVE == type)
+			Move_Perspective();
+		else
+			Move_OrthoGraphic();
+	}
 }
 
 int CEditorCamScript::Load(fstream& _Stream)
