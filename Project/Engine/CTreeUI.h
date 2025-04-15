@@ -27,6 +27,8 @@ public:
     void AddChild(TreeNode* _Child) { m_vecChild.push_back(_Child); }
     void Clear();
     void DoubleClickCheck();
+    void DragCheck();
+    void DropCheck();
 };
 
 
@@ -45,6 +47,7 @@ private:
     bool            m_ShowRoot;
     CImguiObject*   m_OwnerUI;
     DELEGATE_1      m_DoubleClickFunc;
+    DELEGATE_2      m_DragDropFunc;
 
 public:
     void Clear();
@@ -53,6 +56,7 @@ public:
 
     TreeNode* GetRoot() { return m_Root; }
     DELEGATE_1 GetDoubleClickFunc() { return m_DoubleClickFunc; }
+    DELEGATE_2 GetDragDropFunc() { return m_DragDropFunc; }
     CImguiObject* GetOwnerUI() { return m_OwnerUI; }
 
     /// <summary>
@@ -62,6 +66,7 @@ public:
     /// <param name="_SelectFunc">이벤트 콜백 함수</param>
     /// <param name="_Owner">함수 호출 객체</param>
     void SetDoubleClickFunc(DELEGATE_1  _SelectFunc, CImguiObject* _Owner) { m_DoubleClickFunc = _SelectFunc; m_OwnerUI = _Owner; }
+    void SetDragDropFunc(DELEGATE_2  _DragDropFunc, CImguiObject* _Owner) { m_DragDropFunc = _DragDropFunc; m_OwnerUI = _Owner; }
 
     TreeNode* AddChildNode(TreeNode* _Parent, string _Name, DWORD_PTR m_Data);
 

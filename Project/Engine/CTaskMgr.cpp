@@ -45,7 +45,7 @@ void CTaskMgr::Tick()
 		{
 		case TASK_TYPE::CREATE_OBJECT:
 		{
-			CLevelMgr::GetInst()->SetLevelModified(true);
+			CLevelMgr::GetInst()->SetLevelModified();
 			CGameObject* pNewObj = (CGameObject*)task.Param0;
 			int LayerIdx = (int)task.Param1;
 			pLevel->AddGameObject(pNewObj, LayerIdx, true);
@@ -60,7 +60,7 @@ void CTaskMgr::Tick()
 			break;
 		case TASK_TYPE::DELETE_OBJECT:
 		{
-			CLevelMgr::GetInst()->SetLevelModified(true);
+			CLevelMgr::GetInst()->SetLevelModified();
 			CGameObject* pDelObj = (CGameObject*)task.Param0;
 
 			if (!pDelObj->m_Dead)
@@ -72,14 +72,14 @@ void CTaskMgr::Tick()
 			break;
 		case TASK_TYPE::CHANGE_LEVEL:
 		{
-			CLevelMgr::GetInst()->SetLevelModified(true);
+			CLevelMgr::GetInst()->SetLevelModified();
 			CLevelMgr::GetInst()->ChangeLevel(reinterpret_cast<CLevel*>(task.Param0));
 		}
 			break;
 
 		case TASK_TYPE::CHANGE_LEVEL_STATE:
 		{
-			CLevelMgr::GetInst()->SetLevelModified(true);
+			CLevelMgr::GetInst()->SetLevelModified();
 			CLevelMgr::GetInst()->GetCurrentLevel()->SetState(static_cast<LEVEL_STATE>(task.Param0));
 		}
 		break;

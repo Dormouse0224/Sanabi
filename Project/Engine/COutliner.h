@@ -23,6 +23,7 @@ public:
     CTreeUI* GetObjTree() { return m_ObjTree; }
 
     void DoubleClickEvent(DWORD_PTR _Obj);
+    void DragDropEvent(DWORD_PTR _Drag, DWORD_PTR _Drop);
 
 private:
     void Renew();

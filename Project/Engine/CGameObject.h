@@ -39,6 +39,7 @@ public:
     bool IsDead() { return m_Dead; }
 
     void AddChild(CGameObject* _Child);
+    void DeleteChild(CGameObject* _Child);
 
     CGameObject* GetParent() const { return m_Parent; }
     const vector<CGameObject*>& GetChild() const { return m_vecChild; } // 자식 오브젝트
@@ -60,6 +61,9 @@ public:
 
     void Destroy();
     void ChangeLayer(LAYER _Dest, bool _CHildMove);
+    // 호출자가 대상 오브젝트의 조상인지 검사합니다.
+    bool IsAncestorOf(CGameObject* _Obj);
+    void ConvertToRoot();
 
 public:
     void Begin();

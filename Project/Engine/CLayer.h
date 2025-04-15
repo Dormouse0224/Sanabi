@@ -34,6 +34,7 @@ public:
 
     void AddGameObject(CGameObject* _Parent, bool _bChildMove);
     void RegisterGameObject(CGameObject* _Object) { m_vecObjects.push_back(_Object); }
+    void UnRegisterParentObject(CGameObject* _Parent);
     void ClearVecObjects() { m_vecObjects.clear(); }
 
     int Save(fstream& _File);

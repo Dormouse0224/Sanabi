@@ -45,12 +45,8 @@ void TreeNode::Render()
 
 	if (ImGui::TreeNodeEx(m_Name.c_str(), flag))
 	{
-		if (ImGui::BeginDragDropSource())
-		{
-			ImGui::SetDragDropPayload(to_str(m_Owner->GetName()).c_str(), &m_Data, sizeof(DWORD_PTR));
-			ImGui::Text(m_Name.c_str());
-			ImGui::EndDragDropSource();
-		}
+		DragCheck();
+		DropCheck();
 
 		// 트리 노드가 열려있을 때 클릭 감지
 		DoubleClickCheck();
@@ -66,6 +62,9 @@ void TreeNode::Render()
 	{
 		// 트리 노드가 닫혀있을 때 클릭 감지
 		DoubleClickCheck();
+
+		DragCheck();
+		DropCheck();
 	}
 
 }
@@ -81,6 +80,32 @@ void TreeNode::DoubleClickCheck()
 	{
 		if (m_Owner->GetOwnerUI() != nullptr && m_Owner->GetDoubleClickFunc() != nullptr)
 			(m_Owner->GetOwnerUI()->*(m_Owner->GetDoubleClickFunc()))(m_Data);	
+	}
+}
+
+void TreeNode::DragCheck()
+{
+	if (ImGui::BeginDragDropSource())
+	{
+		ImGui::SetDragDropPayload(to_str(m_Owner->GetName()).c_str(), &m_Data, sizeof(DWORD_PTR));
+		ImGui::Text(m_Name.c_str());
+		ImGui::EndDragDropSource();
+	}
+}
+
+void TreeNode::DropCheck()
+{
+	if (ImGui::BeginDragDropTarget())
+	{
+		// 같은 UI 에서 드래그 된 노드만 수령
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(to_str(m_Owner->GetName()).c_str());
+
+		if (nullptr != payload && m_Owner->GetOwnerUI() != nullptr && m_Owner->GetDragDropFunc() != nullptr)
+		{
+			(m_Owner->GetOwnerUI()->*(m_Owner->GetDragDropFunc()))(*static_cast<DWORD_PTR*>((payload->Data)), m_Data);
+		}
+
+		ImGui::EndDragDropTarget();
 	}
 }
 

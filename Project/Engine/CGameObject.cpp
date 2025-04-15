@@ -180,7 +180,7 @@ void CGameObject::FinalTick(bool _RigisterToLevel)
 			m_Com[i]->FinalTick();
 	}
 
-	if (_RigisterToLevel)
+	if (_RigisterToLevel && !m_Dead)
 	{
 		// Layer 에 GameObject 등록하기
 		CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
@@ -327,6 +327,18 @@ void CGameObject::AddChild(CGameObject* _Child)
 	m_vecChild.push_back(_Child);
 }
 
+void CGameObject::DeleteChild(CGameObject* _Child)
+{
+	for (auto iter = m_vecChild.begin(); iter != m_vecChild.end(); ++iter)
+	{
+		if (*iter == _Child)
+		{
+			m_vecChild.erase(iter);
+			break;
+		}
+	}
+}
+
 CGameObject* CGameObject::FindChild(wstring _Name)
 {
 	for (int i = 0; i < m_vecChild.size(); ++i)
@@ -352,4 +364,27 @@ void CGameObject::ChangeLayer(LAYER _Dest, bool _CHildMove)
 		for (const auto& pChild : m_vecChild)
 			pChild->ChangeLayer(_Dest, _CHildMove);
 	}
+}
+
+bool CGameObject::IsAncestorOf(CGameObject* _Obj)
+{
+	for (CGameObject* pChild : m_vecChild)
+	{
+		if (pChild == _Obj)
+			return true;
+		if (pChild->IsAncestorOf(_Obj))
+			return true;
+	}
+	return false;
+}
+
+void CGameObject::ConvertToRoot()
+{
+	if (m_Parent == nullptr)
+		return;
+
+	m_Parent->DeleteChild(this);
+	m_Parent = nullptr;
+	CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(m_LayerIdx)->AddGameObject(this, false);
+	CLevelMgr::GetInst()->SetLevelModified();
 }

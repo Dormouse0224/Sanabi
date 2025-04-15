@@ -12,6 +12,7 @@ private:
 	CLevel*					m_PlayStartLevel;
 	map<wstring, CLevel*>	m_mapLevelList;
 	bool					m_LevelModified;
+	bool					m_LevelModifyChecker;
 
 
 
@@ -24,7 +25,7 @@ public:
 	const CLevel* GetPlayStartLevel() { return m_PlayStartLevel; }
 
 	void SetCurrentLevel(CLevel* _Level) { m_CurLevel = _Level; }
-	void SetLevelModified(bool _b) { m_LevelModified = _b; }
+	void SetLevelModified() { m_LevelModifyChecker = true; }
 	void SetPlayStartLevel(CLevel* _Level) { m_PlayStartLevel = _Level; }
 
 	// 입력받은 레벨을 복사하여 상대경로를 키값으로 저장합니다.

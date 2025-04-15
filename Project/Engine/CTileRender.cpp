@@ -55,7 +55,10 @@ void CTileRender::Render()
 	GetMaterial()->SetTexParam(TEX_0, m_AtlasTex);
 
 	GetMaterial()->SetScalarParam(VEC2_0, m_TileSize);
-	GetMaterial()->SetScalarParam(VEC2_1, Vec2(m_AtlasTex->GetWidth(), m_AtlasTex->GetHeight()));
+	if (m_AtlasTex.Get())
+		GetMaterial()->SetScalarParam(VEC2_1, Vec2(m_AtlasTex->GetWidth(), m_AtlasTex->GetHeight()));
+	else
+		GetMaterial()->SetScalarParam(VEC2_1, Vec2(0, 0));
 
 	GetMaterial()->Binding();
 

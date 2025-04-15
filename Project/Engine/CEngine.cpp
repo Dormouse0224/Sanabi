@@ -90,12 +90,11 @@ void CEngine::Progress()
     // Render
     CRenderMgr::GetInst()->Tick();
 
-    // Task
-    CTaskMgr::GetInst()->Tick();
-
     // Imgui progress & Render additional window
     CImguiMgr::GetInst()->Progress();
 
+    // Task
+    CTaskMgr::GetInst()->Tick();
 }
 
 int CEngine::CreateMainWindow()

@@ -16,6 +16,7 @@ COutliner::COutliner(wstring _Name)
 {
 	m_ObjTree = new CTreeUI(_Name);
 	m_ObjTree->SetDoubleClickFunc((DELEGATE_1)&COutliner::DoubleClickEvent, this);
+	m_ObjTree->SetDragDropFunc((DELEGATE_2)&COutliner::DragDropEvent, this);
 }
 
 COutliner::~COutliner()
@@ -41,6 +42,31 @@ void COutliner::Render()
 void COutliner::DoubleClickEvent(DWORD_PTR _Obj)
 {
 	CImguiMgr::GetInst()->GetInspector()->SetTarget((CGameObject*)_Obj, TARGET_TYPE::GAMEOBJECT);
+}
+
+void COutliner::DragDropEvent(DWORD_PTR _Drag, DWORD_PTR _Drop)
+{
+	CGameObject* pDragObj = reinterpret_cast<CGameObject*>(_Drag);
+	CGameObject* pDropObj = reinterpret_cast<CGameObject*>(_Drop);
+
+	// 자신의 부모에게 드롭하는 경우 무시
+	if (pDragObj->GetParent() == pDropObj)
+		return;
+
+	// 자신의 자식 계열 오브젝트에 드롭하는 경우 무시
+	if (pDragObj->IsAncestorOf(pDropObj))
+		return;
+
+	if (pDragObj->GetParent())
+		pDragObj->GetParent()->DeleteChild(pDragObj);
+	else
+	{
+		CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(pDragObj->GetLayerIdx())->UnRegisterParentObject(pDragObj);
+		
+	}
+	pDropObj->AddChild(pDragObj);
+
+	CLevelMgr::GetInst()->SetLevelModified();
 }
 
 void COutliner::Renew()

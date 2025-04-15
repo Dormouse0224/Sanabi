@@ -36,7 +36,13 @@ void CLevelMgr::Init()
 
 void CLevelMgr::Progress()
 {
-	m_LevelModified = false;
+	if (m_LevelModified)
+		m_LevelModified = false;
+	if (m_LevelModifyChecker)
+	{
+		m_LevelModifyChecker = false;
+		m_LevelModified = true;
+	}
 
 	if (m_CurLevel == nullptr)
 		return;

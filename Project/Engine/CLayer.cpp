@@ -109,6 +109,18 @@ void CLayer::AddGameObject(CGameObject* _Parent, bool _bChildMove)
 	}
 }
 
+void CLayer::UnRegisterParentObject(CGameObject* _Parent)
+{
+	for (auto iter = m_vecParentObjects.begin(); iter != m_vecParentObjects.end(); ++iter)
+	{
+		if (*iter == _Parent)
+		{
+			m_vecParentObjects.erase(iter);
+			break;
+		}
+	}
+}
+
 int CLayer::Save(fstream& _File)
 {
 	if (!_File.is_open())

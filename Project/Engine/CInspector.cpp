@@ -6,6 +6,7 @@
 #include "CGameObject.h"
 #include "CComponentUI.h"
 #include "CComponentMgr.h"
+#include "CTaskMgr.h"
 
 #include "CEngine.h"
 #include "CAsset.h"
@@ -229,7 +230,7 @@ void CInspector::Render()
 			ImGui::EndPopup();
 		}
 
-		// 컴포넌트 추가 버튼
+		// 스크립트 추가 버튼
 		ImGui::SameLine();
 		if (ImGui::Button("Add Script"))
 		{
@@ -263,6 +264,29 @@ void CInspector::Render()
 
 			ImGui::EndPopup();
 		}
+
+		// 오브젝트 제거 버튼
+		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.8f, 0.2f, 0.2f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.8f, 0.4f, 0.4f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.8f, 0.3f, 0.3f, 1.0f));
+		if (ImGui::Button("Delete Object"))
+		{
+			CTaskMgr::GetInst()->AddTask(TASK_TYPE::DELETE_OBJECT, reinterpret_cast<DWORD_PTR>(m_TargetObj), NULL);
+		}
+		ImGui::PopStyleColor(3);
+
+		// 오브젝트 제거 버튼
+		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.8f, 0.2f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.4f, 0.8f, 0.4f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.3f, 0.8f, 0.3f, 1.0f));
+		if (ImGui::Button("Convert Root"))
+		{
+			m_TargetObj->ConvertToRoot();
+		}
+		ImGui::PopStyleColor(3);
+
 	}
 		break;
 	case TARGET_TYPE::ASSET:

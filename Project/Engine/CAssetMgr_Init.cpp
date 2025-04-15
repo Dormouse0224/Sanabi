@@ -180,7 +180,10 @@ void CAssetMgr::CreateEngineGraphicShader()
 	pShader->CreateVertexShader(L"HLSL\\Engine\\flipbook.fx", "VS_Flipbook");
 	pShader->CreatePixelShader(L"HLSL\\Engine\\flipbook.fx", "PS_Flipbook");
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
-	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+	pShader->SetBSType(BS_TYPE::ALPHABLEND);
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_WRITE);
 	pShader->SetTexData(TEX_0, "Atlas Texture");
 	pShader->SetConstData(INT_0, "Atlas Tex Flag");
 	pShader->SetConstData(INT_1, "Single Tex Flag");
@@ -218,8 +221,10 @@ void CAssetMgr::CreateEngineGraphicShader()
 	pShader = new CGraphicShader;
 	pShader->CreateVertexShader(L"HLSL\\Engine\\tilerender.fx", "VS_TileRender");
 	pShader->CreatePixelShader(L"HLSL\\Engine\\tilerender.fx", "PS_TileRender");
+	pShader->SetBSType(BS_TYPE::ALPHABLEND);
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
-	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+	pShader->SetDSType(DS_TYPE::NO_WRITE);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 	pShader->SetEngineAsset(true); 
 	AddAsset(L"EA_TileRenderShader", pShader.Get());
 
