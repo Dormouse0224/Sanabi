@@ -98,7 +98,10 @@ void CMaterialUI::Render_Ast()
 			case INT_2:
 			case INT_3:
 			{
-				ImGui::InputInt(label.c_str(), &Const.iArr[data->m_Param - INT_0], 1, 100, ImGuiInputTextFlags_ReadOnly);
+				if (ImGui::InputInt(label.c_str(), &Const.iArr[data->m_Param - INT_0]))
+				{
+					pMaterial->SetScalarParam(data->m_Param, Const.iArr[data->m_Param - INT_0]);
+				}
 			}
 			break;
 			case FLOAT_0:
@@ -106,7 +109,10 @@ void CMaterialUI::Render_Ast()
 			case FLOAT_2:
 			case FLOAT_3:
 			{
-				ImGui::InputFloat(label.c_str(), &Const.fArr[data->m_Param - FLOAT_0], 0, 0, "%.3f", ImGuiInputTextFlags_ReadOnly);
+				if (ImGui::InputFloat(label.c_str(), &Const.fArr[data->m_Param - FLOAT_0]))
+				{
+					pMaterial->SetScalarParam(data->m_Param, Const.fArr[data->m_Param - FLOAT_0]);
+				}
 			}
 			break;
 			case VEC2_0:
@@ -115,7 +121,10 @@ void CMaterialUI::Render_Ast()
 			case VEC2_3:
 			{
 				float vec[2] = { Const.v2Arr[data->m_Param - VEC2_0].x, Const.v2Arr[data->m_Param - VEC2_0].y };
-				ImGui::InputFloat2(label.c_str(), vec, "%.3f", ImGuiInputTextFlags_ReadOnly);
+				if (ImGui::InputFloat2(label.c_str(), vec))
+				{
+					pMaterial->SetScalarParam(data->m_Param, Vec2(vec));
+				}
 			}
 			break;
 			case VEC4_0:
@@ -125,7 +134,10 @@ void CMaterialUI::Render_Ast()
 			{
 				Vec4 v4 = Const.v4Arr[data->m_Param - VEC4_0];
 				float vec[4] = { v4.x, v4.y, v4.z, v4.w };
-				ImGui::InputFloat4(label.c_str(), vec, "%.3f", ImGuiInputTextFlags_ReadOnly);
+				if (ImGui::InputFloat4(label.c_str(), vec))
+				{
+					pMaterial->SetScalarParam(data->m_Param, Vec2(vec));
+				}
 			}
 			break;
 			case MAT_0:

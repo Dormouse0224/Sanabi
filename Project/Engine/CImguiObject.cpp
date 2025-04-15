@@ -59,7 +59,7 @@ void CImguiObject::Render_Progress()
 		else
 		{
 			ImGui::OpenPopup(m_Key.c_str());
-			if (ImGui::BeginPopupModal(m_Key.c_str(), &m_Active))
+			if (ImGui::BeginPopupModal(m_Key.c_str(), &m_Active, ImGuiWindowFlags_AlwaysAutoResize))
 			{
 				Render();
 

@@ -126,13 +126,14 @@ void CPhysxActor::SetRigidType(RIGID_TYPE _Type)
     {
         // None 타입으로 변경 시 기존 강체를 제거한다.
         CPhysxMgr::GetInst()->RemoveRigidBody(GetOwner());
+        m_vecShape.clear();
     }
     else if (m_Type == RIGID_TYPE::NONE)
     {
         // None 타입에서 새로 생성하는 경우 강체를 만든다.
         SetRigidBody(_Type);
 
-        for (int i = 0; i < m_vecDesc.size(); ++i)
+        for (int i = 0; i < m_vecShape.size(); ++i)
         {
             AttachCollider(m_vecDesc[i], m_vecScale[i], m_vecOffset[i]);
         }
@@ -141,6 +142,7 @@ void CPhysxActor::SetRigidType(RIGID_TYPE _Type)
     {
         // 둘 중 하나가 Static 인 경우 기존 강체를 제거하고 신규 강체로 새로 등록한다
         CPhysxMgr::GetInst()->RemoveRigidBody(GetOwner());
+        m_vecShape.clear();
         SetRigidBody(_Type);
 
         for (int i = 0; i < m_vecDesc.size(); ++i)
@@ -199,7 +201,9 @@ void CPhysxActor::SetColliderOffset(int _Idx, PxVec3 _Data)
     if (_Idx < m_vecShape.size())
     {
         m_vecOffset[_Idx] = _Data;
+        m_Body->detachShape(*m_vecShape[_Idx]);
         m_vecShape[_Idx]->setLocalPose(PxTransform(_Data));
+        m_Body->attachShape(*m_vecShape[_Idx]);
     }
 }
 

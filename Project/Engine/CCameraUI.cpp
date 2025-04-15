@@ -79,7 +79,7 @@ void CCameraUI::Render_Com()
     {
         ImGui::OpenPopup("SetPriority");
     }
-    if (ImGui::BeginPopupModal("SetPriority"))
+    if (ImGui::BeginPopupModal("SetPriority", NULL, ImGuiWindowFlags_AlwaysAutoResize))
     {
         float tab = 130.f;
         ImGui::Text("Set camera priority and register.");

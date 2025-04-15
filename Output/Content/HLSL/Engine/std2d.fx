@@ -39,6 +39,7 @@ float4 PS_Std2D(VS_OUT _in) : SV_Target
     if (vSampleColor.a == 0.f)
         discard;
     
+    // 그레이 스케일
     if (g_int_0)
     {
         vSampleColor.rgb = (vSampleColor.r + vSampleColor.g + vSampleColor.b) / 3.f;
@@ -51,7 +52,7 @@ float4 PS_Std2D(VS_OUT _in) : SV_Target
 float4 PS_Std2D_AlphaBlend(VS_OUT _in) : SV_Target
 {
     float4 vSampleColor = g_tex_0.Sample(g_sam_1, _in.vUV);
-    vSampleColor.a = vSampleColor.a * g_float_0;
+    vSampleColor.a = vSampleColor.a * g_float_0;    // 알파값 보정치 (그라데이션용)
     
     return vSampleColor;
 }

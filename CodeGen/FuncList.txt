@@ -1,1 +1,3 @@
 MainTitle_Bg_Start_Loop
+Player_Idle_Run
+Player_Run_Idle

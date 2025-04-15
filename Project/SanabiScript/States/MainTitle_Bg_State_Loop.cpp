@@ -20,7 +20,7 @@ void MainTitle_Bg_State_Loop::Tick()
 void MainTitle_Bg_State_Loop::Begin()
 {
 	if (auto render = m_Owner->GetOwner()->FlipbookRender(); render)
-		render->Play(0, 10, true);
+		render->Play(L"Flipbook\\MainTitle_BG.flip", 10, true);
 }
 
 void MainTitle_Bg_State_Loop::End()

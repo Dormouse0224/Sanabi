@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CImguiMgr.h"
 
+#include "CPathMgr.h"
+
 #include "CEngine.h"
 #include "CDevice.h"
 
@@ -16,6 +18,8 @@ void CImguiMgr::Init()
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
+    //string inipath = to_str(CPathMgr::GetBinPath()) + "imgui.ini";
+    //io.IniFilename = inipath.c_str();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking

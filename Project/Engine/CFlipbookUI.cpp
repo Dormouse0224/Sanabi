@@ -66,7 +66,7 @@ void CFlipbookUI::Render_Ast()
             AssetPtr<CSprite> pSprite = CAssetMgr::GetInst()->LoadFromFile<CSprite>(L".sprite");
             if (pSprite.Get())
             {
-                pFlipbook->AddScene<CSprite>(pSprite, sprite_current + 1);
+                pFlipbook->AddScene<CSprite>(pSprite, ++sprite_current);
             }
         }
         else if (pFlipbook->GetSceneType() == SceneType::TEXTURE)
@@ -74,7 +74,7 @@ void CFlipbookUI::Render_Ast()
             AssetPtr<CTexture2D> pTex = CAssetMgr::GetInst()->LoadFromFile<CTexture2D>(L"TEX");
             if (pTex.Get())
             {
-                pFlipbook->AddScene<CTexture2D>(pTex, texture_current + 1);
+                pFlipbook->AddScene<CTexture2D>(pTex, ++texture_current);
             }
         }
     }

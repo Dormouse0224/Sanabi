@@ -22,6 +22,10 @@ protected:
 
 
 public:
+    virtual void Tick() = 0;
+    virtual void Begin() = 0;
+    virtual void End() = 0;
+
     CFSM* GetOwner() { return m_Owner; }
     template<typename T>
     bool GetConst(int _Idx, T* _out);
@@ -32,9 +36,6 @@ public:
     template<typename T>
     void SetConstVec(const vector<T>& _ConstVec);
 
-    virtual void Tick() = 0;
-    virtual void Begin() = 0;
-    virtual void End() = 0;
 };
 
 template<typename T>

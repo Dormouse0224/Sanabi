@@ -12,17 +12,18 @@
 // ========================================================
 
 #include "Scripts\CCameraMoveScript.h"
-#include "Scripts\CPlayerScript.h"
 #include "Scripts\MainTitleBgScript.h"
 #include "Scripts\MainTitle_StartBtn_Script.h"
 
 #include "States\MainTitle_Bg_State_Loop.h"
 #include "States\MainTitle_Bg_State_Start.h"
+#include "States\Player_State_Idle.h"
+#include "States\Player_State_Jump.h"
+#include "States\Player_State_Run.h"
 
 void CScriptInit::ScriptInit()
 {
 	REGISTER_SCRIPT(CCameraMoveScript);
-	REGISTER_SCRIPT(CPlayerScript);
 	REGISTER_SCRIPT(MainTitleBgScript);
 	REGISTER_SCRIPT(MainTitle_StartBtn_Script);
 }
@@ -31,7 +32,12 @@ void CScriptInit::FSMInit()
 {
 	REGISTER_STATE(MainTitle_Bg_State_Loop);
 	REGISTER_STATE(MainTitle_Bg_State_Start);
+	REGISTER_STATE(Player_State_Idle);
+	REGISTER_STATE(Player_State_Jump);
+	REGISTER_STATE(Player_State_Run);
 
 	REGISTER_TRIGGER(MainTitle_Bg_Start_Loop);
+	REGISTER_TRIGGER(Player_Idle_Run);
+	REGISTER_TRIGGER(Player_Run_Idle);
 }
 

@@ -170,6 +170,7 @@ void CAssetMgr::CreateEngineGraphicShader()
 	pShader->SetDSType(DS_TYPE::NO_WRITE);
 	pShader->SetBSType(BS_TYPE::ALPHABLEND);
 	pShader->SetTexData(TEX_0, "Alpha Texture");
+	pShader->SetConstData(FLOAT_0, "Alpha Tint");
 	pShader->SetEngineAsset(true);
 
 	AddAsset(L"EA_Std2DAlphaBlendShader", pShader.Get());

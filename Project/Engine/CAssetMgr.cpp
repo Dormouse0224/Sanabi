@@ -143,7 +143,12 @@ void CAssetMgr::ContentLoad()
 	{
 		if (file.is_regular_file())
 		{
-			std::filesystem::path rp = file.path().generic_wstring().substr(wstring(CPathMgr::GetContentDir()).size());
+			std::wstring rp = file.path().generic_wstring().substr(wstring(CPathMgr::GetContentDir()).size());
+			for (int i = 0; i < rp.size(); ++i)
+			{
+				if (rp[i] == L'/')
+					rp[i] = L'\\';
+			}
 			switch (CAssetMgr::GetInst()->GetAssetType(file.path()))
 			{
 			case ASSET_TYPE::MESH:

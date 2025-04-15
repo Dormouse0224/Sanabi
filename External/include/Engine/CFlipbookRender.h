@@ -34,17 +34,23 @@ public:
             return;
         m_CurFlipbook = m_vecFlipbook[_Idx];
     }
-    void Play(int _Idx, float _FPS, bool _Repeat, int _SceneIdx = 0)
+    void Play(wstring _Name, float _FPS, bool _Repeat, int _SceneIdx = 0)
     {
-        if (_Idx >= m_vecFlipbook.size())
-            return;
-        m_CurFlipbook = m_vecFlipbook[_Idx];
-        m_FPS = _FPS;
-        m_Time = 0.f;
-        m_Finish = false;
-        m_Repeat = _Repeat;
-        m_SceneIdx = _SceneIdx;
+        for (auto flip : m_vecFlipbook)
+        {
+            if (flip->GetName() == _Name)
+            {
+                m_CurFlipbook = flip;
+                m_FPS = _FPS;
+                m_Time = 0.f;
+                m_Finish = false;
+                m_Repeat = _Repeat;
+                m_SceneIdx = _SceneIdx;
+                break;
+            }
+        }
     }
+    bool IsFinish() { return m_Finish; }
 
 
 public:

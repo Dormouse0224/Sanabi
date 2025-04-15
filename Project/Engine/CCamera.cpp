@@ -118,7 +118,7 @@ void CCamera::Render()
 	// Transparent
 	for (size_t i = 0; i < m_vecTransparent.size(); ++i)
 	{
-		m_vecTransparent[i]->Render();
+		m_vecTransparent[i].second->Render();
 	}
 
 	// Postprocess
@@ -226,7 +226,10 @@ void CCamera::SortObject()
 					m_vecMasked.push_back(vecObjects[j]);
 					break;
 				case SHADER_DOMAIN::DOMAIN_TRANSPARENT:
-					m_vecTransparent.push_back(vecObjects[j]);
+				{
+					Vec4 vpos = XMVector4Transform(Vec4(vecObjects[j]->Transform()->GetWorldPos(), 1.f), g_Trans.matView);
+					m_vecTransparent.push_back(make_pair(vpos.z, vecObjects[j]));
+				}
 					break;
 				case SHADER_DOMAIN::DOMAIN_POSTPROCESS:
 					m_vecPostprocess.push_back(vecObjects[j]);
@@ -241,9 +244,9 @@ void CCamera::SortObject()
 				m_vecUI.push_back(vecObjects[j]);
 			}
 		}
+
+		// TRANSPARENT 렌더링의 경우 View 공간 기준 먼 객체부터 렌더링해야 하므로 정렬 수행
+		sort(m_vecTransparent.begin(), m_vecTransparent.end(), [](pair<float, CGameObject*> _a, pair<float, CGameObject*> _b) -> bool { return _a.first > _b.first; });
 	}
-
-
-
 
 }

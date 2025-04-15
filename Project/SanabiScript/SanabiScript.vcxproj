@@ -168,18 +168,23 @@ call CodeGen.exe</Command>
   <ItemGroup>
     <ClInclude Include="CScriptInit.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="States\Player_State_Jump.h" />
+    <ClInclude Include="States\Player_State_Run.h" />
+    <ClInclude Include="States\Player_State_Idle.h" />
     <ClInclude Include="Scripts\MainTitle_StartBtn_Script.h" />
     <ClInclude Include="Scripts\MainTitleBgScript.h" />
     <ClInclude Include="States\MainTitle_Bg_State_Loop.h" />
     <ClInclude Include="States\MainTitle_Bg_State_Start.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Scripts\CCameraMoveScript.h" />
-    <ClInclude Include="Scripts\CPlayerScript.h" />
     <ClInclude Include="TestLevel.h" />
     <ClInclude Include="TriggerFunc.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CScriptInit.cpp" />
+    <ClCompile Include="States\Player_State_Jump.cpp" />
+    <ClCompile Include="States\Player_State_Run.cpp" />
+    <ClCompile Include="States\Player_State_Idle.cpp" />
     <ClCompile Include="Scripts\MainTitle_StartBtn_Script.cpp" />
     <ClCompile Include="Scripts\MainTitleBgScript.cpp" />
     <ClCompile Include="States\MainTitle_Bg_State_Loop.cpp" />
@@ -191,7 +196,6 @@ call CodeGen.exe</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Scripts\CCameraMoveScript.cpp" />
-    <ClCompile Include="Scripts\CPlayerScript.cpp" />
     <ClCompile Include="TestLevel.cpp" />
     <ClCompile Include="TriggerFunc.cpp" />
   </ItemGroup>

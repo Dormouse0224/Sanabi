@@ -36,7 +36,7 @@ public:
 
     void SetRelativeRot(Vec4 _RotationQuat);
     void SetRelativeRot(Vec3 _RotationDeg);
-    void SetRelativeRot(float _x, float _y, float _z);
+    void SetRelativeRot(float _xDeg, float _yDeg, float _zDeg);
     //void SetRelativeRotation(PxQuat _Rotation);
 
     void SetIndependentScale(bool _Scale) { m_IndependentScale = _Scale; }

@@ -39,7 +39,7 @@ void MainTitle_Bg_State_Start::Begin()
 	if (pBGM.Get())
 		pBGM->Play(0, 0.05, true);
 	if (auto render = m_Owner->GetOwner()->FlipbookRender(); render)
-		render->Play(1, 10, true);
+		render->Play(L"Flipbook\\MainTitle_Bg_start.flip", 10, true);
 }
 
 void MainTitle_Bg_State_Start::End()

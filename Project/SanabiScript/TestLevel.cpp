@@ -16,7 +16,6 @@
 
 #include "Engine\CSetColorCS.h"
 
-#include "Scripts\CPlayerScript.h"
 #include "Scripts\CCameraMoveScript.h"
 #include "TestLevel.h"
 
@@ -59,7 +58,6 @@ TestLevel::TestLevel()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CFlipbookRender);
 	pObject->AddComponent(new CPhysxActor);
-	pObject->AddComponent(new CPlayerScript);
 
 	pObject->Transform()->SetRelativePos(0.f, 0.f, 100.f);
 	pObject->Transform()->SetRelativeScale(100.f, 100.f, 1.f);

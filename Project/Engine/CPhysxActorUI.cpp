@@ -116,7 +116,7 @@ void CPhysxActorUI::Render_Com()
 				{
 					ImGui::OpenPopup("EditDesc");
 				}
-				if (ImGui::BeginPopupModal("EditDesc"))
+				if (ImGui::BeginPopupModal("EditDesc", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 				{
 					EditColliderDescPopup(i);
 					ImGui::EndPopup();

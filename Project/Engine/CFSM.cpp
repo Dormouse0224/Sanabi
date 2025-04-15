@@ -9,6 +9,7 @@ CFSM::CFSM()
 	:CComponent(COMPONENT_TYPE::FSM)
 	, m_vecCondition{}
 	, m_CurrentState(nullptr)
+	, m_PrevState(nullptr)
 	, m_InitState(nullptr)
 	, m_mapStates{}
 {
@@ -24,13 +25,15 @@ CFSM::CFSM(const CFSM& _Other)
 	for (const auto& cond : _Other.m_vecCondition)
 		AddCondition(typeid(*cond->m_OriginState).name(), typeid(*cond->m_DestState).name(), cond->m_FuncName);
 	
-	m_InitState = m_mapStates.find(typeid(*_Other.m_InitState).name())->second.first;
+	if (_Other.m_InitState)
+		m_InitState = m_mapStates.find(typeid(*_Other.m_InitState).name())->second.first;
 }
 
 CFSM::~CFSM()
 {
 	for (int i = 0; i < m_vecCondition.size(); ++i)
 		DeleteCondition(i);
+	m_vecCondition.clear();
 }
 
 void CFSM::Begin()
@@ -60,6 +63,7 @@ void CFSM::FinalTick()
 			{
 				// 조건 만족 시 출발지/목적지 State 의 End/Begin 을 호출해 주고, 현재 State 를 갱신 후 반복문 즉시 종료
 				tCond->m_OriginState->End();
+				m_PrevState = tCond->m_OriginState;
 				m_CurrentState = tCond->m_DestState;
 				tCond->m_DestState->Begin();
 				break;
@@ -227,7 +231,6 @@ void CFSM::DeleteCondition(int _Idx)
 		}
 
 		delete m_vecCondition[_Idx];
-		m_vecCondition.erase(m_vecCondition.begin() + _Idx);
 	}
 
 	m_InitState = nullptr;

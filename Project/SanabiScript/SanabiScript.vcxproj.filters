@@ -19,15 +19,15 @@
     <ClInclude Include="Scripts\CCameraMoveScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\CPlayerScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CScriptInit.h" />
     <ClInclude Include="TriggerFunc.h" />
     <ClInclude Include="States\MainTitle_Bg_State_Start.h" />
     <ClInclude Include="States\MainTitle_Bg_State_Loop.h" />
     <ClInclude Include="Scripts\MainTitleBgScript.h" />
     <ClInclude Include="Scripts\MainTitle_StartBtn_Script.h" />
+    <ClInclude Include="States\Player_State_Idle.h" />
+    <ClInclude Include="States\Player_State_Run.h" />
+    <ClInclude Include="States\Player_State_Jump.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -37,14 +37,14 @@
     <ClCompile Include="Scripts\CCameraMoveScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\CPlayerScript.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="CScriptInit.cpp" />
     <ClCompile Include="TriggerFunc.cpp" />
     <ClCompile Include="States\MainTitle_Bg_State_Start.cpp" />
     <ClCompile Include="States\MainTitle_Bg_State_Loop.cpp" />
     <ClCompile Include="Scripts\MainTitleBgScript.cpp" />
     <ClCompile Include="Scripts\MainTitle_StartBtn_Script.cpp" />
+    <ClCompile Include="States\Player_State_Idle.cpp" />
+    <ClCompile Include="States\Player_State_Run.cpp" />
+    <ClCompile Include="States\Player_State_Jump.cpp" />
   </ItemGroup>
 </Project>

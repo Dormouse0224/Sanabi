@@ -28,11 +28,11 @@ private:
 
 
     // 물체 분류 용도
-    vector<CGameObject*>    m_vecOpaque;
-    vector<CGameObject*>    m_vecMasked;
-    vector<CGameObject*>    m_vecTransparent;
-    vector<CGameObject*>    m_vecPostprocess;
-    vector<CGameObject*>    m_vecUI;
+    vector<CGameObject*>                m_vecOpaque;
+    vector<CGameObject*>                m_vecMasked;
+    vector<pair<float, CGameObject*>>   m_vecTransparent;
+    vector<CGameObject*>                m_vecPostprocess;
+    vector<CGameObject*>                m_vecUI;
 
 
 

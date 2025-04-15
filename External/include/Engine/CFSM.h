@@ -35,6 +35,7 @@ public:
 private:
     vector<FSM_Condition*>              m_vecCondition;
     CFSM_State*                         m_CurrentState;
+    CFSM_State*                         m_PrevState;
     CFSM_State*                         m_InitState;
     map<string, pair<CFSM_State*, int>> m_mapStates;    // FSM 컴포넌트가 사용하는 State 관리용 컨테이너. Condition 에서의 State 참조 수를 기록한다.
 
@@ -46,6 +47,7 @@ public:
     virtual int Save(fstream& _Stream) override;
 
     CFSM_State* GetCurrentState() { return m_CurrentState; }
+    CFSM_State* GetPrevState() { return m_PrevState; }
 
     void SetInitState(string _StateName);
 
