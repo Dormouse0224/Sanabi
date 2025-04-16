@@ -88,6 +88,7 @@ void CGameObject::AddComponent(CComponent* _Component)
 	if (Type == COMPONENT_TYPE::SCRIPT)
 	{
 		m_vecScript.push_back((CScript*)_Component);
+		m_mapScript.insert(make_pair(typeid(*(CScript*)_Component).name(), (CScript*)_Component));
 	}
 	else
 	{
@@ -387,4 +388,14 @@ void CGameObject::ConvertToRoot()
 	m_Parent = nullptr;
 	CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(m_LayerIdx)->AddGameObject(this, false);
 	CLevelMgr::GetInst()->SetLevelModified();
+}
+
+CScript* CGameObject::FindScript(string _className)
+{
+	if (auto iter = m_mapScript.find(_className); iter != m_mapScript.end())
+	{ 
+		return iter->second;
+	}
+
+	return nullptr;
 }

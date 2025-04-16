@@ -21,6 +21,7 @@ public:
 private:
     CComponent*             m_Com[(UINT)COMPONENT_TYPE::COMPONENT_END];
     vector<CScript*>        m_vecScript;
+    map<string, CScript*>   m_mapScript;
     CRenderComponent*       m_RenderCom; // 렌더링 컴포넌트 포인터
 
     CGameObject*            m_Parent;   // 부모 오브젝트
@@ -64,6 +65,7 @@ public:
     // 호출자가 대상 오브젝트의 조상인지 검사합니다.
     bool IsAncestorOf(CGameObject* _Obj);
     void ConvertToRoot();
+    CScript* FindScript(string _className);
 
 public:
     void Begin();

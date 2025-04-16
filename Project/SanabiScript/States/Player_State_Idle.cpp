@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Player_State_Idle.h"
 
+#include "Engine/CKeyMgr.h"
+
 #include "Engine/CFSM.h"
 #include "Engine/CGameObject.h"
 #include "Engine/CFlipbookRender.h"
@@ -26,8 +28,15 @@ void Player_State_Idle::Tick()
 		m_bIdleflip = true;
 	}
 
-	m_Owner->GetOwner()->PhysxActor()->SetLinearVelocity(PxVec3(0));
+	PxVec3 CurrentVel = m_Owner->GetOwner()->PhysxActor()->GetLinearVelocity();
 
+	// 점프 조작
+	Vec3 moveVel(0.0f);
+	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::SPACE) == Key_state::TAP) { moveVel.y += 300.f; }
+
+	m_Owner->GetOwner()->PhysxActor()->SetLinearVelocity(PxVec3(0, CurrentVel.y + moveVel.y, 0.f));
+
+	// 좌우 방향 설정
 	int i = 0;
 	if (GetConst<int>(0, &i) && i != 0)
 		m_Owner->GetOwner()->Transform()->SetRelativeRot(0, 180, 0);

@@ -28,7 +28,7 @@
     <ClInclude Include="States\Player_State_Idle.h" />
     <ClInclude Include="States\Player_State_Run.h" />
     <ClInclude Include="States\Player_State_Jump.h" />
-    <ClInclude Include="Scripts\PlsyerScript.h" />
+    <ClInclude Include="Scripts\PlayerScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -47,6 +47,6 @@
     <ClCompile Include="States\Player_State_Idle.cpp" />
     <ClCompile Include="States\Player_State_Run.cpp" />
     <ClCompile Include="States\Player_State_Jump.cpp" />
-    <ClCompile Include="Scripts\PlsyerScript.cpp" />
+    <ClCompile Include="Scripts\PlayerScript.cpp" />
   </ItemGroup>
 </Project>

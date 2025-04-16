@@ -39,22 +39,22 @@ void CSimulationEvent::onContact(const PxContactPairHeader& pairHeader, const Px
         if (cp.events & PxPairFlag::eNOTIFY_TOUCH_FOUND)
         {
             // 충돌이 시작되었을 때
-            go_0->PhysxActor()->ContactBegin(go_1);
-            go_1->PhysxActor()->ContactBegin(go_0);
+            go_0->PhysxActor()->ContactBegin(go_1, cp);
+            go_1->PhysxActor()->ContactBegin(go_0, cp);
         }
 
         if (cp.events & PxPairFlag::eNOTIFY_TOUCH_PERSISTS)
         {
             // 충돌이 계속되고 있을 때 (매 프레임마다 호출됨)
-            go_0->PhysxActor()->ContactTick(go_1);
-            go_1->PhysxActor()->ContactTick(go_0);
+            go_0->PhysxActor()->ContactTick(go_1, cp);
+            go_1->PhysxActor()->ContactTick(go_0, cp);
         }
 
         if (cp.events & PxPairFlag::eNOTIFY_TOUCH_LOST)
         {
             // 충돌이 끝났을 때
-            go_0->PhysxActor()->ContactEnd(go_1);
-            go_1->PhysxActor()->ContactEnd(go_0);
+            go_0->PhysxActor()->ContactEnd(go_1, cp);
+            go_1->PhysxActor()->ContactEnd(go_0, cp);
         }
     }
 }

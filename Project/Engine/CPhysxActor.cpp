@@ -305,28 +305,22 @@ void CPhysxActor::CkeckLockFlag(LOCK_FLAG _Flag)
     pBody->setRigidDynamicLockFlags(static_cast<PxRigidDynamicLockFlags>(m_LockFlag));
 }
 
-void CPhysxActor::SetContactTick(CScript* _Inst, ContactFunc _Func)
-{
-    m_ContactTickInst = _Inst;
-    m_ContactTick = _Func;
-}
-
-void CPhysxActor::ContactBegin(CGameObject* _Other)
+void CPhysxActor::ContactBegin(CGameObject* _Other, const PxContactPair pair)
 {
     if (m_ContactBeginInst != nullptr && m_ContactBegin != nullptr)
-        (m_ContactBeginInst->*m_ContactBegin)(_Other);
+        (m_ContactBeginInst->*m_ContactBegin)(_Other, pair);
 }
 
-void CPhysxActor::ContactTick(CGameObject* _Other)
+void CPhysxActor::ContactTick(CGameObject* _Other, const PxContactPair pair)
 {
     if (m_ContactTickInst != nullptr && m_ContactTick != nullptr)
-        (m_ContactTickInst->*m_ContactTick)(_Other);
+        (m_ContactTickInst->*m_ContactTick)(_Other, pair);
 }
 
-void CPhysxActor::ContactEnd(CGameObject* _Other)
+void CPhysxActor::ContactEnd(CGameObject* _Other, const PxContactPair pair)
 {
     if (m_ContactEndInst != nullptr && m_ContactEnd != nullptr)
-        (m_ContactEndInst->*m_ContactEnd)(_Other);
+        (m_ContactEndInst->*m_ContactEnd)(_Other, pair);
 }
 
 int CPhysxActor::Load(fstream& _Stream)

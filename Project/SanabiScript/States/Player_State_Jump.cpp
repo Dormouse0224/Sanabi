@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "Player_State_Jump.h"
 
+#include "Engine/CKeyMgr.h"
+#include "Engine/CTimeMgr.h"
+
 #include "Engine/CFSM.h"
 #include "Engine/CGameObject.h"
 #include "Engine/CFlipbookRender.h"
@@ -26,6 +29,24 @@ void Player_State_Jump::Tick()
 		m_bFalling = true;
 		m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\SNB_Falling.flip", 10, true);
 	}
+
+	// 좌우 방향 설정
+	int i = 0;
+	if (GetConst<int>(0, &i) && i != 0)
+		m_Owner->GetOwner()->Transform()->SetRelativeRot(0, 180, 0);
+	else
+		m_Owner->GetOwner()->Transform()->SetRelativeRot(0, 0, 0);
+
+	PxVec3 CurrentVel = m_Owner->GetOwner()->PhysxActor()->GetLinearVelocity();
+	if ((i == 0 && CurrentVel.x < 0) || (i != 0 && CurrentVel.x > 0))
+		SetConst<int>(0, (i == 0));
+
+	// 좌우 이동 조작
+	Vec3 moveVel(0.0f);
+	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::A) == Key_state::PRESSED) { moveVel.x -= 200.0f * DT; }
+	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::D) == Key_state::PRESSED) { moveVel.x += 200.0f * DT; }
+
+	m_Owner->GetOwner()->PhysxActor()->SetLinearVelocity(PxVec3(CurrentVel.x + moveVel.x, CurrentVel.y + moveVel.y, 0.f));
 }
 
 void Player_State_Jump::Begin()
@@ -45,4 +66,6 @@ void Player_State_Jump::Begin()
 
 void Player_State_Jump::End()
 {
+	m_bFalling = false;
+	m_bFallStart = false;
 }

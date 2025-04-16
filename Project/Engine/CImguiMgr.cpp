@@ -28,9 +28,11 @@ CImguiMgr::~CImguiMgr()
 {
     SetCurrentDirectory(CPathMgr::GetBinPath());
 
+    string inipath = to_str(CPathMgr::GetBinPath()) + "imgui.ini";
     // Cleanup
     if (ImGui::GetCurrentContext() != nullptr)
     {
+        ImGui::SaveIniSettingsToDisk(inipath.c_str());
         ImGui_ImplDX11_Shutdown();
         ImGui_ImplWin32_Shutdown();
         ImGui::DestroyContext();

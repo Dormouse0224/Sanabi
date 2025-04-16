@@ -5,7 +5,7 @@
 #include "CScript.h"
 
 // 충돌 이벤트 발생 시 호출되는 함수
-typedef void (CScript::*ContactFunc)(CGameObject* _Other);
+typedef void (CScript::*ContactFunc)(CGameObject* _Other, const PxContactPair pair);
 
 struct COLLIDER_DESC
 {
@@ -105,12 +105,12 @@ public:
     void CkeckLockFlag(LOCK_FLAG _Flag);
 
     void SetContactBegin(CScript* _Inst, ContactFunc _Func) { m_ContactBeginInst = _Inst; m_ContactBegin = _Func; }
-    void SetContactTick(CScript* _Inst, ContactFunc _Func);
+    void SetContactTick(CScript* _Inst, ContactFunc _Func) { m_ContactTickInst = _Inst; m_ContactTick = _Func; }
     void SetContactEnd(CScript* _Inst, ContactFunc _Func) { m_ContactEndInst = _Inst; m_ContactEnd = _Func; }
 
-    void ContactBegin(CGameObject* _Other);
-    void ContactTick(CGameObject* _Other);
-    void ContactEnd(CGameObject* _Other);
+    void ContactBegin(CGameObject* _Other, const PxContactPair pair);
+    void ContactTick(CGameObject* _Other, const PxContactPair pair);
+    void ContactEnd(CGameObject* _Other, const PxContactPair pair);
 
     virtual int Load(fstream& _Stream) override;
     virtual int Save(fstream& _Stream) override;

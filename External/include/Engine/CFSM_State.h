@@ -29,12 +29,15 @@ public:
     CFSM* GetOwner() { return m_Owner; }
     template<typename T>
     bool GetConst(int _Idx, T* _out);
+    template<typename T>
+    const vector<T>& GetConstVec();
 
     void SetOwner(CFSM* _Owner) { m_Owner = _Owner; }
     template<typename T>
     void SetConst(int _Idx, T _in);
     template<typename T>
     void SetConstVec(const vector<T>& _ConstVec);
+
 
 };
 
@@ -56,6 +59,27 @@ inline void CFSM_State::SetConstVec(const vector<T>& _ConstVec)
     else if constexpr (std::is_same_v<T, Vec4>)
     {
         m_vecVec4 = _ConstVec;
+    }
+}
+
+template<typename T>
+inline const vector<T>& CFSM_State::GetConstVec()
+{
+    if constexpr (std::is_same_v<T, int>)
+    {
+        return m_vecInt;
+    }
+    else if constexpr (std::is_same_v<T, float>)
+    {
+        return m_vecFloat;
+    }
+    else if constexpr (std::is_same_v<T, Vec2>)
+    {
+        return m_vecVec2;
+    }
+    else if constexpr (std::is_same_v<T, Vec4>)
+    {
+        return m_vecVec4;
     }
 }
 

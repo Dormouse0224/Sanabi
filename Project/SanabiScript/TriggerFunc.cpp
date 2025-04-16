@@ -2,6 +2,10 @@
 #include "TriggerFunc.h"
 
 #include "Engine/CKeyMgr.h"
+#include "Engine/CFSM.h"
+#include "Engine/CGameObject.h"
+#include "Engine/CScript.h"
+#include "Scripts/PlayerScript.h"
 
 bool MainTitle_Bg_Start_Loop(CFSM_State* _Origin, CFSM_State* _Dest)
 {
@@ -16,23 +20,39 @@ bool MainTitle_Bg_Start_Loop(CFSM_State* _Origin, CFSM_State* _Dest)
 }
 
 bool Player_Idle_Run(CFSM_State* _Origin, CFSM_State* _Dest)
-{	
-	int i = 0;
-	_Origin->GetConst<int>(0, &i);
-	_Dest->SetConst<int>(0, i);
+{
+	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::A) == Key_state::PRESSED || CKeyMgr::GetInst()->GetKeyState(Keyboard::D) == Key_state::PRESSED)
+		return true;
+	return false;
+}
 
-	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::A) == Key_state::TAP || CKeyMgr::GetInst()->GetKeyState(Keyboard::D) == Key_state::TAP)
+bool Player_Idle_Jump(CFSM_State* _Origin, CFSM_State* _Dest)
+{
+	PlayerScript* pScript = static_cast<PlayerScript*>(_Origin->GetOwner()->GetOwner()->FindScript("class PlayerScript"));
+	if (pScript->GetAirborne())
 		return true;
 	return false;
 }
 
 bool Player_Run_Idle(CFSM_State* _Origin, CFSM_State* _Dest)
 {
-	int i = 0;
-	_Origin->GetConst<int>(0, &i);
-	_Dest->SetConst<int>(0, i);
+	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::A) == Key_state::NONE && CKeyMgr::GetInst()->GetKeyState(Keyboard::D) == Key_state::NONE)
+		return true;
+	return false;
+}
 
-	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::A) == Key_state::RELEASE || CKeyMgr::GetInst()->GetKeyState(Keyboard::D) == Key_state::RELEASE)
+bool Player_Run_Jump(CFSM_State* _Origin, CFSM_State* _Dest)
+{
+	PlayerScript* pScript = static_cast<PlayerScript*>(_Origin->GetOwner()->GetOwner()->FindScript("class PlayerScript"));
+	if (pScript->GetAirborne())
+		return true;
+	return false;
+}
+
+bool Player_Jump_Idle(CFSM_State* _Origin, CFSM_State* _Dest)
+{
+	PlayerScript* pScript = static_cast<PlayerScript*>(_Origin->GetOwner()->GetOwner()->FindScript("class PlayerScript"));
+	if (!pScript->GetAirborne())
 		return true;
 	return false;
 }

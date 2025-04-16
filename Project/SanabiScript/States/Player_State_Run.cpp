@@ -21,6 +21,7 @@ Player_State_Run::~Player_State_Run()
 
 void Player_State_Run::Tick()
 {
+	// 좌우 방향 설정
 	int i = 0;
 	if (GetConst<int>(0, &i) && i != 0)
 		m_Owner->GetOwner()->Transform()->SetRelativeRot(0, 180, 0);
@@ -31,17 +32,17 @@ void Player_State_Run::Tick()
 	if ((i == 0 && CurrentVel.x < 0) || (i != 0 && CurrentVel.x > 0))
 		SetConst<int>(0, (i == 0));
 
-	// 예: 이동 입력 처리 (간단한 예시)
+	// 좌우 이동 조작
 	Vec3 moveVel(0.0f);
-	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::A) == Key_state::PRESSED) { moveVel.x -= 1.0f; }
-	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::D) == Key_state::PRESSED) { moveVel.x += 1.0f; }
+	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::A) == Key_state::PRESSED) { moveVel.x -= 200.0f; }
+	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::D) == Key_state::PRESSED) { moveVel.x += 200.0f; }
 
-	if (moveVel.Normalize().Length() > 0.0f)
-	{
-		float speed = 200.0f;
-		moveVel = moveVel * speed;
-		m_Owner->GetOwner()->PhysxActor()->SetLinearVelocity(PxVec3(moveVel.x, CurrentVel.y, 0.f));
-	}
+	// 점프 조작
+	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::SPACE) == Key_state::TAP) { moveVel.y += 300.f; }
+
+	m_Owner->GetOwner()->PhysxActor()->SetLinearVelocity(PxVec3(moveVel.x, CurrentVel.y + moveVel.y, 0.f));
+
+
 }
 
 void Player_State_Run::Begin()

@@ -61,10 +61,17 @@ void CFSM::FinalTick()
 		{
 			if (tCond->m_TriggerFunc(tCond->m_OriginState, tCond->m_DestState))
 			{
-				// 조건 만족 시 출발지/목적지 State 의 End/Begin 을 호출해 주고, 현재 State 를 갱신 후 반복문 즉시 종료
+				// 조건 만족 시 출발지 State 의 End 을 호출
 				tCond->m_OriginState->End();
+				//현재 State 를 갱신 후 반복문 즉시 종료
 				m_PrevState = tCond->m_OriginState;
 				m_CurrentState = tCond->m_DestState;
+				// 상수 데이터 동기화
+				m_CurrentState->SetConstVec(m_PrevState->GetConstVec<int>());
+				m_CurrentState->SetConstVec(m_PrevState->GetConstVec<float>());
+				m_CurrentState->SetConstVec(m_PrevState->GetConstVec<Vec2>());
+				m_CurrentState->SetConstVec(m_PrevState->GetConstVec<Vec4>());
+				// 목적지 State 의 Begin 을 호출
 				tCond->m_DestState->Begin();
 				break;
 			}

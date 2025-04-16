@@ -5,5 +5,9 @@
 bool MainTitle_Bg_Start_Loop(CFSM_State* _Origin, CFSM_State* _Dest);
 
 bool Player_Idle_Run(CFSM_State* _Origin, CFSM_State* _Dest);
+bool Player_Idle_Jump(CFSM_State* _Origin, CFSM_State* _Dest);
 
 bool Player_Run_Idle(CFSM_State* _Origin, CFSM_State* _Dest);
+bool Player_Run_Jump(CFSM_State* _Origin, CFSM_State* _Dest);
+
+bool Player_Jump_Idle(CFSM_State* _Origin, CFSM_State* _Dest);
