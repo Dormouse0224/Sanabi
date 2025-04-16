@@ -32,7 +32,7 @@ void CSimulationEvent::onContact(const PxContactPairHeader& pairHeader, const Px
         const PxContactPair& cp = pairs[i];
 
         CGameObject* go_0 = reinterpret_cast<CGameObject*>(pairHeader.actors[0]->userData);
-        CGameObject* go_1 = reinterpret_cast<CGameObject*>(pairHeader.actors[0]->userData);
+        CGameObject* go_1 = reinterpret_cast<CGameObject*>(pairHeader.actors[1]->userData);
         if (go_0->IsDead() || go_1->IsDead())
             return;
 

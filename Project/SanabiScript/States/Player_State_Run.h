@@ -9,7 +9,6 @@ public:
     ~Player_State_Run();
     CLONE(Player_State_Run);
 private:
-    bool m_bIdleflip;
 
 public:
     virtual void Tick();

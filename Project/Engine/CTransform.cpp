@@ -217,4 +217,6 @@ void CTransform::SetRelativeRot(float _xDeg, float _yDeg, float _zDeg)
 {
 	//m_RelativeRot = Vec3(_xDeg, _yDeg, _zDeg) / 180.f * XM_PI;
 	m_RelativeRot = XMQuaternionRotationRollPitchYaw(_xDeg / 180.f * XM_PI, _yDeg / 180.f * XM_PI, _zDeg / 180.f * XM_PI);
+	if (PhysxActor())
+		PhysxActor()->UpdateRotation(m_RelativeRot);
 }

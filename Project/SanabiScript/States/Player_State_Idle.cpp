@@ -5,6 +5,7 @@
 #include "Engine/CGameObject.h"
 #include "Engine/CFlipbookRender.h"
 #include "Engine/CTransform.h"
+#include "Engine/CPhysxActor.h"
 
 Player_State_Idle::Player_State_Idle()
 	: CFSM_State()
@@ -25,17 +26,21 @@ void Player_State_Idle::Tick()
 		m_bIdleflip = true;
 	}
 
+	m_Owner->GetOwner()->PhysxActor()->SetLinearVelocity(PxVec3(0));
 
 	int i = 0;
 	if (GetConst<int>(0, &i) && i != 0)
 		m_Owner->GetOwner()->Transform()->SetRelativeRot(0, 180, 0);
+	else
+		m_Owner->GetOwner()->Transform()->SetRelativeRot(0, 0, 0);
 }
 
 void Player_State_Idle::Begin()
 {
 	if (m_Owner->GetPrevState() != nullptr && m_Owner->GetPrevState()->GetName() == L"class Player_State_Run")
 	{
-		m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\SNB_RunStop.flip", 10, true);
+		// ´Þ¸®´Ù°¡ ¸ØÃá°æ¿ì
+		m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\SNB_RunStop.flip", 10, false);
 		m_bIdleflip = false;
 	}
 	else

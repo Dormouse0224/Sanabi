@@ -3,6 +3,8 @@
 
 #include "CComponentMgr.h"
 
+class CGameObject;
+
 class CScript :
     public CComponent
 {
@@ -19,5 +21,8 @@ public:
     virtual int Load(fstream& _Stream) = 0;
     void Render();
     virtual void Render_Script();
+    //virtual void ContactBegin(CGameObject* _Other) {}
+    //virtual void ContacTick(CGameObject* _Other) {}
+    //virtual void ContactEnd(CGameObject* _Other) {}
 };
 

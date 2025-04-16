@@ -81,9 +81,6 @@ void CEngine::Progress()
     // Level Progress
     CLevelMgr::GetInst()->Progress();
 
-    // Collision Check
-    //CCollisionMgr::GetInst()->Tick();
-
     // physx simulate
     CPhysxMgr::GetInst()->Tick();
 

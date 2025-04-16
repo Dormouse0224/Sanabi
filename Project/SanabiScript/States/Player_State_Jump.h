@@ -9,7 +9,8 @@ public:
     ~Player_State_Jump();
     CLONE(Player_State_Jump);
 private:
-    bool m_bIdleflip;
+    bool m_bFalling;
+    bool m_bFallStart;
 
 public:
     virtual void Tick();

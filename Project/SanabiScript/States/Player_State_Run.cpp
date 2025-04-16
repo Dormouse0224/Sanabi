@@ -24,25 +24,28 @@ void Player_State_Run::Tick()
 	int i = 0;
 	if (GetConst<int>(0, &i) && i != 0)
 		m_Owner->GetOwner()->Transform()->SetRelativeRot(0, 180, 0);
+	else
+		m_Owner->GetOwner()->Transform()->SetRelativeRot(0, 0, 0);
 
-	Vec3 currentPose = m_Owner->GetOwner()->Transform()->GetRelativePos();
+	PxVec3 CurrentVel = m_Owner->GetOwner()->PhysxActor()->GetLinearVelocity();
+	if ((i == 0 && CurrentVel.x < 0) || (i != 0 && CurrentVel.x > 0))
+		SetConst<int>(0, (i == 0));
 
 	// 예: 이동 입력 처리 (간단한 예시)
-	Vec3 moveDir(0.0f);
-	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::A) == Key_state::PRESSED) { moveDir.x -= 1.0f; }
-	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::D) == Key_state::PRESSED) { moveDir.x += 1.0f; }
+	Vec3 moveVel(0.0f);
+	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::A) == Key_state::PRESSED) { moveVel.x -= 1.0f; }
+	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::D) == Key_state::PRESSED) { moveVel.x += 1.0f; }
 
-	if (moveDir.Normalize().Length() > 0.0f)
+	if (moveVel.Normalize().Length() > 0.0f)
 	{
-		float speed = 50.0f;
-		Vec3 newPos = currentPose + moveDir * speed * DT;
-		m_Owner->GetOwner()->Transform()->SetRelativePos(newPos);
+		float speed = 200.0f;
+		moveVel = moveVel * speed;
+		m_Owner->GetOwner()->PhysxActor()->SetLinearVelocity(PxVec3(moveVel.x, CurrentVel.y, 0.f));
 	}
 }
 
 void Player_State_Run::Begin()
 {
-	// Idle 플립북 재생
 	m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\SNB_Running.flip", 10, true);
 }
 

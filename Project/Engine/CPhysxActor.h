@@ -2,8 +2,10 @@
 #include "CComponent.h"
 #include "CPhysxMgr.h"
 
+#include "CScript.h"
+
 // 충돌 이벤트 발생 시 호출되는 함수
-typedef void (*ContactFunc)(CGameObject*);
+typedef void (CScript::*ContactFunc)(CGameObject* _Other);
 
 struct COLLIDER_DESC
 {
@@ -65,6 +67,9 @@ private:
     // 오직 복사 생성 시에만 true 가 입력되며, FinalTick 에서 추가 초기화 진행 후 false 가 된다.
     bool                    m_DelayedInit;
 
+    CScript*                m_ContactBeginInst;
+    CScript*                m_ContactTickInst;
+    CScript*                m_ContactEndInst;
     ContactFunc             m_ContactBegin;
     ContactFunc             m_ContactTick;
     ContactFunc             m_ContactEnd;
@@ -83,6 +88,7 @@ public:
     COLLIDER_DESC GetColliderDesc(int _Idx) { if (_Idx < m_vecDesc.size()) { return m_vecDesc[_Idx]; } }
     PxVec3 GetColliderScale(int _Idx) { if (_Idx < m_vecScale.size()) { return m_vecScale[_Idx]; } }
     PxVec3 GetColliderOffset(int _Idx) { if (_Idx < m_vecOffset.size()) { return m_vecOffset[_Idx]; } }
+    PxVec3 GetLinearVelocity();
 
     void SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag = 0, bool _Gravity = false, float _Density = 1.f, PxVec3 _InitVel = PxVec3(0.f));
     void SetRigidType(RIGID_TYPE _Type);
@@ -90,6 +96,7 @@ public:
     void SetDensity(float _Density);
     void SetColliderDesc(int _Idx, COLLIDER_DESC _Data);
     void SetColliderOffset(int _Idx, PxVec3 _Data);
+    void SetLinearVelocity(PxVec3 _Vel);
 
     void AddCollider(COLLIDER_DESC _desc, PxVec3 _Scale = PxVec3(1.f), PxVec3 _Offset = PxVec3(0.f));
     void DeleteCollider(int _Idx);
@@ -97,13 +104,13 @@ public:
     void UpdateRotation(Vec4 _RotQuat);
     void CkeckLockFlag(LOCK_FLAG _Flag);
 
-    void SetContactBegin(ContactFunc _Func) { m_ContactBegin = _Func; }
-    void SetContactTick(ContactFunc _Func) { m_ContactTick = _Func; }
-    void SetContactEnd(ContactFunc _Func) { m_ContactEnd = _Func; }
+    void SetContactBegin(CScript* _Inst, ContactFunc _Func) { m_ContactBeginInst = _Inst; m_ContactBegin = _Func; }
+    void SetContactTick(CScript* _Inst, ContactFunc _Func);
+    void SetContactEnd(CScript* _Inst, ContactFunc _Func) { m_ContactEndInst = _Inst; m_ContactEnd = _Func; }
 
-    void ContactBegin(CGameObject* _Other) { if (m_ContactBegin) { m_ContactBegin(_Other); } }
-    void ContactTick(CGameObject* _Other) { if (m_ContactTick) { m_ContactTick(_Other); } }
-    void ContactEnd(CGameObject* _Other) { if (m_ContactEnd) { m_ContactEnd(_Other); } }
+    void ContactBegin(CGameObject* _Other);
+    void ContactTick(CGameObject* _Other);
+    void ContactEnd(CGameObject* _Other);
 
     virtual int Load(fstream& _Stream) override;
     virtual int Save(fstream& _Stream) override;

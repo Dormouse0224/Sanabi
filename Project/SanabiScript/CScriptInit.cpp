@@ -14,6 +14,7 @@
 #include "Scripts\CCameraMoveScript.h"
 #include "Scripts\MainTitleBgScript.h"
 #include "Scripts\MainTitle_StartBtn_Script.h"
+#include "Scripts\PlsyerScript.h"
 
 #include "States\MainTitle_Bg_State_Loop.h"
 #include "States\MainTitle_Bg_State_Start.h"
@@ -26,6 +27,7 @@ void CScriptInit::ScriptInit()
 	REGISTER_SCRIPT(CCameraMoveScript);
 	REGISTER_SCRIPT(MainTitleBgScript);
 	REGISTER_SCRIPT(MainTitle_StartBtn_Script);
+	REGISTER_SCRIPT(PlsyerScript);
 }
 
 void CScriptInit::FSMInit()

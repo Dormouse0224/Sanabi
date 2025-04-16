@@ -168,6 +168,7 @@ call CodeGen.exe</Command>
   <ItemGroup>
     <ClInclude Include="CScriptInit.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Scripts\PlsyerScript.h" />
     <ClInclude Include="States\Player_State_Jump.h" />
     <ClInclude Include="States\Player_State_Run.h" />
     <ClInclude Include="States\Player_State_Idle.h" />
@@ -182,6 +183,7 @@ call CodeGen.exe</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CScriptInit.cpp" />
+    <ClCompile Include="Scripts\PlsyerScript.cpp" />
     <ClCompile Include="States\Player_State_Jump.cpp" />
     <ClCompile Include="States\Player_State_Run.cpp" />
     <ClCompile Include="States\Player_State_Idle.cpp" />

@@ -28,6 +28,12 @@ CPhysxActor::CPhysxActor()
     , m_vecScale{}
     , m_vecOffset{}
     , m_DelayedInit(false)
+    , m_ContactBeginInst(nullptr)
+    , m_ContactTickInst(nullptr)
+    , m_ContactEndInst(nullptr)
+    , m_ContactBegin(nullptr)
+    , m_ContactTick(nullptr)
+    , m_ContactEnd(nullptr)
 {
 
 }
@@ -43,6 +49,12 @@ CPhysxActor::CPhysxActor(const CPhysxActor& _Other)
     , m_vecScale{ _Other.m_vecScale }
     , m_vecOffset{ _Other.m_vecOffset }
     , m_DelayedInit(true)
+    , m_ContactBeginInst(nullptr)
+    , m_ContactTickInst(nullptr)
+    , m_ContactEndInst(nullptr)
+    , m_ContactBegin(nullptr)
+    , m_ContactTick(nullptr)
+    , m_ContactEnd(nullptr)
 {
    
 }
@@ -64,6 +76,14 @@ void CPhysxActor::FinalTick()
         for (int i = 0; i < m_vecDesc.size(); ++i)
             AttachCollider(m_vecDesc[i], m_vecScale[i], m_vecOffset[i]);
     }
+}
+
+PxVec3 CPhysxActor::GetLinearVelocity()
+{
+    if (m_Type == RIGID_TYPE::DYNAMIC)
+        return static_cast<PxRigidDynamic*>(m_Body)->getLinearVelocity();
+
+    return PxVec3(0);
 }
 
 void CPhysxActor::SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag, bool _Gravity, float _Density, PxVec3 _InitVel)
@@ -207,6 +227,12 @@ void CPhysxActor::SetColliderOffset(int _Idx, PxVec3 _Data)
     }
 }
 
+void CPhysxActor::SetLinearVelocity(PxVec3 _Vel)
+{
+    if (m_Type == RIGID_TYPE::DYNAMIC)
+        static_cast<PxRigidDynamic*>(m_Body)->setLinearVelocity(_Vel);
+}
+
 void CPhysxActor::AddCollider(COLLIDER_DESC _Desc, PxVec3 _Scale, PxVec3 _Offset)
 {
     m_vecDesc.push_back(_Desc);
@@ -277,6 +303,30 @@ void CPhysxActor::CkeckLockFlag(LOCK_FLAG _Flag)
     m_LockFlag = m_LockFlag ^ _Flag;
     PxRigidDynamic* pBody = (PxRigidDynamic*)m_Body;
     pBody->setRigidDynamicLockFlags(static_cast<PxRigidDynamicLockFlags>(m_LockFlag));
+}
+
+void CPhysxActor::SetContactTick(CScript* _Inst, ContactFunc _Func)
+{
+    m_ContactTickInst = _Inst;
+    m_ContactTick = _Func;
+}
+
+void CPhysxActor::ContactBegin(CGameObject* _Other)
+{
+    if (m_ContactBeginInst != nullptr && m_ContactBegin != nullptr)
+        (m_ContactBeginInst->*m_ContactBegin)(_Other);
+}
+
+void CPhysxActor::ContactTick(CGameObject* _Other)
+{
+    if (m_ContactTickInst != nullptr && m_ContactTick != nullptr)
+        (m_ContactTickInst->*m_ContactTick)(_Other);
+}
+
+void CPhysxActor::ContactEnd(CGameObject* _Other)
+{
+    if (m_ContactEndInst != nullptr && m_ContactEnd != nullptr)
+        (m_ContactEndInst->*m_ContactEnd)(_Other);
 }
 
 int CPhysxActor::Load(fstream& _Stream)

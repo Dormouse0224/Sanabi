@@ -17,6 +17,10 @@ bool MainTitle_Bg_Start_Loop(CFSM_State* _Origin, CFSM_State* _Dest)
 
 bool Player_Idle_Run(CFSM_State* _Origin, CFSM_State* _Dest)
 {	
+	int i = 0;
+	_Origin->GetConst<int>(0, &i);
+	_Dest->SetConst<int>(0, i);
+
 	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::A) == Key_state::TAP || CKeyMgr::GetInst()->GetKeyState(Keyboard::D) == Key_state::TAP)
 		return true;
 	return false;
@@ -24,6 +28,10 @@ bool Player_Idle_Run(CFSM_State* _Origin, CFSM_State* _Dest)
 
 bool Player_Run_Idle(CFSM_State* _Origin, CFSM_State* _Dest)
 {
+	int i = 0;
+	_Origin->GetConst<int>(0, &i);
+	_Dest->SetConst<int>(0, i);
+
 	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::A) == Key_state::RELEASE || CKeyMgr::GetInst()->GetKeyState(Keyboard::D) == Key_state::RELEASE)
 		return true;
 	return false;

@@ -3,6 +3,8 @@
 
 #include "CComponentMgr.h"
 
+class CGameObject;
+
 class CScript :
     public CComponent
 {
