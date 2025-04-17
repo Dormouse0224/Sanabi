@@ -17,6 +17,7 @@ private:
     bool m_bAirborne;
     bool m_bAirborneCheck;
     bool m_bWallContact;
+    bool m_bWallLeft;
     bool m_bWallContactCheck;
 
 
@@ -27,6 +28,7 @@ public:
 
     bool GetAirborne() { return m_bAirborne; }
     bool GetWallContact() { return m_bWallContact; }
+    bool GetWallLeft() { return m_bWallLeft; }
 
     void Init();
     void ContactBegin(CGameObject* _Other, const PxContactPair pair);

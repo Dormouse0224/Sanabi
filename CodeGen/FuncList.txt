@@ -4,3 +4,5 @@ Player_Idle_Jump
 Player_Run_Idle
 Player_Run_Jump
 Player_Jump_Idle
+Player_Jump_Climb
+Player_Climb_Jump

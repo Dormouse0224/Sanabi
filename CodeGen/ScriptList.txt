@@ -1,9 +1,10 @@
-CCameraMoveScript
 MainTitleBgScript
 MainTitle_StartBtn_Script
+PlayerCamScript
 PlayerScript
 MainTitle_Bg_State_Loop
 MainTitle_Bg_State_Start
+Player_State_Climb
 Player_State_Idle
 Player_State_Jump
 Player_State_Run

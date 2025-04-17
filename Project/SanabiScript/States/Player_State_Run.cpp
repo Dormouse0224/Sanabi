@@ -40,8 +40,8 @@ void Player_State_Run::Tick()
 
 	// 좌우 이동 조작
 	Vec3 moveVel(0.0f);
-	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::A) == Key_state::PRESSED) { moveVel.x -= 150.f; }
-	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::D) == Key_state::PRESSED) { moveVel.x += 150.f; }
+	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::A) == Key_state::PRESSED) { moveVel.x -= 200.f; }
+	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::D) == Key_state::PRESSED) { moveVel.x += 200.f; }
 
 	// 점프 조작
 	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::SPACE) == Key_state::TAP) { moveVel.y += 400.f; }
@@ -54,7 +54,7 @@ void Player_State_Run::Tick()
 void Player_State_Run::Begin()
 {
 	m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\SNB_Running.flip", 10, true);
-	m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Play(L"Flipbook\\SNBArm_Running.flip", 10, false);
+	m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Play(L"Flipbook\\SNBArm_Running.flip", 10, true);
 }
 
 void Player_State_Run::End()

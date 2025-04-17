@@ -28,7 +28,7 @@ void Player_State_Jump::Tick()
 		m_bFallStart = false;
 		m_bFalling = true;
 		m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\SNB_Falling.flip", 10, true);
-		m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Play(L"Flipbook\\SNBArm_Falling.flip", 10, false);
+		m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Play(L"Flipbook\\SNBArm_Falling.flip", 10, true);
 	}
 
 	// 좌우 방향 설정
@@ -62,7 +62,7 @@ void Player_State_Jump::Begin()
 	{
 		// 위쪽으로 점프중인 경우
 		m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\SNB_Jumping.flip", 10, true);
-		m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Play(L"Flipbook\\SNBArm_Jumping.flip", 10, false);
+		m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Play(L"Flipbook\\SNBArm_Jumping.flip", 10, true);
 	}
 	else
 	{

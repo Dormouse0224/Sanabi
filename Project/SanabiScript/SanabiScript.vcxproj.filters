@@ -16,9 +16,6 @@
       <Filter>Default</Filter>
     </ClInclude>
     <ClInclude Include="TestLevel.h" />
-    <ClInclude Include="Scripts\CCameraMoveScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CScriptInit.h" />
     <ClInclude Include="TriggerFunc.h" />
     <ClInclude Include="States\MainTitle_Bg_State_Start.h" />
@@ -29,15 +26,14 @@
     <ClInclude Include="States\Player_State_Run.h" />
     <ClInclude Include="States\Player_State_Jump.h" />
     <ClInclude Include="Scripts\PlayerScript.h" />
+    <ClInclude Include="States\Player_State_Climb.h" />
+    <ClInclude Include="Scripts\PlayerCamScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>Default</Filter>
     </ClCompile>
     <ClCompile Include="TestLevel.cpp" />
-    <ClCompile Include="Scripts\CCameraMoveScript.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="CScriptInit.cpp" />
     <ClCompile Include="TriggerFunc.cpp" />
     <ClCompile Include="States\MainTitle_Bg_State_Start.cpp" />
@@ -48,5 +44,7 @@
     <ClCompile Include="States\Player_State_Run.cpp" />
     <ClCompile Include="States\Player_State_Jump.cpp" />
     <ClCompile Include="Scripts\PlayerScript.cpp" />
+    <ClCompile Include="States\Player_State_Climb.cpp" />
+    <ClCompile Include="Scripts\PlayerCamScript.cpp" />
   </ItemGroup>
 </Project>

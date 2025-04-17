@@ -23,6 +23,7 @@ private:
     float                           m_FPS;
     bool                            m_Repeat;
     bool                            m_Finish;
+    bool                            m_Pause;
 
 
 public:
@@ -51,6 +52,7 @@ public:
         }
     }
     bool IsFinish() { return m_Finish; }
+    void Pause(bool _b) { m_Pause = _b; }
 
 
 public:

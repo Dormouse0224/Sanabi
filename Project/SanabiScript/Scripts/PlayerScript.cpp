@@ -8,6 +8,7 @@ PlayerScript::PlayerScript()
 	, m_bInit(false)
 	, m_bAirborne(false)
 	, m_bWallContact(false)
+	, m_bWallLeft(false)
 {
 }
 
@@ -16,6 +17,7 @@ PlayerScript::PlayerScript(const PlayerScript& _Origin)
 	, m_bInit(false)
 	, m_bAirborne(false)
 	, m_bWallContact(false)
+	, m_bWallLeft(false)
 {
 }
 
@@ -60,7 +62,13 @@ void PlayerScript::ContacTick(CGameObject* _Other, const PxContactPair pair)
 			if (point.normal.y > 0.7f)
 				m_bAirborneCheck = false;
 			else if (point.normal.y < 0.3f)
+			{
 				m_bWallContactCheck = true;
+				if (point.normal.x > 0)
+					m_bWallLeft = true;
+				else
+					m_bWallLeft = false;
+			}
 		}
 	}
 }

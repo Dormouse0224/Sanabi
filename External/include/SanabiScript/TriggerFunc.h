@@ -11,3 +11,6 @@ bool Player_Run_Idle(CFSM_State* _Origin, CFSM_State* _Dest);
 bool Player_Run_Jump(CFSM_State* _Origin, CFSM_State* _Dest);
 
 bool Player_Jump_Idle(CFSM_State* _Origin, CFSM_State* _Dest);
+bool Player_Jump_Climb(CFSM_State* _Origin, CFSM_State* _Dest);
+
+bool Player_Climb_Jump(CFSM_State* _Origin, CFSM_State* _Dest);

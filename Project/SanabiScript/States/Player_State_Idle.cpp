@@ -25,7 +25,7 @@ void Player_State_Idle::Tick()
 	if (!m_bIdleflip && m_Owner->GetOwner()->FlipbookRender()->IsFinish())
 	{
 		m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\SNB_Idle.flip", 10, true);
-		m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Play(L"Flipbook\\SNBArm_Idle.flip", 10, false);
+		m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Play(L"Flipbook\\SNBArm_Idle.flip", 10, true);
 		m_bIdleflip = true;
 	}
 
@@ -63,7 +63,7 @@ void Player_State_Idle::Begin()
 	else
 	{
 		m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\SNB_Idle.flip", 10, true);
-		m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Play(L"Flipbook\\SNBArm_Idle.flip", 10, false);
+		m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Play(L"Flipbook\\SNBArm_Idle.flip", 10, true);
 		m_bIdleflip = true;
 	}
 }

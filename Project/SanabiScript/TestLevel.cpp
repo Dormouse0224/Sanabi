@@ -16,7 +16,6 @@
 
 #include "Engine\CSetColorCS.h"
 
-#include "Scripts\CCameraMoveScript.h"
 #include "TestLevel.h"
 
 TestLevel::TestLevel()
@@ -27,7 +26,6 @@ TestLevel::TestLevel()
 	pCamObj->SetName(L"MainCamera");
 	pCamObj->AddComponent(new CTransform);
 	pCamObj->AddComponent(new CCamera);
-	pCamObj->AddComponent(new CCameraMoveScript);
 
 	pCamObj->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
 	pCamObj->Camera()->SetPriority(0); // 메인 카메라로 설정

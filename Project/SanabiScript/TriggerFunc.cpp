@@ -56,3 +56,18 @@ bool Player_Jump_Idle(CFSM_State* _Origin, CFSM_State* _Dest)
 		return true;
 	return false;
 }
+
+bool Player_Jump_Climb(CFSM_State* _Origin, CFSM_State* _Dest)
+{
+	PlayerScript* pScript = static_cast<PlayerScript*>(_Origin->GetOwner()->GetOwner()->FindScript("class PlayerScript"));
+	if (pScript->GetWallContact())
+		return true;
+}
+
+bool Player_Climb_Jump(CFSM_State* _Origin, CFSM_State* _Dest)
+{
+	PlayerScript* pScript = static_cast<PlayerScript*>(_Origin->GetOwner()->GetOwner()->FindScript("class PlayerScript"));
+	if (!pScript->GetWallContact())
+		return true;
+	return false;
+}

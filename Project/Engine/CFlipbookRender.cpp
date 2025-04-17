@@ -37,7 +37,8 @@ void CFlipbookRender::FinalTick()
 		}
 	}
 
-	m_Time += DT;
+	if (!m_Pause)
+		m_Time += DT;
 
 	if ((1.f / m_FPS) < m_Time)
 	{

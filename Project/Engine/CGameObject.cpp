@@ -359,11 +359,21 @@ void CGameObject::Destroy()
 
 void CGameObject::ChangeLayer(LAYER _Dest, bool _CHildMove)
 {
-	m_LayerIdx = static_cast<int>(_Dest);
-	if (_CHildMove)
+	if (m_Parent == nullptr)
 	{
-		for (const auto& pChild : m_vecChild)
-			pChild->ChangeLayer(_Dest, _CHildMove);
+		CLayer* pPrevLayer = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(m_LayerIdx);
+		CLayer* pNewLayer = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(static_cast<int>(_Dest));
+		pPrevLayer->UnRegisterParentObject(this);
+		pNewLayer->AddGameObject(this, _CHildMove);
+	}
+	else
+	{
+		m_LayerIdx = static_cast<int>(_Dest);
+		if (_CHildMove)
+		{
+			for (const auto& pChild : m_vecChild)
+				pChild->ChangeLayer(_Dest, _CHildMove);
+		}
 	}
 }
 
