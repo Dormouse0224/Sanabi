@@ -56,6 +56,7 @@ public:
     void CheckLayerAll() { m_LayerCheck = 0xffffffff; }
     void CheckLayerClear() { m_LayerCheck = 0; }
 
+    const Matrix& GetViewMat() { return m_matView; }
     const Matrix& GetProjMat() { return m_matProj; }
 
 private:

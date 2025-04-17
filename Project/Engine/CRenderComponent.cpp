@@ -46,7 +46,7 @@ void CRenderComponent::SetDynamic(bool _UsingDynamic)
 
 AssetPtr<CMaterial> CRenderComponent::GetMaterial()
 {
-	if (LEVEL_STATE::PLAY == CLevelMgr::GetInst()->GetCurrentLevel()->GetState())
+	if (CLevelMgr::GetInst()->GetCurrentLevel() != nullptr && LEVEL_STATE::PLAY == CLevelMgr::GetInst()->GetCurrentLevel()->GetState())
 		SetDynamic(true);
 
 	if (m_UsingDynamic)

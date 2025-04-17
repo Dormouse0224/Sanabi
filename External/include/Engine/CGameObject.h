@@ -48,6 +48,8 @@ public:
     const vector<CScript*>& GetScripts() { return m_vecScript; }
     int GetLayerIdx() { return m_LayerIdx; }
 
+    void SetLayerIdx(int _Idx) { m_LayerIdx = _Idx; }
+
     class CTransform*   Transform() { return (CTransform*)GetComponent(COMPONENT_TYPE::TRANSFORM); }
     class CCamera*      Camera() { return (CCamera*)GetComponent(COMPONENT_TYPE::CAMERA); }
     class CPhysxActor*  PhysxActor() { return (CPhysxActor*)GetComponent(COMPONENT_TYPE::PHYSXACTOR); }

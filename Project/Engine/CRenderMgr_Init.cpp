@@ -53,4 +53,15 @@ void CRenderMgr::Init()
 	m_EditorCam->AddComponent(new CEditorCamScript);
 	m_EditorCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
 	m_EditorCam->Camera()->CheckLayerAll();
+	m_EditorCam->Camera()->CheckLayer(LAYER::UI);
+
+
+	// ==================
+	// UI Cam Object
+	// ==================
+	m_UICam = new CGameObject;
+	m_UICam->AddComponent(new CTransform);
+	m_UICam->AddComponent(new CCamera);
+	m_UICam->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
+	m_UICam->Camera()->CheckLayer(LAYER::UI);
 }

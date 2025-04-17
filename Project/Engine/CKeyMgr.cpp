@@ -2,6 +2,13 @@
 #include "CKeyMgr.h"
 #include "CEngine.h"
 #include "CTimeMgr.h"
+#include "CAssetMgr.h"
+#include "CRenderMgr.h"
+
+#include "CGameObject.h"
+#include "CTransform.h"
+#include "CMeshRender.h"
+#include "CCamera.h"
 
 UINT key_value[(int)Keyboard::Keyboard_end] = 
 {
@@ -108,13 +115,20 @@ UINT key_value[(int)Keyboard::Keyboard_end] =
 CKeyMgr::CKeyMgr()
     : m_MousePos(0, 0)
     , m_CommandTimeout(0)
+    , m_Cursor(nullptr)
 {
 
 }
 
 CKeyMgr::~CKeyMgr()
 {
+    delete m_Cursor;
+}
 
+void CKeyMgr::SetCursorTex(AssetPtr<CTexture2D> _Tex)
+{
+    if (_Tex.Get())
+        m_Cursor->MeshRender()->GetMaterial()->SetTexParam(TEX_0, _Tex);
 }
 
 void CKeyMgr::Init()
@@ -124,6 +138,14 @@ void CKeyMgr::Init()
 	{
 		m_keyboardInfo.push_back(key_info{ Key_state::NONE, false });
 	}
+
+
+    m_Cursor = new CGameObject;
+    m_Cursor->AddComponent(new CTransform);
+    m_Cursor->AddComponent(new CMeshRender);
+    m_Cursor->SetLayerIdx((int)LAYER::UI);
+    m_Cursor->MeshRender()->SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"EA_RectMesh"));
+    m_Cursor->MeshRender()->SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"EA_CursorMtrl"));
 }
 
 void CKeyMgr::Tick()
@@ -188,6 +210,24 @@ void CKeyMgr::Tick()
 
         // 마우스 커서가 진행하는 방향벡터를 구함
         m_DragDir = m_MousePos - m_MousePrevPos;
+
+        // 커서 이미지 대체
+        CURSOR_ON;
+
+        // 스크린좌표 -> NDC -> 클립(투영)좌표
+        if (CGameObject* pUICam = CRenderMgr::GetInst()->GetUICam(); pUICam)
+        {
+            Vec2 resolution = CEngine::GetInst()->GetResolution();
+            Matrix clipInv = XMMatrixInverse(nullptr, g_Trans.matProj);
+            Matrix viewInv = XMMatrixInverse(nullptr, g_Trans.matView);
+            m_Cursor->Transform()->SetRelativeScale(100.f, 100.f, 1.f);
+            Vec4 clip = Vec4((100.f / resolution.x) * 2.f - 1.f, -((100.f / resolution.y) * 2.f - 1.f)
+                , 0, 1);
+            // 투영좌표에 클립, 뷰 역행렬로 월드 좌표 계산
+            Vec3 worldCoord = XMVector4Transform(clip, clipInv * viewInv);
+            m_Cursor->Transform()->SetRelativePos(worldCoord);
+            m_Cursor->FinalTick(false);
+        }
     }
     else
     {
@@ -207,12 +247,18 @@ void CKeyMgr::Tick()
             m_keyboardInfo[i].isPrevPressed = false;
         }
 
+        CURSOR_ON;
+
         // 마우스 좌표 갱신
         *((int*)&m_MousePos.x) = 0xffffffff;
         *((int*)&m_MousePos.y) = 0xffffffff;
     }
 
+}
 
+void CKeyMgr::Render()
+{
+    m_Cursor->Render();
 }
 
 bool CKeyMgr::IsMouseOffScreen()

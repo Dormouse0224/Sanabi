@@ -9,7 +9,7 @@
 #include "CRenderComponent.h"
 #include "CLayer.h"
 
-
+#include "CKeyMgr.h"
 #include "CAssetMgr.h"
 #include "CTimeMgr.h"
 #include "CPhysxMgr.h"
@@ -27,6 +27,9 @@ CRenderMgr::~CRenderMgr()
 
 	if (nullptr != m_EditorCam)
 		delete m_EditorCam;
+
+	if (nullptr != m_UICam)
+		delete m_UICam;
 }
 
 void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Priority)
@@ -71,11 +74,22 @@ void CRenderMgr::Tick()
 	m_EditorCam->Tick();
 	m_EditorCam->FinalTick(false);
 
+	m_UICam->Tick();
+	if (m_CurrentCam)
+	{
+		m_UICam->Transform()->SetRelativePos(m_CurrentCam->GetOwner()->Transform()->GetRelativePos());
+		m_UICam->Transform()->SetRelativeRot(m_CurrentCam->GetOwner()->Transform()->GetRelativeRot());
+	}
+	m_UICam->FinalTick(false);
+
 	// Main Rendering	
 	Render();
 
 	// Debug Rendering
 	DebugRender();
+
+	// Ä¿¼­ ·»´õ¸µ
+	CKeyMgr::GetInst()->Render();
 
 	// Physx Rendering
 	CPhysxMgr::GetInst()->Render();
@@ -89,15 +103,18 @@ void CRenderMgr::Render()
 	CLevel* pLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 	if (pLevel == nullptr || pLevel->GetState() == LEVEL_STATE::STOP)
 	{
+		m_CurrentCam = m_EditorCam->Camera();
 		m_EditorCam->Camera()->Render();
 	}
 	else
 	{
 		for (size_t i = 0; i < m_vecCam.size(); ++i)
 		{
+			m_CurrentCam = m_vecCam[i];
 			m_vecCam[i]->Render();
 		}
 	}
+	m_UICam->Camera()->Render();
 }
 
 void CRenderMgr::DebugRender()

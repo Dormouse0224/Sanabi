@@ -10,6 +10,8 @@ void CAssetMgr::Init()
 
 	CreateEngineGraphicShader();
 
+	CreateEngineMaterial();
+
 	m_DirNotifyHandle = FindFirstChangeNotification(CPathMgr::GetContentDir(), true
 													, FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME
 													| FILE_NOTIFY_CHANGE_LAST_WRITE | FILE_NOTIFY_CHANGE_CREATION);
@@ -229,4 +231,31 @@ void CAssetMgr::CreateEngineGraphicShader()
 	pShader->SetEngineAsset(true); 
 	AddAsset(L"EA_TileRenderShader", pShader.Get());
 
+
+	// UIShader
+	pShader = new CGraphicShader;
+	pShader->CreateVertexShader(L"HLSL\\Engine\\ui.fx", "VS_UI");
+	pShader->CreateGeometryShader(L"HLSL\\Engine\\ui.fx", "GS_UI");
+	pShader->CreatePixelShader(L"HLSL\\Engine\\ui.fx", "PS_UI");
+	pShader->SetBSType(BS_TYPE::ALPHABLEND);
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_WRITE);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+	pShader->SetEngineAsset(true);
+	AddAsset(L"EA_UIShader", pShader.Get());
 }
+
+void CAssetMgr::CreateEngineMaterial()
+{
+	// =============
+	// EA_CursorMtrl
+	// =============
+	AssetPtr<CMaterial> pMaterial = new CMaterial;
+	pMaterial->SetName(L"EA_CursorMtrl");
+	pMaterial->SetEngineAsset(true);
+	pMaterial->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"EA_Std2DShader"));
+	pMaterial->SetScalarParam(FLOAT_0, 1.f);
+	pMaterial->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture2D>(L"Texture2D\\mouse cursor2.png"));
+	AddAsset(L"EA_CursorMtrl", pMaterial.Get());
+}
+

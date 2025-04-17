@@ -21,6 +21,7 @@ public:
 
 private:
 	void CreateEngineMesh();
+	void CreateEngineMaterial();
 	void CreateEngineGraphicShader();
 
 public:
@@ -155,8 +156,10 @@ inline AssetPtr<T> CAssetMgr::LoadFromFile(const wstring& _Extention)
 	Desc.lpstrTitle = L"파일로부터 에셋 로드";
 	Desc.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
 
+	CURSOR_ON;
 	if (GetOpenFileName(&Desc))
 	{
+		CURSOR_OFF;
 		std::wstring path = filepath;
 		if (path.find(CPathMgr::GetContentDir()) == std::wstring::npos)
 		{
@@ -193,6 +196,7 @@ inline AssetPtr<T> CAssetMgr::LoadFromFile(const wstring& _Extention)
 				MessageBoxW(nullptr, L"지원하지 않는 파일 형식입니다.", L"Asset Load Error", MB_OK);
 		}
 	}
+	CURSOR_OFF;
 	return nullptr;
 }
 

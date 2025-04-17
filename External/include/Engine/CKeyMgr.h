@@ -118,6 +118,8 @@ struct key_info
     bool isPrevPressed;
 };
 
+class CTexture2D;
+
 class CKeyMgr
     : public Singleton<CKeyMgr>
 {
@@ -127,11 +129,13 @@ public:
 private:
     vector<key_info>    m_keyboardInfo;
     Vec2                m_MousePos;
-    Vec2			    m_MousePrevPos;
-    Vec2				m_DragDir;
+    Vec2                m_MousePrevPos;
+    Vec2                m_DragDir;
 
     vector<Keyboard>    m_Command;
     float               m_CommandTimeout;
+
+    CGameObject*        m_Cursor;
 
 public:
     Key_state GetKeyState(const Keyboard& _key) { return m_keyboardInfo[(int)_key].state; }
@@ -139,8 +143,11 @@ public:
     Vec2 GetMousePrevPos() { return m_MousePos; }
     Vec2 GetDragDir() { return m_DragDir; }
 
+    void SetCursorTex(AssetPtr<CTexture2D> _Tex);
+
     void Init();
     void Tick();
+    void Render();
 
     bool IsMouseOffScreen();
 

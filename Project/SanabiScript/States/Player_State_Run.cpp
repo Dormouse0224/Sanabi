@@ -24,9 +24,15 @@ void Player_State_Run::Tick()
 	// 좌우 방향 설정
 	int i = 0;
 	if (GetConst<int>(0, &i) && i != 0)
+	{
 		m_Owner->GetOwner()->Transform()->SetRelativeRot(0, 180, 0);
+		m_Owner->GetOwner()->FindChild(L"Player_Arm")->Transform()->SetRelativePos(0, 0, 1);
+	}
 	else
+	{
 		m_Owner->GetOwner()->Transform()->SetRelativeRot(0, 0, 0);
+		m_Owner->GetOwner()->FindChild(L"Player_Arm")->Transform()->SetRelativePos(0, 0, -1);
+	}
 
 	PxVec3 CurrentVel = m_Owner->GetOwner()->PhysxActor()->GetLinearVelocity();
 	if ((i == 0 && CurrentVel.x < 0) || (i != 0 && CurrentVel.x > 0))
@@ -34,11 +40,11 @@ void Player_State_Run::Tick()
 
 	// 좌우 이동 조작
 	Vec3 moveVel(0.0f);
-	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::A) == Key_state::PRESSED) { moveVel.x -= 200.0f; }
-	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::D) == Key_state::PRESSED) { moveVel.x += 200.0f; }
+	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::A) == Key_state::PRESSED) { moveVel.x -= 150.f; }
+	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::D) == Key_state::PRESSED) { moveVel.x += 150.f; }
 
 	// 점프 조작
-	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::SPACE) == Key_state::TAP) { moveVel.y += 300.f; }
+	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::SPACE) == Key_state::TAP) { moveVel.y += 400.f; }
 
 	m_Owner->GetOwner()->PhysxActor()->SetLinearVelocity(PxVec3(moveVel.x, CurrentVel.y + moveVel.y, 0.f));
 
@@ -48,6 +54,7 @@ void Player_State_Run::Tick()
 void Player_State_Run::Begin()
 {
 	m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\SNB_Running.flip", 10, true);
+	m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Play(L"Flipbook\\SNBArm_Running.flip", 10, false);
 }
 
 void Player_State_Run::End()

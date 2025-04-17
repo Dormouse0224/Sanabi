@@ -2,6 +2,7 @@
 
 #include "CPhysxMgr.h"
 #include "CTimeMgr.h"
+#include "CRenderMgr.h"
 
 #include "CTransform.h"
 #include "CGameObject.h"
@@ -9,6 +10,7 @@
 #include "CGraphicShader.h"
 #include "CConstBuffer.h"
 #include "CSimulationEvent.h"
+#include "CCamera.h"
 
 
 PxFilterFlags FilterShaderExample(
@@ -70,7 +72,7 @@ void CPhysxMgr::Init()
     m_Physics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_Foundation, m_ToleranceScale);
 
     PxSceneDesc sceneDesc(m_Physics->getTolerancesScale());
-    sceneDesc.gravity = PxVec3(0.f, -400.f, 0.f);
+    sceneDesc.gravity = PxVec3(0.f, -800.f, 0.f);
     m_Dispatcher = PxDefaultCpuDispatcherCreate(2);
     sceneDesc.cpuDispatcher = m_Dispatcher;
     sceneDesc.filterShader = FilterShaderExample;
@@ -168,10 +170,12 @@ void CPhysxMgr::Render()
     // 오브젝트의 위치를 상수버퍼로 이동시킨다.
     CConstBuffer* pTransformBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::TRANSFORM);
 
+    Matrix VM = CRenderMgr::GetInst()->GetCurrentCam()->GetViewMat();
+    Matrix PM = CRenderMgr::GetInst()->GetCurrentCam()->GetProjMat();
     g_Trans.matWorld = Matrix::Identity;
-    g_Trans.matWV = g_Trans.matWorld * g_Trans.matView;
-    g_Trans.matVP = g_Trans.matView * g_Trans.matProj;
-    g_Trans.matWVP = g_Trans.matWV * g_Trans.matProj;
+    g_Trans.matWV = g_Trans.matWorld * VM;
+    g_Trans.matVP = VM * PM;
+    g_Trans.matWVP = g_Trans.matWV * PM;
 
     pTransformBuffer->SetData(&g_Trans, sizeof(tTransform));
     pTransformBuffer->Binding();

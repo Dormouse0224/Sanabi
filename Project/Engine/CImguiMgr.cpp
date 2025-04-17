@@ -331,8 +331,10 @@ void CImguiMgr::LoadAsset()
     Desc.lpstrTitle = L"에셋 파일 로드";
     Desc.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
 
+    CURSOR_ON;
     if (GetOpenFileName(&Desc))
     {
+        CURSOR_OFF;
         std::wstring path = filepath;
         if (path.find(CPathMgr::GetContentDir()) == std::wstring::npos)
         {
@@ -370,6 +372,7 @@ void CImguiMgr::LoadAsset()
         else
             MessageBoxW(nullptr, L"지원하지 않는 파일 형식입니다.", L"Asset Load Error", MB_OK);
     }
+    CURSOR_OFF;
 }
 
 void CImguiMgr::LoadLevel()
@@ -390,8 +393,10 @@ void CImguiMgr::LoadLevel()
     Desc.lpstrTitle = L"레벨 파일 로드";
     Desc.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
 
+    CURSOR_ON;
     if (GetOpenFileName(&Desc))
     {
+        CURSOR_OFF;
         std::wstring path = filepath;
         if (path.find(CPathMgr::GetContentDir()) == std::wstring::npos)
         {
@@ -409,4 +414,5 @@ void CImguiMgr::LoadLevel()
         else
             MessageBoxW(nullptr, L"지원하지 않는 파일 형식입니다.", L"Asset Load Error", MB_OK);
     }
+    CURSOR_OFF;
 }
