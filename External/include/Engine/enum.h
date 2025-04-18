@@ -173,8 +173,8 @@ enum class LAYER
 	Tile,
 	Player,
 	PlayerProjectile,
-	Enermy,
-	EnermyProjectile,
+	Enemy,
+	EnemyProjectile,
 
 	UI,
 

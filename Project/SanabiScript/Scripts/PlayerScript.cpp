@@ -61,12 +61,12 @@ void PlayerScript::ContacTick(CGameObject* _Other, const PxContactPair pair)
 		{
 			if (point.normal.y > 0.7f)
 				m_bAirborneCheck = false;
-			else if (point.normal.y < 0.3f)
+			else if (point.normal.y < 0.3f && point.normal.y > -0.3f)
 			{
 				m_bWallContactCheck = true;
-				if (point.normal.x > 0)
+				if (point.normal.x > 0.7f)
 					m_bWallLeft = true;
-				else
+				else if (point.normal.x < -0.7f)
 					m_bWallLeft = false;
 			}
 		}

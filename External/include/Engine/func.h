@@ -13,6 +13,8 @@ bool IsRenderable(CGameObject* obj);
 inline std::string to_str(const std::wstring& _wstr) { return std::string(_wstr.begin(), _wstr.end()); }
 inline std::wstring to_wstr(const std::string& _str) { return std::wstring(_str.begin(), _str.end()); }
 
+Vec2 GetScreenFromWorld(Vec3 _WorldPos, class CCamera* _Cam);
+
 template<typename T>
 void Delete_Vec(std::vector<T*>& _vec)
 {

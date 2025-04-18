@@ -2,7 +2,7 @@
 #include "CFSM.h"
 
 #include "CFSMMgr.h"
-
+#include "CLevelMgr.h"
 #include "CFSM_State.h"
 
 CFSM::CFSM()
@@ -55,25 +55,28 @@ void CFSM::FinalTick()
 {
 
 	// 등록된 조건 검사 실행
-	for (FSM_Condition* tCond : m_vecCondition)
+	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)
 	{
-		if (tCond->m_OriginState == m_CurrentState)
+		for (FSM_Condition* tCond : m_vecCondition)
 		{
-			if (tCond->m_TriggerFunc(tCond->m_OriginState, tCond->m_DestState))
+			if (tCond->m_OriginState == m_CurrentState)
 			{
-				// 조건 만족 시 출발지 State 의 End 을 호출
-				tCond->m_OriginState->End();
-				//현재 State 를 갱신 후 반복문 즉시 종료
-				m_PrevState = tCond->m_OriginState;
-				m_CurrentState = tCond->m_DestState;
-				// 상수 데이터 동기화
-				m_CurrentState->SetConstVec(m_PrevState->GetConstVec<int>());
-				m_CurrentState->SetConstVec(m_PrevState->GetConstVec<float>());
-				m_CurrentState->SetConstVec(m_PrevState->GetConstVec<Vec2>());
-				m_CurrentState->SetConstVec(m_PrevState->GetConstVec<Vec4>());
-				// 목적지 State 의 Begin 을 호출
-				tCond->m_DestState->Begin();
-				break;
+				if (tCond->m_TriggerFunc(tCond->m_OriginState, tCond->m_DestState))
+				{
+					// 출발지 State 의 End 을 호출
+					tCond->m_OriginState->End();
+					//현재 State 를 갱신
+					m_PrevState = tCond->m_OriginState;
+					m_CurrentState = tCond->m_DestState;
+					// 상수 데이터 동기화
+					m_CurrentState->SetConstVec(m_PrevState->GetConstVec<int>());
+					m_CurrentState->SetConstVec(m_PrevState->GetConstVec<float>());
+					m_CurrentState->SetConstVec(m_PrevState->GetConstVec<Vec2>());
+					m_CurrentState->SetConstVec(m_PrevState->GetConstVec<Vec4>());
+					// 목적지 State 의 Begin 을 호출
+					tCond->m_DestState->Begin();
+					break;
+				}
 			}
 		}
 	}
@@ -238,6 +241,8 @@ void CFSM::DeleteCondition(int _Idx)
 		}
 
 		delete m_vecCondition[_Idx];
+		m_vecCondition[_Idx] = nullptr;
+		//m_vecCondition.erase(m_vecCondition.begin() + _Idx);
 	}
 
 	m_InitState = nullptr;

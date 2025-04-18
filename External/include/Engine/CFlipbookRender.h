@@ -64,8 +64,6 @@ public:
     virtual int Load(fstream& _Stream) override;
     virtual int Save(fstream& _Stream) override;
 
-private:
-    void CreateFlipbookMaterial();
 
 };
 

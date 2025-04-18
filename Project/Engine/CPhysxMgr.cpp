@@ -11,6 +11,7 @@
 #include "CConstBuffer.h"
 #include "CSimulationEvent.h"
 #include "CCamera.h"
+#include "CPhysxActor.h"
 
 
 PxFilterFlags FilterShaderExample(
@@ -201,12 +202,23 @@ PxRigidActor* CPhysxMgr::FindRigidBody(CGameObject* _Object)
     return iter->second;
 }
 
+CGameObject* CPhysxMgr::FindBodyOwner(PxRigidActor* _Actor)
+{
+    map<PxRigidActor*, CGameObject*>::iterator iter = m_mapRigidBody2.find(_Actor);
+
+    if (iter == m_mapRigidBody2.end())
+        return nullptr;
+
+    return iter->second;
+}
+
 void CPhysxMgr::AddRigidBody(CGameObject* _Object, PxRigidActor* _Actor)
 {
     PxU32 s = m_Scene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC);
     PxU32 ss = m_Scene->getNbActors(PxActorTypeFlag::eRIGID_STATIC);
     m_Scene->addActor(*_Actor);
     m_mapRigidBody.insert(make_pair(_Object, _Actor));
+    m_mapRigidBody2.insert(make_pair(_Actor, _Object));
 }
 
 void CPhysxMgr::RemoveRigidBody(CGameObject* _Object)
@@ -219,8 +231,11 @@ void CPhysxMgr::RemoveRigidBody(CGameObject* _Object)
     m_Scene->removeActor(*pActor);
     pActor->release();
     pActor = nullptr;
+    _Object->PhysxActor()->m_Body = nullptr;
 
+    auto iter2 = m_mapRigidBody2.find(iter->second);
     m_mapRigidBody.erase(iter);
+    m_mapRigidBody2.erase(iter2);
 }
 
 void CPhysxMgr::ClearScene()

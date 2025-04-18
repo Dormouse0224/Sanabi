@@ -3,6 +3,8 @@
 #include "CRenderMgr.h"
 #include "CGameObject.h"
 #include "CRenderComponent.h"
+#include "CCamera.h"
+#include "CEngine.h"
 
 void DrawDebugRect(Vec4 _Color, Vec3 _WorldPos, Vec3 _WorldScale, Vec3 _WorldRotation
 	, bool _DepthTest, float _Duration)
@@ -60,4 +62,15 @@ bool IsRenderable(CGameObject* obj)
 		return true;
 	else
 		return false;
+}
+
+Vec2 GetScreenFromWorld(Vec3 _WorldPos, CCamera* _Cam)
+{
+	Vec4 wpos = Vec4(_WorldPos, 1);
+	Matrix VM = _Cam->GetViewMat();
+	Matrix PM = _Cam->GetProjMat();
+	Vec4 clip = XMVector4Transform(wpos, VM * PM);
+	Vec3 ndc = Vec3(clip.x / clip.w, clip.y / clip.w, clip.z / clip.w);
+	Vec2 screen(CEngine::GetInst()->GetResolution().x * (ndc.x * 0.5f + 0.5f), CEngine::GetInst()->GetResolution().y * (-ndc.y * 0.5f + 0.5f));
+	return screen;
 }

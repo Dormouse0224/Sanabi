@@ -8,3 +8,5 @@ Player_State_Climb
 Player_State_Idle
 Player_State_Jump
 Player_State_Run
+Player_State_Shoot
+Player_State_Swing

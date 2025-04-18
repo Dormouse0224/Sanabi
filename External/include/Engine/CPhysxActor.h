@@ -45,6 +45,7 @@ extern wstring LOCK_FLAG_WSTR[];
 class CPhysxActor :
     public CComponent
 {
+    friend class CPhysxMgr;
 public:
     CPhysxActor();
     CPhysxActor(const CPhysxActor& _Other);

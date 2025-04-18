@@ -31,12 +31,14 @@ public:
     void DeleteFlipbook(int _FlipIdx);
     void Play(int _Idx)
     {
+        m_Pause = false;
         if (_Idx >= m_vecFlipbook.size())
             return;
         m_CurFlipbook = m_vecFlipbook[_Idx];
     }
     void Play(wstring _Name, float _FPS, bool _Repeat, int _SceneIdx = 0)
     {
+        m_Pause = false;
         for (auto flip : m_vecFlipbook)
         {
             if (flip->GetName() == _Name)
@@ -62,8 +64,6 @@ public:
     virtual int Load(fstream& _Stream) override;
     virtual int Save(fstream& _Stream) override;
 
-private:
-    void CreateFlipbookMaterial();
 
 };
 

@@ -31,6 +31,7 @@ private:
 
 	// 시뮬레이션 대상 관리 컨테이너
 	map<CGameObject*, PxRigidActor*>	m_mapRigidBody;
+	map<PxRigidActor*, CGameObject*>	m_mapRigidBody2;
 
 	// 디버그용 셰이더
 	AssetPtr<CGraphicShader>			m_Shader;
@@ -47,6 +48,7 @@ public:
 	PxScene* GetScene() { return m_Scene; }
 
 	PxRigidActor* FindRigidBody(CGameObject* _Object);
+	CGameObject* FindBodyOwner(PxRigidActor* _Actor);
 
 	/// <summary>
 	/// 시뮬레이션에 해당 오브젝트를 키값으로 하여 강체 액터를 등록합니다.

@@ -391,7 +391,10 @@ void CPhysxActor::AttachCollider(COLLIDER_DESC _Desc, PxVec3 _Scale, PxVec3 _Off
     PxFilterData filterData;
     filterData.word0 = _Desc.FilterLayer_Self;      // 본인이 속한 레이어
     filterData.word1 = _Desc.FilterLayer_Other;     // 충돌 검사를 할 레이어
-    shape->setSimulationFilterData(filterData);
+    if (_Desc.ShapeFlag ^ PxShapeFlag::eSIMULATION_SHAPE)
+        shape->setSimulationFilterData(filterData);
+    if (_Desc.ShapeFlag ^ PxShapeFlag::eSCENE_QUERY_SHAPE)
+        shape->setQueryFilterData(filterData);
 
     // 오프셋 설정
     shape->setLocalPose(PxTransform(_Offset));

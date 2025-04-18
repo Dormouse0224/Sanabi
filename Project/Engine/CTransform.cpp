@@ -61,15 +61,20 @@ void CTransform::FinalTick()
 	CGameObject* pParent = GetOwner()->GetParent();
 	if (pParent)
 	{
-		if (m_IndependentScale)
+		if (!m_IndependentScale)
 		{
 			Vec3 vParentScale = pParent->Transform()->GetWorldScale();
-			Matrix matParentScaleInv = XMMatrixInverse(nullptr, XMMatrixScaling(vParentScale.x, vParentScale.y, vParentScale.z));
-			m_matWorld = m_matWorld * matParentScaleInv * pParent->Transform()->GetWorldMat();
+			m_matWorld *= XMMatrixScaling(vParentScale.x, vParentScale.y, vParentScale.z);
 		}
-		else
+		if (!m_IndependentRot)
 		{
-			m_matWorld *= GetOwner()->GetParent()->Transform()->GetWorldMat();
+			Vec3 vParentRot = pParent->Transform()->GetWorldRot();
+			m_matWorld *= XMMatrixRotationQuaternion(vParentRot);
+		}
+		if (!m_IndependentTrans)
+		{
+			Vec3 vParentTrans = pParent->Transform()->GetWorldTrans();
+			m_matWorld *= XMMatrixTranslation(vParentTrans.x, vParentTrans.y, vParentTrans.z);
 		}
 
 		m_WorldDir[(UINT)DIR::RIGHT] = Vec3(1.f, 0.f, 0.f);
@@ -132,6 +137,41 @@ Vec3 CTransform::GetWorldScale()
 	return vWorldScale;
 }
 
+Vec3 CTransform::GetWorldRot()
+{
+	Vec3 vWorldRot = m_RelativeRot;
+
+	CGameObject* pParent = GetOwner()->GetParent();
+	bool bIndependent = m_IndependentRot;
+
+	while (pParent && !bIndependent)
+	{
+		vWorldRot *= pParent->Transform()->GetRelativeRot();
+
+		bIndependent = pParent->Transform()->m_IndependentRot;
+		pParent = pParent->GetParent();
+	}
+
+	return vWorldRot;
+}
+
+Vec3 CTransform::GetWorldTrans()
+{
+	Vec3 vWorldTrans = m_RelativePos;
+
+	CGameObject* pParent = GetOwner()->GetParent();
+	bool bIndependent = m_IndependentTrans;
+
+	while (pParent && !bIndependent)
+	{
+		vWorldTrans += pParent->Transform()->GetRelativePos();
+
+		bIndependent = pParent->Transform()->m_IndependentTrans;
+		pParent = pParent->GetParent();
+	}
+
+	return vWorldTrans;
+}
 Vec3 CTransform::GetRelativeRot()
 {
 	/*float rad = acos(m_RelativeRot.w) * 2;
@@ -171,6 +211,8 @@ int CTransform::Load(fstream& _Stream)
 	_Stream.read(reinterpret_cast<char*>(&m_RelativeScale), sizeof(Vec3));
 	_Stream.read(reinterpret_cast<char*>(&m_RelativeRot), sizeof(Vec4));
 	_Stream.read(reinterpret_cast<char*>(&m_IndependentScale), sizeof(bool));
+	_Stream.read(reinterpret_cast<char*>(&m_IndependentRot), sizeof(bool));
+	_Stream.read(reinterpret_cast<char*>(&m_IndependentTrans), sizeof(bool));
 
 	return S_OK;
 }
@@ -187,6 +229,8 @@ int CTransform::Save(fstream& _Stream)
 	_Stream.write(reinterpret_cast<char*>(&m_RelativeScale), sizeof(Vec3));
 	_Stream.write(reinterpret_cast<char*>(&m_RelativeRot), sizeof(Vec4));
 	_Stream.write(reinterpret_cast<char*>(&m_IndependentScale), sizeof(bool));
+	_Stream.write(reinterpret_cast<char*>(&m_IndependentRot), sizeof(bool));
+	_Stream.write(reinterpret_cast<char*>(&m_IndependentTrans), sizeof(bool));
 
 
 	return S_OK;

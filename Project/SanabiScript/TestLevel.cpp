@@ -161,7 +161,7 @@ TestLevel::TestLevel()
 
 
 	//오브젝트를 0번 레이어에 추가
-	CTaskMgr::GetInst()->AddTask(TASK_TYPE::CREATE_OBJECT, (DWORD_PTR)pObject, (DWORD_PTR)LAYER::EnermyProjectile);
+	CTaskMgr::GetInst()->AddTask(TASK_TYPE::CREATE_OBJECT, (DWORD_PTR)pObject, (DWORD_PTR)LAYER::EnemyProjectile);
 
 
 	pObject = new CGameObject;

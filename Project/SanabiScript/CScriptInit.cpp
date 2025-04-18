@@ -22,6 +22,8 @@
 #include "States\Player_State_Idle.h"
 #include "States\Player_State_Jump.h"
 #include "States\Player_State_Run.h"
+#include "States\Player_State_Shoot.h"
+#include "States\Player_State_Swing.h"
 
 void CScriptInit::ScriptInit()
 {
@@ -39,14 +41,22 @@ void CScriptInit::FSMInit()
 	REGISTER_STATE(Player_State_Idle);
 	REGISTER_STATE(Player_State_Jump);
 	REGISTER_STATE(Player_State_Run);
+	REGISTER_STATE(Player_State_Shoot);
+	REGISTER_STATE(Player_State_Swing);
 
 	REGISTER_TRIGGER(MainTitle_Bg_Start_Loop);
 	REGISTER_TRIGGER(Player_Idle_Run);
 	REGISTER_TRIGGER(Player_Idle_Jump);
+	REGISTER_TRIGGER(Player_Idle_Shoot);
 	REGISTER_TRIGGER(Player_Run_Idle);
 	REGISTER_TRIGGER(Player_Run_Jump);
+	REGISTER_TRIGGER(Player_Run_Shoot);
 	REGISTER_TRIGGER(Player_Jump_Idle);
 	REGISTER_TRIGGER(Player_Jump_Climb);
+	REGISTER_TRIGGER(Player_Jump_Shoot);
 	REGISTER_TRIGGER(Player_Climb_Jump);
+	REGISTER_TRIGGER(Player_Shoot_Idle);
+	REGISTER_TRIGGER(Player_Shoot_Swing);
+	REGISTER_TRIGGER(Player_Swing_Idle);
 }
 

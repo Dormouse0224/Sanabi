@@ -324,7 +324,11 @@ int CGameObject::Load(fstream& _Stream)
 
 void CGameObject::AddChild(CGameObject* _Child)
 {
+	if (_Child->m_Parent == this)
+		return;
 	_Child->m_Parent = this;
+	if (_Child->m_LayerIdx < 0)
+		_Child->m_LayerIdx = m_LayerIdx;
 	m_vecChild.push_back(_Child);
 }
 
@@ -335,6 +339,7 @@ void CGameObject::DeleteChild(CGameObject* _Child)
 		if (*iter == _Child)
 		{
 			m_vecChild.erase(iter);
+			_Child->m_Parent = nullptr;
 			break;
 		}
 	}

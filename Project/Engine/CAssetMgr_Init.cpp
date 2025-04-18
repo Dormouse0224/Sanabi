@@ -257,5 +257,15 @@ void CAssetMgr::CreateEngineMaterial()
 	pMaterial->SetScalarParam(FLOAT_0, 1.f);
 	pMaterial->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture2D>(L"Texture2D\\mouse cursor2.png"));
 	AddAsset(L"EA_CursorMtrl", pMaterial.Get());
+
+
+	// ===============
+	// EA_FlipbookMtrl
+	// ===============
+	pMaterial = new CMaterial;
+	pMaterial->SetName(L"EA_FlipbookMtrl");
+	pMaterial->SetEngineAsset(true);
+	pMaterial->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"EA_FlipbookShader"));
+	AddAsset(L"EA_FlipbookMtrl", pMaterial.Get());
 }
 

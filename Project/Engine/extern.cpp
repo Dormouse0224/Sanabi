@@ -70,8 +70,8 @@ wstring LAYER_WSTR[] =
 	L"Tile",
 	L"Player",
 	L"PlayerProjectile",
-	L"Enermy",
-	L"EnermyProjectile",
+	L"Enemy",
+	L"EnemyProjectile",
 
 	L"UI",
 };

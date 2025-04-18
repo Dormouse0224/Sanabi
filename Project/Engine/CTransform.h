@@ -21,6 +21,8 @@ private:
 
     // 자식 오브젝트일때 부모의 크기에 영향을 받지않는 독립된 크기를 가진다.
     bool    m_IndependentScale;
+    bool    m_IndependentRot;
+    bool    m_IndependentTrans;
 
 
 public:
@@ -40,12 +42,16 @@ public:
     //void SetRelativeRotation(PxQuat _Rotation);
 
     void SetIndependentScale(bool _Scale) { m_IndependentScale = _Scale; }
+    void SetIndependentRot(bool _Rot) { m_IndependentRot = _Rot; }
+    void SetIndependentTrans(bool _Trans) { m_IndependentTrans = _Trans; }
 
     Vec3 GetRelativePos() { return m_RelativePos; }
     Vec3 GetWorldPos() { return m_matWorld.Translation(); }
 
     Vec3 GetRelativeScale() { return m_RelativeScale; }
     Vec3 GetWorldScale();
+    Vec3 GetWorldRot();
+    Vec3 GetWorldTrans();
 
     Vec3 GetRelativeRot();
     //Vec3 GetWorldRotation();

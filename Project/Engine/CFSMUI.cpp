@@ -26,22 +26,29 @@ void CFSMUI::Render_Com()
     CFSM_State* m_InitState;
 
 	// 조건 목록 표시
-	if (ImGui::BeginTable("##Conditions", 3, ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders))
+	if (ImGui::BeginTable("##Conditions", 4, ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders))
 	{
+		ImGui::TableSetupColumn("Index");
 		ImGui::TableSetupColumn("Origin State");
 		ImGui::TableSetupColumn("Destination State");
 		ImGui::TableSetupColumn("Trigger Function");
 		ImGui::TableHeadersRow();
 
-		for (const auto& cond : m_TargetObj->FSM()->m_vecCondition)
+		auto vec = m_TargetObj->FSM()->m_vecCondition;
+		for (int i = 0; i < vec.size(); ++i)
 		{
-			ImGui::TableNextRow();
-			ImGui::TableSetColumnIndex(0);
-			ImGui::Text(typeid(*(cond->m_OriginState)).name());
-			ImGui::TableSetColumnIndex(1);
-			ImGui::Text(typeid(*(cond->m_DestState)).name());
-			ImGui::TableSetColumnIndex(2);
-			ImGui::Text(cond->m_FuncName.c_str());
+			if (vec[i])
+			{
+				ImGui::TableNextRow();
+				ImGui::TableSetColumnIndex(0);
+				ImGui::Text(to_string(i).c_str());
+				ImGui::TableSetColumnIndex(1);
+				ImGui::Text(typeid(*(vec[i]->m_OriginState)).name());
+				ImGui::TableSetColumnIndex(2);
+				ImGui::Text(typeid(*(vec[i]->m_DestState)).name());
+				ImGui::TableSetColumnIndex(3);
+				ImGui::Text(vec[i]->m_FuncName.c_str());
+			}
 		}
 		ImGui::EndTable();
 	}

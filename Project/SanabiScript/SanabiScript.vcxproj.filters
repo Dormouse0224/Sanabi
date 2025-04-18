@@ -28,6 +28,8 @@
     <ClInclude Include="Scripts\PlayerScript.h" />
     <ClInclude Include="States\Player_State_Climb.h" />
     <ClInclude Include="Scripts\PlayerCamScript.h" />
+    <ClInclude Include="States\Player_State_Shoot.h" />
+    <ClInclude Include="States\Player_State_Swing.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -46,5 +48,7 @@
     <ClCompile Include="Scripts\PlayerScript.cpp" />
     <ClCompile Include="States\Player_State_Climb.cpp" />
     <ClCompile Include="Scripts\PlayerCamScript.cpp" />
+    <ClCompile Include="States\Player_State_Shoot.cpp" />
+    <ClCompile Include="States\Player_State_Swing.cpp" />
   </ItemGroup>
 </Project>

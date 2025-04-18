@@ -1,8 +1,14 @@
 MainTitle_Bg_Start_Loop
 Player_Idle_Run
 Player_Idle_Jump
+Player_Idle_Shoot
 Player_Run_Idle
 Player_Run_Jump
+Player_Run_Shoot
 Player_Jump_Idle
 Player_Jump_Climb
+Player_Jump_Shoot
 Player_Climb_Jump
+Player_Shoot_Idle
+Player_Shoot_Swing
+Player_Swing_Idle
