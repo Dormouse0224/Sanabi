@@ -45,6 +45,9 @@
     <ClInclude Include="States\Player_State_Death.h" />
     <ClInclude Include="States\Bullet_State_Idle.h" />
     <ClInclude Include="States\Bullet_State_Burst.h" />
+    <ClInclude Include="States\Player_State_ExcWinding.h" />
+    <ClInclude Include="States\Player_State_Holding.h" />
+    <ClInclude Include="States\Player_State_Dash.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -80,5 +83,8 @@
     <ClCompile Include="States\Player_State_Death.cpp" />
     <ClCompile Include="States\Bullet_State_Idle.cpp" />
     <ClCompile Include="States\Bullet_State_Burst.cpp" />
+    <ClCompile Include="States\Player_State_ExcWinding.cpp" />
+    <ClCompile Include="States\Player_State_Holding.cpp" />
+    <ClCompile Include="States\Player_State_Dash.cpp" />
   </ItemGroup>
 </Project>

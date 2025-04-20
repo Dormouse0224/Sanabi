@@ -15,7 +15,6 @@ private:
     bool m_ExcHolded;
     bool m_Dead;
 
-
 public:
     virtual void Tick();
     virtual int Save(fstream& _Stream);

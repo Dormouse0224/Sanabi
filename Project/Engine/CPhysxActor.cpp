@@ -205,7 +205,11 @@ void CPhysxActor::SetColliderDesc(int _Idx, COLLIDER_DESC _Data)
         PxFilterData filterData;
         filterData.word0 = _Data.FilterLayer_Self;
         filterData.word1 = _Data.FilterLayer_Other;
-        m_vecShape[_Idx]->setSimulationFilterData(filterData);
+        if (_Data.ShapeFlag & PxShapeFlag::eSIMULATION_SHAPE)
+            m_vecShape[_Idx]->setSimulationFilterData(filterData);
+        if (_Data.ShapeFlag & PxShapeFlag::eSCENE_QUERY_SHAPE)
+            m_vecShape[_Idx]->setQueryFilterData(filterData);
+
 
         PxMaterial* pMaterial;
         m_vecShape[_Idx]->getMaterials(&pMaterial, 1);
@@ -260,6 +264,15 @@ void CPhysxActor::DeleteCollider(int _Idx)
         m_Body->detachShape(*m_vecShape[_Idx]);
         m_vecShape[_Idx]->release();
         m_vecShape.erase(m_vecShape.begin() + _Idx);
+    }
+
+}
+
+void CPhysxActor::DeleteAllCollider()
+{
+    for (int i = 0; i < m_vecShape.size(); ++i)
+    {
+        DeleteCollider(i);
     }
 
 }
@@ -410,9 +423,9 @@ void CPhysxActor::AttachCollider(COLLIDER_DESC _Desc, PxVec3 _Scale, PxVec3 _Off
     PxFilterData filterData;
     filterData.word0 = _Desc.FilterLayer_Self;      // 본인이 속한 레이어
     filterData.word1 = _Desc.FilterLayer_Other;     // 충돌 검사를 할 레이어
-    if (_Desc.ShapeFlag ^ PxShapeFlag::eSIMULATION_SHAPE)
+    if (_Desc.ShapeFlag & PxShapeFlag::eSIMULATION_SHAPE)
         shape->setSimulationFilterData(filterData);
-    if (_Desc.ShapeFlag ^ PxShapeFlag::eSCENE_QUERY_SHAPE)
+    if (_Desc.ShapeFlag & PxShapeFlag::eSCENE_QUERY_SHAPE)
         shape->setQueryFilterData(filterData);
 
     // 오프셋 설정

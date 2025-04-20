@@ -22,8 +22,8 @@ Player_State_Run::~Player_State_Run()
 void Player_State_Run::Tick()
 {
 	// 좌우 방향 설정
-	int i = 0;
-	if (GetConst<int>(0, &i) && i != 0)
+	int LookLeft = 0;
+	if (GetConst<int>(0, &LookLeft) && LookLeft != 0)
 	{
 		m_Owner->GetOwner()->Transform()->SetRelativeRot(0, 180, 0);
 		m_Owner->GetOwner()->FindChild(L"Player_Arm")->Transform()->SetRelativePos(0, 0, 1);
@@ -35,8 +35,8 @@ void Player_State_Run::Tick()
 	}
 
 	PxVec3 CurrentVel = m_Owner->GetOwner()->PhysxActor()->GetLinearVelocity();
-	if ((i == 0 && CurrentVel.x < 0) || (i != 0 && CurrentVel.x > 0))
-		SetConst<int>(0, (i == 0));
+	if ((LookLeft == 0 && CurrentVel.x < 0) || (LookLeft != 0 && CurrentVel.x > 0))
+		SetConst<int>(0, (LookLeft == 0));
 
 	// 좌우 이동 조작
 	Vec3 moveVel(0.0f);

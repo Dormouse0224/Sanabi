@@ -27,7 +27,10 @@
 #include "States\MainTitle_Bg_State_Start.h"
 #include "States\Player_State_Climb.h"
 #include "States\Player_State_Damaged.h"
+#include "States\Player_State_Dash.h"
 #include "States\Player_State_Death.h"
+#include "States\Player_State_ExcWinding.h"
+#include "States\Player_State_Holding.h"
 #include "States\Player_State_Idle.h"
 #include "States\Player_State_Jump.h"
 #include "States\Player_State_Run.h"
@@ -61,7 +64,10 @@ void CScriptInit::FSMInit()
 	REGISTER_STATE(MainTitle_Bg_State_Start);
 	REGISTER_STATE(Player_State_Climb);
 	REGISTER_STATE(Player_State_Damaged);
+	REGISTER_STATE(Player_State_Dash);
 	REGISTER_STATE(Player_State_Death);
+	REGISTER_STATE(Player_State_ExcWinding);
+	REGISTER_STATE(Player_State_Holding);
 	REGISTER_STATE(Player_State_Idle);
 	REGISTER_STATE(Player_State_Jump);
 	REGISTER_STATE(Player_State_Run);
@@ -91,11 +97,17 @@ void CScriptInit::FSMInit()
 	REGISTER_TRIGGER(Player_Climb_Damaged);
 	REGISTER_TRIGGER(Player_Shoot_Idle);
 	REGISTER_TRIGGER(Player_Shoot_Swing);
+	REGISTER_TRIGGER(Player_Shoot_ExcWinding);
 	REGISTER_TRIGGER(Player_Shoot_Damaged);
 	REGISTER_TRIGGER(Player_Swing_Idle);
 	REGISTER_TRIGGER(Player_Swing_Damaged);
 	REGISTER_TRIGGER(Player_Damaged_Idle);
 	REGISTER_TRIGGER(Player_Damaged_Death);
+	REGISTER_TRIGGER(Player_ExcWinding_Holding);
+	REGISTER_TRIGGER(Player_Holding_Damaged);
+	REGISTER_TRIGGER(Player_Holding_Dash);
+	REGISTER_TRIGGER(Player_Dash_Idle);
+	REGISTER_TRIGGER(Player_Dash_Shoot);
 	REGISTER_TRIGGER(BattleGate_Open_Close);
 	REGISTER_TRIGGER(BattleGate_Close_Open);
 	REGISTER_TRIGGER(Turret_Sleep_Popup);

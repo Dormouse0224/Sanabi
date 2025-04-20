@@ -15,11 +15,17 @@ Player_Climb_Jump
 Player_Climb_Damaged
 Player_Shoot_Idle
 Player_Shoot_Swing
+Player_Shoot_ExcWinding
 Player_Shoot_Damaged
 Player_Swing_Idle
 Player_Swing_Damaged
 Player_Damaged_Idle
 Player_Damaged_Death
+Player_ExcWinding_Holding
+Player_Holding_Damaged
+Player_Holding_Dash
+Player_Dash_Idle
+Player_Dash_Shoot
 BattleGate_Open_Close
 BattleGate_Close_Open
 Turret_Sleep_Popup

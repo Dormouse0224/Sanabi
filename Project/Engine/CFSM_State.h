@@ -19,6 +19,7 @@ protected:
     vector<float> m_vecFloat;
     vector<Vec2> m_vecVec2;
     vector<Vec4> m_vecVec4;
+    vector<DWORD_PTR> m_vecData;
 
 
 public:
@@ -60,6 +61,10 @@ inline void CFSM_State::SetConstVec(const vector<T>& _ConstVec)
     {
         m_vecVec4 = _ConstVec;
     }
+    else if constexpr (std::is_same_v<T, DWORD_PTR>)
+    {
+        m_vecData = _ConstVec;
+    }
 }
 
 template<typename T>
@@ -80,6 +85,10 @@ inline const vector<T>& CFSM_State::GetConstVec()
     else if constexpr (std::is_same_v<T, Vec4>)
     {
         return m_vecVec4;
+    }
+    else if constexpr (std::is_same_v<T, DWORD_PTR>)
+    {
+        return m_vecData;
     }
 }
 
@@ -109,6 +118,12 @@ inline void CFSM_State::SetConst(int _Idx, T _in)
         if (m_vecVec4.size() <= _Idx)
             m_vecVec4.resize(_Idx + 1);
         m_vecVec4[_Idx] = _in;
+    }
+    else if constexpr (std::is_same_v<T, DWORD_PTR>)
+    {
+        if (m_vecData.size() <= _Idx)
+            m_vecData.resize(_Idx + 1);
+        m_vecData[_Idx] = _in;
     }
 }
 
@@ -150,6 +165,16 @@ inline bool CFSM_State::GetConst(int _Idx, T* _out)
         if (m_vecVec4.size() > _Idx)
         {
             *_out = m_vecVec4[_Idx];
+            return true;
+        }
+        else
+            return false;
+    }
+    else if constexpr (std::is_same_v<T, DWORD_PTR>)
+    {
+        if (m_vecData.size() > _Idx)
+        {
+            *_out = m_vecData[_Idx];
             return true;
         }
         else

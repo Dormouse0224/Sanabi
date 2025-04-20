@@ -149,6 +149,16 @@ bool Player_Shoot_Swing(CFSM_State* _Origin, CFSM_State* _Dest)
 	return false;
 }
 
+bool Player_Shoot_ExcWinding(CFSM_State* _Origin, CFSM_State* _Dest)
+{
+	int grabState = 0, grabFlipbook = 0;
+	_Origin->GetConst<int>(1, &grabState);
+	_Origin->GetConst<int>(2, &grabFlipbook);
+	if (grabState == 2)
+		return true;
+	return false;
+}
+
 bool Player_Shoot_Damaged(CFSM_State* _Origin, CFSM_State* _Dest)
 {
 	PlayerScript* pScript = static_cast<PlayerScript*>(_Origin->GetOwner()->GetOwner()->FindScript("class PlayerScript"));
@@ -185,6 +195,47 @@ bool Player_Damaged_Death(CFSM_State* _Origin, CFSM_State* _Dest)
 {
 	PlayerScript* pScript = static_cast<PlayerScript*>(_Origin->GetOwner()->GetOwner()->FindScript("class PlayerScript"));
 	if (pScript->GetHP() <= 0)
+		return true;
+	return false;
+}
+
+bool Player_ExcWinding_Holding(CFSM_State* _Origin, CFSM_State* _Dest)
+{
+	int IsWindFin = 0;
+	_Origin->GetConst<int>(2, &IsWindFin);
+	if (IsWindFin == 1)
+		return true;
+	return false;
+}
+
+bool Player_Holding_Damaged(CFSM_State* _Origin, CFSM_State* _Dest)
+{
+	PlayerScript* pScript = static_cast<PlayerScript*>(_Origin->GetOwner()->GetOwner()->FindScript("class PlayerScript"));
+	if (pScript->GetDamaged())
+		return true;
+	return false;
+}
+
+bool Player_Holding_Dash(CFSM_State* _Origin, CFSM_State* _Dest)
+{
+	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::MOUSE_LBTN) == Key_state::NONE)
+		return true;
+	return false;
+}
+
+bool Player_Dash_Idle(CFSM_State* _Origin, CFSM_State* _Dest)
+{
+	int IsDashFin = 0;
+	_Origin->GetConst<int>(2, &IsDashFin);
+	PlayerScript* pScript = static_cast<PlayerScript*>(_Origin->GetOwner()->GetOwner()->FindScript("class PlayerScript"));
+	if (IsDashFin == 1 || !pScript->GetAirborne())
+		return true;
+	return false;
+}
+
+bool Player_Dash_Shoot(CFSM_State* _Origin, CFSM_State* _Dest)
+{
+	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::MOUSE_LBTN) == Key_state::TAP)
 		return true;
 	return false;
 }

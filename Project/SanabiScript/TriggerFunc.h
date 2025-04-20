@@ -26,6 +26,7 @@ bool Player_Climb_Damaged(CFSM_State* _Origin, CFSM_State* _Dest);
 
 bool Player_Shoot_Idle(CFSM_State* _Origin, CFSM_State* _Dest);
 bool Player_Shoot_Swing(CFSM_State* _Origin, CFSM_State* _Dest);
+bool Player_Shoot_ExcWinding(CFSM_State* _Origin, CFSM_State* _Dest);
 bool Player_Shoot_Damaged(CFSM_State* _Origin, CFSM_State* _Dest);
 
 bool Player_Swing_Idle(CFSM_State* _Origin, CFSM_State* _Dest);
@@ -33,6 +34,14 @@ bool Player_Swing_Damaged(CFSM_State* _Origin, CFSM_State* _Dest);
 
 bool Player_Damaged_Idle(CFSM_State* _Origin, CFSM_State* _Dest);
 bool Player_Damaged_Death(CFSM_State* _Origin, CFSM_State* _Dest);
+
+bool Player_ExcWinding_Holding(CFSM_State* _Origin, CFSM_State* _Dest);
+
+bool Player_Holding_Damaged(CFSM_State* _Origin, CFSM_State* _Dest);
+bool Player_Holding_Dash(CFSM_State* _Origin, CFSM_State* _Dest);
+
+bool Player_Dash_Idle(CFSM_State* _Origin, CFSM_State* _Dest);
+bool Player_Dash_Shoot(CFSM_State* _Origin, CFSM_State* _Dest);
 
 // BattleGate
 bool BattleGate_Open_Close(CFSM_State* _Origin, CFSM_State* _Dest);

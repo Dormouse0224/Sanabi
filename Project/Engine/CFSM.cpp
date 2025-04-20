@@ -73,6 +73,7 @@ void CFSM::FinalTick()
 					m_CurrentState->SetConstVec(m_PrevState->GetConstVec<float>());
 					m_CurrentState->SetConstVec(m_PrevState->GetConstVec<Vec2>());
 					m_CurrentState->SetConstVec(m_PrevState->GetConstVec<Vec4>());
+					m_CurrentState->SetConstVec(m_PrevState->GetConstVec<DWORD_PTR>());
 					// 목적지 State 의 Begin 을 호출
 					tCond->m_DestState->Begin();
 					break;

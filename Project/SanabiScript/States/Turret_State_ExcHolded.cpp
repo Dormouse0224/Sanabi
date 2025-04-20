@@ -25,7 +25,7 @@ void Turret_State_ExcHolded::Tick()
 
 void Turret_State_ExcHolded::Begin()
 {
-	m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\TurretBody_ExcHolded.flip", 10, true);
+	m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\TurretBody_ExcHolded.flip", 10, false);
 	m_Owner->GetOwner()->FindChild(L"TurretGun")->FlipbookRender()->Stop();
 }
 

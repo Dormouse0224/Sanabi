@@ -20,7 +20,7 @@ CLayer::CLayer(const CLayer& _Other)
 {
 	for (const auto& Object : _Other.m_vecParentObjects)
 	{
-		AddGameObject(Object->Clone(), true);
+		AddGameObject(Object->Clone(), false);
 	}
 }
 

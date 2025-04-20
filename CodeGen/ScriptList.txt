@@ -13,7 +13,10 @@ MainTitle_Bg_State_Loop
 MainTitle_Bg_State_Start
 Player_State_Climb
 Player_State_Damaged
+Player_State_Dash
 Player_State_Death
+Player_State_ExcWinding
+Player_State_Holding
 Player_State_Idle
 Player_State_Jump
 Player_State_Run

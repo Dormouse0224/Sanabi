@@ -4,6 +4,7 @@
 #include "Engine/CFSM.h"
 #include "Engine/CGameObject.h"
 #include "Engine/CFlipbookRender.h"
+#include "Engine/CPhysxActor.h"
 
 Turret_State_Popup::Turret_State_Popup()
 	: CFSM_State()
@@ -28,6 +29,11 @@ void Turret_State_Popup::Tick()
 void Turret_State_Popup::Begin()
 {
 	m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\TurretBody_PopUp.flip", 10, false);
+	COLLIDER_DESC desc;
+	desc.ShapeFlag = PxShapeFlag::eSCENE_QUERY_SHAPE;
+	desc.FilterLayer_Self = COLLISION_LAYER::eMONSTER;
+	desc.FilterLayer_Other = COLLISION_LAYER::ePLAYER;
+	m_Owner->GetOwner()->PhysxActor()->AddCollider(desc, PxVec3(20, 20, 20), PxVec3(0));
 }
 
 void Turret_State_Popup::End()

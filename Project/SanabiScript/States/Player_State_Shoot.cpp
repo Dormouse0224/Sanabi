@@ -20,7 +20,7 @@ Player_State_Shoot::Player_State_Shoot()
 	, m_Grab(nullptr)
 	, m_CursorPos(0.f, 0.f)
 	, m_Timer(0.f)
-	, m_MaxLen(300)
+	, m_MaxLen(500)
 {
 	// 갈고리 객체 생성
 	m_Grab = new CGameObject;
@@ -65,6 +65,17 @@ void Player_State_Shoot::Tick()
 	{
 		m_Owner->GetOwner()->Transform()->SetRelativeRot(0, 0, 0);
 		m_Owner->GetOwner()->FindChild(L"Player_Arm")->Transform()->SetRelativePos(0, 0, -1);
+	}
+
+	// 갈고리 진행방향으로 회전 적용
+	Vec3 Dir = m_Grab->Transform()->GetRelativePos();
+	Dir.Normalize();
+	if (Dir.Length() > 0)
+	{
+		Vec3 axis = XMVector3Cross(Vec3(0, 1, 0), Dir);
+		float angle = acosf(XMVectorGetX(XMVector3Dot(Vec3(0, 1, 0), Dir)));
+		Vec4 quat = XMQuaternionRotationAxis(axis.Normalize(), angle);
+		m_Grab->Transform()->SetRelativeRot(quat);
 	}
 
 	// 갈고리 갔다가 돌아오기
@@ -135,8 +146,8 @@ void Player_State_Shoot::HitCheck()
 
 	PxQueryFilterData filterData;
 	filterData.flags = PxQueryFlag::eSTATIC;
-	filterData.data.word0 = COLLISION_LAYER::ePLAYER;
-	filterData.data.word1 = COLLISION_LAYER::eMONSTER | COLLISION_LAYER::eLANDSCAPE;
+	//filterData.data.word0 = COLLISION_LAYER::ePLAYER;
+	//filterData.data.word1 = COLLISION_LAYER::eMONSTER | COLLISION_LAYER::eLANDSCAPE;
 
 	bool check = CPhysxMgr::GetInst()->GetScene()->raycast(shooter, unit, m_MaxLen, hitbuff, PxHitFlag::eDEFAULT, filterData);
 	SetConst<int>(1, 0);
@@ -146,10 +157,12 @@ void Player_State_Shoot::HitCheck()
 		if (pTarget->GetLayerIdx() == static_cast<int>(LAYER::Tile))
 		{
 			SetConst<int>(1, 1);
+			SetConst<DWORD_PTR>(0, (DWORD_PTR)pTarget);
 		}
 		else if (pTarget->GetLayerIdx() == static_cast<int>(LAYER::Enemy))
 		{
 			SetConst<int>(1, 2);
+			SetConst<DWORD_PTR>(0, (DWORD_PTR)pTarget);
 		}
 		SetConst<Vec4>(0, Vec4(hitbuff.block.position.x, hitbuff.block.position.y, hitbuff.block.position.z, hitbuff.block.distance));
 	}

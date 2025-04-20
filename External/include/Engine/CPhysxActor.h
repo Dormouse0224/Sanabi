@@ -110,6 +110,7 @@ public:
 
     void AddCollider(COLLIDER_DESC _desc, PxVec3 _Scale = PxVec3(1.f), PxVec3 _Offset = PxVec3(0.f));
     void DeleteCollider(int _Idx);
+    void DeleteAllCollider();
     void UpdatePosition(Vec3 _Pos);
     void UpdateRotation(Vec4 _RotQuat);
     void CkeckLockFlag(LOCK_FLAG _Flag);

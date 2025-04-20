@@ -60,7 +60,7 @@ void Turret_State_Shooting::Tick()
 		pBS->SetDamage(1);
 		Vec3 nDir = m_Owner->GetOwner()->FindChild(L"TurretGun")->Transform()->GetRelativeDir(DIR::UP);
 		nDir.Normalize();
-		pBS->SetVelocity(nDir * 100.f);
+		pBS->SetVelocity(nDir * 200.f);
 		CTaskMgr::GetInst()->AddTask(TASK_TYPE::CREATE_OBJECT, (DWORD_PTR)pBullet, NULL);
 	}
 
