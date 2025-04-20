@@ -114,8 +114,8 @@ void CMeshUI::VertexRender()
 	m_VertexObject->MeshRender()->SetMesh(static_cast<CMesh*>(m_TargetAsset.Get()));
 	m_VertexObject->MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(0, 1, 0, 1));
 	m_VertexObject->MeshRender()->GetMaterial()->GetShader()->SetBSType(BS_TYPE::DEFAULT);
-	m_MeshCam->FinalTick(false);
-	m_VertexObject->FinalTick(false);
+	m_MeshCam->FinalTick();
+	m_VertexObject->FinalTick();
 	vector<CGameObject*> vec = { m_VertexObject };
 	m_MeshCam->Camera()->Direct_Render(vec);
 

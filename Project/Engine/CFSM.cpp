@@ -31,8 +31,8 @@ CFSM::CFSM(const CFSM& _Other)
 
 CFSM::~CFSM()
 {
-	for (int i = 0; i < m_vecCondition.size(); ++i)
-		DeleteCondition(i);
+	for (int i = m_vecCondition.size(); i > 0; --i)
+		DeleteCondition(i - 1);
 	m_vecCondition.clear();
 }
 
@@ -176,6 +176,9 @@ void CFSM::SetInitState(string _StateName)
 
 void CFSM::AddCondition(const string& _Origin, const string& _Dest, const string& _FuncName)
 {
+	if (_Origin == _Dest)
+		return;
+
 	TriggerFunc func = CFSMMgr::GetInst()->GetTriggerFunc(_FuncName);
 	CFSM_State* pOS = nullptr;
 	CFSM_State* pDS = nullptr;
@@ -242,7 +245,7 @@ void CFSM::DeleteCondition(int _Idx)
 
 		delete m_vecCondition[_Idx];
 		m_vecCondition[_Idx] = nullptr;
-		//m_vecCondition.erase(m_vecCondition.begin() + _Idx);
+		m_vecCondition.erase(m_vecCondition.begin() + _Idx);
 	}
 
 	m_InitState = nullptr;

@@ -55,6 +55,7 @@ public:
     }
     bool IsFinish() { return m_Finish; }
     void Pause(bool _b) { m_Pause = _b; }
+    void Stop() { m_Pause = false; m_CurFlipbook = nullptr; }
 
 
 public:

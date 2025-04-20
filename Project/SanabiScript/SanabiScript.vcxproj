@@ -166,6 +166,15 @@ call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="States\Bullet_State_Burst.h" />
+    <ClInclude Include="States\Bullet_State_Idle.h" />
+    <ClInclude Include="States\Player_State_Death.h" />
+    <ClInclude Include="States\Player_State_Damaged.h" />
+    <ClInclude Include="Scripts\BulletScript.h" />
+    <ClInclude Include="States\BattleGate_State_Close.h" />
+    <ClInclude Include="States\BattleGate_State_Open.h" />
+    <ClInclude Include="Scripts\MonsterScript.h" />
+    <ClInclude Include="Scripts\BattleGateScript.h" />
     <ClInclude Include="CScriptInit.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="States\Player_State_Swing.h" />
@@ -183,8 +192,23 @@ call CodeGen.exe</Command>
     <ClInclude Include="pch.h" />
     <ClInclude Include="TestLevel.h" />
     <ClInclude Include="TriggerFunc.h" />
+    <ClInclude Include="States\Turret_State_Dead.h" />
+    <ClInclude Include="States\Turret_State_ExcHolded.h" />
+    <ClInclude Include="States\Turret_State_Shooting.h" />
+    <ClInclude Include="States\Turret_State_Sleep.h" />
+    <ClInclude Include="States\Turret_State_Aiming.h" />
+    <ClInclude Include="States\Turret_State_Popup.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="States\Bullet_State_Burst.cpp" />
+    <ClCompile Include="States\Bullet_State_Idle.cpp" />
+    <ClCompile Include="States\Player_State_Death.cpp" />
+    <ClCompile Include="States\Player_State_Damaged.cpp" />
+    <ClCompile Include="Scripts\BulletScript.cpp" />
+    <ClCompile Include="States\BattleGate_State_Close.cpp" />
+    <ClCompile Include="States\BattleGate_State_Open.cpp" />
+    <ClCompile Include="Scripts\MonsterScript.cpp" />
+    <ClCompile Include="Scripts\BattleGateScript.cpp" />
     <ClCompile Include="CScriptInit.cpp" />
     <ClCompile Include="States\Player_State_Swing.cpp" />
     <ClCompile Include="States\Player_State_Shoot.cpp" />
@@ -206,6 +230,12 @@ call CodeGen.exe</Command>
     </ClCompile>
     <ClCompile Include="TestLevel.cpp" />
     <ClCompile Include="TriggerFunc.cpp" />
+    <ClCompile Include="States\Turret_State_Dead.cpp" />
+    <ClCompile Include="States\Turret_State_ExcHolded.cpp" />
+    <ClCompile Include="States\Turret_State_Shooting.cpp" />
+    <ClCompile Include="States\Turret_State_Sleep.cpp" />
+    <ClCompile Include="States\Turret_State_Aiming.cpp" />
+    <ClCompile Include="States\Turret_State_Popup.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

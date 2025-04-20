@@ -94,4 +94,5 @@ void Player_State_Climb::End()
 		pScript->GetWallLeft() ? moveVel.x += 100.f : moveVel.x -= 100.f;
 		m_Owner->GetOwner()->PhysxActor()->SetLinearVelocity(PxVec3(moveVel.x, moveVel.y, 0.f));
 	}
+	m_bJumpOut = false;
 }

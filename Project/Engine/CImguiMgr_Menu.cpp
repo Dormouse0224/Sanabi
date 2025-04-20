@@ -32,17 +32,17 @@ void CImguiMgr::DebugMenuBar()
                     {
                         m_PopupFlag |= PopupFlags_CreateMaterial;
                     }
-                    if (ImGui::MenuItem("Graphic Shader", nullptr))
-                    {
-
-                    }
-                    if (ImGui::MenuItem("Sprite", nullptr))
-                    {
-
-                    }
                     if (ImGui::MenuItem("Flipbook", nullptr))
                     {
                         m_PopupFlag |= PopupFlags_CreateFlipbook;
+                    }
+                    if (ImGui::MenuItem("Sprite", nullptr))
+                    {
+                        m_PopupFlag |= PopupFlags_CreateSprite;
+                    }
+                    if (ImGui::MenuItem("Graphic Shader", nullptr))
+                    {
+
                     }
 
                     ImGui::EndMenu();
@@ -159,4 +159,5 @@ void CImguiMgr::DebugMenuBar()
     SaveLevelPopup();
     CreateMaterialPopup();
     CreateFlipbookPopup();
+    CreateSpritePopup();
 }

@@ -93,7 +93,7 @@ void CLevel::SetState(LEVEL_STATE _State)
 	{
 		m_State = _State;
 		End();
-		CTaskMgr::GetInst()->AddTask(TASK_TYPE::CHANGE_LEVEL, reinterpret_cast<DWORD_PTR>(CLevelMgr::GetInst()->GetPlayStartLevel()), NULL);
+		CTaskMgr::GetInst()->AddTask(TASK_TYPE::CHANGE_LEVEL, reinterpret_cast<DWORD_PTR>(CLevelMgr::GetInst()->GetPlayStartLevel()), (DWORD_PTR)false);
 	}
 	else
 	// Play -> Pause
@@ -109,6 +109,14 @@ void CLevel::Deregister()
 	for (UINT i = 0; i < (UINT)LAYER::END; ++i)
 	{
 		m_Layer[i]->ClearVecObjects();
+	}
+}
+
+void CLevel::Register()
+{
+	for (UINT i = 0; i < (UINT)LAYER::END; ++i)
+	{
+		m_Layer[i]->Register();
 	}
 }
 

@@ -83,6 +83,7 @@ int CFlipbook::Load(const wstring& _FilePath)
         // 스프라이트의 키값(이름) 불러오기
         int size = 0;
         file.read(reinterpret_cast<char*>(&size), sizeof(int));
+        m_vecSprite.resize(size);
         for (int i = 0; i < size; ++i)
         {
             std::wstring SpriteName = {};

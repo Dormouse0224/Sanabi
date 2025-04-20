@@ -3,6 +3,7 @@
 
 #include "CRenderMgr.h"
 #include "CPhysxMgr.h"
+#include "CTaskMgr.h"
 
 #include "CLevel.h"
 #include "CGameObject.h"
@@ -53,9 +54,17 @@ void CLevelMgr::Progress()
 	m_CurLevel->Tick();
 
 	m_CurLevel->Deregister();
+	m_CurLevel->Register();
 
 	m_CurLevel->FinalTick();
 
+}
+
+void CLevelMgr::SetPlayStartLevel(CLevel* _Level)
+{
+	if (m_PlayStartLevel)
+		delete m_PlayStartLevel;
+	m_PlayStartLevel = _Level;
 }
 
 CLevel* CLevelMgr::FindLevel(wstring _RelativePath)
@@ -89,7 +98,7 @@ CGameObject* CLevelMgr::AddGameObject(wstring _Name, LAYER _Layer)
 	return pObject;
 }
 
-void CLevelMgr::ChangeLevel(CLevel* _NextLevel)
+void CLevelMgr::ChangeLevel(CLevel* _NextLevel, bool _Play)
 {
 	// 레벨이 변경되면서, Render Manager 가 관리하던 이전 레벨의 카메라 목록을 클리어한다.
 	CRenderMgr::GetInst()->ClearCamera();
@@ -107,6 +116,9 @@ void CLevelMgr::ChangeLevel(CLevel* _NextLevel)
 
 	if (m_CurLevel == m_PlayStartLevel)
 		m_PlayStartLevel = nullptr;
+
+	if (_Play)
+		CTaskMgr::GetInst()->AddTask(TASK_TYPE::CHANGE_LEVEL_STATE, (DWORD_PTR)LEVEL_STATE::PLAY, NULL);
 }
 
 CGameObject* CLevelMgr::FindObject(LAYER _Layer, wstring _Name)

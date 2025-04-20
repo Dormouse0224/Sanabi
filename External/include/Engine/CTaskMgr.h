@@ -5,7 +5,7 @@ enum class TASK_TYPE
 {
 	CREATE_OBJECT,		// Param0 : CGameObject* NewObject / Param1 : int LayerIdx
 	DELETE_OBJECT,		// Param0 : CGameObject* DeleteObject / Param1 : NULL
-	CHANGE_LEVEL,		// Param0 : CLevel* DestLevel / Param1 : NULL
+	CHANGE_LEVEL,		// Param0 : CLevel* DestLevel / Param1 : bool Play
 	CHANGE_LEVEL_STATE,	// Param0 :	LEVEL_STATE State / Param1 : NULL
 };
 

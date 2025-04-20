@@ -55,6 +55,14 @@ void CLayer::Tick()
 	}
 }
 
+void CLayer::Register()
+{
+	for (CGameObject* parent : m_vecParentObjects)
+	{
+		parent->RegisterToLevel();
+	}
+}
+
 void CLayer::FinalTick()
 {
 	vector<CGameObject*>::iterator iter = m_vecParentObjects.begin();

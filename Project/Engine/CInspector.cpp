@@ -101,7 +101,12 @@ void CInspector::Render()
 
 		float tab = 130.f;
 		// 기본 정보 표기
+		ImGui::Text("Name : ");
+		ImGui::SameLine();
 		ImGui::Text(to_str(m_TargetObj->GetName()).c_str());
+		ImGui::Text("ID : ");
+		ImGui::SameLine();
+		ImGui::Text(to_string(m_TargetObj->GetID()).c_str());
 		ImGui::Separator();
 
 		ImGui::Text("Layer");

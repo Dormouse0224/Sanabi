@@ -11,6 +11,7 @@ enum PopupFlags_
 	PopupFlags_SaveLevel			= (1<<2),
 	PopupFlags_CreateMaterial		= (1<<3),
 	PopupFlags_CreateFlipbook		= (1<<4),
+	PopupFlags_CreateSprite			= (1<<5),
 };
 
 class CImguiObject;
@@ -46,6 +47,7 @@ public:
 	void SaveLevelPopup();
 	void CreateMaterialPopup();
 	void CreateFlipbookPopup();
+	void CreateSpritePopup();
 
 	void LoadAsset();
 	void LoadLevel();

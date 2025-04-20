@@ -40,7 +40,11 @@ void CFlipbookUI::Render_Ast()
             ImGui::SliderInt("##FlipbookSlider", &sprite_current, 0, pFlipbook->GetSceneCount() - 1);
         AssetPtr<CSprite> pScene = pFlipbook->GetScene<CSprite>(sprite_current);
         if (pScene.Get())
-            ImGui::Image(reinterpret_cast<ImTextureID>(pScene->GetAtlasTex()->GetSRV().Get()), ImVec2(300, 300));
+        {
+            ImVec2 uv0(pScene->GetLeftTop().x, pScene->GetLeftTop().y);
+            ImVec2 uv1(pScene->GetSlice().x + uv0.x, pScene->GetSlice().y + uv0.y);
+            ImGui::Image(reinterpret_cast<ImTextureID>(pScene->GetAtlasTex()->GetSRV().Get()), ImVec2(300, 300), uv0, uv1);
+        }
         else
             ImGui::Text("Filpbook Empty");
     }

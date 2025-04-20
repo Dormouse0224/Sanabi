@@ -2,6 +2,8 @@
 #include "PlayerScript.h"
 
 #include "Engine/CPhysxActor.h"
+#include "Engine/CLevelMgr.h"
+#include "Engine/CLevel.h"
 
 PlayerScript::PlayerScript()
 	: CScript()
@@ -9,6 +11,11 @@ PlayerScript::PlayerScript()
 	, m_bAirborne(false)
 	, m_bWallContact(false)
 	, m_bWallLeft(false)
+	, m_bWallContactCheck(false)
+	, m_Damaged(false)
+	, m_Immune(false)
+	, m_HP(4)
+	//, m_SavePoint(nullptr)
 {
 }
 
@@ -18,16 +25,23 @@ PlayerScript::PlayerScript(const PlayerScript& _Origin)
 	, m_bAirborne(false)
 	, m_bWallContact(false)
 	, m_bWallLeft(false)
+	, m_Immune(false)
+	, m_HP(4)
+	//, m_SavePoint(nullptr)
 {
+	//if (_Origin.m_SavePoint)
+	//	m_SavePoint = _Origin.m_SavePoint->Clone();
 }
 
 PlayerScript::~PlayerScript()
 {
+	//if (CLevelMgr::GetInst()->GetCurrentLevel() == nullptr || CLevelMgr::GetInst()->GetCurrentLevel() != m_SavePoint)
+	//	delete m_SavePoint;
 }
 
 void PlayerScript::Tick()
 {
-	if (!m_bInit)
+	if (!m_bInit && CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)
 		Init();
 
 	m_bAirborne = m_bAirborneCheck;
@@ -39,10 +53,15 @@ void PlayerScript::Tick()
 
 void PlayerScript::Init()
 {
-	GetOwner()->PhysxActor()->SetContactBegin(this, (ContactFunc)(&PlayerScript::ContactBegin));
-	GetOwner()->PhysxActor()->SetContactTick(this, (ContactFunc)(&PlayerScript::ContacTick));
-	GetOwner()->PhysxActor()->SetContactEnd(this, (ContactFunc)(&PlayerScript::ContactEnd));
 	m_bInit = true;
+
+	// 충돌 이벤트 설정
+	GetOwner()->PhysxActor()->SetContactBegin(this, (PxContactFunc)(&PlayerScript::ContactBegin));
+	GetOwner()->PhysxActor()->SetContactTick(this, (PxContactFunc)(&PlayerScript::ContacTick));
+	GetOwner()->PhysxActor()->SetContactEnd(this, (PxContactFunc)(&PlayerScript::ContactEnd));
+
+	//// 시작 위치 세이브포인트로 등록
+	//SetSavePoint(CLevelMgr::GetInst()->GetCurrentLevel()->Clone());
 }
 
 void PlayerScript::ContactBegin(CGameObject* _Other, const PxContactPair pair)
@@ -78,3 +97,11 @@ void PlayerScript::ContactEnd(CGameObject* _Other, const PxContactPair pair)
 	int a = 0;
 }
 
+void PlayerScript::GiveDamage(int _Dmg)
+{
+	if (m_Immune)
+		return;
+
+	m_Damaged = true;
+	m_HP -= _Dmg;
+}

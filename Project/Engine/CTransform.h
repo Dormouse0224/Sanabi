@@ -60,6 +60,8 @@ public:
     Vec3 GetWorldDir(DIR _DirType) { return m_WorldDir[(UINT)_DirType]; }
 
     bool GetIndependentScale() { return m_IndependentScale; }
+    bool GetIndependentRot() { return m_IndependentRot; }
+    bool GetIndependentTrans() { return m_IndependentTrans; }
 
     const Matrix& GetWorldMat() { return m_matWorld; }
     void SetWorldMat(const Matrix& _Mat) { m_matWorld = _Mat; }

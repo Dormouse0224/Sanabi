@@ -221,7 +221,7 @@ void CImguiMgr::NewLevelPopup()
             if (Level) { Level->Save(Level->GetName()); }
             CLevel* NewLevel = new CLevel;
             NewLevel->SetName(WName);
-            CTaskMgr::GetInst()->AddTask(TASK_TYPE::CHANGE_LEVEL, reinterpret_cast<DWORD_PTR>(NewLevel), NULL);
+            CTaskMgr::GetInst()->AddTask(TASK_TYPE::CHANGE_LEVEL, reinterpret_cast<DWORD_PTR>(NewLevel), (DWORD_PTR)false);
             memset(Name, 0, sizeof(Name));
             ImGui::CloseCurrentPopup();
         }
@@ -299,6 +299,44 @@ void CImguiMgr::CreateFlipbookPopup()
         if (ImGui::Button("Create"))
         {
             CFlipbook::Create(WName);
+            memset(Name, 0, sizeof(Name));
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Cancel"))
+        {
+            memset(Name, 0, sizeof(Name));
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
+}
+
+void CImguiMgr::CreateSpritePopup()
+{
+    if (m_PopupFlag & PopupFlags_CreateSprite)
+    {
+        m_PopupFlag ^= PopupFlags_CreateSprite;
+        ImGui::OpenPopup("CreateSprite");
+    }
+
+    if (ImGui::BeginPopupModal("CreateSprite", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        float tab = 130.f;
+        ImGui::Text("Create new sprite.");
+        ImGui::NewLine();
+
+        // 오브젝트 이름 입력
+        ImGui::Text("Name: ");
+        ImGui::SameLine(tab);
+        static char Name[255] = {};
+        ImGui::InputText("##Name", Name, 255);
+        std::wstring WName = to_wstr(std::string(Name));
+
+        if (ImGui::Button("Create"))
+        {
+            CSprite::Create(WName);
             memset(Name, 0, sizeof(Name));
             ImGui::CloseCurrentPopup();
         }
@@ -409,7 +447,7 @@ void CImguiMgr::LoadLevel()
         {
             CLevel* NewLevel = new CLevel;
             NewLevel->Load(RelativePath);
-            CTaskMgr::GetInst()->AddTask(TASK_TYPE::CHANGE_LEVEL, reinterpret_cast<DWORD_PTR>(NewLevel), NULL);
+            CTaskMgr::GetInst()->AddTask(TASK_TYPE::CHANGE_LEVEL, reinterpret_cast<DWORD_PTR>(NewLevel), (DWORD_PTR)false);
         }
         else
             MessageBoxW(nullptr, L"지원하지 않는 파일 형식입니다.", L"Asset Load Error", MB_OK);

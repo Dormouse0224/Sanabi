@@ -24,6 +24,7 @@ public:
     void Begin();
     void End();
     void Tick();
+    void Register();
     void FinalTick();
 
 public:

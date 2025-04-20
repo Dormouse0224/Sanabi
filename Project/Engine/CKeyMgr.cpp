@@ -226,7 +226,7 @@ void CKeyMgr::Tick()
             // 투영좌표에 클립, 뷰 역행렬로 월드 좌표 계산
             Vec3 worldCoord = XMVector4Transform(clip, clipInv * viewInv);
             m_Cursor->Transform()->SetRelativePos(worldCoord);
-            m_Cursor->FinalTick(false);
+            m_Cursor->FinalTick();
         }
     }
     else

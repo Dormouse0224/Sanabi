@@ -11,8 +11,6 @@ CFlipbookRender::CFlipbookRender()
 	: CRenderComponent(COMPONENT_TYPE::FLIPBOOKRENDER)
 {
 	SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"EA_RectMesh", true));
-
-	//CreateFlipbookMaterial();
 }
 
 CFlipbookRender::~CFlipbookRender()
@@ -70,8 +68,6 @@ void CFlipbookRender::Render()
 		AssetPtr<CTexture2D> pAtlas = pCurSprite->GetAtlasTex();
 		Vec2 vLeftTop = pCurSprite->GetLeftTop();
 		Vec2 vSlice = pCurSprite->GetSlice();
-		Vec2 vBackground = pCurSprite->GetBackground();
-		Vec2 vOffset = pCurSprite->GetOffset();
 
 
 		// 사용할 쉐이더 바인딩	
@@ -81,8 +77,6 @@ void CFlipbookRender::Render()
 			GetMaterial()->SetTexParam(TEX_0, pAtlas);
 			GetMaterial()->SetScalarParam(VEC2_0, vLeftTop);
 			GetMaterial()->SetScalarParam(VEC2_1, vSlice);
-			GetMaterial()->SetScalarParam(VEC2_2, vBackground);
-			GetMaterial()->SetScalarParam(VEC2_3, vOffset);
 		}
 		else
 		{
@@ -144,43 +138,8 @@ int CFlipbookRender::Save(fstream& _Stream)
 	return S_OK;
 }
 
-//void CFlipbookRender::CreateFlipbookMaterial()
-//{
-//	if (nullptr == CAssetMgr::GetInst()->Load<CGraphicShader>(L"EA_FlipbookShader", true))
-//	{
-//		// FlipbookShader
-//		AssetPtr<CGraphicShader> pShader = new CGraphicShader;
-//		pShader->CreateVertexShader(L"HLSL\\Engine\\flipbook.fx", "VS_Flipbook");
-//		pShader->CreatePixelShader(L"HLSL\\Engine\\flipbook.fx", "PS_Flipbook");
-//		pShader->SetRSType(RS_TYPE::CULL_NONE);
-//		pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
-//		pShader->SetTexData(TEX_0, "Atlas Texture");
-//		pShader->SetConstData(INT_0, "Atlas Tex Flag");
-//		pShader->SetConstData(INT_1, "Single Tex Flag");
-//		pShader->SetConstData(VEC2_0, "LeftTop");
-//		pShader->SetConstData(VEC2_1, "Slice");
-//		pShader->SetConstData(VEC2_2, "Background");
-//		pShader->SetConstData(VEC2_3, "Offset");
-//		CAssetMgr::GetInst()->AddAsset(L"FlipbookShader", pShader.Get());
-//	}
-//
-//	if (nullptr == CAssetMgr::GetInst()->Load<CMaterial>(L"FlipbookMtrl", true))
-//	{
-//		// FlipbookMtrl
-//		AssetPtr<CMaterial> pMtrl = new CMaterial;
-//		pMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"FlipbookShader", true));
-//		CAssetMgr::GetInst()->AddAsset(L"FlipbookMtrl", pMtrl.Get());
-//	}
-//
-//	SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"FlipbookMtrl", true));
-//}
-
 void CFlipbookRender::AddFlipbook(AssetPtr<CFlipbook> _Flipbook)
 {
-	//if (m_vecFlipbook.size() <= _Idx)
-	//{
-	//	m_vecFlipbook.resize(_Idx + 1);
-	//}
 	if (_Flipbook.Get())
 		m_vecFlipbook.push_back(_Flipbook);
 }

@@ -62,6 +62,41 @@ void CSimulationEvent::onContact(const PxContactPairHeader& pairHeader, const Px
 // Trigger 형태의 Collider에 다른 객체가 들어오거나 나갈 때 호출됨.
 void CSimulationEvent::onTrigger(PxTriggerPair* pairs, PxU32 count)
 {
+    for (PxU32 i = 0; i < count; ++i)
+    {
+        const PxTriggerPair& pair = pairs[i];
+
+        // 두 actor 모두 유효해야 하고, userData가 설정되어 있어야 함
+        if (!pair.triggerActor || !pair.otherActor)
+            continue;
+
+        CGameObject* triggerGO = reinterpret_cast<CGameObject*>(pair.triggerActor->userData);
+        CGameObject* otherGO = reinterpret_cast<CGameObject*>(pair.otherActor->userData);
+
+        if (!triggerGO || !otherGO)
+            continue;
+
+        if (triggerGO->IsDead() || otherGO->IsDead())
+            continue;
+
+        // eREMOVED_ACTOR flags는 생략 가능하지만 안전하게 처리하려면 체크
+        if (pair.flags & (PxTriggerPairFlag::eREMOVED_SHAPE_TRIGGER | PxTriggerPairFlag::eREMOVED_SHAPE_OTHER))
+            continue;
+
+        if (pair.status & PxPairFlag::eNOTIFY_TOUCH_FOUND)
+        {
+            // 트리거에 들어갔을 때
+            triggerGO->PhysxActor()->TriggerBegin(otherGO);
+            otherGO->PhysxActor()->TriggerBegin(triggerGO);
+        }
+
+        if (pair.status & PxPairFlag::eNOTIFY_TOUCH_LOST)
+        {
+            // 트리거에서 나왔을 때
+            triggerGO->PhysxActor()->TriggerEnd(otherGO);
+            otherGO->PhysxActor()->TriggerEnd(triggerGO);
+        }
+    }
 }
 
 // continuous collision detection 등의 정보가 업데이트될 때 호출됨.

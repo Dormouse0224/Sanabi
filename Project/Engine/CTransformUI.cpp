@@ -24,7 +24,7 @@ void CTransformUI::Render_Com()
     if (pTransform == nullptr)
         return;
 
-    float tab = 140.f;
+    float tab = 160.f;
 
     ImGui::Text("Position");
     ImGui::SameLine(tab);
@@ -59,6 +59,24 @@ void CTransformUI::Render_Com()
     if (ImGui::Checkbox("##IndependentScale", &bIS))
     {
         pTransform->SetIndependentScale(bIS);
+    }
+    ImGui::Spacing();
+
+    ImGui::Text("Independent Rotation");
+    ImGui::SameLine(tab);
+    bool bIR = pTransform->GetIndependentRot();
+    if (ImGui::Checkbox("##IndependentRotation", &bIR))
+    {
+        pTransform->SetIndependentRot(bIS);
+    }
+    ImGui::Spacing();
+
+    ImGui::Text("Independent Position");
+    ImGui::SameLine(tab);
+    bool bIP = pTransform->GetIndependentTrans();
+    if (ImGui::Checkbox("##IndependentPosition", &bIP))
+    {
+        pTransform->SetIndependentTrans(bIS);
     }
     ImGui::Spacing();
 }

@@ -73,7 +73,7 @@ void CTaskMgr::Tick()
 		case TASK_TYPE::CHANGE_LEVEL:
 		{
 			CLevelMgr::GetInst()->SetLevelModified();
-			CLevelMgr::GetInst()->ChangeLevel(reinterpret_cast<CLevel*>(task.Param0));
+			CLevelMgr::GetInst()->ChangeLevel(reinterpret_cast<CLevel*>(task.Param0), (bool)task.Param1);
 		}
 			break;
 

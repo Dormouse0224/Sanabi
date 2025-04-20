@@ -26,7 +26,7 @@ public:
 
 	void SetCurrentLevel(CLevel* _Level) { m_CurLevel = _Level; }
 	void SetLevelModified() { m_LevelModifyChecker = true; }
-	void SetPlayStartLevel(CLevel* _Level) { m_PlayStartLevel = _Level; }
+	void SetPlayStartLevel(CLevel* _Level);
 
 	// 입력받은 레벨을 복사하여 상대경로를 키값으로 저장합니다.
 	void AddLevelList(wstring _RelativePath, CLevel* _Level) { m_mapLevelList.insert(make_pair(_RelativePath, _Level->Clone())); }
@@ -37,7 +37,7 @@ public:
 
 	// 현재 레벨에 신규 게임 오브젝트 객체를 추가합니다.
 	CGameObject* AddGameObject(wstring _Name, LAYER _Layer);
-	void ChangeLevel(CLevel* _NextLevel);
+	void ChangeLevel(CLevel* _NextLevel, bool _Play = false);
 
 	CGameObject* FindObject(LAYER _Layer, wstring _Name);
 	CGameObject* DeleteObject(LAYER _Layer, wstring _Name);

@@ -74,12 +74,8 @@ public:
     void End();
     void Tick();
 
-    /// <summary>
-    /// 오브젝트가 소유한 컴포넌트의 Tick 을 호출합니다.
-    /// RigisterToLevel 이 True 인 경우 현재 레벨의 레이어에 오브젝트가 등록됩니다. 별도로 관리되는 오브젝트인 경우 false 를 사용해 주세요.
-    /// </summary>
-    /// <param name="_RigisterToLevel"></param>
-    void FinalTick(bool _RigisterToLevel = true);
+    void RegisterToLevel();
+    void FinalTick();
     void Render();
 
     int Save(fstream& _Stream);

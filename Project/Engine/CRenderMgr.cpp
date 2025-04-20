@@ -72,7 +72,7 @@ void CRenderMgr::Tick()
 	pGlobal->Binding_CS();
 
 	m_EditorCam->Tick();
-	m_EditorCam->FinalTick(false);
+	m_EditorCam->FinalTick();
 
 	m_UICam->Tick();
 	if (m_CurrentCam)
@@ -80,7 +80,7 @@ void CRenderMgr::Tick()
 		m_UICam->Transform()->SetRelativePos(m_CurrentCam->GetOwner()->Transform()->GetRelativePos());
 		m_UICam->Transform()->SetRelativeRot(m_CurrentCam->GetOwner()->Transform()->GetRelativeRot());
 	}
-	m_UICam->FinalTick(false);
+	m_UICam->FinalTick();
 
 	// Main Rendering	
 	Render();

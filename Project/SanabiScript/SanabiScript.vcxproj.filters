@@ -30,6 +30,21 @@
     <ClInclude Include="Scripts\PlayerCamScript.h" />
     <ClInclude Include="States\Player_State_Shoot.h" />
     <ClInclude Include="States\Player_State_Swing.h" />
+    <ClInclude Include="Scripts\BattleGateScript.h" />
+    <ClInclude Include="Scripts\MonsterScript.h" />
+    <ClInclude Include="States\BattleGate_State_Open.h" />
+    <ClInclude Include="States\BattleGate_State_Close.h" />
+    <ClInclude Include="States\Turret_State_Sleep.h" />
+    <ClInclude Include="States\Turret_State_Popup.h" />
+    <ClInclude Include="States\Turret_State_Aiming.h" />
+    <ClInclude Include="States\Turret_State_Shooting.h" />
+    <ClInclude Include="States\Turret_State_ExcHolded.h" />
+    <ClInclude Include="States\Turret_State_Dead.h" />
+    <ClInclude Include="Scripts\BulletScript.h" />
+    <ClInclude Include="States\Player_State_Damaged.h" />
+    <ClInclude Include="States\Player_State_Death.h" />
+    <ClInclude Include="States\Bullet_State_Idle.h" />
+    <ClInclude Include="States\Bullet_State_Burst.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -50,5 +65,20 @@
     <ClCompile Include="Scripts\PlayerCamScript.cpp" />
     <ClCompile Include="States\Player_State_Shoot.cpp" />
     <ClCompile Include="States\Player_State_Swing.cpp" />
+    <ClCompile Include="Scripts\BattleGateScript.cpp" />
+    <ClCompile Include="Scripts\MonsterScript.cpp" />
+    <ClCompile Include="States\BattleGate_State_Open.cpp" />
+    <ClCompile Include="States\BattleGate_State_Close.cpp" />
+    <ClCompile Include="States\Turret_State_Sleep.cpp" />
+    <ClCompile Include="States\Turret_State_Popup.cpp" />
+    <ClCompile Include="States\Turret_State_Aiming.cpp" />
+    <ClCompile Include="States\Turret_State_Shooting.cpp" />
+    <ClCompile Include="States\Turret_State_ExcHolded.cpp" />
+    <ClCompile Include="States\Turret_State_Dead.cpp" />
+    <ClCompile Include="Scripts\BulletScript.cpp" />
+    <ClCompile Include="States\Player_State_Damaged.cpp" />
+    <ClCompile Include="States\Player_State_Death.cpp" />
+    <ClCompile Include="States\Bullet_State_Idle.cpp" />
+    <ClCompile Include="States\Bullet_State_Burst.cpp" />
   </ItemGroup>
 </Project>

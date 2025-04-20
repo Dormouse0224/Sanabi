@@ -5,7 +5,10 @@
 #include "CScript.h"
 
 // 충돌 이벤트 발생 시 호출되는 함수
-typedef void (CScript::*ContactFunc)(CGameObject* _Other, const PxContactPair pair);
+typedef void (CScript::*PxContactFunc)(CGameObject* _Other, const PxContactPair pair);
+
+// 트리거 이벤트 발생 시 호출되는 함수
+typedef void (CScript::*PxTriggerFunc)(CGameObject* _Other);
 
 struct COLLIDER_DESC
 {
@@ -58,6 +61,7 @@ private:
     UINT                    m_LockFlag;
     bool                    m_Gravity;
     float                   m_Density;
+    PxVec3                  m_InitVel;
 
     vector<PxShape*>        m_vecShape;
     vector<COLLIDER_DESC>   m_vecDesc;
@@ -71,9 +75,14 @@ private:
     CScript*                m_ContactBeginInst;
     CScript*                m_ContactTickInst;
     CScript*                m_ContactEndInst;
-    ContactFunc             m_ContactBegin;
-    ContactFunc             m_ContactTick;
-    ContactFunc             m_ContactEnd;
+    PxContactFunc           m_ContactBegin;
+    PxContactFunc           m_ContactTick;
+    PxContactFunc           m_ContactEnd;
+
+    CScript*                m_TriggerBeginInst;
+    CScript*                m_TriggerEndInst;
+    PxTriggerFunc           m_TriggerBegin;
+    PxTriggerFunc           m_TriggerEnd;
 
 public:
     virtual void Begin() {};
@@ -105,13 +114,19 @@ public:
     void UpdateRotation(Vec4 _RotQuat);
     void CkeckLockFlag(LOCK_FLAG _Flag);
 
-    void SetContactBegin(CScript* _Inst, ContactFunc _Func) { m_ContactBeginInst = _Inst; m_ContactBegin = _Func; }
-    void SetContactTick(CScript* _Inst, ContactFunc _Func) { m_ContactTickInst = _Inst; m_ContactTick = _Func; }
-    void SetContactEnd(CScript* _Inst, ContactFunc _Func) { m_ContactEndInst = _Inst; m_ContactEnd = _Func; }
+    void SetContactBegin(CScript* _Inst, PxContactFunc _Func) { m_ContactBeginInst = _Inst; m_ContactBegin = _Func; }
+    void SetContactTick(CScript* _Inst, PxContactFunc _Func) { m_ContactTickInst = _Inst; m_ContactTick = _Func; }
+    void SetContactEnd(CScript* _Inst, PxContactFunc _Func) { m_ContactEndInst = _Inst; m_ContactEnd = _Func; }
+
+    void SetTriggerBegin(CScript* _Inst, PxTriggerFunc _Func) { m_TriggerBeginInst = _Inst; m_TriggerBegin = _Func; }
+    void SetTriggerEnd(CScript* _Inst, PxTriggerFunc _Func) { m_TriggerEndInst = _Inst; m_TriggerEnd = _Func; }
 
     void ContactBegin(CGameObject* _Other, const PxContactPair pair);
     void ContactTick(CGameObject* _Other, const PxContactPair pair);
     void ContactEnd(CGameObject* _Other, const PxContactPair pair);
+
+    void TriggerBegin(CGameObject* _Other);
+    void TriggerEnd(CGameObject* _Other);
 
     virtual int Load(fstream& _Stream) override;
     virtual int Save(fstream& _Stream) override;

@@ -173,7 +173,20 @@ void CGameObject::Tick()
 	}
 }
 
-void CGameObject::FinalTick(bool _RigisterToLevel)
+void CGameObject::RegisterToLevel()
+{
+	// Layer 에 GameObject 등록하기
+	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	CLayer* pMyLayer = pCurLevel->GetLayer(m_LayerIdx);
+	pMyLayer->RegisterGameObject(this);
+
+	for (CGameObject* child : m_vecChild)
+	{
+		child->RegisterToLevel();
+	}
+}
+
+void CGameObject::FinalTick()
 {
 	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::COMPONENT_END; ++i)
 	{
@@ -181,17 +194,9 @@ void CGameObject::FinalTick(bool _RigisterToLevel)
 			m_Com[i]->FinalTick();
 	}
 
-	if (_RigisterToLevel && !m_Dead)
-	{
-		// Layer 에 GameObject 등록하기
-		CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-		CLayer* pMyLayer = pCurLevel->GetLayer(m_LayerIdx);
-		pMyLayer->RegisterGameObject(this);
-	}
-
 	for (vector<CGameObject*>::iterator iter = m_vecChild.begin(); iter != m_vecChild.end(); )
 	{
-		(*iter)->FinalTick(_RigisterToLevel);
+		(*iter)->FinalTick();
 
 		if ((*iter)->IsDead())
 			iter = m_vecChild.erase(iter);

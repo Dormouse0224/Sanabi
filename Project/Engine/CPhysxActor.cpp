@@ -24,6 +24,7 @@ CPhysxActor::CPhysxActor()
     , m_LockFlag(0)
     , m_Gravity(false)
     , m_Density(1.f)
+    , m_InitVel(0)
     , m_vecDesc{}
     , m_vecScale{}
     , m_vecOffset{}
@@ -45,6 +46,7 @@ CPhysxActor::CPhysxActor(const CPhysxActor& _Other)
     , m_LockFlag(_Other.m_LockFlag)
     , m_Gravity(_Other.m_Gravity)
     , m_Density(_Other.m_Density)
+    , m_InitVel(_Other.m_InitVel)
     , m_vecDesc{ _Other.m_vecDesc }
     , m_vecScale{ _Other.m_vecScale }
     , m_vecOffset{ _Other.m_vecOffset }
@@ -70,7 +72,7 @@ void CPhysxActor::FinalTick()
     {
         m_DelayedInit = false;
         // m_Body 세팅
-        SetRigidBody(m_Type, m_LockFlag, m_Gravity, m_Density);
+        SetRigidBody(m_Type, m_LockFlag, m_Gravity, m_Density, m_InitVel);
 
         // body 에 충돌체 추가
         for (int i = 0; i < m_vecDesc.size(); ++i)
@@ -230,7 +232,12 @@ void CPhysxActor::SetColliderOffset(int _Idx, PxVec3 _Data)
 void CPhysxActor::SetLinearVelocity(PxVec3 _Vel)
 {
     if (m_Type == RIGID_TYPE::DYNAMIC)
-        static_cast<PxRigidDynamic*>(m_Body)->setLinearVelocity(_Vel);
+    {
+        if (m_Body)
+            static_cast<PxRigidDynamic*>(m_Body)->setLinearVelocity(_Vel);
+        else if (!m_Body && m_DelayedInit)
+            m_InitVel = _Vel;
+    }
 }
 
 void CPhysxActor::AddCollider(COLLIDER_DESC _Desc, PxVec3 _Scale, PxVec3 _Offset)
@@ -321,6 +328,18 @@ void CPhysxActor::ContactEnd(CGameObject* _Other, const PxContactPair pair)
 {
     if (m_ContactEndInst != nullptr && m_ContactEnd != nullptr)
         (m_ContactEndInst->*m_ContactEnd)(_Other, pair);
+}
+
+void CPhysxActor::TriggerBegin(CGameObject* _Other)
+{
+    if (m_TriggerBeginInst != nullptr && m_TriggerBegin != nullptr)
+        (m_TriggerBeginInst->*m_TriggerBegin)(_Other);
+}
+
+void CPhysxActor::TriggerEnd(CGameObject* _Other)
+{
+    if (m_TriggerEndInst != nullptr && m_TriggerEnd != nullptr)
+        (m_TriggerEndInst->*m_TriggerEnd)(_Other);
 }
 
 int CPhysxActor::Load(fstream& _Stream)
