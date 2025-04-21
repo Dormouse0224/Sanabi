@@ -15,6 +15,7 @@ public:
 private:
     bool m_Closing;
     BattleGateScript* m_Gate;
+    PxShape* m_Collider;
 
 public:
     virtual void Tick();

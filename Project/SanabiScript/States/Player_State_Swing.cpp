@@ -91,7 +91,7 @@ void Player_State_Swing::Begin()
 	m_GrabPos = Vec3(grabinfo.x, grabinfo.y, grabinfo.z);
 	m_GrabDist = max(grabinfo.w, 50.f);
 
-	if (grabinfo.w > 200.f)
+	if (grabinfo.w > 150.f)
 	{
 		Vec3 dir = m_GrabPos - m_Owner->GetOwner()->Transform()->GetWorldPos();
 		dir.Normalize();

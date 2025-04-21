@@ -84,11 +84,11 @@ void CEngine::Progress()
     // physx simulate
     CPhysxMgr::GetInst()->Tick();
 
-    // Render
-    CRenderMgr::GetInst()->Tick();
-
     // Imgui progress & Render additional window
     CImguiMgr::GetInst()->Progress();
+
+    // Render
+    CRenderMgr::GetInst()->Tick();
 
     // Task
     CTaskMgr::GetInst()->Tick();

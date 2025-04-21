@@ -48,7 +48,7 @@ void CTaskMgr::Tick()
 			CLevelMgr::GetInst()->SetLevelModified();
 			CGameObject* pNewObj = (CGameObject*)task.Param0;
 			int LayerIdx = (int)task.Param1;
-			pLevel->AddGameObject(pNewObj, LayerIdx, true);
+			pLevel->AddGameObject(pNewObj, LayerIdx, false);
 
 			// Object 가 생성된 시점에 Level 의 상태가 Play or Pause 면
 			// Begin 함수를 호출해준다.

@@ -33,6 +33,7 @@ public:
 
 private:
 	void Render();
+	void UIRender();
 	void DebugRender();
 };
 

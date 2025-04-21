@@ -46,7 +46,7 @@ void CPrefabUI::Render_Ast()
         {
             CGameObject* pObj = pPrefab->Instantiate();
             pObj->SetName(WName);
-            CTaskMgr::GetInst()->AddTask(TASK_TYPE::CREATE_OBJECT, reinterpret_cast<DWORD_PTR>(pObj), NULL);
+            CTaskMgr::GetInst()->AddTask(TASK_TYPE::CREATE_OBJECT, reinterpret_cast<DWORD_PTR>(pObj), static_cast<DWORD_PTR>(pObj->GetLayerIdx()));
             memset(Name, 0, sizeof(Name));
             ImGui::CloseCurrentPopup();
         }

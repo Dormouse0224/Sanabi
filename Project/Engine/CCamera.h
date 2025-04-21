@@ -23,6 +23,7 @@ private:
 
     int         m_Priority;     // 카메라 우선순위, -1 : 미등록 카메라, 0 : 메인 카메라, 1 ~> : 서브 카메라
     bool        m_Registered;
+    float       m_Zoom;
 
     UINT        m_LayerCheck;   // 카메라가 렌더링할 레이어 비트설정
 
@@ -43,6 +44,7 @@ public:
     void SetFOV(float _FOV) { m_FOV = (_FOV / 180.f) * XM_PI; }
     void SetFar(float _Far) { m_Far = _Far; }
     void SetPriority(int _Priority);
+    void SetZoom(float _Zoom) { m_Zoom = _Zoom; }
 
     PROJ_TYPE GetProjType() { return m_ProjType; }
     float GetViewX() { return m_ViewX; }
@@ -51,6 +53,7 @@ public:
     float GetFar() { return m_Far; }
     int GetPriority() { return m_Priority; }
     bool GetLayerState(LAYER _LayerIdx) { return m_LayerCheck & (1 << (UINT)_LayerIdx); }
+    float GetZoom() { return m_Zoom; }
 
     void CheckLayer(LAYER _LayerIdx) { m_LayerCheck ^= (1 << (UINT)_LayerIdx); }
     void CheckLayerAll() { m_LayerCheck = 0xffffffff; }
@@ -59,11 +62,14 @@ public:
     const Matrix& GetViewMat() { return m_matView; }
     const Matrix& GetProjMat() { return m_matProj; }
 
+
+
 private:
     void SortObject();
 
 public:
     virtual void FinalTick() override;
+    void SetMatrix();
     void Render();
 
     /// <summary>

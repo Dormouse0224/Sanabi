@@ -39,7 +39,7 @@ private:
 public:
 	void Init();
 	void Progress();
-	void AddImguiObj(CImguiObject* _ImguiObj);
+	void Render();
 	void DebugMenuBar();
 
 	void AddGameObjectMenuPopup();

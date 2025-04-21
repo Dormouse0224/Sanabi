@@ -244,13 +244,13 @@ void CPhysxActor::SetLinearVelocity(PxVec3 _Vel)
     }
 }
 
-void CPhysxActor::AddCollider(COLLIDER_DESC _Desc, PxVec3 _Scale, PxVec3 _Offset)
+PxShape* CPhysxActor::AddCollider(COLLIDER_DESC _Desc, PxVec3 _Scale, PxVec3 _Offset)
 {
     m_vecDesc.push_back(_Desc);
     m_vecScale.push_back(_Scale);
     m_vecOffset.push_back(_Offset);
 
-    AttachCollider(_Desc, _Scale, _Offset);
+    return AttachCollider(_Desc, _Scale, _Offset);
 }
 
 void CPhysxActor::DeleteCollider(int _Idx)
@@ -266,6 +266,23 @@ void CPhysxActor::DeleteCollider(int _Idx)
         m_vecShape.erase(m_vecShape.begin() + _Idx);
     }
 
+}
+
+void CPhysxActor::DeleteCollider(PxShape* _Shape)
+{
+    for (int i = 0; i < m_vecShape.size(); ++i)
+    {
+        if (m_vecShape[i] == _Shape)
+        {
+            m_vecDesc.erase(m_vecDesc.begin() + i);
+            m_vecScale.erase(m_vecScale.begin() + i);
+            m_vecOffset.erase(m_vecOffset.begin() + i);
+
+            m_Body->detachShape(*m_vecShape[i]);
+            m_vecShape[i]->release();
+            m_vecShape.erase(m_vecShape.begin() + i);
+        }
+    }
 }
 
 void CPhysxActor::DeleteAllCollider()
@@ -410,7 +427,7 @@ int CPhysxActor::Save(fstream& _Stream)
     return S_OK;
 }
 
-void CPhysxActor::AttachCollider(COLLIDER_DESC _Desc, PxVec3 _Scale, PxVec3 _Offset)
+PxShape* CPhysxActor::AttachCollider(COLLIDER_DESC _Desc, PxVec3 _Scale, PxVec3 _Offset)
 {
     // 마찰계수, 탄성계수, 모양 설정
     PxMaterial* pMaterial = CPhysxMgr::GetInst()->GetPhysics()->createMaterial(_Desc.StaticFriction, _Desc.DynamicFriction, _Desc.Restitution);
@@ -440,4 +457,6 @@ void CPhysxActor::AttachCollider(COLLIDER_DESC _Desc, PxVec3 _Scale, PxVec3 _Off
     {
         PxRigidBodyExt::updateMassAndInertia(*(PxRigidBody*)m_Body, m_Density);
     }
+
+    return shape;
 }

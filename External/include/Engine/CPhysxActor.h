@@ -108,8 +108,9 @@ public:
     void SetColliderOffset(int _Idx, PxVec3 _Data);
     void SetLinearVelocity(PxVec3 _Vel);
 
-    void AddCollider(COLLIDER_DESC _desc, PxVec3 _Scale = PxVec3(1.f), PxVec3 _Offset = PxVec3(0.f));
+    PxShape* AddCollider(COLLIDER_DESC _desc, PxVec3 _Scale = PxVec3(1.f), PxVec3 _Offset = PxVec3(0.f));
     void DeleteCollider(int _Idx);
+    void DeleteCollider(PxShape* _Shape);
     void DeleteAllCollider();
     void UpdatePosition(Vec3 _Pos);
     void UpdateRotation(Vec4 _RotQuat);
@@ -133,6 +134,6 @@ public:
     virtual int Save(fstream& _Stream) override;
 
 private:
-    void AttachCollider(COLLIDER_DESC _desc, PxVec3 _Scale, PxVec3 _Offset);
+    PxShape* AttachCollider(COLLIDER_DESC _desc, PxVec3 _Scale, PxVec3 _Offset);
 };
 

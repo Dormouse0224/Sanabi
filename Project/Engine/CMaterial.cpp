@@ -21,7 +21,7 @@ CMaterial::CMaterial(const CMaterial& _Other)
 	: CAsset(_Other)
 	, m_Shader(_Other.m_Shader)
 	, m_arrTex{}
-	, m_Const{}
+	, m_Const{ _Other.m_Const }
 {
 	for (int i = 0; i < TEX_END; ++i)
 	{

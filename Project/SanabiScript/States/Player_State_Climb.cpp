@@ -78,8 +78,12 @@ void Player_State_Climb::Begin()
 	// 중력 제거
 	m_Owner->GetOwner()->PhysxActor()->SetGravity(false);
 	m_Owner->GetOwner()->PhysxActor()->SetLinearVelocity(PxVec3(0.f, 0.f, 0.f));
-	m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\SNB_WallClimbUp.flip", 0, true);
-	m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Play(L"Flipbook\\SNBArm_WallClimbUp.flip", 0, true);
+	m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\SNB_WallClimbUp.flip", 10, true);
+	m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Play(L"Flipbook\\SNBArm_WallClimbUp.flip", 10, true);
+
+	m_bFlipPlay = false;
+	m_Owner->GetOwner()->FlipbookRender()->Pause(true);
+	m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Pause(true);
 }
 
 void Player_State_Climb::End()

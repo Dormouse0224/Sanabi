@@ -7,10 +7,12 @@
 
 
 PlayerCamScript::PlayerCamScript()
+	: CScript()
 {
 }
 
 PlayerCamScript::PlayerCamScript(const PlayerCamScript& _Origin)
+	: CScript(_Origin)
 {
 }
 

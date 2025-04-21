@@ -6,6 +6,7 @@
 #include "Engine/CLevelMgr.h"
 #include "Engine/CLayer.h"
 #include "Engine/CListUI.h"
+#include "Engine/CTransform.h"
 
 #include "Scripts/MonsterScript.h"
 
@@ -49,6 +50,26 @@ void BattleGateScript::Tick()
 	else
 	{
 		// 부모가 없는 최상위 게이트 객체
+		if (m_bClosed)
+		{
+			// 게이트가 폐쇄 상태일 경우, 자식 객체 중 몬스터 스크립트를 보유한 객체가 Dead 상태인지 확인
+			vector<CGameObject*> vecChild = GetOwner()->GetChild();
+			bool DeadCheck = true;
+			for (int i = 0; i < vecChild.size(); ++i)
+			{
+				if (MonsterScript* pMonSc = (MonsterScript*)vecChild[i]->FindScript("class MonsterScript"); pMonSc)
+				{
+					if (!pMonSc->GetDead())
+					{
+						DeadCheck = false;
+						break;
+					}
+				}
+			}
+			if (DeadCheck)
+				m_bClosed = false;
+		}
+
 	}
 }
 
@@ -82,6 +103,11 @@ void BattleGateScript::Trigger(CGameObject* _Other)
 {
 	// 게이트는 1회만 사용됨
 	if (m_bGateUsed)
+		return;
+
+	Vec3 dir = _Other->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
+
+	if (!((dir.x > 0 && m_bVert) || (dir.y > 0 && !m_bVert)))
 		return;
 
 	// 이 스크립트를 소유한 게이트 객체의 자식 중, 몬스터 스크립트를 가진 객체에게 신호

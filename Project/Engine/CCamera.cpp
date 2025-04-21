@@ -23,6 +23,7 @@ CCamera::CCamera()
 	, m_matProj()
 	, m_Priority(-1)
 	, m_Registered(false)
+	, m_Zoom(1.f)
 	, m_LayerCheck(0)
 {
 	Vec2 vResolution = CDevice::GetInst()->GetRenderResolution();
@@ -42,6 +43,7 @@ CCamera::CCamera(const CCamera& _Origin)
 	, m_matProj(_Origin.m_matProj)
 	, m_Priority(_Origin.m_Priority)
 	, m_Registered(false)
+	, m_Zoom(_Origin.m_Zoom)
 	, m_LayerCheck(_Origin.m_LayerCheck)
 {
 }
@@ -85,19 +87,24 @@ void CCamera::FinalTick()
 	// 투영행렬 계산하기
 	if (ORTHOGRAPHIC == m_ProjType)
 	{
-		m_matProj = XMMatrixOrthographicLH(m_ViewX, m_ViewY, 1.f, m_Far);
+		m_matProj = XMMatrixOrthographicLH(m_ViewX / m_Zoom, m_ViewY / m_Zoom, 1.f, m_Far);
 	}
 	else
 	{
-		m_matProj = XMMatrixPerspectiveFovLH(m_FOV, m_ViewX / m_ViewY, 1.f, m_Far);
+		m_matProj = XMMatrixPerspectiveFovLH(m_FOV / m_Zoom, m_ViewX / m_ViewY, 1.f, m_Far);
 	}
 }
 
-void CCamera::Render()
+void CCamera::SetMatrix()
 {
 	// 카메라의 View, Proj 행렬을 세팅
 	g_Trans.matView = m_matView;
 	g_Trans.matProj = m_matProj;
+}
+
+void CCamera::Render()
+{
+	SetMatrix();
 
 	// 물체 분류
 	SortObject();
@@ -143,9 +150,7 @@ void CCamera::Render()
 
 void CCamera::Direct_Render(const vector<CGameObject*>& _vecObj)
 {
-	// 카메라의 View, Proj 행렬을 세팅
-	g_Trans.matView = m_matView;
-	g_Trans.matProj = m_matProj;
+	SetMatrix();
 
 	for (CGameObject* pObj : _vecObj)
 	{

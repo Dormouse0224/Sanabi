@@ -7,6 +7,7 @@
 #include "CPathMgr.h"
 #include "CAssetMgr.h"
 #include "CTaskMgr.h"
+#include "CDevice.h"
 
 #include "CEngine.h"
 #include "CInspector.h"
@@ -80,6 +81,10 @@ void CImguiMgr::Progress()
     }
 
 
+}
+
+void CImguiMgr::Render()
+{
     // Rendering
     ImGui::Render();
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
@@ -90,16 +95,10 @@ void CImguiMgr::Progress()
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
     }
+
+    // Ãâ·Â ·»´õÅ¸°Ù ¹× Ãâ·Â ±íÀÌÅ¸°Ù Àç¼³Á¤
+    CDevice::GetInst()->SetRenderTargetAndViewport();
 }
-
-void CImguiMgr::AddImguiObj(CImguiObject* _ImguiObj)
-{
-    if (_ImguiObj->GetParent() == nullptr)
-    {
-
-    }
-}
-
 
 void CImguiMgr::AddGameObjectMenuPopup()
 {

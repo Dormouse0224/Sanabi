@@ -67,7 +67,7 @@ void CTransformUI::Render_Com()
     bool bIR = pTransform->GetIndependentRot();
     if (ImGui::Checkbox("##IndependentRotation", &bIR))
     {
-        pTransform->SetIndependentRot(bIS);
+        pTransform->SetIndependentRot(bIR);
     }
     ImGui::Spacing();
 
@@ -76,7 +76,7 @@ void CTransformUI::Render_Com()
     bool bIP = pTransform->GetIndependentTrans();
     if (ImGui::Checkbox("##IndependentPosition", &bIP))
     {
-        pTransform->SetIndependentTrans(bIS);
+        pTransform->SetIndependentTrans(bIP);
     }
     ImGui::Spacing();
 }

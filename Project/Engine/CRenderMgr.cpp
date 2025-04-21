@@ -14,6 +14,7 @@
 #include "CTimeMgr.h"
 #include "CPhysxMgr.h"
 #include "CLevelMgr.h"
+#include "CImguiMgr.h"
 
 CRenderMgr::CRenderMgr()
 {
@@ -61,9 +62,8 @@ void CRenderMgr::ResetEditorCamPos()
 
 void CRenderMgr::Tick()
 {
-	//// Ãâ·Â ·»´õÅ¸°Ù ¹× Ãâ·Â ±íÀÌÅ¸°Ù ¼³Á¤
+	// Ãâ·Â ·»´õÅ¸°Ù ¹× Ãâ·Â ±íÀÌÅ¸°Ù ¼³Á¤
 	CDevice::GetInst()->SetRenderTargetAndViewport();
-
 
 	// GlobalData Binding
 	static CConstBuffer* pGlobal = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL);
@@ -84,15 +84,19 @@ void CRenderMgr::Tick()
 
 	// Main Rendering	
 	Render();
+	//UIRender();
 
 	// Debug Rendering
 	DebugRender();
 
-	// Ä¿¼­ ·»´õ¸µ
-	CKeyMgr::GetInst()->Render();
-
 	// Physx Rendering
 	CPhysxMgr::GetInst()->Render();
+
+	// ImGui ·»´õ¸µ
+	CImguiMgr::GetInst()->Render();
+
+	// Ä¿¼­ ·»´õ¸µ
+	CKeyMgr::GetInst()->Render();
 }
 
 void CRenderMgr::Render()
@@ -114,6 +118,10 @@ void CRenderMgr::Render()
 			m_vecCam[i]->Render();
 		}
 	}
+}
+
+void CRenderMgr::UIRender()
+{
 	m_UICam->Camera()->Render();
 }
 

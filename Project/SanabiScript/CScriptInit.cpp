@@ -13,6 +13,7 @@
 
 #include "Scripts\BattleGateScript.h"
 #include "Scripts\BulletScript.h"
+#include "Scripts\FarBackgroundScript.h"
 #include "Scripts\MainTitleBgScript.h"
 #include "Scripts\MainTitle_StartBtn_Script.h"
 #include "Scripts\MonsterScript.h"
@@ -47,6 +48,7 @@ void CScriptInit::ScriptInit()
 {
 	REGISTER_SCRIPT(BattleGateScript);
 	REGISTER_SCRIPT(BulletScript);
+	REGISTER_SCRIPT(FarBackgroundScript);
 	REGISTER_SCRIPT(MainTitleBgScript);
 	REGISTER_SCRIPT(MainTitle_StartBtn_Script);
 	REGISTER_SCRIPT(MonsterScript);
