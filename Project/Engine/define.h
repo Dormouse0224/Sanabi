@@ -9,6 +9,7 @@
 
 #define DEVICE	CDevice::GetInst()->GetDevice().Get()
 #define CONTEXT CDevice::GetInst()->GetContext().Get()
+#define MRT_COUNT 3
 
 #define DT CTimeMgr::GetInst()->GetDeltaTime()
 #define EngineDT CTimeMgr::GetInst()->GetEngineDeltaTime()

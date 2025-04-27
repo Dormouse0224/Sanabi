@@ -56,11 +56,14 @@ int CDevice::Init(HWND _OutputWnd, Vec2 _vResolution)
     }
 
     // View 생성
-    if (FAILED(CreateView()))
+    if (FAILED(CreateBackBufferView()))
     {
         MessageBox(nullptr, L"View 생성 실패", L"Device 초기화 오류", MB_OK);
         return E_FAIL;
     }
+
+    // Multi Render Target 생성
+    CreateMRT();
 
     // RaterizerState 종류별로 생성
     CreateRasterizerState();
@@ -98,13 +101,26 @@ void CDevice::ClearTarget()
         if (pLevel->GetState() == LEVEL_STATE::PLAY)
             rgb = 0.f;
     float Color[4] = { rgb, rgb, rgb, 1.f };
-    m_Context->ClearRenderTargetView(m_RenderTarget->GetRTV().Get(), Color);
+    m_Context->ClearRenderTargetView(m_BackBufferRTT->GetRTV().Get(), Color);
+    m_Context->ClearDepthStencilView(m_BackBufferDST->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
     m_Context->ClearDepthStencilView(m_DepthStencil->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+    for (int i = 0; i < MRT_COUNT; ++i)
+    {
+        m_Context->ClearRenderTargetView(m_RenderTarget[i]->GetRTV().Get(), Color);
+    }
 }
 
 void CDevice::Present()
 {
     m_SwapChain->Present(0, 0);
+}
+
+AssetPtr<CTexture2D> CDevice::GetRenderTarget(int i)
+{
+    if (i <= MRT_COUNT && i >= 0)
+        return m_RenderTarget[i];
+    else
+        return nullptr;
 }
 
 int CDevice::CreateSwapChain()
@@ -147,14 +163,14 @@ int CDevice::CreateSwapChain()
     return S_OK;
 }
 
-int CDevice::CreateView()
+int CDevice::CreateBackBufferView()
 {
     // RenderTargetView 생성
     // 이미 생성되어있는 렌더타겟 텍스쳐를 스왚체인으로 부터 얻어온다.
     ComPtr<ID3D11Texture2D> pRTTex = nullptr;
     HRESULT hr = m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)pRTTex.GetAddressOf());
 
-    m_RenderTarget = CAssetMgr::GetInst()->CreateTexture(L"RenderTarget", pRTTex);
+    m_BackBufferRTT = CAssetMgr::GetInst()->CreateTexture(L"BackBufferRTT", pRTTex);
 
     // DepthStencil 리소스(텍스쳐) 생성    
     D3D11_TEXTURE2D_DESC DSTexDesc = {};
@@ -179,7 +195,77 @@ int CDevice::CreateView()
         return E_FAIL;
     }
 
-    m_DepthStencil = CAssetMgr::GetInst()->CreateTexture(L"DepthStencil", pDSTex);
+    m_BackBufferDST = CAssetMgr::GetInst()->CreateTexture(L"BackBufferDST", pDSTex);
+
+    return S_OK;
+}
+
+int CDevice::CreateMRT()
+{
+    // Multi Render Target 텍스쳐 생성
+
+    DXGI_FORMAT formats[MRT_COUNT] = {
+       DXGI_FORMAT_R8G8B8A8_UNORM,          // Albedo
+       DXGI_FORMAT_R16G16B16A16_FLOAT,      // Normal
+       DXGI_FORMAT_R32G32B32A32_FLOAT       // Position
+    };
+
+    D3D11_TEXTURE2D_DESC texDesc = {};
+    texDesc.ArraySize = 1;
+    texDesc.Width = (UINT)m_RenderResolution.x;
+    texDesc.Height = (UINT)m_RenderResolution.y;
+    texDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+
+    // System Memroy 이동 불가능
+    texDesc.Usage = D3D11_USAGE_DEFAULT;
+    texDesc.CPUAccessFlags = 0;
+
+    texDesc.MipLevels = 1;
+    texDesc.SampleDesc.Count = 1;
+    texDesc.SampleDesc.Quality = 0;
+
+    for (int i = 0; i < MRT_COUNT; ++i)
+    {
+        texDesc.Format = formats[i];
+        ComPtr<ID3D11Texture2D> pMRTTex = nullptr;
+        HRESULT res;
+        if (FAILED(res = m_Device->CreateTexture2D(&texDesc, nullptr, pMRTTex.GetAddressOf())))
+        {
+            return E_FAIL;
+        }
+
+        m_RenderTarget[i] = CAssetMgr::GetInst()->CreateTexture(L"MRTTexture_" + to_wstring(i), pMRTTex);
+        if (m_RenderTarget[i].Get())
+        {
+            m_RTV[i] = m_RenderTarget[i]->GetRTV();
+            m_SRV[i] = m_RenderTarget[i]->GetSRV();
+        }
+    }
+
+    // MRT 의 DSV 텍스쳐 생성
+    D3D11_TEXTURE2D_DESC DSTexDesc = {};
+
+    DSTexDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    DSTexDesc.ArraySize = 1;
+    DSTexDesc.Width = (UINT)m_RenderResolution.x;
+    DSTexDesc.Height = (UINT)m_RenderResolution.y;
+    DSTexDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+
+    // System Memroy 이동 불가능
+    DSTexDesc.Usage = D3D11_USAGE_DEFAULT;
+    DSTexDesc.CPUAccessFlags = 0;
+
+    DSTexDesc.MipLevels = 1;
+    DSTexDesc.SampleDesc.Count = 1;
+    DSTexDesc.SampleDesc.Quality = 0;
+
+    ComPtr<ID3D11Texture2D> pDSTex = nullptr;
+    if (FAILED(m_Device->CreateTexture2D(&DSTexDesc, nullptr, pDSTex.GetAddressOf())))
+    {
+        return E_FAIL;
+    }
+
+    m_DepthStencil = CAssetMgr::GetInst()->CreateTexture(L"MRTDepthStencil", pDSTex);
 
     return S_OK;
 }
@@ -321,5 +407,15 @@ void CDevice::SetRenderTargetAndViewport()
     m_Context->RSSetViewports(1, &m_ViewPort);
 
     // 출력 렌더타겟 및 출력 깊이타겟 설정
-    m_Context->OMSetRenderTargets(1, m_RenderTarget->GetRTV().GetAddressOf(), m_DepthStencil->GetDSV().Get());
+    m_Context->OMSetRenderTargets(MRT_COUNT, m_RTV->GetAddressOf(), m_DepthStencil->GetDSV().Get());
+}
+
+void CDevice::SetBackBufferRT()
+{
+    // 뷰포트 설정값 전달
+    m_Context->RSSetViewports(1, &m_ViewPort);
+
+    // 출력 렌더타겟 및 출력 깊이타겟 설정
+    m_Context->OMSetRenderTargets(1, m_BackBufferRTT->GetRTV().GetAddressOf(), m_BackBufferDST->GetDSV().Get());
+
 }

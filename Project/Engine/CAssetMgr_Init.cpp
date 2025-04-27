@@ -243,6 +243,8 @@ void CAssetMgr::CreateEngineGraphicShader()
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 	pShader->SetEngineAsset(true);
 	AddAsset(L"EA_UIShader", pShader.Get());
+
+
 }
 
 void CAssetMgr::CreateEngineMaterial()

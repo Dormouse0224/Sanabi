@@ -97,6 +97,9 @@ void CRenderMgr::Tick()
 
 	// Ä¿¼­ ·»´õ¸µ
 	CKeyMgr::GetInst()->Render();
+
+	// ÃÖÁ¾ ¹é¹öÆÛ ·»´õ¸µ
+	BackBufferRender();
 }
 
 void CRenderMgr::Render()
@@ -181,4 +184,16 @@ void CRenderMgr::DebugRender()
 		else
 			++iter;
 	}
+}
+
+void CRenderMgr::BackBufferRender()
+{
+	// Ãâ·Â ·»´õÅ¸°Ù ¹× Ãâ·Â ±íÀÌÅ¸°Ù ¼³Á¤
+	CDevice::GetInst()->SetBackBufferRT();
+
+	m_BackBufferMtrl->SetTexParam(TEX_0, CDevice::GetInst()->GetRenderTarget(0));
+
+	m_BackBufferMtrl->Binding();
+
+	m_BackBufferMesh->Render();
 }

@@ -879,5 +879,8 @@
     <FxCompile Include="ui.fx">
       <Filter>HLSL\02. 2D Shader</Filter>
     </FxCompile>
+    <FxCompile Include="backbuffer.fx">
+      <Filter>HLSL\02. 2D Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

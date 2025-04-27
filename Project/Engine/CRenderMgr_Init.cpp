@@ -64,4 +64,23 @@ void CRenderMgr::Init()
 	m_UICam->AddComponent(new CCamera);
 	m_UICam->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 	m_UICam->Camera()->CheckLayer(LAYER::UI);
+
+	m_BackBufferMesh = CAssetMgr::GetInst()->Load<CMesh>(L"EA_RectMesh", true);
+
+	// BackBufferShader
+	pShader = new CGraphicShader;
+	pShader->CreateVertexShader(L"HLSL\\Engine\\backbuffer.fx", "VS_BackBuffer");
+	pShader->CreatePixelShader(L"HLSL\\Engine\\backbuffer.fx", "PS_BackBuffer");
+	pShader->SetBSType(BS_TYPE::DEFAULT);
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::LESS);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_SYSTEM);
+	pShader->SetEngineAsset(true);
+	CAssetMgr::GetInst()->AddAsset(L"EA_BackBufferShader", pShader.Get());
+
+	m_BackBufferMtrl = new CMaterial;
+	m_BackBufferMtrl->SetName(L"EA_BackBufferMtrl");
+	m_BackBufferMtrl->SetEngineAsset(true);
+	m_BackBufferMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicShader>(L"EA_BackBufferShader"));
+	CAssetMgr::GetInst()->AddAsset(L"EA_BackBufferMtrl", m_BackBufferMtrl.Get());
 }

@@ -118,6 +118,7 @@ enum class SHADER_DOMAIN
 	DOMAIN_POSTPROCESS,	// 후처리
 	DOMAIN_UI,			// UI
 	DOMAIN_DEBUG,		// 디버그 렌더링
+	DOMAIN_SYSTEM,		// 카메라 분류에 사용되지 않음
 };
 
 enum CONST_PARAM

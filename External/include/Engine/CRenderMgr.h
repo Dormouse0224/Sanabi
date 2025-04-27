@@ -2,6 +2,8 @@
 
 class CCamera;
 class CGameObject;
+class CMesh;
+class CMaterial;
 
 class CRenderMgr
 	: public Singleton<CRenderMgr>
@@ -17,6 +19,9 @@ private:
 	CCamera*				m_CurrentCam;
 
 	vector<tDebugShapeInfo> m_vecDebugInfo;
+
+	AssetPtr<CMesh>			m_BackBufferMesh;
+	AssetPtr<CMaterial>		m_BackBufferMtrl;
 
 
 public:
@@ -35,5 +40,6 @@ private:
 	void Render();
 	void UIRender();
 	void DebugRender();
+	void BackBufferRender();
 };
 
