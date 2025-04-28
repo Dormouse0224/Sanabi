@@ -10,8 +10,6 @@
 
 #define LeftTop         g_vec2_0
 #define Slice           g_vec2_1
-#define Background      g_vec2_2
-#define Offset          g_vec2_3
 
 struct VS_IN
 {
@@ -42,7 +40,7 @@ float4 PS_Flipbook(VS_OUT _in) : SV_Target
     
     if (1 == IS_ATLAS_TEX)
     {
-        float2 vUV = LeftTop + (Slice - Background) * 0.5f + (Background * _in.vUV) - Offset;
+        float2 vUV = LeftTop + (Slice * _in.vUV);
         
         if (vUV.x < LeftTop.x || (LeftTop.x + Slice.x) < vUV.x
             || vUV.y < LeftTop.y || (LeftTop.y + Slice.y) < vUV.y)

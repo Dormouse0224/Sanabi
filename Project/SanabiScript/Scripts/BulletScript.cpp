@@ -36,6 +36,16 @@ void BulletScript::Tick()
 		Vec4 quat = XMQuaternionRotationAxis(axis.Normalize(), angle);
 		GetOwner()->Transform()->SetRelativeRot(quat);
 	}
+	else if (m_Dead)
+	{
+		// 폭발 이펙트 회전 적용
+		Vec3 Dir = -m_Velocity;
+		Dir.Normalize();
+		Vec3 axis = XMVector3Cross(Vec3(0, 1, 0), Dir);
+		float angle = acosf(XMVectorGetX(XMVector3Dot(Vec3(0, 1, 0), Dir)));
+		Vec4 quat = XMQuaternionRotationAxis(axis.Normalize(), angle);
+		GetOwner()->Transform()->SetRelativeRot(quat);
+	}
 
 }
 
@@ -67,8 +77,12 @@ void BulletScript::Init()
 
 void BulletScript::TriggerBegin(CGameObject* _Other)
 {
+	// 충돌 이벤트 함수
 	if (m_Dead)
 		return;
+
+
+	GetOwner()->Transform()->SetRelativeScale(GetOwner()->Transform()->GetRelativeScale() * 2);
 
 	CGameObject* pPlayer = CLevelMgr::GetInst()->FindObject(LAYER::Player, L"Player");
 	if (_Other == pPlayer)
