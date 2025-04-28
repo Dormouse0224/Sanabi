@@ -13,6 +13,7 @@ private:
 	map<wstring, AssetPtr<CAsset>>	m_mapAsset[(UINT)ASSET_TYPE::ASSET_END];
 	bool m_AssetModified;
 	bool m_Renew;
+	bool m_Loading;
 	HANDLE m_DirNotifyHandle;
 
 public:
@@ -31,6 +32,7 @@ public:
 	vector<string> GetAssetList();
 	const map<wstring, AssetPtr<CAsset>>& GetAssets(ASSET_TYPE _Type) { return m_mapAsset[(UINT)_Type]; }
 	bool GetRenew() { return m_Renew; }
+	bool GetLoading() { return m_Loading; }
 
 	void AddAsset(const wstring& _Key, AssetPtr<CAsset> _Asset);
 	template<typename T>

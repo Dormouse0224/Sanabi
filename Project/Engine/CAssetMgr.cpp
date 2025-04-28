@@ -139,6 +139,7 @@ ASSET_TYPE CAssetMgr::GetAssetType(const wstring& _Path)
 
 void CAssetMgr::ContentLoad()
 {
+	m_Loading = true;
 	for (const auto& file : std::filesystem::recursive_directory_iterator(CPathMgr::GetContentDir()))
 	{
 		if (file.is_regular_file())
@@ -193,6 +194,7 @@ void CAssetMgr::ContentLoad()
 		}
 	}
 	m_AssetModified = true;
+	m_Loading = false;
 }
 
 void CAssetMgr::ContentObserve()
