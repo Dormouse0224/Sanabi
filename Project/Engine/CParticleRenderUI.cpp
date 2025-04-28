@@ -154,6 +154,13 @@ void CParticleRenderUI::Render_Com()
     const char* spacetype[2] = { "Loacl", "World" };
     ImGui::Combo("##SpaceType", &Module.SpaceType, spacetype, 2);
 
+    ImGui::Text("Velocity Allignment?");
+    ImGui::SameLine();
+    bool bVA = !!Module.VelocityAllignment;
+    if (ImGui::Checkbox("##VelocityAllignment", &bVA))
+    {
+        Module.VelocityAllignment = bVA;
+    }
 
     ImGui::SeparatorText("Particle Data");
     AssetPtr<CTexture2D> ParticleTex = static_cast<CParticleRender*>(m_TargetObj->GetRenderComponent())->m_ParticleTex;
@@ -167,6 +174,19 @@ void CParticleRenderUI::Render_Com()
     }
     ImGui::InputText("##ParticleTex", const_cast<char*>(ParticleTexName.c_str())
         , ParticleTexName.size() + 1, ImGuiInputTextFlags_ReadOnly);
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentViewer"))
+        {
+            CAsset* Asset = *reinterpret_cast<CAsset**>(payload->Data);
+            AssetPtr<CTexture2D> pTex = dynamic_cast<CTexture2D*>(Asset);
+            if (pTex.Get())
+            {
+                m_TargetObj->ParticleRender()->SetParticleTex(pTex);
+            }
+        }
+        ImGui::EndDragDropTarget();
+    }
 
     ImGui::Text("Current Activate Particle Count : %d", mapParticleObj.size());
 }

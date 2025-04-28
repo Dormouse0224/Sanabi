@@ -12,6 +12,7 @@ public:
 
 private:
     float m_Scale;
+    Vec2 m_Offset;
 
 public:
     virtual void Tick();

@@ -49,11 +49,12 @@ struct tParticleModule
     float3 SpawnDir;
     float SpawnDirRandomize; // 0 ~ 1, 방향 랜덤화 비율
     int SpaceType; // 0 : Local, 1 : World
+    int VelocityAllignment;
             
     // 추가 데이터
     float3 ObjectWorldPos;
     
-    int padding;
+    //int padding;
 };
 
 

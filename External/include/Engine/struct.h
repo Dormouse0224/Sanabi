@@ -76,11 +76,12 @@ struct tParticleModule
 	Vec3	SpawnDir;
 	float	SpawnDirRandomize;	// 0 ~ 1, 방향 랜덤화 비율
 	int		SpaceType;			// 0 : Local, 1 : World
+	int		VelocityAllignment;
 
 	// 추가 데이터
 	Vec3	ObjectWorldPos;
 
-	int		padding;
+	//int		padding;
 };
 
 
