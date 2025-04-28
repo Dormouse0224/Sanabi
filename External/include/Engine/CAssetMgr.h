@@ -44,6 +44,7 @@ public:
 	AssetPtr<CTexture2D> CreateTexture(const wstring& _Key, ComPtr<ID3D11Texture2D> _Tex2D);
 	// 파일 경로로부터 확장자를 통해 에셋 타입을 반환합니다.
 	ASSET_TYPE GetAssetType(const wstring& _RelativePath);
+	AssetPtr<CTexture2D> GetNormTex(const wstring& _DefaultTexName);
 
 	void ContentLoad();
 	void ContentObserve();

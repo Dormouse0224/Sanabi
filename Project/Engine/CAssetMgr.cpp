@@ -136,6 +136,21 @@ ASSET_TYPE CAssetMgr::GetAssetType(const wstring& _Path)
 	return ASSET_TYPE::ASSET_END;
 }
 
+AssetPtr<CTexture2D> CAssetMgr::GetNormTex(const wstring& _DefaultTexName)
+{
+	int pos = _DefaultTexName.rfind(L'.');
+	if (pos == wstring::npos)
+		return nullptr;
+	wstring NormTexName = _DefaultTexName.substr(0, pos) + L"_N" + _DefaultTexName.substr(pos);
+
+	map<wstring, AssetPtr<CAsset>>::iterator iter = m_mapAsset[(UINT)ASSET_TYPE::TEXTURE2D].find(NormTexName);
+
+	if (iter == m_mapAsset[(UINT)ASSET_TYPE::TEXTURE2D].end())
+		return nullptr;
+
+	return (CTexture2D*)(iter->second.Get());
+}
+
 
 void CAssetMgr::ContentLoad()
 {

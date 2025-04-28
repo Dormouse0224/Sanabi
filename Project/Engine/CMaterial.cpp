@@ -42,6 +42,9 @@ void CMaterial::Binding()
 		if (nullptr != m_arrTex[i].Get())
 		{
 			m_arrTex[i]->Binding(i);
+			AssetPtr<CTexture2D> pNormTex = CAssetMgr::GetInst()->GetNormTex(m_arrTex[i]->GetName());
+			if (pNormTex.Get())
+				pNormTex->Binding(TEX_PARAM::TEX_END + i);
 		}
 	}
 
