@@ -10,19 +10,19 @@ class CDevice
 private:
 	HWND								m_hMainWnd;
 	D3D11_VIEWPORT						m_ViewPort;
-	Vec2								m_RenderResolution;		// 렌더타겟 해상도
+	Vec2								m_RenderResolution;			// 렌더타겟 해상도
 
-	ComPtr<ID3D11Device>				m_Device;				// GPU 메모리 제어, DirectX 객체 생성
-	ComPtr<ID3D11DeviceContext>			m_Context;				// GPU 명령 수행
+	ComPtr<ID3D11Device>				m_Device;					// GPU 메모리 제어, DirectX 객체 생성
+	ComPtr<ID3D11DeviceContext>			m_Context;					// GPU 명령 수행
 
-	ComPtr<IDXGISwapChain>				m_SwapChain;			// Window 화면에 렌더링
+	ComPtr<IDXGISwapChain>				m_SwapChain;				// Window 화면에 렌더링
 
 	AssetPtr<CTexture2D>				m_BackBufferRTT;
 	AssetPtr<CTexture2D>				m_BackBufferDST;
-	AssetPtr<CTexture2D>				m_RenderTarget[MRT_COUNT];			// 그려질 타겟
-	ComPtr<ID3D11RenderTargetView>		m_RTV[MRT_COUNT];
-	ComPtr<ID3D11ShaderResourceView>	m_SRV[MRT_COUNT];
-	AssetPtr<CTexture2D>				m_DepthStencil;			// 깊이가 그려질 타겟
+	AssetPtr<CTexture2D>				m_RenderTarget[MRT_COUNT];	// 렌더링 타겟. 0 : Color, 1 : Normal, 2 : WorldPos
+	ID3D11RenderTargetView*				m_RTV[MRT_COUNT];			// 바인딩 용으로 관리되는 렌더 타겟의 뷰.
+	ComPtr<ID3D11ShaderResourceView>	m_SRV[MRT_COUNT];			// 렌더 타겟이 리소스로 사용될 때 쓰이는 뷰.
+	AssetPtr<CTexture2D>				m_DepthStencil;				// MRT의 깊이가 그려질 타겟
 
 	CConstBuffer*						m_ConstBuffer[(UINT)CB_TYPE::END];
 

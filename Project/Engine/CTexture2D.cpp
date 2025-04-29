@@ -80,6 +80,12 @@ void CTexture2D::Binding(UINT _RegisterNum)
 	CONTEXT->PSSetShaderResources(_RegisterNum, 1, m_SRV.GetAddressOf());
 }
 
+void CTexture2D::Unbind(UINT _RegisterNum)
+{
+	ID3D11ShaderResourceView* pSRV = nullptr;
+	CONTEXT->PSSetShaderResources(_RegisterNum, 1, &pSRV);
+}
+
 void CTexture2D::Binding_CS_SRV(UINT _RegisterNum)
 {
 	m_RecentSRV_CS = _RegisterNum;

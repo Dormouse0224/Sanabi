@@ -205,9 +205,9 @@ int CDevice::CreateMRT()
     // Multi Render Target 텍스쳐 생성
 
     DXGI_FORMAT formats[MRT_COUNT] = {
-       DXGI_FORMAT_R8G8B8A8_UNORM,          // Albedo
-       DXGI_FORMAT_R16G16B16A16_FLOAT,      // Normal
-       DXGI_FORMAT_R32G32B32A32_FLOAT       // Position
+       DXGI_FORMAT_R8G8B8A8_UNORM,          // Color
+       DXGI_FORMAT_R8G8B8A8_UNORM,          // Normal
+       DXGI_FORMAT_R8G8B8A8_UNORM           // Position
     };
 
     D3D11_TEXTURE2D_DESC texDesc = {};
@@ -237,7 +237,7 @@ int CDevice::CreateMRT()
         m_RenderTarget[i] = CAssetMgr::GetInst()->CreateTexture(L"MRTTexture_" + to_wstring(i), pMRTTex);
         if (m_RenderTarget[i].Get())
         {
-            m_RTV[i] = m_RenderTarget[i]->GetRTV();
+            m_RTV[i] = m_RenderTarget[i]->GetRTV().Get();
             m_SRV[i] = m_RenderTarget[i]->GetSRV();
         }
     }
@@ -343,22 +343,23 @@ void CDevice::CreateBlendState()
 
     // AlphaBlend
     D3D11_BLEND_DESC Desc = {};
-
     Desc.AlphaToCoverageEnable = false;
     Desc.IndependentBlendEnable = true;
+    for (int i = 0; i < MRT_COUNT; ++i)
+    {
+        Desc.RenderTarget[i].BlendEnable = true;
+        Desc.RenderTarget[i].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-    Desc.RenderTarget[0].BlendEnable = true;
-    Desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+        // RGB 혼합 계수 설정
+        Desc.RenderTarget[i].BlendOp = D3D11_BLEND_OP_ADD;          // Src 와 Dst 를 더하기    
+        Desc.RenderTarget[i].SrcBlend = D3D11_BLEND_SRC_ALPHA;      // Src 계수는 SrcAlpha
+        Desc.RenderTarget[i].DestBlend = D3D11_BLEND_INV_SRC_ALPHA; // Dst 계수는 (1 - SrcAlpha)
 
-    // RGB 혼합 계수 설정
-    Desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;          // Src 와 Dst 를 더하기    
-    Desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;      // Src 계수는 SrcAlpha
-    Desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA; // Dst 계수는 (1 - SrcAlpha)
-
-    // A 혼합 계수 설정
-    Desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-    Desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
-    Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+        // A 혼합 계수 설정
+        Desc.RenderTarget[i].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+        Desc.RenderTarget[i].SrcBlendAlpha = D3D11_BLEND_ZERO;
+        Desc.RenderTarget[i].DestBlendAlpha = D3D11_BLEND_ZERO;
+    }
 
     DEVICE->CreateBlendState(&Desc, m_BSState[(UINT)BS_TYPE::ALPHABLEND].GetAddressOf());
 }
@@ -407,7 +408,7 @@ void CDevice::SetRenderTargetAndViewport()
     m_Context->RSSetViewports(1, &m_ViewPort);
 
     // 출력 렌더타겟 및 출력 깊이타겟 설정
-    m_Context->OMSetRenderTargets(MRT_COUNT, m_RTV->GetAddressOf(), m_DepthStencil->GetDSV().Get());
+    m_Context->OMSetRenderTargets(MRT_COUNT, m_RTV, m_DepthStencil->GetDSV().Get());
 }
 
 void CDevice::SetBackBufferRT()

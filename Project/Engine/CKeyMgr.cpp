@@ -221,8 +221,7 @@ void CKeyMgr::Tick()
             Matrix clipInv = XMMatrixInverse(nullptr, g_Trans.matProj);
             Matrix viewInv = XMMatrixInverse(nullptr, g_Trans.matView);
             m_Cursor->Transform()->SetRelativeScale(100.f, 100.f, 1.f);
-            Vec4 clip = Vec4((m_MousePos.x / resolution.x) * 2.f - 1.f, -((m_MousePos.y / resolution.y) * 2.f - 1.f)
-                , 0, 1);
+            Vec4 clip = Vec4((m_MousePos.x / resolution.x) * 2.f - 1.f, -((m_MousePos.y / resolution.y) * 2.f - 1.f), 0, 1);
             // 투영좌표에 클립, 뷰 역행렬로 월드 좌표 계산
             Vec3 worldCoord = XMVector4Transform(clip, clipInv * viewInv);
             m_Cursor->Transform()->SetRelativePos(worldCoord);

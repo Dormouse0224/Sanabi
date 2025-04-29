@@ -92,11 +92,13 @@ void CRenderMgr::Tick()
 	// Physx Rendering
 	CPhysxMgr::GetInst()->Render();
 
+
 	// ImGui ·»´õ¸µ
 	CImguiMgr::GetInst()->Render();
 
 	// Ä¿¼­ ·»´õ¸µ
 	CKeyMgr::GetInst()->Render();
+
 
 	// ÃÖÁ¾ ¹é¹öÆÛ ·»´õ¸µ
 	BackBufferRender();
@@ -192,6 +194,7 @@ void CRenderMgr::BackBufferRender()
 	CDevice::GetInst()->SetBackBufferRT();
 
 	m_BackBufferMtrl->SetTexParam(TEX_0, CDevice::GetInst()->GetRenderTarget(0));
+	m_BackBufferMtrl->SetTexParam(TEX_1, CDevice::GetInst()->GetRenderTarget(1));
 
 	m_BackBufferMtrl->Binding();
 

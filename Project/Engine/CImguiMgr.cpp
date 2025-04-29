@@ -98,6 +98,7 @@ void CImguiMgr::Render()
 
     // Ãâ·Â ·»´õÅ¸°Ù ¹× Ãâ·Â ±íÀÌÅ¸°Ù Àç¼³Á¤
     CDevice::GetInst()->SetRenderTargetAndViewport();
+    //CDevice::GetInst()->SetBackBufferRT();
 }
 
 void CImguiMgr::AddGameObjectMenuPopup()
