@@ -268,6 +268,18 @@
     <Filter Include="09. ImguiObject\ComponentUI\05. UIComUI">
       <UniqueIdentifier>{63ff8a32-4414-4ef8-902a-79226d36451f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="07. Component\06. Light">
+      <UniqueIdentifier>{10690b4c-b502-475a-8197-19c3e77a4a61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\13. LightMgr">
+      <UniqueIdentifier>{7a960db7-54b9-4144-b79f-e8dc108c2c98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\06. Light">
+      <UniqueIdentifier>{51b380d4-b228-462d-9d96-99c5d176ed98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Device\MRT">
+      <UniqueIdentifier>{e905300b-98e9-4c1d-8521-ce235a217465}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CEngine.h">
@@ -561,6 +573,18 @@
     <ClInclude Include="CUIComUI.h">
       <Filter>09. ImguiObject\ComponentUI\05. UIComUI</Filter>
     </ClInclude>
+    <ClInclude Include="CLight.h">
+      <Filter>07. Component\06. Light</Filter>
+    </ClInclude>
+    <ClInclude Include="CLightMgr.h">
+      <Filter>04. Manager\13. LightMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CLightUI.h">
+      <Filter>09. ImguiObject\ComponentUI\06. Light</Filter>
+    </ClInclude>
+    <ClInclude Include="CMRT.h">
+      <Filter>03. Device\MRT</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CEngine.cpp">
@@ -833,6 +857,18 @@
     <ClCompile Include="CUIComUI.cpp">
       <Filter>09. ImguiObject\ComponentUI\05. UIComUI</Filter>
     </ClCompile>
+    <ClCompile Include="CLight.cpp">
+      <Filter>07. Component\06. Light</Filter>
+    </ClCompile>
+    <ClCompile Include="CLightMgr.cpp">
+      <Filter>04. Manager\13. LightMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CLightUI.cpp">
+      <Filter>09. ImguiObject\ComponentUI\06. Light</Filter>
+    </ClCompile>
+    <ClCompile Include="CMRT.cpp">
+      <Filter>03. Device\MRT</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -879,7 +915,10 @@
     <FxCompile Include="ui.fx">
       <Filter>HLSL\02. 2D Shader</Filter>
     </FxCompile>
-    <FxCompile Include="backbuffer.fx">
+    <FxCompile Include="merge.fx">
+      <Filter>HLSL\02. 2D Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="light.fx">
       <Filter>HLSL\02. 2D Shader</Filter>
     </FxCompile>
   </ItemGroup>

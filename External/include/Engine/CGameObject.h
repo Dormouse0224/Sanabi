@@ -54,7 +54,8 @@ public:
     class CCamera*      Camera() { return (CCamera*)GetComponent(COMPONENT_TYPE::CAMERA); }
     class CPhysxActor*  PhysxActor() { return (CPhysxActor*)GetComponent(COMPONENT_TYPE::PHYSXACTOR); }
     class CFSM*         FSM() { return (CFSM*)GetComponent(COMPONENT_TYPE::FSM); }
-    class CUICom*         UICOM() { return (CUICom*)GetComponent(COMPONENT_TYPE::UICOM); }
+    class CUICom*       UICom() { return (CUICom*)GetComponent(COMPONENT_TYPE::UICOM); }
+    class CLight*       Light() { return (CLight*)GetComponent(COMPONENT_TYPE::LIGHT); }
 
     class CMeshRender*      MeshRender() { return (CMeshRender*)GetComponent(COMPONENT_TYPE::MESHRENDER); }
     class CSpriteRender*    SpriteRender() { return (CSpriteRender*)GetComponent(COMPONENT_TYPE::SPRITERENDER); }

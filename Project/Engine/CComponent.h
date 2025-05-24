@@ -27,6 +27,9 @@ protected:
     GET_OTHER_COMPONENT(Transform);
     GET_OTHER_COMPONENT(Camera);
     GET_OTHER_COMPONENT(PhysxActor);
+    GET_OTHER_COMPONENT(FSM);
+    GET_OTHER_COMPONENT(UICom);
+    GET_OTHER_COMPONENT(Light);
 
     GET_OTHER_COMPONENT(MeshRender);
     GET_OTHER_COMPONENT(SpriteRender);

@@ -70,7 +70,7 @@ int CGraphicShader::CreateVertexShader(const wstring& _RelativePath, const strin
 	m_ShaderName[VERTEX_SHADER] = make_pair(_RelativePath, _FuncName);
 
 	// Input Layout 도 같이 생성	
-	D3D11_INPUT_ELEMENT_DESC LayoutDesc[3] = {};
+	D3D11_INPUT_ELEMENT_DESC LayoutDesc[6] = {};
 
 	LayoutDesc[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;			// 해당 데이터의 바이트 구조 및 크기
 	LayoutDesc[0].InputSlot = 0;								// 버퍼의 인덱스 - 여러 버퍼를 동시에 전달할 때 사용
@@ -96,8 +96,32 @@ int CGraphicShader::CreateVertexShader(const wstring& _RelativePath, const strin
 	LayoutDesc[2].SemanticIndex = 0;
 	LayoutDesc[2].AlignedByteOffset = 28;
 
+	LayoutDesc[3].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	LayoutDesc[3].InputSlot = 0;
+	LayoutDesc[3].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	LayoutDesc[3].InstanceDataStepRate = 0;
+	LayoutDesc[3].SemanticName = "TANGENT";
+	LayoutDesc[3].SemanticIndex = 0;
+	LayoutDesc[3].AlignedByteOffset = 36;
 
-	if (FAILED(DEVICE->CreateInputLayout(LayoutDesc, 3
+	LayoutDesc[4].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	LayoutDesc[4].InputSlot = 0;
+	LayoutDesc[4].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	LayoutDesc[4].InstanceDataStepRate = 0;
+	LayoutDesc[4].SemanticName = "NORMAL";
+	LayoutDesc[4].SemanticIndex = 0;
+	LayoutDesc[4].AlignedByteOffset = 48;
+
+	LayoutDesc[5].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	LayoutDesc[5].InputSlot = 0;
+	LayoutDesc[5].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	LayoutDesc[5].InstanceDataStepRate = 0;
+	LayoutDesc[5].SemanticName = "BINORMAL";
+	LayoutDesc[5].SemanticIndex = 0;
+	LayoutDesc[5].AlignedByteOffset = 60;
+
+
+	if (FAILED(DEVICE->CreateInputLayout(LayoutDesc, 6
 		, m_VSBlob->GetBufferPointer()
 		, m_VSBlob->GetBufferSize(), m_Layout.GetAddressOf())))
 	{

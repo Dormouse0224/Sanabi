@@ -21,3 +21,4 @@
 #include "CFlipbookRenderUI.h"
 #include "CTileRnederUI.h"
 #include "CParticleRenderUI.h"
+#include "CLightUI.h"

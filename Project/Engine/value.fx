@@ -3,6 +3,8 @@
 
 #include "struct.fx"
 
+#define PI 3.1415926535f
+
 // 상수 레지스터
 // HLSL 5.0 : 4096
 cbuffer TRANSFORM : register(b0)
@@ -88,7 +90,8 @@ Texture2D g_Ntex_3 : register(t9);
 Texture2D g_Ntex_4 : register(t10);
 Texture2D g_Ntex_5 : register(t11);
 
-
+// 광원 구조화 버퍼
+StructuredBuffer<tLightModule> g_LightBuffer : register(t12);
 
 
 

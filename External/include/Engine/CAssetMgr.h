@@ -122,6 +122,7 @@ inline AssetPtr<T> CAssetMgr::Load(const wstring& _RelativePath, bool _IsEngineA
 		if (nullptr != pAsset)
 			return pAsset;
 
+		
 		if (_IsEngineAsset)
 			return nullptr;
 

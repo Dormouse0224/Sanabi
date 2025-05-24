@@ -2,8 +2,6 @@
 
 #include <Windows.h>
 #define _HAS_STD_BYTE 0		// using namespace std; 의 오류 해결용
-//#define _CRTDBG_MAP_ALLOC
-//#include <crtdbg.h>
 #include <commdlg.h>
 #include <iostream>
 #include <fstream>
@@ -95,9 +93,6 @@ using namespace physx;
 #else
 #pragma comment(lib, "FMOD/fmod_vc.lib")
 #endif
-
-// Visual Leak Detector 라이브러리 링크 (디버그에서만 적용)
-#include <VLD/vld.h>
 
 #include <vector>
 #include <map>

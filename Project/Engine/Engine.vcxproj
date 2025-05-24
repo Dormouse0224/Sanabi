@@ -182,10 +182,14 @@ call EngineHeaderCopy.bat</Command>
     <ClInclude Include="CImguiMgr.h" />
     <ClInclude Include="CImguiObject.h" />
     <ClInclude Include="CInspector.h" />
+    <ClInclude Include="CLight.h" />
+    <ClInclude Include="CLightMgr.h" />
+    <ClInclude Include="CLightUI.h" />
     <ClInclude Include="CListUI.h" />
     <ClInclude Include="CMaterialUI.h" />
     <ClInclude Include="CMeshRenderUI.h" />
     <ClInclude Include="CMeshUI.h" />
+    <ClInclude Include="CMRT.h" />
     <ClInclude Include="COutliner.h" />
     <ClInclude Include="CParticleRender.h" />
     <ClInclude Include="CParticleRenderUI.h" />
@@ -297,6 +301,9 @@ call EngineHeaderCopy.bat</Command>
     <ClCompile Include="CLayer.cpp" />
     <ClCompile Include="CLevel.cpp" />
     <ClCompile Include="CLevelMgr.cpp" />
+    <ClCompile Include="CLight.cpp" />
+    <ClCompile Include="CLightMgr.cpp" />
+    <ClCompile Include="CLightUI.cpp" />
     <ClCompile Include="CListUI.cpp" />
     <ClCompile Include="CMaterial.cpp" />
     <ClCompile Include="CMaterialUI.cpp" />
@@ -304,6 +311,7 @@ call EngineHeaderCopy.bat</Command>
     <ClCompile Include="CMeshRender.cpp" />
     <ClCompile Include="CMeshRenderUI.cpp" />
     <ClCompile Include="CMeshUI.cpp" />
+    <ClCompile Include="CMRT.cpp" />
     <ClCompile Include="COutliner.cpp" />
     <ClCompile Include="CParticleRender.cpp" />
     <ClCompile Include="CParticleRenderUI.cpp" />
@@ -361,7 +369,7 @@ call EngineHeaderCopy.bat</Command>
     <None Include="SimpleMath.inl" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="backbuffer.fx">
+    <FxCompile Include="merge.fx">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
@@ -374,6 +382,12 @@ call EngineHeaderCopy.bat</Command>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="flipbook.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="light.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>

@@ -9,6 +9,11 @@ struct Vtx
 	Vec3	vPos;		// 정점의 위치
 	Vec4	vColor;		// 정점의 색상	
 	Vec2	vUV;		// 정점에 입혀질 텍스쳐의 위치(좌표)
+
+	// 방향벡터
+	Vec3	vTangent;	// 접선벡터
+	Vec3	vNormal;	// 법선벡터
+	Vec3	vBinormal;	// 종법선벡터
 };
 
 // DebugShapeInfo
@@ -84,7 +89,15 @@ struct tParticleModule
 	//int		padding;
 };
 
-
+struct tLightModule
+{
+	LIGHT_TYPE	Type;		// 광원 종류
+	Vec3		Color;		// 광원 색상
+	Vec3		WorldPos;	// 광원 위치	
+	float		Radius;		// 광원 범위, 반경
+	Vec3		Dir;		// 광원의 방향
+	float		Angle;		// 광원 각도(스포트 라이트)
+};
 
 
 

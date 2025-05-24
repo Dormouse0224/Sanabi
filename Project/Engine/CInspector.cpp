@@ -31,6 +31,7 @@ CInspector::CInspector(wstring _Name)
 	m_ComponentUI[(UINT)COMPONENT_TYPE::FLIPBOOKRENDER] = new CFlipbookRenderUI;
 	m_ComponentUI[(UINT)COMPONENT_TYPE::TILERENDER] = new CTileRnederUI;
 	m_ComponentUI[(UINT)COMPONENT_TYPE::PARTICLERENDER] = new CParticleRenderUI;
+	m_ComponentUI[(UINT)COMPONENT_TYPE::LIGHT] = new CLightUI;
 
 	m_AssetUI[(UINT)ASSET_TYPE::MESH] = new CMeshUI;
 	m_AssetUI[(UINT)ASSET_TYPE::MATERIAL] = new CMaterialUI;

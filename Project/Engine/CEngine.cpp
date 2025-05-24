@@ -11,6 +11,7 @@
 #include "CTaskMgr.h"
 #include "CPhysxMgr.h"
 #include "CImguiMgr.h"
+#include "CLightMgr.h"
 
 CEngine::CEngine()
     : m_hInst(nullptr)
@@ -77,6 +78,7 @@ void CEngine::Progress()
     CTimeMgr::GetInst()->Tick();
     CKeyMgr::GetInst()->Tick();
     CAssetMgr::GetInst()->Tick();
+    CLightMgr::GetInst()->Tick();
 
     // Level Progress
     CLevelMgr::GetInst()->Progress();

@@ -58,5 +58,14 @@ struct tParticleModule
 };
 
 
+struct tLightModule
+{
+    int Type; // 광원 종류
+    float3 Color; // 광원 색상
+    float3 WorldPos; // 광원 위치	
+    float Radius; // 광원 범위, 반경
+    float3 Dir; // 광원의 방향
+    float Angle; // 광원 각도(스포트 라이트)	
+};
 
 #endif 

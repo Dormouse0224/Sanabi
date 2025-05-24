@@ -2,6 +2,7 @@
 
 
 #include "framework.h"
+#include <crtdbg.h>
 
 // 엔진 라이브러리 인클루드
 #include <Engine/global.h>

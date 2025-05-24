@@ -17,13 +17,6 @@ private:
 
 	ComPtr<IDXGISwapChain>				m_SwapChain;				// Window 화면에 렌더링
 
-	AssetPtr<CTexture2D>				m_BackBufferRTT;
-	AssetPtr<CTexture2D>				m_BackBufferDST;
-	AssetPtr<CTexture2D>				m_RenderTarget[MRT_COUNT];	// 렌더링 타겟. 0 : Color, 1 : Normal, 2 : WorldPos
-	ID3D11RenderTargetView*				m_RTV[MRT_COUNT];			// 바인딩 용으로 관리되는 렌더 타겟의 뷰.
-	ComPtr<ID3D11ShaderResourceView>	m_SRV[MRT_COUNT];			// 렌더 타겟이 리소스로 사용될 때 쓰이는 뷰.
-	AssetPtr<CTexture2D>				m_DepthStencil;				// MRT의 깊이가 그려질 타겟
-
 	CConstBuffer*						m_ConstBuffer[(UINT)CB_TYPE::END];
 
 	ComPtr<ID3D11RasterizerState>		m_RSState[(UINT)RS_TYPE::END];
@@ -36,25 +29,20 @@ private:
 
 public:
 	int Init(HWND _OutputWnd, Vec2 _vResolution);
-	void ClearTarget();
 	void Present();
 
 	ComPtr<ID3D11Device> GetDevice() { return m_Device; }
 	ComPtr<ID3D11DeviceContext> GetContext() { return m_Context; }
-	AssetPtr<CTexture2D> GetRenderTarget(int i);
+	ComPtr<IDXGISwapChain> GetSwapChain() { return m_SwapChain; }
+	D3D11_VIEWPORT GetViewPort() { return m_ViewPort; }
 	CConstBuffer* GetConstBuffer(CB_TYPE _Type) { return m_ConstBuffer[(UINT)_Type]; }
 	Vec2 GetRenderResolution() { return m_RenderResolution; }
 	ComPtr<ID3D11RasterizerState> GetRSState(RS_TYPE _Type) { return m_RSState[(UINT)_Type]; }
 	ComPtr<ID3D11DepthStencilState> GetDSState(DS_TYPE _Type) { return m_DSState[(UINT)_Type]; }
 	ComPtr<ID3D11BlendState>	GetBSState(BS_TYPE _Type) { return m_BSState[(UINT)_Type]; }
 
-	void SetRenderTargetAndViewport();
-	void SetBackBufferRT();
-
 private:
 	int CreateSwapChain();
-	int CreateBackBufferView();
-	int CreateMRT();
 	void CreateConstBuffer();
 	void CreateRasterizerState();
 	void CreateDepthStencilState();

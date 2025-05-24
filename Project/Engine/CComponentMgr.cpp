@@ -95,6 +95,10 @@ CComponent* CComponentMgr::CreateComp(COMPONENT_TYPE _Type)
     case COMPONENT_TYPE::LANDSCAPE:
         break;
 
+        // Additional
+    case COMPONENT_TYPE::LIGHT:
+        return new CLight;
+        break;
     }
 
     return nullptr;

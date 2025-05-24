@@ -23,7 +23,7 @@ MainTitle_StartBtn_Script::~MainTitle_StartBtn_Script()
 
 void MainTitle_StartBtn_Script::Tick()
 {
-	CUICom* pUICom = GetOwner()->UICOM();
+	CUICom* pUICom = GetOwner()->UICom();
 	CMeshRender* pMeshRender = GetOwner()->MeshRender();
 	if (pUICom == nullptr || pMeshRender == nullptr || !IsRenderable(GetOwner()))
 		return;

@@ -4,6 +4,7 @@ class CCamera;
 class CGameObject;
 class CMesh;
 class CMaterial;
+class CMRT;
 
 class CRenderMgr
 	: public Singleton<CRenderMgr>
@@ -20,8 +21,11 @@ private:
 
 	vector<tDebugShapeInfo> m_vecDebugInfo;
 
-	AssetPtr<CMesh>			m_BackBufferMesh;
-	AssetPtr<CMaterial>		m_BackBufferMtrl;
+	CMRT*					m_arrMRT[MRT_END];
+
+	AssetPtr<CMesh>			m_MergeMesh;
+	AssetPtr<CMaterial>		m_MergeMtrl;
+
 
 
 public:
@@ -40,6 +44,10 @@ private:
 	void Render();
 	void UIRender();
 	void DebugRender();
-	void BackBufferRender();
+	void MergeRender();
+
+	int CreateBackBufferView();
+	int CreateMRT();
+	void ClearMRT();
 };
 

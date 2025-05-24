@@ -95,10 +95,6 @@ void CImguiMgr::Render()
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
     }
-
-    // Ãâ·Â ·»´õÅ¸°Ù ¹× Ãâ·Â ±íÀÌÅ¸°Ù Àç¼³Á¤
-    CDevice::GetInst()->SetRenderTargetAndViewport();
-    //CDevice::GetInst()->SetBackBufferRT();
 }
 
 void CImguiMgr::AddGameObjectMenuPopup()
@@ -420,9 +416,10 @@ void CImguiMgr::LoadLevel()
     WCHAR filename[255] = {};
     wstring ContentDir = CPathMgr::GetContentDir();
     OPENFILENAME Desc = {};
+    ZeroMemory(&Desc, sizeof(Desc));
     Desc.lStructSize = sizeof(OPENFILENAME);
     Desc.hwndOwner = CEngine::GetInst()->GetMainWndHwnd();
-    Desc.lpstrFilter = L"ALL\0*.*\0";
+    Desc.lpstrFilter = L"ALL\0*.*\0\0";
     Desc.lpstrFile = filepath;
     Desc.nMaxFile = 255;
     Desc.lpstrFileTitle = filename;

@@ -30,6 +30,8 @@ wstring COMPONENT_TYPE_WSTR[] =
 	L"DECAL",
 	L"LANDSCAPE",
 
+	L"LIGHT",
+
 	L"COMPONENT_END",
 
 	L"SCRIPT",
@@ -76,3 +78,11 @@ wstring LAYER_WSTR[] =
 	L"UI",
 };
 static_assert(sizeof(LAYER_WSTR) / sizeof(LAYER_WSTR[0]) == static_cast<int>(LAYER::END));
+
+wstring LIGHT_TYPE_WSTR[] =
+{
+	L"DIRECTIONAL",
+	L"POINT",
+	L"SPOT",
+};
+static_assert(sizeof(LIGHT_TYPE_WSTR) / sizeof(LIGHT_TYPE_WSTR[0]) == static_cast<int>(LIGHT_TYPE::END));

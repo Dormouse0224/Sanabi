@@ -67,6 +67,9 @@ enum class COMPONENT_TYPE
 	DECAL,				// 문신
 	LANDSCAPE,			// 3D 지형
 
+	// Additional
+	LIGHT,
+
 	COMPONENT_END,
 
 	SCRIPT,				// 대본, 역할, 컨텐츠
@@ -182,3 +185,21 @@ enum class LAYER
 	END
 };
 extern std::wstring LAYER_WSTR[static_cast<int>(LAYER::END)];
+
+enum class LIGHT_TYPE
+{
+	DIRECTIONAL,	// 방향성 광원, 전역 (태양, 달)
+	POINT,			// 점광원, 전구, 전등, 횃불
+	SPOT,			// 스포트라이트, 손전등
+
+	END
+};
+extern std::wstring LIGHT_TYPE_WSTR[static_cast<int>(LIGHT_TYPE::END)];
+
+enum MRT_TYPE
+{
+	DEFERRED,
+	MERGE,
+
+	MRT_END
+};

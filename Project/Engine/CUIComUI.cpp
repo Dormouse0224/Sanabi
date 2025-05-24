@@ -30,7 +30,7 @@ void CUIComUI::Render_Com()
 		ImGui::TableSetupColumn("Text");
 		ImGui::TableHeadersRow();
 
-		for (auto& tuple : m_TargetObj->UICOM()->m_vecUIText)
+		for (auto& tuple : m_TargetObj->UICom()->m_vecUIText)
 		{
 			ImGui::TableNextRow();
 			ImGui::TableSetColumnIndex(0);
@@ -94,7 +94,7 @@ void CUIComUI::Render_Com()
 			pDesc->Scale = scale;
 			pDesc->Independent = ind;
 
-			m_TargetObj->UICOM()->AddUIText(CAssetMgr::GetInst()->Load<CFont>(to_wstr(vec[FontIdx])), to_wstr(buff), pDesc);
+			m_TargetObj->UICom()->AddUIText(CAssetMgr::GetInst()->Load<CFont>(to_wstr(vec[FontIdx])), to_wstr(buff), pDesc);
 			FontIdx = 0; memset(buff, 0, sizeof(buff)); memset(color, 0, sizeof(color)); scale = 1; ind = false;
 			ImGui::CloseCurrentPopup();
 		}

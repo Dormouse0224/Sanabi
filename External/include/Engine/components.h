@@ -13,3 +13,6 @@
 #include "CFlipbookRender.h"
 #include "CTileRender.h"
 #include "CParticleRender.h"
+
+// additional
+#include "CLight.h"

@@ -8,6 +8,7 @@
 #include "CLevel.h"
 #include "CRenderComponent.h"
 #include "CLayer.h"
+#include "CMRT.h"
 
 #include "CKeyMgr.h"
 #include "CAssetMgr.h"
@@ -15,6 +16,7 @@
 #include "CPhysxMgr.h"
 #include "CLevelMgr.h"
 #include "CImguiMgr.h"
+#include "CLightMgr.h"
 
 CRenderMgr::CRenderMgr()
 {
@@ -31,6 +33,12 @@ CRenderMgr::~CRenderMgr()
 
 	if (nullptr != m_UICam)
 		delete m_UICam;
+
+	for (int i = 0; i < MRT_END; ++i)
+	{
+		if (m_arrMRT[i] != nullptr)
+			delete m_arrMRT[i];
+	}
 }
 
 void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Priority)
@@ -62,10 +70,10 @@ void CRenderMgr::ResetEditorCamPos()
 
 void CRenderMgr::Tick()
 {
-	// 출력 렌더타겟 및 출력 깊이타겟 설정
-	CDevice::GetInst()->SetRenderTargetAndViewport();
+	// 광원 데이터 바인딩
+	CLightMgr::GetInst()->Binding();
 
-	// GlobalData Binding
+	// Global 데이터 바인딩
 	static CConstBuffer* pGlobal = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL);
 	pGlobal->SetData(&g_global, sizeof(tGlobal));
 	pGlobal->Binding();
@@ -82,31 +90,20 @@ void CRenderMgr::Tick()
 	}
 	m_UICam->FinalTick();
 
-	// Main Rendering	
+	// 렌더 타겟 클리어
+	ClearMRT();
+
+	// Main 렌더링	
 	Render();
-	//UIRender();
-
-	// Debug Rendering
-	DebugRender();
-
-	// Physx Rendering
-	CPhysxMgr::GetInst()->Render();
-
-
-	// ImGui 렌더링
-	CImguiMgr::GetInst()->Render();
-
-	// 커서 렌더링
-	CKeyMgr::GetInst()->Render();
-
 
 	// 최종 백버퍼 렌더링
-	BackBufferRender();
+	MergeRender();
 }
 
 void CRenderMgr::Render()
 {
-	CDevice::GetInst()->ClearTarget();
+	// 출력 렌더타겟 및 출력 깊이타겟 설정
+	m_arrMRT[MRT_TYPE::DEFERRED]->SetRenderTarget();
 
 	// 현재 레벨이 없거나 Stop 이면 에디터 카메라를 사용, 아니면 레벨의 카메라 오브젝트를 사용.
 	CLevel* pLevel = CLevelMgr::GetInst()->GetCurrentLevel();
@@ -188,15 +185,36 @@ void CRenderMgr::DebugRender()
 	}
 }
 
-void CRenderMgr::BackBufferRender()
+void CRenderMgr::MergeRender()
 {
 	// 출력 렌더타겟 및 출력 깊이타겟 설정
-	CDevice::GetInst()->SetBackBufferRT();
+	m_arrMRT[MRT_TYPE::MERGE]->SetRenderTarget();
 
-	m_BackBufferMtrl->SetTexParam(TEX_0, CDevice::GetInst()->GetRenderTarget(0));
-	m_BackBufferMtrl->SetTexParam(TEX_1, CDevice::GetInst()->GetRenderTarget(1));
+	m_MergeMtrl->SetTexParam(TEX_0, m_arrMRT[MRT_TYPE::DEFERRED]->GetRenderTarget(0));
+	//m_BackBufferMtrl->SetTexParam(TEX_0, CDevice::GetInst()->GetLightRTT());
 
-	m_BackBufferMtrl->Binding();
+	m_MergeMtrl->Binding();
 
-	m_BackBufferMesh->Render();
+	m_MergeMesh->Render();
+
+	// Debug 렌더링
+	DebugRender();
+
+	// Physx 렌더링
+	CPhysxMgr::GetInst()->Render();
+
+	// ImGui 렌더링
+	CImguiMgr::GetInst()->Render();
+
+	// 커서 렌더링
+	CKeyMgr::GetInst()->Render();
+}
+
+void CRenderMgr::ClearMRT()
+{
+	for (int i = 0; i < MRT_END; ++i)
+	{
+		if (m_arrMRT[i])
+			m_arrMRT[i]->ClearTargets();
+	}
 }
