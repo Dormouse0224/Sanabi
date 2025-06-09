@@ -184,3 +184,8 @@ void CLevel::AddGameObject(CGameObject* _Object, int _LayerIdx, bool _bChildMove
 {
 	m_Layer[_LayerIdx]->AddGameObject(_Object, _bChildMove);
 }
+
+void CLevel::UnregisterGameObject(CGameObject* _Object, int _LayerIdx)
+{
+	m_Layer[_LayerIdx]->UnRegisterParentObject(_Object);
+}

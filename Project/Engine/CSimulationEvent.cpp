@@ -3,6 +3,7 @@
 
 #include "CGameObject.h"
 #include "CPhysxActor.h"
+#include "CLevelMgr.h"
 
 // 	물리적인 제약(제한)이 무너졌을 때 호출됨 (예: hinge가 부러짐 등).
 void CSimulationEvent::onConstraintBreak(PxConstraintInfo* constraints, PxU32 count)

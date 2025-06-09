@@ -96,6 +96,7 @@ using namespace physx;
 
 #include <vector>
 #include <map>
+#include <set>
 #include <list>
 #include <string>
 

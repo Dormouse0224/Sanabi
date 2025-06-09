@@ -2,6 +2,7 @@
 #include "CLayer.h"
 
 #include "CTaskMgr.h"
+#include "CLevelMgr.h"
 
 #include "CGameObject.h"
 
@@ -115,6 +116,8 @@ void CLayer::AddGameObject(CGameObject* _Parent, bool _bChildMove)
 			pObject->m_LayerIdx = m_LayerIdx;
 		}
 	}
+
+	CLevelMgr::GetInst()->SetLevelModified();
 }
 
 void CLayer::UnRegisterParentObject(CGameObject* _Parent)
@@ -124,6 +127,7 @@ void CLayer::UnRegisterParentObject(CGameObject* _Parent)
 		if (*iter == _Parent)
 		{
 			m_vecParentObjects.erase(iter);
+			CLevelMgr::GetInst()->SetLevelModified();
 			break;
 		}
 	}

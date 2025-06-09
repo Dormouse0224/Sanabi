@@ -31,11 +31,16 @@ PxFilterFlags FilterShaderExample(
     pairFlags |= PxPairFlag::eDETECT_CCD_CONTACT;
 
     // 충돌 시 onContact 를 호출하는 상황 설정
-    if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
-        pairFlags |= PxPairFlag::eNOTIFY_TOUCH_FOUND        // 충돌 시작
-                     | PxPairFlag::eNOTIFY_TOUCH_PERSISTS    // 충돌 중
-                     | PxPairFlag::eNOTIFY_TOUCH_LOST        // 충돌 종료
-                     | PxPairFlag::eNOTIFY_CONTACT_POINTS;
+    //if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+    //    pairFlags |= PxPairFlag::eNOTIFY_TOUCH_FOUND        // 충돌 시작
+    //                 | PxPairFlag::eNOTIFY_TOUCH_PERSISTS    // 충돌 중
+    //                 | PxPairFlag::eNOTIFY_TOUCH_LOST        // 충돌 종료
+    //                 | PxPairFlag::eNOTIFY_CONTACT_POINTS;
+
+    pairFlags |= PxPairFlag::eNOTIFY_TOUCH_FOUND        // 충돌 시작
+        | PxPairFlag::eNOTIFY_TOUCH_PERSISTS    // 충돌 중
+        | PxPairFlag::eNOTIFY_TOUCH_LOST        // 충돌 종료
+        | PxPairFlag::eNOTIFY_CONTACT_POINTS;
 
     return PxFilterFlag::eDEFAULT;
 }

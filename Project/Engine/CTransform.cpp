@@ -27,35 +27,7 @@ CTransform::~CTransform()
 
 void CTransform::FinalTick()
 {
-	// 위치, 크기, 회전 정보를 월드행렬로 변환
-	// Scale 
-	Matrix matScale = XMMatrixScaling(m_RelativeScale.x, m_RelativeScale.y, m_RelativeScale.z);
-
-	// Rotation
-	//Matrix matRotationP = XMMatrixRotationX(m_RelativeRot.x);
-	//Matrix matRotationY = XMMatrixRotationY(m_RelativeRot.y);
-	//Matrix matRotationR = XMMatrixRotationZ(m_RelativeRot.z);
-	Matrix matRot = XMMatrixRotationQuaternion(m_RelativeRot);
-
-	// Translation
-	Matrix matTrans = XMMatrixTranslation(m_RelativePos.x, m_RelativePos.y, m_RelativePos.z);
-
-	// 크기 회전 이동 부모 순서로 적용
-	//Matrix matRot = matRotationR * matRotationP * matRotationY;
-	m_matWorld = matScale * matRot * matTrans;
-
-	// 오브젝트의 방향정보 계산
-	m_RelativeDir[(UINT)DIR::RIGHT] = Vec3(1.f, 0.f, 0.f);
-	m_RelativeDir[(UINT)DIR::UP] = Vec3(0.f, 1.f, 0.f);
-	m_RelativeDir[(UINT)DIR::FRONT] = Vec3(0.f, 0.f, 1.f);
-
-	// 방향벡터에 회전행렬을 적용해서 현재 방향값을 계산한다.
-	// XMVector3TransformCoord()  w 동차좌표 값을 1로 확장
-	// XMVector3TransformNormal() w 동차좌표값을 0으로 확장
-	for (int i = 0; i < (int)DIR::END; ++i)
-	{
-		m_WorldDir[i] = m_RelativeDir[i] = XMVector3TransformNormal(m_RelativeDir[i], matRot);
-	}
+	CalcMatWorld();
 
 	// 부모 오브젝트가 있는 경우, 부모의 월드행렬을 누적시킨다.
 	CGameObject* pParent = GetOwner()->GetParent();
@@ -116,7 +88,28 @@ void CTransform::SetRelativePos(Vec3 _Pos)
 {
 	m_RelativePos = _Pos;
 	if (PhysxActor())
-		PhysxActor()->UpdatePosition(_Pos);
+	{
+		CalcMatWorld();
+		PhysxActor()->UpdatePosition(GetWorldPos());
+	}
+}
+
+Vec3 CTransform::GetWorldPos()
+{
+	Vec3 vWorldPos = m_RelativePos;
+
+	CGameObject* pParent = GetOwner()->GetParent();
+	bool bIndependent = m_IndependentTrans;
+
+	while (pParent && !bIndependent)
+	{
+		vWorldPos += pParent->Transform()->GetRelativePos();
+
+		bIndependent = pParent->Transform()->m_IndependentTrans;
+		pParent = pParent->GetParent();
+	}
+
+	return vWorldPos;
 }
 
 Vec3 CTransform::GetWorldScale()
@@ -234,6 +227,39 @@ int CTransform::Save(fstream& _Stream)
 
 
 	return S_OK;
+}
+
+void CTransform::CalcMatWorld()
+{
+	// 위치, 크기, 회전 정보를 월드행렬로 변환
+	// Scale 
+	Matrix matScale = XMMatrixScaling(m_RelativeScale.x, m_RelativeScale.y, m_RelativeScale.z);
+
+	// Rotation
+	//Matrix matRotationP = XMMatrixRotationX(m_RelativeRot.x);
+	//Matrix matRotationY = XMMatrixRotationY(m_RelativeRot.y);
+	//Matrix matRotationR = XMMatrixRotationZ(m_RelativeRot.z);
+	Matrix matRot = XMMatrixRotationQuaternion(m_RelativeRot);
+
+	// Translation
+	Matrix matTrans = XMMatrixTranslation(m_RelativePos.x, m_RelativePos.y, m_RelativePos.z);
+
+	// 크기 회전 이동 부모 순서로 적용
+	//Matrix matRot = matRotationR * matRotationP * matRotationY;
+	m_matWorld = matScale * matRot * matTrans;
+
+	// 오브젝트의 방향정보 계산
+	m_RelativeDir[(UINT)DIR::RIGHT] = Vec3(1.f, 0.f, 0.f);
+	m_RelativeDir[(UINT)DIR::UP] = Vec3(0.f, 1.f, 0.f);
+	m_RelativeDir[(UINT)DIR::FRONT] = Vec3(0.f, 0.f, 1.f);
+
+	// 방향벡터에 회전행렬을 적용해서 현재 방향값을 계산한다.
+	// XMVector3TransformCoord()  w 동차좌표 값을 1로 확장
+	// XMVector3TransformNormal() w 동차좌표값을 0으로 확장
+	for (int i = 0; i < (int)DIR::END; ++i)
+	{
+		m_WorldDir[i] = m_RelativeDir[i] = XMVector3TransformNormal(m_RelativeDir[i], matRot);
+	}
 }
 
 void CTransform::SetRelativeRot(Vec4 _RotationQuat)

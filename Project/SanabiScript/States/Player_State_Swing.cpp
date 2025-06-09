@@ -9,6 +9,7 @@
 #include "Engine/CPhysxActor.h"
 #include "Engine/CKeyMgr.h"
 #include "Engine/CTimeMgr.h"
+#include "Engine/CLevelMgr.h"
 
 Player_State_Swing::Player_State_Swing()
 	: CFSM_State()
@@ -19,7 +20,7 @@ Player_State_Swing::Player_State_Swing()
 {
 	// 갈고리 객체 생성
 	m_Anchor = new CGameObject;
-	m_Anchor->SetName(L"Player_Anchor");
+	m_Anchor->SetName(L"Anchor");
 	m_Anchor->AddComponent(new CTransform);
 	m_Anchor->AddComponent(new CPhysxActor);
 	m_Anchor->AddComponent(new CFlipbookRender);
@@ -100,8 +101,13 @@ void Player_State_Swing::Begin()
 
 	// 그랩 지점에 고정점 생성, 플레이어와 PxDistanceJoint 로 연결
 	m_Anchor->Transform()->SetRelativePos(m_GrabPos);
-	m_Anchor->PhysxActor()->SetRigidBody(RIGID_TYPE::STATIC);
-	m_Owner->GetOwner()->AddChild(m_Anchor);
+	m_Anchor->PhysxActor()->SetRigidBody(RIGID_TYPE::KINEMATIC);
+	COLLIDER_DESC desc;
+	desc.ShapeFlag = PxShapeFlag::eTRIGGER_SHAPE;
+	desc.FilterLayer_Self = COLLISION_LAYER::ePLAYER;
+	desc.FilterLayer_Other = COLLISION_LAYER::eLANDSCAPE;
+	m_Anchor->PhysxActor()->AddCollider(desc, PxVec3(10.f, 10.f, 10.f));
+	CLevelMgr::GetInst()->GetCurrentLevel()->AddGameObject(m_Anchor, (int)LAYER::PlayerProjectile, true);
 
 	m_Joint = PxDistanceJointCreate(*CPhysxMgr::GetInst()->GetPhysics(), m_Anchor->PhysxActor()->GetRigidBody(), PxTransform(PxVec3(0))
 		, m_Owner->GetOwner()->PhysxActor()->GetRigidBody(), PxTransform(PxVec3(0)));
@@ -115,8 +121,8 @@ void Player_State_Swing::Begin()
 
 void Player_State_Swing::End()
 {
-	m_Owner->GetOwner()->DeleteChild(m_Anchor);
 	CPhysxMgr::GetInst()->RemoveRigidBody(m_Anchor);
+	CLevelMgr::GetInst()->GetCurrentLevel()->UnregisterGameObject(m_Anchor, (int)LAYER::PlayerProjectile);
 
 	m_Joint->release();
 	m_Joint = nullptr;

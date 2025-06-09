@@ -40,8 +40,7 @@ public:
 	void ChangeLevel(CLevel* _NextLevel, bool _Play = false);
 
 	CGameObject* FindObject(LAYER _Layer, wstring _Name);
-	CGameObject* DeleteObject(LAYER _Layer, wstring _Name);
-	CGameObject* AddObject(LAYER _Layer, wstring _Name);
+	void DeleteObject(LAYER _Layer, wstring _Name);
 
 };
 

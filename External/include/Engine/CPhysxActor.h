@@ -79,6 +79,8 @@ private:
     PxContactFunc           m_ContactTick;
     PxContactFunc           m_ContactEnd;
 
+    set<CGameObject*>       m_setContactObj;
+
     CScript*                m_TriggerBeginInst;
     CScript*                m_TriggerEndInst;
     PxTriggerFunc           m_TriggerBegin;
@@ -99,6 +101,7 @@ public:
     PxVec3 GetColliderScale(int _Idx) { if (_Idx < m_vecScale.size()) { return m_vecScale[_Idx]; } }
     PxVec3 GetColliderOffset(int _Idx) { if (_Idx < m_vecOffset.size()) { return m_vecOffset[_Idx]; } }
     PxVec3 GetLinearVelocity();
+    const set<CGameObject*>& GetContactObj() { return m_setContactObj; }
 
     void SetRigidBody(RIGID_TYPE _Type, UINT _LockFlag = 0, bool _Gravity = false, float _Density = 1.f, PxVec3 _InitVel = PxVec3(0.f));
     void SetRigidType(RIGID_TYPE _Type);

@@ -1,5 +1,6 @@
 BattleGateScript
 BulletScript
+ContainerScript
 FarBackgroundScript
 MainTitleBgScript
 MainTitle_StartBtn_Script

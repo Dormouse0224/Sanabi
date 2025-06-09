@@ -166,6 +166,7 @@ call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Scripts\ContainerScript.h" />
     <ClInclude Include="Scripts\FarBackgroundScript.h" />
     <ClInclude Include="States\Player_State_Dash.h" />
     <ClInclude Include="States\Player_State_ExcWinding.h" />
@@ -204,6 +205,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="States\Turret_State_Popup.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Scripts\ContainerScript.cpp" />
     <ClCompile Include="Scripts\FarBackgroundScript.cpp" />
     <ClCompile Include="States\Player_State_Dash.cpp" />
     <ClCompile Include="States\Player_State_ExcWinding.cpp" />

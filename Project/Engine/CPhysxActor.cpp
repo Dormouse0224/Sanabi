@@ -344,6 +344,7 @@ void CPhysxActor::CkeckLockFlag(LOCK_FLAG _Flag)
 
 void CPhysxActor::ContactBegin(CGameObject* _Other, const PxContactPair pair)
 {
+    m_setContactObj.insert(_Other);
     if (m_ContactBeginInst != nullptr && m_ContactBegin != nullptr)
         (m_ContactBeginInst->*m_ContactBegin)(_Other, pair);
 }
@@ -356,18 +357,21 @@ void CPhysxActor::ContactTick(CGameObject* _Other, const PxContactPair pair)
 
 void CPhysxActor::ContactEnd(CGameObject* _Other, const PxContactPair pair)
 {
+    m_setContactObj.erase(_Other);
     if (m_ContactEndInst != nullptr && m_ContactEnd != nullptr)
         (m_ContactEndInst->*m_ContactEnd)(_Other, pair);
 }
 
 void CPhysxActor::TriggerBegin(CGameObject* _Other)
 {
+    m_setContactObj.insert(_Other);
     if (m_TriggerBeginInst != nullptr && m_TriggerBegin != nullptr)
         (m_TriggerBeginInst->*m_TriggerBegin)(_Other);
 }
 
 void CPhysxActor::TriggerEnd(CGameObject* _Other)
 {
+    m_setContactObj.erase(_Other);
     if (m_TriggerEndInst != nullptr && m_TriggerEnd != nullptr)
         (m_TriggerEndInst->*m_TriggerEnd)(_Other);
 }

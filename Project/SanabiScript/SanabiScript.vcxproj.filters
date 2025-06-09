@@ -49,6 +49,7 @@
     <ClInclude Include="States\Player_State_Holding.h" />
     <ClInclude Include="States\Player_State_Dash.h" />
     <ClInclude Include="Scripts\FarBackgroundScript.h" />
+    <ClInclude Include="Scripts\ContainerScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -88,5 +89,6 @@
     <ClCompile Include="States\Player_State_Holding.cpp" />
     <ClCompile Include="States\Player_State_Dash.cpp" />
     <ClCompile Include="Scripts\FarBackgroundScript.cpp" />
+    <ClCompile Include="Scripts\ContainerScript.cpp" />
   </ItemGroup>
 </Project>

@@ -112,11 +112,12 @@ void CPhysxActorUI::Render_Com()
 
 				ImGui::TableNextColumn();
 				str = "Edit_" + to_string(i);
+				string strEdit = "EditDesc_" + to_string(i);
 				if (ImGui::Button(str.c_str()))
 				{
-					ImGui::OpenPopup("EditDesc");
+					ImGui::OpenPopup(strEdit.c_str());
 				}
-				if (ImGui::BeginPopupModal("EditDesc", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				if (ImGui::BeginPopupModal(strEdit.c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize))
 				{
 					EditColliderDescPopup(i);
 					ImGui::EndPopup();
@@ -144,40 +145,62 @@ void CPhysxActorUI::Render_Com()
 			ImGui::Text("Add collider to PhysX actor.");
 			ImGui::NewLine();
 
+			static COLLIDER_DESC Desc;
+
 			// 충돌체 디스크립션
 			ImGui::Text("Shape Flag");
-			static UINT ShapeFlag;
-			ImGui::CheckboxFlags("eSIMULATION_SHAPE", &ShapeFlag, PxShapeFlag::Enum::eSIMULATION_SHAPE);
-			ImGui::CheckboxFlags("eSCENE_QUERY_SHAPE", &ShapeFlag, PxShapeFlag::Enum::eSCENE_QUERY_SHAPE);
-			ImGui::CheckboxFlags("eTRIGGER_SHAPE", &ShapeFlag, PxShapeFlag::Enum::eTRIGGER_SHAPE);
+			UINT ShapeFlag = Desc.ShapeFlag;
+			if (ImGui::CheckboxFlags("eSIMULATION_SHAPE", &ShapeFlag, PxShapeFlag::Enum::eSIMULATION_SHAPE))
+			{
+				if (ShapeFlag & PxShapeFlag::Enum::eTRIGGER_SHAPE)
+					ShapeFlag = ShapeFlag ^ PxShapeFlag::Enum::eTRIGGER_SHAPE;
+				Desc.ShapeFlag = (PxShapeFlags)ShapeFlag;
+			}
+			if (ImGui::CheckboxFlags("eSCENE_QUERY_SHAPE", &ShapeFlag, PxShapeFlag::Enum::eSCENE_QUERY_SHAPE))
+			{
+				Desc.ShapeFlag = (PxShapeFlags)ShapeFlag;
+			}
+			if (ImGui::CheckboxFlags("eTRIGGER_SHAPE", &ShapeFlag, PxShapeFlag::Enum::eTRIGGER_SHAPE))
+			{
+				if (ShapeFlag & PxShapeFlag::Enum::eSIMULATION_SHAPE)
+					ShapeFlag = ShapeFlag ^ PxShapeFlag::Enum::eSIMULATION_SHAPE;
+				Desc.ShapeFlag = (PxShapeFlags)ShapeFlag;
+			}
 
 			ImGui::Text("FilterLayer_Self");
-			static PxU32 FilterLayer_Self;
 			for (int i = 0; i < COLLISION_LAYER::END; ++i)
 			{
 				string str = to_str(COLLISION_LAYER_WSTR[i]) + "_Self";
-				ImGui::CheckboxFlags(str.c_str(), &FilterLayer_Self, (1 << i));
+				ImGui::CheckboxFlags(str.c_str(), &Desc.FilterLayer_Self, (1 << i));
 			}
 
 			ImGui::Text("FilterLayer_Other");
-			static PxU32 FilterLayer_Other;
 			for (int i = 0; i < COLLISION_LAYER::END; ++i)
 			{
 				string str = to_str(COLLISION_LAYER_WSTR[i]) + "_Other";
-				ImGui::CheckboxFlags(str.c_str(), &FilterLayer_Other, (1 << i));
+				ImGui::CheckboxFlags(str.c_str(), &Desc.FilterLayer_Other, (1 << i));
 			}
 
 			ImGui::Text("StaticFriction");
-			static float StaticFriction = 0;
-			ImGui::InputFloat("##StaticFriction", &StaticFriction);
+			float StaticFriction = Desc.StaticFriction;
+			if (ImGui::InputFloat("##StaticFriction", &StaticFriction))
+			{
+				Desc.StaticFriction = StaticFriction;
+			}
 
 			ImGui::Text("DynamicFriction");
-			static float DynamicFriction = 0;
-			ImGui::InputFloat("##DynamicFriction", &DynamicFriction);
+			float DynamicFriction = Desc.DynamicFriction;
+			if (ImGui::InputFloat("##DynamicFriction", &DynamicFriction))
+			{
+				Desc.DynamicFriction = DynamicFriction;
+			}
 
 			ImGui::Text("Restitution");
-			static float Restitution = 0;
-			ImGui::InputFloat("##Restitution", &Restitution);
+			float Restitution = Desc.Restitution;
+			if (ImGui::InputFloat("##Restitution", &Restitution))
+			{
+				Desc.Restitution = Restitution;
+			}
 
 
 			// 충돌체 크기
@@ -196,23 +219,18 @@ void CPhysxActorUI::Render_Com()
 
 			if (ImGui::Button("Add"))
 			{
-				COLLIDER_DESC desc;
-				desc.ShapeFlag = static_cast<PxShapeFlags>(ShapeFlag);
-				desc.FilterLayer_Self = FilterLayer_Self;
-				desc.FilterLayer_Other = FilterLayer_Other;
-				desc.StaticFriction = StaticFriction;
-				desc.DynamicFriction = DynamicFriction;
-				desc.Restitution = Restitution;
 
-				m_TargetObj->PhysxActor()->AddCollider(desc, PxVec3(Scale[0], Scale[1], Scale[2]), PxVec3(Offset[0], Offset[1], Offset[2]));
-				ShapeFlag = 0; FilterLayer_Self = 0; FilterLayer_Other = 0; StaticFriction = 0; DynamicFriction = 0; Restitution = 0;
+				m_TargetObj->PhysxActor()->AddCollider(Desc, PxVec3(Scale[0], Scale[1], Scale[2]), PxVec3(Offset[0], Offset[1], Offset[2]));
+				COLLIDER_DESC DescClear;
+				Desc = DescClear;
 				memset(Scale, 0, sizeof(Scale)); memset(Offset, 0, sizeof(Offset));
 				ImGui::CloseCurrentPopup();
 			}
 			ImGui::SameLine();
 			if (ImGui::Button("Cancel"))
 			{
-				ShapeFlag = 0; FilterLayer_Self = 0; FilterLayer_Other = 0; StaticFriction = 0; DynamicFriction = 0; Restitution = 0;
+				COLLIDER_DESC DescClear;
+				Desc = DescClear;
 				memset(Scale, 0, sizeof(Scale)); memset(Offset, 0, sizeof(Offset));
 				ImGui::CloseCurrentPopup();
 			}
@@ -228,63 +246,85 @@ void CPhysxActorUI::Render_Com()
 
 void CPhysxActorUI::EditColliderDescPopup(int _Idx)
 {
+	static bool Init = false;
+	static COLLIDER_DESC Desc;
+	if (!Init)
+	{
+		Init = true;
+		Desc = m_TargetObj->PhysxActor()->GetColliderDesc(_Idx);
+	}
+	
+
 	float tab = 130.f;
 	ImGui::Text("Edit collider description.");
 	ImGui::NewLine();
 
 	// 충돌체 디스크립션
 	ImGui::Text("Shape Flag");
-	static UINT ShapeFlag;
-	ImGui::CheckboxFlags("eSIMULATION_SHAPE", &ShapeFlag, PxShapeFlag::Enum::eSIMULATION_SHAPE);
-	ImGui::CheckboxFlags("eSCENE_QUERY_SHAPE", &ShapeFlag, PxShapeFlag::Enum::eSCENE_QUERY_SHAPE);
-	ImGui::CheckboxFlags("eTRIGGER_SHAPE", &ShapeFlag, PxShapeFlag::Enum::eTRIGGER_SHAPE);
+	UINT ShapeFlag = Desc.ShapeFlag;
+	if (ImGui::CheckboxFlags("eSIMULATION_SHAPE", &ShapeFlag, PxShapeFlag::Enum::eSIMULATION_SHAPE))
+	{
+		if (ShapeFlag & PxShapeFlag::Enum::eTRIGGER_SHAPE)
+			ShapeFlag = ShapeFlag ^ PxShapeFlag::Enum::eTRIGGER_SHAPE;
+		Desc.ShapeFlag = (PxShapeFlags)ShapeFlag;
+	}
+	if (ImGui::CheckboxFlags("eSCENE_QUERY_SHAPE", &ShapeFlag, PxShapeFlag::Enum::eSCENE_QUERY_SHAPE))
+	{
+		Desc.ShapeFlag = (PxShapeFlags)ShapeFlag;
+	}
+	if (ImGui::CheckboxFlags("eTRIGGER_SHAPE", &ShapeFlag, PxShapeFlag::Enum::eTRIGGER_SHAPE))
+	{
+		if (ShapeFlag & PxShapeFlag::Enum::eSIMULATION_SHAPE)
+			ShapeFlag = ShapeFlag ^ PxShapeFlag::Enum::eSIMULATION_SHAPE;
+		Desc.ShapeFlag = (PxShapeFlags)ShapeFlag;
+	}
 
 	ImGui::Text("FilterLayer_Self");
-	static PxU32 FilterLayer_Self;
 	for (int i = 0; i < COLLISION_LAYER::END; ++i)
 	{
 		string str = to_str(COLLISION_LAYER_WSTR[i]) + "_Self";
-		ImGui::CheckboxFlags(str.c_str(), &FilterLayer_Self, (1 << i));
+		ImGui::CheckboxFlags(str.c_str(), &Desc.FilterLayer_Self, (1 << i));
 	}
 
 	ImGui::Text("FilterLayer_Other");
-	static PxU32 FilterLayer_Other;
 	for (int i = 0; i < COLLISION_LAYER::END; ++i)
 	{
 		string str = to_str(COLLISION_LAYER_WSTR[i]) + "_Other";
-		ImGui::CheckboxFlags(str.c_str(), &FilterLayer_Other, (1 << i));
+		ImGui::CheckboxFlags(str.c_str(), &Desc.FilterLayer_Other, (1 << i));
 	}
 
 	ImGui::Text("StaticFriction");
-	static float StaticFriction = 0;
-	ImGui::InputFloat("##StaticFriction", &StaticFriction);
+	float StaticFriction = Desc.StaticFriction;
+	if (ImGui::InputFloat("##StaticFriction", &StaticFriction))
+	{
+		Desc.StaticFriction = StaticFriction;
+	}
 
 	ImGui::Text("DynamicFriction");
-	static float DynamicFriction = 0;
-	ImGui::InputFloat("##DynamicFriction", &DynamicFriction);
+	float DynamicFriction = Desc.DynamicFriction;
+	if (ImGui::InputFloat("##DynamicFriction", &DynamicFriction))
+	{
+		Desc.DynamicFriction = DynamicFriction;
+	}
 
 	ImGui::Text("Restitution");
-	static float Restitution = 0;
-	ImGui::InputFloat("##Restitution", &Restitution);
+	float Restitution = Desc.Restitution;
+	if (ImGui::InputFloat("##Restitution", &Restitution))
+	{
+		Desc.Restitution = Restitution;
+	}
 
 
 	if (ImGui::Button("Apply"))
 	{
-		COLLIDER_DESC desc;
-		desc.ShapeFlag = static_cast<PxShapeFlags>(ShapeFlag);
-		desc.FilterLayer_Self = FilterLayer_Self;
-		desc.FilterLayer_Other = FilterLayer_Other;
-		desc.StaticFriction = StaticFriction;
-		desc.DynamicFriction = DynamicFriction;
-		desc.Restitution = Restitution;
-		m_TargetObj->PhysxActor()->SetColliderDesc(_Idx, desc);
-		ShapeFlag = 0; FilterLayer_Self = 0; FilterLayer_Other = 0; StaticFriction = 0; DynamicFriction = 0; Restitution = 0;
+		m_TargetObj->PhysxActor()->SetColliderDesc(_Idx, Desc);
+		Init = false;
 		ImGui::CloseCurrentPopup();
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Cancel"))
 	{
-		ShapeFlag = 0; FilterLayer_Self = 0; FilterLayer_Other = 0; StaticFriction = 0; DynamicFriction = 0; Restitution = 0;
+		Init = false;
 		ImGui::CloseCurrentPopup();
 	}
 }

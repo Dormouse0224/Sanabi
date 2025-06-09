@@ -46,9 +46,9 @@ public:
     void SetIndependentTrans(bool _Trans) { m_IndependentTrans = _Trans; }
 
     Vec3 GetRelativePos() { return m_RelativePos; }
-    Vec3 GetWorldPos() { return m_matWorld.Translation(); }
-
     Vec3 GetRelativeScale() { return m_RelativeScale; }
+
+    Vec3 GetWorldPos();
     Vec3 GetWorldScale();
     Vec3 GetWorldRot();
     Vec3 GetWorldTrans();
@@ -69,5 +69,7 @@ public:
     virtual int Load(fstream& _Stream) override;
     virtual int Save(fstream& _Stream) override;
 
+private:
+    void CalcMatWorld();
 };
 

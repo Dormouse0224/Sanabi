@@ -131,3 +131,8 @@ CGameObject* CLevelMgr::FindObject(LAYER _Layer, wstring _Name)
 	}
 	return nullptr;
 }
+
+void CLevelMgr::DeleteObject(LAYER _Layer, wstring _Name)
+{
+	delete FindObject(_Layer, _Name);
+}

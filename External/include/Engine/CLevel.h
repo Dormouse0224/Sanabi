@@ -51,5 +51,6 @@ private:
 public:
     // 오브젝트를 해당 레이어에 추가합니다.
     void AddGameObject(CGameObject* _Object, int _LayerIdx, bool _bChildMove);
+    void UnregisterGameObject(CGameObject* _Object, int _LayerIdx);
 };
 
