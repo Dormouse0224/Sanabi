@@ -144,8 +144,10 @@ void CKeyMgr::Init()
     m_Cursor->AddComponent(new CTransform);
     m_Cursor->AddComponent(new CMeshRender);
     m_Cursor->SetLayerIdx((int)LAYER::UI);
-    m_Cursor->MeshRender()->SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"EA_RectMesh"));
+    m_Cursor->MeshRender()->SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"EA_PointMesh"));
     m_Cursor->MeshRender()->SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"EA_CursorMtrl"));
+    m_Cursor->MeshRender()->GetMaterial()->SetScalarParam(FLOAT_1, 100.f);
+    m_Cursor->MeshRender()->GetMaterial()->SetScalarParam(FLOAT_2, 100.f);
 }
 
 void CKeyMgr::Tick()
@@ -214,19 +216,10 @@ void CKeyMgr::Tick()
         // 커서 이미지 대체
         CURSOR_OFF;
 
-        // 스크린좌표 -> NDC -> 클립(투영)좌표
-        if (CGameObject* pUICam = CRenderMgr::GetInst()->GetUICam(); pUICam)
-        {
-            Vec2 resolution = CEngine::GetInst()->GetResolution();
-            Matrix clipInv = XMMatrixInverse(nullptr, g_Trans.matProj);
-            Matrix viewInv = XMMatrixInverse(nullptr, g_Trans.matView);
-            m_Cursor->Transform()->SetRelativeScale(100.f, 100.f, 1.f);
-            Vec4 clip = Vec4((m_MousePos.x / resolution.x) * 2.f - 1.f, -((m_MousePos.y / resolution.y) * 2.f - 1.f), 0, 1);
-            // 투영좌표에 클립, 뷰 역행렬로 월드 좌표 계산
-            Vec3 worldCoord = XMVector4Transform(clip, clipInv * viewInv);
-            m_Cursor->Transform()->SetRelativePos(worldCoord);
-            m_Cursor->FinalTick();
-        }
+        Vec2 resolution = CEngine::GetInst()->GetResolution();
+        Vec2 clip = Vec2((m_MousePos.x / resolution.x) * 2.f - 1.f, -((m_MousePos.y / resolution.y) * 2.f - 1.f));
+        m_Cursor->MeshRender()->GetMaterial()->SetScalarParam(VEC2_0, clip);
+
     }
     else
     {

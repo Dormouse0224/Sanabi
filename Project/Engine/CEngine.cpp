@@ -114,6 +114,7 @@ int CEngine::CreateMainWindow()
 
     GetClientRect(m_hMainWnd, &rt);
     m_vResolution = Vec2(static_cast<float>(rt.right - rt.left), static_cast<float>(rt.bottom - rt.top));
+    g_global.g_Resolution = m_vResolution;
 
     return S_OK;
 }

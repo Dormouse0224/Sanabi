@@ -31,6 +31,10 @@ CFSM::CFSM(const CFSM& _Other)
 
 CFSM::~CFSM()
 {
+	// 현재 상태가 존재할 경우 상태를 종료함
+	if (m_CurrentState)
+		m_CurrentState->End();
+
 	for (int i = m_vecCondition.size(); i > 0; --i)
 		DeleteCondition(i - 1);
 	m_vecCondition.clear();
