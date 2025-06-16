@@ -59,7 +59,7 @@ bool ContainerScript::CheckConnection(CGameObject* _Obj)
 	if (PhysxActor == nullptr)
 		return false;
 
-	// 충돌중인 오브젝트 중 플레이어 또는 갈고리가 있는경우 true
+	// 플레이어와 컨테이너는 시뮬레이션 오브젝트, 충돌 이벤트가 발생함. 충돌 오브젝트에서 플레이어가 있는 경우 true 반환.
 	set<CGameObject*> setContactObj = PhysxActor->GetContactObj();
 	if (CGameObject* pPlayer = CLevelMgr::GetInst()->FindObject(LAYER::Player, L"Player"))
 	{
@@ -67,6 +67,8 @@ bool ContainerScript::CheckConnection(CGameObject* _Obj)
 		if (iterPlayer != setContactObj.end())
 			return true;
 	}
+
+	// 앵커는 트리거 오브젝트, 트리거 이벤트가 발생함.
 	if (CGameObject* pAnchor = CLevelMgr::GetInst()->FindObject(LAYER::PlayerProjectile, L"Anchor"))
 	{
 		auto iterPlayerGrab = setContactObj.find(pAnchor);

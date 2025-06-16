@@ -80,10 +80,6 @@ void CSimulationEvent::onTrigger(PxTriggerPair* pairs, PxU32 count)
         if (triggerGO->IsDead() || otherGO->IsDead())
             continue;
 
-        // eREMOVED_ACTOR flags는 생략 가능하지만 안전하게 처리하려면 체크
-        if (pair.flags & (PxTriggerPairFlag::eREMOVED_SHAPE_TRIGGER | PxTriggerPairFlag::eREMOVED_SHAPE_OTHER))
-            continue;
-
         if (pair.status & PxPairFlag::eNOTIFY_TOUCH_FOUND)
         {
             // 트리거에 들어갔을 때
