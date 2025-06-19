@@ -71,7 +71,7 @@ void Player_State_ExcWinding::Tick()
 	float roundTime = 0.2f;
 	if (m_Timer < roundTime)
 	{
-		Vec3 dir = m_DestPos - m_Owner->GetOwner()->Transform()->GetWorldPos();
+		Vec3 dir = m_DestPos - m_Owner->GetOwner()->Transform()->GetWorldTrans();
 		float dist = dir.Length();
 		dir.Normalize();
 		if (LookLeft != 0)

@@ -45,7 +45,7 @@ CUICom::~CUICom()
 void CUICom::FinalTick()
 {
 	// UI 의 화면상 위치 계산 후 마우스 커서의 호버링 체크
-	Vec4 wpos(Transform()->GetWorldPos(), 1.f);
+	Vec4 wpos(Transform()->GetWorldTrans(), 1.f);
 	Vec3 scale = Transform()->GetWorldScale();
 	Vec2 cursor = CKeyMgr::GetInst()->GetMousePos();
 
@@ -103,7 +103,7 @@ int CUICom::Load(fstream& _Stream)
 void CUICom::Render()
 {
 	// 텍스트 렌더링 (렌더 컴포넌트 호출 후 별도로 호출됨)
-	Vec4 clip = XMVector3Transform(XMVector3Transform(Transform()->GetWorldPos(), g_Trans.matView), g_Trans.matProj);
+	Vec4 clip = XMVector3Transform(XMVector3Transform(Transform()->GetWorldTrans(), g_Trans.matView), g_Trans.matProj);
 	float depth = ((clip.z / clip.w) + 1) * 0.5f;
 	for (auto& tuple : m_vecUIText)
 	{

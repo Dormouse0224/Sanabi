@@ -88,7 +88,7 @@ CParticleRender::~CParticleRender()
 
 void CParticleRender::FinalTick()
 {
-	m_Module.ObjectWorldPos = Transform()->GetWorldPos();
+	m_Module.ObjectWorldPos = Transform()->GetWorldTrans();
 	// 최대 파티클 수 변경되었을 때 파티클 구조화 버퍼 재할당
 	if (m_ParticleBuffer->GetElementCount() != m_MaxParticle)
 	{
@@ -195,7 +195,7 @@ void CParticleRender::Render()
 	m_ModuleBuffer->Binding(21);
 
 	GetMaterial()->SetTexParam(TEX_0, m_ParticleTex);
-	GetMaterial()->SetScalarParam(VEC4_0, Transform()->GetWorldPos());
+	GetMaterial()->SetScalarParam(VEC4_0, Transform()->GetWorldTrans());
 
 	// 재질 및 쉐이더 바인딩
 	GetMaterial()->Binding();

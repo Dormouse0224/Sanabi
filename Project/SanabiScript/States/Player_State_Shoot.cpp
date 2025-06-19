@@ -83,12 +83,12 @@ void Player_State_Shoot::Tick()
 	float roundTime = 0.3f;
 	if (m_Timer < roundTime)
 	{
-		Vec2 screen = GetScreenFromWorld(m_Owner->GetOwner()->Transform()->GetWorldPos(), CRenderMgr::GetInst()->GetCurrentCam());
+		Vec2 screen = GetScreenFromWorld(m_Owner->GetOwner()->Transform()->GetWorldTrans(), CRenderMgr::GetInst()->GetCurrentCam());
 		Vec2 norm = m_CursorPos - screen;
 		norm.Normalize();
 		float len = m_MaxLen - abs((m_MaxLen * 2 / roundTime) * m_Timer - m_MaxLen);
 		Vec2 dir(norm.x * len * ((0.5f - !!i) * 2.f), -norm.y * len);
-		m_Grab->Transform()->SetRelativePos(dir.x, dir.y, m_Owner->GetOwner()->Transform()->GetWorldPos().z);
+		m_Grab->Transform()->SetRelativePos(dir.x, dir.y, m_Owner->GetOwner()->Transform()->GetWorldTrans().z);
 	}
 	else
 		SetConst<int>(2, 1);
@@ -133,9 +133,9 @@ void Player_State_Shoot::End()
 
 void Player_State_Shoot::HitCheck()
 {
-	Vec3 v3 = m_Owner->GetOwner()->Transform()->GetWorldPos();
+	Vec3 v3 = m_Owner->GetOwner()->Transform()->GetWorldTrans();
 	PxVec3 shooter(v3.x, v3.y, v3.z);
-	Vec2 vec = GetScreenFromWorld(m_Owner->GetOwner()->Transform()->GetWorldPos(), CRenderMgr::GetInst()->GetCurrentCam());;
+	Vec2 vec = GetScreenFromWorld(m_Owner->GetOwner()->Transform()->GetWorldTrans(), CRenderMgr::GetInst()->GetCurrentCam());;
 	Vec3 origin(vec.x, vec.y, 0.f);
 	vec = CKeyMgr::GetInst()->GetMousePos();
 	Vec3 target(vec.x, vec.y, 0.f);

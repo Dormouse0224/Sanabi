@@ -64,7 +64,7 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Priority)
 void CRenderMgr::ResetEditorCamPos()
 {
 	m_EditorCam->Transform()->SetRelativePos(0, 0, 0);
-	m_EditorCam->Transform()->SetRelativeRot(0, 0, 0);
+	m_EditorCam->Transform()->SetRelativeRot(Vec3(0, 0, 0));
 }
 
 
@@ -86,7 +86,7 @@ void CRenderMgr::Tick()
 	if (m_CurrentCam)
 	{
 		m_UICam->Transform()->SetRelativePos(m_CurrentCam->GetOwner()->Transform()->GetRelativePos());
-		m_UICam->Transform()->SetRelativeRot(m_CurrentCam->GetOwner()->Transform()->GetRelativeRot());
+		m_UICam->Transform()->SetRelativeRot(m_CurrentCam->GetOwner()->Transform()->GetRelativeRotQuat());
 	}
 	m_UICam->FinalTick();
 

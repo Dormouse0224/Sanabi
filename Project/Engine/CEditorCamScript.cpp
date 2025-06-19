@@ -80,13 +80,17 @@ void CEditorCamScript::Move_Perspective()
 		return;
 
 	Vec2 vDragDir = CKeyMgr::GetInst()->GetDragDir();
-	Vec3 vRot = Transform()->GetRelativeRot();
-	//Vec4 q1 = XMQuaternionRotationAxis(XMVectorSet(1, 0, 0, 0), XMConvertToRadians(vDragDir.y * EngineDT * 100.f));
-	//Vec4 q2 = XMQuaternionRotationAxis(XMVectorSet(0, 1, 0, 0), XMConvertToRadians(vDragDir.x * EngineDT * 100.f));
-	vRot.x += vDragDir.y * EngineDT * m_CamSpeedAng;
-	vRot.y += vDragDir.x * EngineDT * m_CamSpeedAng;
-	//vRot = XMQuaternionMultiply(vRot, XMQuaternionMultiply(q1, q2));
-	Transform()->SetRelativeRot(vRot);
+
+	//Vec3 vRot = Transform()->GetRelativeRotEuler();
+	//vRot.x += vDragDir.y * EngineDT * m_CamSpeedAng;
+	//vRot.y += vDragDir.x * EngineDT * m_CamSpeedAng;
+	//Transform()->SetRelativeRot(vRot);
+
+	Vec4 vQuat = Transform()->GetRelativeRotQuat();
+	Vec4 qX = XMQuaternionRotationAxis(Transform()->GetRelativeDir(DIR::RIGHT), XMConvertToRadians(vDragDir.y * EngineDT * m_CamSpeedAng));
+	Vec4 qY = XMQuaternionRotationAxis(Vec3(0, 1, 0), XMConvertToRadians(vDragDir.x * EngineDT * m_CamSpeedAng));
+	Vec4 vRotQuat = XMQuaternionMultiply(vQuat, XMQuaternionMultiply(qX, qY));
+	Transform()->SetRelativeRot(vRotQuat);
 }
 
 void CEditorCamScript::Move_OrthoGraphic()

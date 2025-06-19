@@ -232,7 +232,7 @@ void CCamera::SortObject()
 					break;
 				case SHADER_DOMAIN::DOMAIN_TRANSPARENT:
 				{
-					Vec4 vpos = XMVector4Transform(Vec4(vecObjects[j]->Transform()->GetWorldPos(), 1.f), g_Trans.matView);
+					Vec4 vpos = XMVector4Transform(Vec4(vecObjects[j]->Transform()->GetWorldTrans(), 1.f), g_Trans.matView);
 					m_vecTransparent.push_back(make_pair(vpos.z, vecObjects[j]));
 				}
 					break;

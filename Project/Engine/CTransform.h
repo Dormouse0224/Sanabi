@@ -48,12 +48,12 @@ public:
     Vec3 GetRelativePos() { return m_RelativePos; }
     Vec3 GetRelativeScale() { return m_RelativeScale; }
 
-    Vec3 GetWorldPos();
-    Vec3 GetWorldScale();
-    Vec3 GetWorldRot();
     Vec3 GetWorldTrans();
+    Vec3 GetWorldScale();
+    Vec4 GetWorldRot();
 
-    Vec3 GetRelativeRot();
+    Vec3 GetRelativeRotEuler();
+    Vec4 GetRelativeRotQuat() { return m_RelativeRot; }
     //Vec3 GetWorldRotation();
 
     Vec3 GetRelativeDir(DIR _DirType) { return m_RelativeDir[(UINT)_DirType]; }

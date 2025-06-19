@@ -34,6 +34,7 @@ public:
 	void ClearCamera() { m_vecCam.clear(); }
 	void ResetEditorCamPos();
 	CGameObject* GetUICam() { return m_UICam; }
+	CGameObject* GetEditorCam() { return m_EditorCam; }
 	CCamera* GetCurrentCam() { return m_CurrentCam; }
 
 public:

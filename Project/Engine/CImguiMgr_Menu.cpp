@@ -12,6 +12,8 @@
 #include "COutliner.h"
 #include "CContentViewer.h"
 #include "CMaterial.h"
+#include "CGameObject.h"
+#include "CTransform.h"
 
 void CImguiMgr::DebugMenuBar()
 {
@@ -109,6 +111,22 @@ void CImguiMgr::DebugMenuBar()
                     ImGui::EndMenu();
                 }
 
+                ImGui::EndMenu();
+            }
+
+            if (ImGui::BeginMenu("Camera"))
+            {
+                if (ImGui::MenuItem("Position Initialize"))
+                {
+                    if (CGameObject* pGO = CRenderMgr::GetInst()->GetEditorCam(); pGO)
+                    {
+                        if (CTransform* pTrans = pGO->Transform(); pTrans)
+                        {
+                            pTrans->SetRelativePos(Vec3(0, 0, 0));
+                            pTrans->SetRelativeRot(Vec4(0.f, 0.f, 0.f, 1.f));
+                        }
+                    }
+                }
                 ImGui::EndMenu();
             }
 

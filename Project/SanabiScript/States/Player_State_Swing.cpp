@@ -94,7 +94,7 @@ void Player_State_Swing::Begin()
 
 	if (grabinfo.w > 150.f)
 	{
-		Vec3 dir = m_GrabPos - m_Owner->GetOwner()->Transform()->GetWorldPos();
+		Vec3 dir = m_GrabPos - m_Owner->GetOwner()->Transform()->GetWorldTrans();
 		dir.Normalize();
 		m_Owner->GetOwner()->PhysxActor()->SetLinearVelocity(PxVec3(dir.x, 0.f, 0.f) * 500.f);
 	}

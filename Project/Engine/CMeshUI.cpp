@@ -89,7 +89,7 @@ void CMeshUI::Render_Ast()
 	if (ImGui::Button("Init"))
 	{
 		m_VertexObject->Transform()->SetRelativePos(Vec3(0, 0, 0));
-		m_VertexObject->Transform()->SetRelativeRot(Vec3(0, 0, 0));
+		m_VertexObject->Transform()->SetRelativeRot(Vec4(0, 0, 0, 1));
 	}
 }
 
@@ -130,12 +130,18 @@ void CMeshUI::VertexRender()
 	if (ImGui::IsItemHovered() && ImGui::IsMouseDragging(ImGuiMouseButton_Left))
 	{
 		Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
-		Vec3 vObjDir = m_VertexObject->Transform()->GetRelativeRot();
 
-		vObjDir.y += vDrag.x * EngineDT * 1000.f;
-		vObjDir.x += vDrag.y * EngineDT * 1000.f;
+		//Vec3 vObjDir = m_VertexObject->Transform()->GetRelativeRotEuler();
+		//vObjDir.y += vDrag.x * EngineDT * 1000.f;
+		//vObjDir.x += vDrag.y * EngineDT * 1000.f;
+		//m_VertexObject->Transform()->SetRelativeRot(vObjDir);
 
-		m_VertexObject->Transform()->SetRelativeRot(vObjDir);
+		Vec4 vQuat = m_VertexObject->Transform()->GetRelativeRotQuat();
+		Vec4 qX = XMQuaternionRotationAxis(m_VertexObject->Transform()->GetRelativeDir(DIR::RIGHT), XMConvertToRadians(vDrag.x * EngineDT * 1000.f));
+		Vec4 qY = XMQuaternionRotationAxis(Vec3(0, 1, 0), XMConvertToRadians(vDrag.y * EngineDT * 1000.f));
+		Vec4 vRotQuat = XMQuaternionMultiply(vQuat, XMQuaternionMultiply(qX, qY));
+		m_VertexObject->Transform()->SetRelativeRot(vRotQuat);
+
 		ImGui::Text("Dragging on the button!");
 	}
 }

@@ -105,7 +105,7 @@ void BattleGateScript::Trigger(CGameObject* _Other)
 	if (m_bGateUsed)
 		return;
 
-	Vec3 dir = _Other->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
+	Vec3 dir = _Other->Transform()->GetWorldTrans() - GetOwner()->Transform()->GetWorldTrans();
 
 	if (!((dir.x > 0 && m_bVert) || (dir.y > 0 && !m_bVert)))
 		return;

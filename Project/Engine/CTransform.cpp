@@ -29,43 +29,43 @@ void CTransform::FinalTick()
 {
 	CalcMatWorld();
 
-	// 부모 오브젝트가 있는 경우, 부모의 월드행렬을 누적시킨다.
-	CGameObject* pParent = GetOwner()->GetParent();
-	if (pParent)
-	{
-		if (!m_IndependentScale)
-		{
-			Vec3 vParentScale = pParent->Transform()->GetWorldScale();
-			m_matWorld *= XMMatrixScaling(vParentScale.x, vParentScale.y, vParentScale.z);
-		}
-		if (!m_IndependentRot)
-		{
-			Vec3 vParentRot = pParent->Transform()->GetWorldRot();
-			m_matWorld *= XMMatrixRotationQuaternion(vParentRot);
-		}
-		if (!m_IndependentTrans)
-		{
-			Vec3 vParentTrans = pParent->Transform()->GetWorldTrans();
-			m_matWorld *= XMMatrixTranslation(vParentTrans.x, vParentTrans.y, vParentTrans.z);
-		}
+	//// 부모 오브젝트가 있는 경우, 부모의 월드행렬을 누적시킨다.
+	//CGameObject* pParent = GetOwner()->GetParent();
+	//if (pParent)
+	//{
+	//	if (!m_IndependentScale)
+	//	{
+	//		Vec3 vParentScale = pParent->Transform()->GetWorldScale();
+	//		m_matWorld *= XMMatrixScaling(vParentScale.x, vParentScale.y, vParentScale.z);
+	//	}
+	//	if (!m_IndependentRot)
+	//	{
+	//		Vec3 vParentRot = pParent->Transform()->GetWorldRot();
+	//		m_matWorld *= XMMatrixRotationQuaternion(vParentRot);
+	//	}
+	//	if (!m_IndependentTrans)
+	//	{
+	//		Vec3 vParentTrans = pParent->Transform()->GetWorldTrans();
+	//		m_matWorld *= XMMatrixTranslation(vParentTrans.x, vParentTrans.y, vParentTrans.z);
+	//	}
 
-		m_WorldDir[(UINT)DIR::RIGHT] = Vec3(1.f, 0.f, 0.f);
-		m_WorldDir[(UINT)DIR::UP] = Vec3(0.f, 1.f, 0.f);
-		m_WorldDir[(UINT)DIR::FRONT] = Vec3(0.f, 0.f, 1.f);
+	//	m_WorldDir[(UINT)DIR::RIGHT] = Vec3(1.f, 0.f, 0.f);
+	//	m_WorldDir[(UINT)DIR::UP] = Vec3(0.f, 1.f, 0.f);
+	//	m_WorldDir[(UINT)DIR::FRONT] = Vec3(0.f, 0.f, 1.f);
 
-		for (int i = 0; i < 3; ++i)
-		{
-			XMVECTOR vScale;
-			XMVECTOR vRot;
-			XMVECTOR vTrans;
-			XMMatrixDecompose(&vScale, &vRot, &vTrans, m_matWorld);
-			Vec3 Scale = vScale;
-			Matrix matScaleInv = XMMatrixInverse(nullptr, XMMatrixScaling(Scale.x, Scale.y, Scale.z));
+	//	for (int i = 0; i < 3; ++i)
+	//	{
+	//		XMVECTOR vScale;
+	//		XMVECTOR vRot;
+	//		XMVECTOR vTrans;
+	//		XMMatrixDecompose(&vScale, &vRot, &vTrans, m_matWorld);
+	//		Vec3 Scale = vScale;
+	//		Matrix matScaleInv = XMMatrixInverse(nullptr, XMMatrixScaling(Scale.x, Scale.y, Scale.z));
 
-			m_WorldDir[i] = XMVector3TransformNormal(m_WorldDir[i], matScaleInv * m_matWorld);
-			m_WorldDir[i].Normalize();
-		}
-	}
+	//		m_WorldDir[i] = XMVector3TransformNormal(m_WorldDir[i], matScaleInv * m_matWorld);
+	//		m_WorldDir[i].Normalize();
+	//	}
+	//}
 }
 
 // SIMD
@@ -90,26 +90,26 @@ void CTransform::SetRelativePos(Vec3 _Pos)
 	if (PhysxActor())
 	{
 		CalcMatWorld();
-		PhysxActor()->UpdatePosition(GetWorldPos());
+		PhysxActor()->UpdatePosition(GetWorldTrans());
 	}
 }
 
-Vec3 CTransform::GetWorldPos()
+Vec3 CTransform::GetWorldTrans()
 {
-	Vec3 vWorldPos = m_RelativePos;
+	Vec3 vWorldTrans = m_RelativePos;
 
 	CGameObject* pParent = GetOwner()->GetParent();
 	bool bIndependent = m_IndependentTrans;
 
 	while (pParent && !bIndependent)
 	{
-		vWorldPos += pParent->Transform()->GetRelativePos();
+		vWorldTrans += pParent->Transform()->GetRelativePos();
 
 		bIndependent = pParent->Transform()->m_IndependentTrans;
 		pParent = pParent->GetParent();
 	}
 
-	return vWorldPos;
+	return vWorldTrans;
 }
 
 Vec3 CTransform::GetWorldScale()
@@ -130,16 +130,17 @@ Vec3 CTransform::GetWorldScale()
 	return vWorldScale;
 }
 
-Vec3 CTransform::GetWorldRot()
+Vec4 CTransform::GetWorldRot()
 {
-	Vec3 vWorldRot = m_RelativeRot;
+	Vec4 vWorldRot = m_RelativeRot;
 
 	CGameObject* pParent = GetOwner()->GetParent();
 	bool bIndependent = m_IndependentRot;
 
 	while (pParent && !bIndependent)
 	{
-		vWorldRot *= pParent->Transform()->GetRelativeRot();
+		// (누적된 쿼터니언) * (부모의 쿼터니언)
+		vWorldRot = XMQuaternionMultiply(pParent->Transform()->GetRelativeRotQuat(), vWorldRot);
 
 		bIndependent = pParent->Transform()->m_IndependentRot;
 		pParent = pParent->GetParent();
@@ -148,30 +149,13 @@ Vec3 CTransform::GetWorldRot()
 	return vWorldRot;
 }
 
-Vec3 CTransform::GetWorldTrans()
-{
-	Vec3 vWorldTrans = m_RelativePos;
-
-	CGameObject* pParent = GetOwner()->GetParent();
-	bool bIndependent = m_IndependentTrans;
-
-	while (pParent && !bIndependent)
-	{
-		vWorldTrans += pParent->Transform()->GetRelativePos();
-
-		bIndependent = pParent->Transform()->m_IndependentTrans;
-		pParent = pParent->GetParent();
-	}
-
-	return vWorldTrans;
-}
-Vec3 CTransform::GetRelativeRot()
+Vec3 CTransform::GetRelativeRotEuler()
 {
 	/*float rad = acos(m_RelativeRot.w) * 2;
 	float pitch = asin(2 * (m_RelativeRot.w * m_RelativeRot.y - m_RelativeRot.x * m_RelativeRot.z));
 	float yaw = atan2(2 * (m_RelativeRot.w * m_RelativeRot.x + m_RelativeRot.y * m_RelativeRot.z), 1 - 2 * (pow(m_RelativeRot.y, 2) + pow(m_RelativeRot.z, 2)));
 	float roll = atan2(2 * (m_RelativeRot.w * m_RelativeRot.z + m_RelativeRot.x * m_RelativeRot.y), 1 - 2 * (pow(m_RelativeRot.z, 2) + pow(m_RelativeRot.x, 2)));*/
-
+	
 	const Vec4& q = m_RelativeRot;
 
 	// ZYX 회전 순서 (Roll → Yaw → Pitch)
@@ -232,20 +216,21 @@ int CTransform::Save(fstream& _Stream)
 void CTransform::CalcMatWorld()
 {
 	// 위치, 크기, 회전 정보를 월드행렬로 변환
-	// Scale 
-	Matrix matScale = XMMatrixScaling(m_RelativeScale.x, m_RelativeScale.y, m_RelativeScale.z);
+	// Scale
+	Vec3 worldScale = GetWorldScale();
+	Matrix matScale = XMMatrixScaling(worldScale.x, worldScale.y, worldScale.z);
+	//Matrix matScale = XMMatrixScaling(m_RelativeScale.x, m_RelativeScale.y, m_RelativeScale.z);
 
 	// Rotation
-	//Matrix matRotationP = XMMatrixRotationX(m_RelativeRot.x);
-	//Matrix matRotationY = XMMatrixRotationY(m_RelativeRot.y);
-	//Matrix matRotationR = XMMatrixRotationZ(m_RelativeRot.z);
-	Matrix matRot = XMMatrixRotationQuaternion(m_RelativeRot);
+	Matrix matRot = XMMatrixRotationQuaternion(GetWorldRot());
+	//Matrix matRot = XMMatrixRotationQuaternion(m_RelativeRot);
 
 	// Translation
-	Matrix matTrans = XMMatrixTranslation(m_RelativePos.x, m_RelativePos.y, m_RelativePos.z);
+	Vec3 worldTrans = GetWorldTrans();
+	Matrix matTrans = XMMatrixTranslation(worldTrans.x, worldTrans.y, worldTrans.z);
+	//Matrix matTrans = XMMatrixTranslation(m_RelativePos.x, m_RelativePos.y, m_RelativePos.z);
 
 	// 크기 회전 이동 부모 순서로 적용
-	//Matrix matRot = matRotationR * matRotationP * matRotationY;
 	m_matWorld = matScale * matRot * matTrans;
 
 	// 오브젝트의 방향정보 계산
@@ -271,22 +256,18 @@ void CTransform::SetRelativeRot(Vec4 _RotationQuat)
 
 void CTransform::SetRelativeRot(Vec3 _RotationDeg)
 {
-	if (_RotationDeg.y > 10)
-		int a = 0;
 	Vec3 rad = _RotationDeg / 180.f * XM_PI;
-	Vec4 QuatP(sin(rad.x / 2.f), 0, 0, cos(rad.x/ 2.f));
-	Vec4 QuatY(0, sin(rad.y / 2.f), 0, cos(rad.y/ 2.f));
-	Vec4 QuatR(0, 0, sin(rad.z / 2.f), cos(rad.z / 2.f));
-	m_RelativeRot = XMQuaternionMultiply(QuatP, XMQuaternionMultiply(QuatY, QuatR));
-	Vec3 v = GetRelativeRot();
+	Vec4 vQuatX = XMQuaternionRotationAxis(Vec3(1, 0, 0), rad.x);
+	Vec4 vQuatY = XMQuaternionRotationAxis(Vec3(0, 1, 0), rad.y);
+	Vec4 vQuatZ = XMQuaternionRotationAxis(Vec3(0, 0, 1), rad.z);
+	m_RelativeRot = XMQuaternionMultiply(vQuatX, XMQuaternionMultiply(vQuatY, vQuatZ));
+
+	// 강체 보유 시 피직스에 회전정보 적용
 	if (PhysxActor())
 		PhysxActor()->UpdateRotation(m_RelativeRot);
 }
 
 void CTransform::SetRelativeRot(float _xDeg, float _yDeg, float _zDeg)
 {
-	//m_RelativeRot = Vec3(_xDeg, _yDeg, _zDeg) / 180.f * XM_PI;
-	m_RelativeRot = XMQuaternionRotationRollPitchYaw(_xDeg / 180.f * XM_PI, _yDeg / 180.f * XM_PI, _zDeg / 180.f * XM_PI);
-	if (PhysxActor())
-		PhysxActor()->UpdateRotation(m_RelativeRot);
+	SetRelativeRot(Vec3(_xDeg, _yDeg, _zDeg));
 }

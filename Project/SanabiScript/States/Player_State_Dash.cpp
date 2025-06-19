@@ -51,7 +51,7 @@ void Player_State_Dash::Begin()
 	m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Play(L"Flipbook\\SNBArm_ExcDash.flip", 10, false);
 
 	// 플레이어 기준 커서 방향 계산
-	Vec2 vec = GetScreenFromWorld(m_Owner->GetOwner()->Transform()->GetWorldPos(), CRenderMgr::GetInst()->GetCurrentCam());;
+	Vec2 vec = GetScreenFromWorld(m_Owner->GetOwner()->Transform()->GetWorldTrans(), CRenderMgr::GetInst()->GetCurrentCam());;
 	Vec3 origin(vec.x, vec.y, 0.f);
 	vec = CKeyMgr::GetInst()->GetMousePos();
 	Vec3 target(vec.x, vec.y, 0.f);

@@ -28,10 +28,11 @@ void Turret_State_Aiming::Tick()
 	if (pPlayer)
 	{
 		// 플레이어 방향으로 터렛 총 부분 회전 적용
-		Vec3 Dir = pPlayer->Transform()->GetWorldPos() - m_Owner->GetOwner()->Transform()->GetWorldPos();
+		Vec3 Dir = pPlayer->Transform()->GetWorldTrans() - m_Owner->GetOwner()->Transform()->GetWorldTrans();
 		Dir.Normalize();
-		Vec3 axis = XMVector3Cross(Vec3(0, 1, 0), Dir);
-		float angle = acosf(XMVectorGetX(XMVector3Dot(Vec3(0, 1, 0), Dir)));
+		Vec3 TurretDir = m_Owner->GetOwner()->Transform()->GetWorldDir(DIR::UP);
+		Vec3 axis = XMVector3Cross(TurretDir, Dir);
+		float angle = acosf(XMVectorGetX(XMVector3Dot(TurretDir, Dir)));
 		Vec4 quat = XMQuaternionRotationAxis(axis.Normalize(), angle);
 		m_Owner->GetOwner()->FindChild(L"TurretGun")->Transform()->SetRelativeRot(quat);
 	}
