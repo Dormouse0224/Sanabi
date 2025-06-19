@@ -70,6 +70,12 @@ void BattleGate_State_Close::Begin()
 
 void BattleGate_State_Close::End()
 {
-	m_Owner->GetOwner()->PhysxActor()->DeleteCollider(m_Collider);
+	if (CGameObject* pOwner = m_Owner->GetOwner(); pOwner)
+	{
+		if (CPhysxActor* pPxActor = pOwner->PhysxActor(); pPxActor)
+		{
+			pPxActor->DeleteCollider(m_Collider);
+		}
+	}
 	m_Collider = nullptr;
 }

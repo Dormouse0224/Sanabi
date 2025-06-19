@@ -89,7 +89,13 @@ void Player_State_Climb::Begin()
 void Player_State_Climb::End()
 {
 	// 중력 적용
-	m_Owner->GetOwner()->PhysxActor()->SetGravity(true);
+	if (CGameObject* pOwner = m_Owner->GetOwner(); pOwner)
+	{
+		if (CPhysxActor* pPxActor = pOwner->PhysxActor(); pPxActor)
+		{
+			pPxActor->SetGravity(true);
+		}
+	}
 	if (m_bJumpOut)
 	{
 		Vec3 moveVel(0.0f);
