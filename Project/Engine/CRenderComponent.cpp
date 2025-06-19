@@ -39,8 +39,11 @@ void CRenderComponent::SetDynamic(bool _UsingDynamic)
 	}
 	else
 	{
-		delete m_DynamicMtrl.Get();
-		m_UsingDynamic = _UsingDynamic;
+		if (m_UsingDynamic)
+		{
+			delete m_DynamicMtrl.Get();
+			m_UsingDynamic = _UsingDynamic;
+		}
 	}
 }
 
@@ -49,6 +52,8 @@ AssetPtr<CMaterial> CRenderComponent::GetMaterial()
 	if (CLevelMgr::GetInst()->GetCurrentLevel() != nullptr && LEVEL_STATE::PLAY == CLevelMgr::GetInst()->GetCurrentLevel()->GetState()
 		&& !CAssetMgr::GetInst()->GetLoading())
 		SetDynamic(true);
+	//else
+	//	SetDynamic(false);
 
 	if (m_UsingDynamic)
 		return m_DynamicMtrl;

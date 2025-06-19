@@ -120,6 +120,7 @@ void CRenderMgr::Render()
 			m_vecCam[i]->Render();
 		}
 	}
+	UIRender();
 }
 
 void CRenderMgr::UIRender()

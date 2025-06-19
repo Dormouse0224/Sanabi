@@ -1,5 +1,5 @@
 #pragma once
-#include "CComponent.h"
+#include "CRenderComponent.h"
 
 class CFont;
 
@@ -15,7 +15,7 @@ struct tUITextDesc
 };
 
 class CUICom :
-    public CComponent
+    public CRenderComponent
 {
     friend class CUIComUI;
 public:

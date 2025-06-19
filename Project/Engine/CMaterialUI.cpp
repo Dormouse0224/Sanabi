@@ -109,7 +109,7 @@ void CMaterialUI::Render_Ast()
 			case FLOAT_2:
 			case FLOAT_3:
 			{
-				if (ImGui::InputFloat(label.c_str(), &Const.fArr[data->m_Param - FLOAT_0]))
+				if (ImGui::DragFloat(label.c_str(), &Const.fArr[data->m_Param - FLOAT_0], 0.001f))
 				{
 					pMaterial->SetScalarParam(data->m_Param, Const.fArr[data->m_Param - FLOAT_0]);
 				}
@@ -121,7 +121,7 @@ void CMaterialUI::Render_Ast()
 			case VEC2_3:
 			{
 				float vec[2] = { Const.v2Arr[data->m_Param - VEC2_0].x, Const.v2Arr[data->m_Param - VEC2_0].y };
-				if (ImGui::InputFloat2(label.c_str(), vec))
+				if (ImGui::DragFloat2(label.c_str(), vec, 0.001f))
 				{
 					pMaterial->SetScalarParam(data->m_Param, Vec2(vec));
 				}
@@ -134,7 +134,7 @@ void CMaterialUI::Render_Ast()
 			{
 				Vec4 v4 = Const.v4Arr[data->m_Param - VEC4_0];
 				float vec[4] = { v4.x, v4.y, v4.z, v4.w };
-				if (ImGui::InputFloat4(label.c_str(), vec))
+				if (ImGui::DragFloat4(label.c_str(), vec, 0.001f))
 				{
 					pMaterial->SetScalarParam(data->m_Param, Vec2(vec));
 				}

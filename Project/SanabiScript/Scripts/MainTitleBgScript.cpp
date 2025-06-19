@@ -34,14 +34,20 @@ void MainTitleBgScript::Tick()
 	{
 		if (CFSM_State* pState = pObj->FSM()->GetCurrentState(); pState)
 		{
+			// 만약 현재 상태가 루프 상태인 경우 타이머값을 0에서 1까지 단계적으로 증가시킴
 			if (pState->GetName() == L"class MainTitle_Bg_State_Loop")
 			{
-				if (m_Timer < 2)
+				if (m_Timer < 1)
 					m_Timer += DT;
 				else
-					m_Timer = 2.f;
+					m_Timer = 1.f;
 			}
 		}
 	}
-	GetOwner()->GetRenderComponent()->GetMaterial()->SetScalarParam(FLOAT_0, m_Timer);
+
+	// 머티리얼의 알파 틴트값을 타이머값으로 설정 (0 ~ 1)
+	if (GetOwner()->GetRenderComponent()->GetUsingDynamic())
+	{
+		GetOwner()->GetRenderComponent()->GetMaterial()->SetScalarParam(FLOAT_0, m_Timer);
+	}
 }

@@ -31,6 +31,7 @@ public:
     AssetPtr<CMesh> GetMesh() { return m_Mesh; }
     // 현재 RenderComponent 의 동적 재질 사용 여부에 따라 기본 재질 또는 동적 재질을 반환합니다.
     AssetPtr<CMaterial> GetMaterial();
+    bool GetUsingDynamic() { return m_UsingDynamic; }
     
 
     virtual void Render() = 0;

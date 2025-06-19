@@ -8,7 +8,7 @@
 #include "CFont.h"
 
 CUICom::CUICom()
-	:CComponent(COMPONENT_TYPE::UICOM)
+	:CRenderComponent(COMPONENT_TYPE::UICOM)
 	, m_ClickEvent(nullptr)
 	, m_KeydownEvent(nullptr)
 	, m_MouseHover(false)
@@ -18,7 +18,7 @@ CUICom::CUICom()
 }
 
 CUICom::CUICom(const CUICom& _Other)
-	:CComponent(_Other)
+	:CRenderComponent(_Other)
 	, m_ClickEvent(_Other.m_ClickEvent)
 	, m_KeydownEvent(_Other.m_KeydownEvent)
 	, m_MouseHover(false)

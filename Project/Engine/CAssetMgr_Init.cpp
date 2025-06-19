@@ -566,6 +566,11 @@ void CAssetMgr::CreateEngineGraphicShader()
 	pShader->SetDSType(DS_TYPE::NO_WRITE);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	pShader->SetTexData(TEX_0, "UI Texture");
+	pShader->SetConstData(FLOAT_0, "Alpha Tint");
+	pShader->SetConstData(FLOAT_1, "Scale X");
+	pShader->SetConstData(FLOAT_2, "Scale Y");
+	pShader->SetConstData(VEC2_0, "Screen Pos (NDC)");
 	pShader->SetEngineAsset(true);
 	AddAsset(L"EA_UIShader", pShader.Get());
 
