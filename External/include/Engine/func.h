@@ -26,3 +26,5 @@ void Delete_Vec(std::vector<T*>& _vec)
 
 	_vec.clear();
 }
+
+void enumSizeCheck();

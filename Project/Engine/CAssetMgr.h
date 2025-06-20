@@ -50,6 +50,8 @@ public:
 	void ContentObserve();
 	void ContentReload();
 
+	void UpdateAsset();
+
 private:
 	template<typename T>
 	AssetPtr<T> FindAsset(const wstring& _RelativePath);

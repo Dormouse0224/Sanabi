@@ -63,7 +63,7 @@ AssetPtr<CMaterial> CMaterial::Create(wstring _Name)
 	return pNewMtrl;
 }
 
-int CMaterial::Save(const wstring& _FileName)
+int CMaterial::Save(const wstring& _FileName, bool _Update)
 {
 	std::filesystem::path path = CPathMgr::GetContentDir() + std::wstring(L"Material\\") + _FileName + std::wstring(L".mtrl");
 	CPathMgr::CreateParentDir(path);

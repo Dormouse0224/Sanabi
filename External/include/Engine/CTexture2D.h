@@ -54,7 +54,7 @@ private:
     int Create(ComPtr<ID3D11Texture2D> _Tex2D);
 
 public:
-    virtual int Save(const wstring& _FilePath) override { MessageBoxW(nullptr, L"2D텍스쳐는 파일 저장을 지원하지 않습니다.", L"Texture2D Save Error", MB_OK); return S_OK; }
+    virtual int Save(const wstring& _FilePath, bool _Update = false) override { MessageBoxW(nullptr, L"2D텍스쳐는 파일 저장을 지원하지 않습니다.", L"Texture2D Save Error", MB_OK); return S_OK; }
     virtual int Load(const wstring& _FilePath) override;
 
 };

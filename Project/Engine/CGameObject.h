@@ -79,7 +79,7 @@ public:
     void FinalTick();
     void Render();
 
-    int Save(fstream& _Stream);
+    int Save(fstream& _Stream, bool _Update = false);
     int Load(fstream& _Stream);
 };  
 

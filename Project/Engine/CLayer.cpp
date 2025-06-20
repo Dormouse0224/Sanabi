@@ -133,7 +133,7 @@ void CLayer::UnRegisterParentObject(CGameObject* _Parent)
 	}
 }
 
-int CLayer::Save(fstream& _File)
+int CLayer::Save(fstream& _File, bool _Update)
 {
 	if (!_File.is_open())
 		return E_FAIL;
@@ -144,7 +144,7 @@ int CLayer::Save(fstream& _File)
 	_File.write(reinterpret_cast<char*>(&count), sizeof(int));
 	for (int i = 0; i < count; ++i)
 	{
-		m_vecParentObjects[i]->Save(_File);
+		m_vecParentObjects[i]->Save(_File, _Update);
 	}
 
 	return S_OK;

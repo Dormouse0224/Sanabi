@@ -27,7 +27,7 @@ public:
     Vec2 GetSlice() { return m_Slice; }
 
 public:
-    virtual int Save(const wstring& _FileName) override;
+    virtual int Save(const wstring& _FileName, bool _Update = false) override;
     virtual int Load(const wstring& _FilePath) override;
 
     static AssetPtr<CSprite> Create(const wstring& _Name);

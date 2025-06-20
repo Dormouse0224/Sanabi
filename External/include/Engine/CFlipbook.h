@@ -89,7 +89,7 @@ public:
     void SetSceneType(SceneType _Type) { m_SceneType = _Type; }
 
 public:
-    virtual int Save(const wstring& _FileName) override;
+    virtual int Save(const wstring& _FileName, bool _Update = false) override;
     virtual int Load(const wstring& _FilePath) override;
 
     static AssetPtr<CFlipbook> Create(const wstring& _Name);

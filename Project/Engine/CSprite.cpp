@@ -37,7 +37,7 @@ void CSprite::SetSlice(Vec2 _SlicePixel)
     m_Slice = _SlicePixel / Vec2(m_Atlas->GetWidth(), m_Atlas->GetHeight());
 }
 
-int CSprite::Save(const wstring& _FileName)
+int CSprite::Save(const wstring& _FileName, bool _Update)
 {
     std::filesystem::path path = CPathMgr::GetContentDir() + std::wstring(L"Sprite\\") + _FileName + std::wstring(L".sprite");
     CPathMgr::CreateParentDir(path);

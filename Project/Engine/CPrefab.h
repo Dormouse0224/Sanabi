@@ -24,7 +24,7 @@ public:
     CGameObject* Instantiate();
 
 
-    virtual int Save(const wstring& _FileName);
+    virtual int Save(const wstring& _FileName, bool _Update = false);
     virtual int Load(const wstring& _FilePath);
 };
 

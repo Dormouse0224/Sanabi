@@ -91,7 +91,7 @@ void CMesh::Render_Particle(UINT _Count)
 	CONTEXT->DrawIndexedInstanced(m_IdxCount, _Count, 0, 0, 0);
 }
 
-int CMesh::Save(const wstring& _FileName)
+int CMesh::Save(const wstring& _FileName, bool _Update)
 {
 	std::filesystem::path path = CPathMgr::GetContentDir() + std::wstring(L"Mesh\\") + _FileName + std::wstring(L".mesh");
 	CPathMgr::CreateParentDir(path);

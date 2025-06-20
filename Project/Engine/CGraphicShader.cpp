@@ -232,7 +232,7 @@ void CGraphicShader::Binding()
 
 }
 
-int CGraphicShader::Save(const wstring& _FileName)
+int CGraphicShader::Save(const wstring& _FileName, bool _Update)
 {
 	std::filesystem::path path = CPathMgr::GetContentDir() + std::wstring(L"GraphicShader\\") + _FileName + std::wstring(L".shader");
 	CPathMgr::CreateParentDir(path);

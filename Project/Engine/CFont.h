@@ -14,7 +14,7 @@ private:
 
 public:
 
-    virtual int Save(const wstring& _FileName) { return S_OK; }
+    virtual int Save(const wstring& _FileName, bool _Update = false) { return S_OK; }
     virtual int Load(const wstring& _FilePath);
 
     void Render(wstring _Text, Vec2 _Pos, Vec4 _Color, float _Rot, Vec2 _Origin, float _Scale, float _Depth);

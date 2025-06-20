@@ -165,14 +165,14 @@ void CImguiMgr::SaveLevelPopup()
         ImGui::Text("Save current level as file.");
         ImGui::NewLine();
 
-        // 오브젝트 이름 입력
+        // 레벨 파일 이름 입력
         ImGui::Text("Name: ");
         ImGui::SameLine(tab);
         static char Name[255] = {};
         ImGui::InputText("##Name", Name, 255);
         std::wstring WName = to_wstr(std::string(Name));
 
-        if (ImGui::Button("Add"))
+        if (ImGui::Button("Save"))
         {
             CLevelMgr::GetInst()->GetCurrentLevel()->Save(WName);
             memset(Name, 0, sizeof(Name));

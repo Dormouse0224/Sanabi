@@ -49,7 +49,7 @@ private:
     virtual void Clear() = 0;
 
 public:
-    virtual int Save(const wstring& _FilePath) { MessageBoxW(nullptr, L"컴퓨트 셰이더는 파일 저장을 지원하지 않습니다.", L"Compute Shader Save Error", MB_OK); return S_OK; }
+    virtual int Save(const wstring& _FilePath, bool _Update = false) { MessageBoxW(nullptr, L"컴퓨트 셰이더는 파일 저장을 지원하지 않습니다.", L"Compute Shader Save Error", MB_OK); return S_OK; }
     virtual int Load(const wstring& _FilePath) { return S_OK; }
 };
 

@@ -33,7 +33,7 @@ public:
     UINT GetVtxCount() { return m_VtxCount; }
     UINT GetIdxCount() { return m_IdxCount; }
 
-    virtual int Save(const wstring& _FileName) override;
+    virtual int Save(const wstring& _FileName, bool _Update = false) override;
     virtual int Load(const wstring& _FilePath) override;
 
 };

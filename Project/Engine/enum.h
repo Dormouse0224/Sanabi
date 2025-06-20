@@ -53,9 +53,6 @@ enum class COMPONENT_TYPE
 	CAMERA,
 	PHYSXACTOR,
 	FSM,
-	UICOM,
-	COLLIDER3D,
-	BOUNDINGBOX,
 
 	// Rendering Component
 	MESHRENDER,			// 가장 기본적인 RenderComponent
@@ -66,6 +63,7 @@ enum class COMPONENT_TYPE
 	SKYBOX,				// 3D 배경
 	DECAL,				// 문신
 	LANDSCAPE,			// 3D 지형
+	UICOM,
 
 	// Additional
 	LIGHT,
@@ -75,6 +73,33 @@ enum class COMPONENT_TYPE
 	SCRIPT,				// 대본, 역할, 컨텐츠
 };
 extern std::wstring COMPONENT_TYPE_WSTR[];
+
+enum class COMPONENT_TYPE_SAVE
+{
+	TRANSFORM,
+	CAMERA,
+	PHYSXACTOR,
+	FSM,
+
+	// Rendering Component
+	MESHRENDER,			// 가장 기본적인 RenderComponent
+	SPRITERENDER,		// Sprite 하나 렌더링하는 컴포넌트
+	FLIPBOOKRENDER,		// Flipbook 재생 컴포넌트
+	TILERENDER,			// 타일맵 렌더링
+	PARTICLERENDER,		// 입자 렌더링
+	SKYBOX,				// 3D 배경
+	DECAL,				// 문신
+	LANDSCAPE,			// 3D 지형
+	UICOM,
+
+	// Additional
+	LIGHT,
+
+	COMPONENT_END,
+
+	SCRIPT,				// 대본, 역할, 컨텐츠
+};
+extern std::unordered_map<std::wstring, COMPONENT_TYPE_SAVE> COMPONENT_TYPE_SAVE_MAP;
 
 enum class ASSET_TYPE
 {

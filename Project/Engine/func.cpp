@@ -74,3 +74,8 @@ Vec2 GetScreenFromWorld(Vec3 _WorldPos, CCamera* _Cam)
 	Vec2 screen(CEngine::GetInst()->GetResolution().x * (ndc.x * 0.5f + 0.5f), CEngine::GetInst()->GetResolution().y * (-ndc.y * 0.5f + 0.5f));
 	return screen;
 }
+
+void enumSizeCheck()
+{
+	assert(COMPONENT_TYPE_SAVE_MAP.size() == static_cast<int>(COMPONENT_TYPE_SAVE::COMPONENT_END) + 2);
+}

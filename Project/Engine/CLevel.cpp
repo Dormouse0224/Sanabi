@@ -120,10 +120,19 @@ void CLevel::Register()
 	}
 }
 
-int CLevel::Save(wstring _FileName)
+int CLevel::Save(wstring _FileName, bool _Update)
 {
 	wstring RelativePath = std::wstring(L"Level\\") + _FileName + std::wstring(L".level");
-	std::filesystem::path path = CPathMgr::GetContentDir() + RelativePath, backup = CPathMgr::GetContentDir() + RelativePath;
+	wstring SaveDir = CPathMgr::GetContentDir();
+	if (_Update)
+	{
+		// 버전 업데이트 신규 파일인 경우 업데이트 디렉토리에 저장
+		std::filesystem::path parentDir = SaveDir;
+		SaveDir = parentDir.parent_path().parent_path();
+		SaveDir += L"\\Update\\";
+	}
+	std::filesystem::path path = SaveDir + RelativePath;
+	std::filesystem::path backup = SaveDir + RelativePath;
 	CPathMgr::CreateParentDir(path);
 
 	// 저장 실패를 대비해 백업
@@ -138,7 +147,7 @@ int CLevel::Save(wstring _FileName)
 
 	for (int i = 0; i < static_cast<int>(LAYER::END); ++i)
 	{
-		if (FAILED(m_Layer[i]->Save(file)))
+		if (FAILED(m_Layer[i]->Save(file, _Update)))
 			return E_FAIL;
 	}
 

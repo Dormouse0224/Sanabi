@@ -5,6 +5,7 @@
 #include "CLevelMgr.h"
 #include "CTimeMgr.h"
 #include "CRenderMgr.h"
+#include "CAssetMgr.h"
 
 #include "CEngine.h"
 #include "CLevel.h"
@@ -26,6 +27,11 @@ void CImguiMgr::DebugMenuBar()
                 if (ImGui::MenuItem("Asset Load", nullptr))
                 {
                     LoadAsset();
+                }
+
+                if (ImGui::MenuItem("Asset Update", nullptr))
+                {
+                    CAssetMgr::GetInst()->UpdateAsset();
                 }
 
 				if (ImGui::BeginMenu("Asset Create"))

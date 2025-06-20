@@ -37,6 +37,9 @@ int CEngine::Init(HINSTANCE _Inst, UINT _Width, UINT _Height)
     m_hInst = _Inst;
     m_vResolution = Vec2(_Width, _Height);
 
+    // enum extern 컨테이너 일치 확인
+    enumSizeCheck();
+
     if (FAILED(CreateMainWindow()))
     {
         return E_FAIL;

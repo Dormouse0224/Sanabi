@@ -38,7 +38,7 @@ public:
     void UnRegisterParentObject(CGameObject* _Parent);
     void ClearVecObjects() { m_vecObjects.clear(); }
 
-    int Save(fstream& _File);
+    int Save(fstream& _File, bool _Update = false);
     int Load(fstream& _File);
 
 };

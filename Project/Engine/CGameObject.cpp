@@ -215,7 +215,7 @@ void CGameObject::Render()
 	
 }
 
-int CGameObject::Save(fstream& _Stream)
+int CGameObject::Save(fstream& _Stream, bool _Update)
 {
 	// m_RenderCom 는 컴포넌트 로드 시 해당 컴포넌트가 렌더 컴포넌트면 오브젝트에 추가하면서 자동으로 등록됨.
 
@@ -235,7 +235,16 @@ int CGameObject::Save(fstream& _Stream)
 	{
 		if (m_Com[i])
 		{
-			_Stream.write(reinterpret_cast<char*>(&i), sizeof(int));
+			int comIdx = i;
+			if (_Update)
+			{
+				auto iter = COMPONENT_TYPE_SAVE_MAP.find(COMPONENT_TYPE_WSTR[i]);
+				if (iter == COMPONENT_TYPE_SAVE_MAP.end())
+					return E_FAIL;
+
+				comIdx = (int)iter->second;
+			}
+			_Stream.write(reinterpret_cast<char*>(&comIdx), sizeof(int));
 			if (FAILED(m_Com[i]->Save(_Stream)))
 				return E_FAIL;
 		}
@@ -262,7 +271,7 @@ int CGameObject::Save(fstream& _Stream)
 	count = m_vecChild.size();
 	_Stream.write(reinterpret_cast<char*>(&count), sizeof(int));
 	for (int i = 0; i < count; ++i)
-		m_vecChild[i]->Save(_Stream);
+		m_vecChild[i]->Save(_Stream, _Update);
 
 	return S_OK;
 }

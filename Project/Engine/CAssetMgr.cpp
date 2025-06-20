@@ -3,6 +3,8 @@
 
 #include "CPathMgr.h"
 
+#include "CLevel.h"
+
 CAssetMgr::CAssetMgr()
 	: m_Renew(false)
 	, m_AssetModified(false)
@@ -35,7 +37,7 @@ void CAssetMgr::AddAsset(const wstring& _Key, AssetPtr<CAsset> _Asset)
 
 	if (iter != m_mapAsset[(UINT)Type].end())
 	{
-		MessageBoxW(nullptr, L"해당 이름의 에셋은 이미 등록되어 있습니다.", L"Add Asset Error", MB_OK);
+		//MessageBoxW(nullptr, L"해당 이름의 에셋은 이미 등록되어 있습니다.", L"Add Asset Error", MB_OK);
 		return;
 	}
 
@@ -228,6 +230,7 @@ void CAssetMgr::ContentObserve()
 
 void CAssetMgr::ContentReload()
 {
+	// map 에 저장된 에셋을 엔진 에셋 제외 모두 제거하고 다시 로드
 	for (auto& map : m_mapAsset)
 	{
 		for (auto iter = map.begin(); iter != map.end();)
@@ -242,4 +245,50 @@ void CAssetMgr::ContentReload()
 		}
 	}
 	ContentLoad();
+}
+
+void CAssetMgr::UpdateAsset()
+{
+	std::wstring ContentDir = CPathMgr::GetContentDir();
+
+	// 레벨 파일 순회
+	for (const auto& file : std::filesystem::recursive_directory_iterator(ContentDir + L"\\Level"))
+	{
+		if (file.is_regular_file())
+		{
+			CLevel Level;
+			std::wstring lvName = file.path().filename();
+			lvName = lvName.substr(0, lvName.find(L'.'));
+			std::wstring relativePath = L"Level\\" + lvName + L".level";
+			if (FAILED(Level.Load(relativePath)))
+				return;
+			Level.Save(lvName, true);
+		}
+	}
+
+	// 에셋 파일 순회
+	for (const auto& file : std::filesystem::recursive_directory_iterator(CPathMgr::GetContentDir()))
+	{
+		if (file.is_regular_file())
+		{
+			std::wstring fileName = file.path().filename();
+			fileName = fileName.substr(0, fileName.find(L'.'));
+			std::wstring rp = file.path().generic_wstring().substr(wstring(CPathMgr::GetContentDir()).size());
+			for (int i = 0; i < rp.size(); ++i)
+			{
+				if (rp[i] == L'/')
+					rp[i] = L'\\';
+			}
+			switch (CAssetMgr::GetInst()->GetAssetType(file.path()))
+			{
+			case ASSET_TYPE::PREFAB:
+			{
+				AssetPtr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(rp);
+				pPrefab->Save(fileName, true);
+				break;
+			}
+			}
+
+		}
+	}
 }

@@ -32,7 +32,7 @@ public:
     void Binding();
     static AssetPtr<CMaterial> Create(wstring _Name);
 
-    virtual int Save(const wstring& _FileName) override;
+    virtual int Save(const wstring& _FileName, bool _Update = false) override;
     virtual int Load(const wstring& _FilePath) override;
 };
 

@@ -25,7 +25,7 @@ int CFlipbook::GetSceneCount()
     }
 }
 
-int CFlipbook::Save(const wstring& _FileName)
+int CFlipbook::Save(const wstring& _FileName, bool _Update)
 {
     std::filesystem::path path = CPathMgr::GetContentDir() + std::wstring(L"Flipbook\\") + _FileName + std::wstring(L".flip");
     CPathMgr::CreateParentDir(path);

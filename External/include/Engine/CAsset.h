@@ -31,7 +31,7 @@ public:
 
     void SetEngineAsset(bool _b) { m_EngineAsset = _b; }
 
-    virtual int Save(const wstring& _FileName) = 0;
+    virtual int Save(const wstring& _FileName, bool _Update = false) = 0;
     virtual int Load(const wstring& _FilePath) = 0;
 
 private:

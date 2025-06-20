@@ -25,7 +25,7 @@ public:
 
 public:
     virtual int Load(const wstring& _FilePath) override;
-    virtual int Save(const wstring& _FilePath) override { MessageBoxW(nullptr, L"사운드는 파일 저장을 지원하지 않습니다.", L"Sound Save Error", MB_OK); return S_OK; }
+    virtual int Save(const wstring& _FilePath, bool _Update = false) override { MessageBoxW(nullptr, L"사운드는 파일 저장을 지원하지 않습니다.", L"Sound Save Error", MB_OK); return S_OK; }
 
 
 };

@@ -30,13 +30,21 @@ CGameObject* CPrefab::Instantiate()
 	return m_PrefabObject->Clone();
 }
 
-int CPrefab::Save(const wstring& _FileName)
+int CPrefab::Save(const wstring& _FileName, bool _Update)
 {
-	std::filesystem::path path = CPathMgr::GetContentDir() + std::wstring(L"Prefab\\") + _FileName + std::wstring(L".prefab");
+	wstring SaveDir = CPathMgr::GetContentDir();
+	if (_Update)
+	{
+		// 버전 업데이트 신규 파일인 경우 업데이트 디렉토리에 저장
+		std::filesystem::path parentDir = SaveDir;
+		SaveDir = parentDir.parent_path().parent_path();
+		SaveDir += L"\\Update\\";
+	}
+	std::filesystem::path path = SaveDir + std::wstring(L"Prefab\\") + _FileName + std::wstring(L".prefab");
 	CPathMgr::CreateParentDir(path);
 	std::fstream file(path, std::ios::out | std::ios::binary);
 
-	if (FAILED(m_PrefabObject->Save(file)))
+	if (FAILED(m_PrefabObject->Save(file, _Update)))
 		return E_FAIL;
 
 	file.close();
