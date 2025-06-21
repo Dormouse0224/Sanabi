@@ -442,8 +442,7 @@ void CImguiMgr::LoadLevel()
         std::filesystem::path EXT = RelativePath.extension();
         if (EXT == ".level")
         {
-            CLevel* NewLevel = new CLevel;
-            NewLevel->Load(RelativePath);
+            CLevel* NewLevel = CLevelMgr::GetInst()->FindLevel(RelativePath);
             CTaskMgr::GetInst()->AddTask(TASK_TYPE::CHANGE_LEVEL, reinterpret_cast<DWORD_PTR>(NewLevel), (DWORD_PTR)false);
         }
         else

@@ -32,7 +32,6 @@ int CFont::Load(const wstring& _FilePath)
 void CFont::Render(wstring _Text, Vec2 _Pos, Vec4 _Color, float _Rot, float _Scale, float _Depth)
 {
 	// ºí·»µå ¼³Á¤
-	//CONTEXT->OMSetBlendState(CDevice::GetInst()->GetBSState(BS_TYPE::ALPHABLEND).Get(), nullptr, 0xffffffff);
 	CRenderMgr::GetInst()->UnbindShaders();
 	m_SpriteBatch->Begin();
 	if (m_SpriteFont)

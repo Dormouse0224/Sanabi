@@ -17,6 +17,7 @@ CUICom::CUICom()
 	, m_vecUIText{}
 	, m_ScreenPosNDC()
 	, m_Scale()
+	, m_Alpha(1.f)
 	, m_Active(false)
 {
 }
@@ -30,6 +31,7 @@ CUICom::CUICom(const CUICom& _Other)
 	, m_vecUIText{}
 	, m_ScreenPosNDC(_Other.m_ScreenPosNDC)
 	, m_Scale(_Other.m_Scale)
+	, m_Alpha(1.f)
 	, m_Active(false)
 {
 	for (int i = 0; i < _Other.m_vecUIText.size(); ++i)
@@ -187,6 +189,20 @@ int CUICom::Load(fstream& _Stream)
 	return S_OK;
 }
 
+wstring CUICom::GetUIText(int _Idx)
+{
+	if (m_vecUIText.size() > _Idx)
+		return get<1>(m_vecUIText[_Idx]);
+	else
+		return L"";
+}
+
+void CUICom::SetUIText(int _Idx, wstring _wstr)
+{
+	if (m_vecUIText.size() > _Idx)
+		get<1>(m_vecUIText[_Idx]) = _wstr;
+}
+
 void CUICom::Render()
 {
 	// 위치정보 업데이트
@@ -194,6 +210,8 @@ void CUICom::Render()
 
 	// 사용할 쉐이더 바인딩
 	GetMaterial()->SetScalarParam(VEC2_0, m_ScreenPosNDC);
+	m_Alpha = clamp(m_Alpha, 0.f, 1.f);
+	GetMaterial()->SetScalarParam(FLOAT_0, m_Alpha);
 	GetMaterial()->SetScalarParam(FLOAT_1, m_Scale.x);
 	GetMaterial()->SetScalarParam(FLOAT_2, m_Scale.y);
 	GetMaterial()->Binding();
@@ -202,13 +220,12 @@ void CUICom::Render()
 	GetMesh()->Render();
 
 	// 텍스트 렌더링 (렌더 컴포넌트 호출 후 별도로 호출됨)
-	//Vec4 clip = XMVector3Transform(XMVector3Transform(Transform()->GetWorldTrans(), g_Trans.matView), g_Trans.matProj);
-	//float depth = ((clip.z / clip.w) + 1) * 0.5f;
 	Vec2 resolution = CEngine::GetInst()->GetResolution();
 	Vec2 ScreenPos(((m_ScreenPosNDC.x + 1) / 2.f) * resolution.x, ((1 - m_ScreenPosNDC.y) / 2.f) * resolution.y);
-	//Vec2 ScreenLT(ScreenPos - m_Scale);
 	for (auto& tuple : m_vecUIText)
 	{
-		get<0>(tuple)->Render(get<1>(tuple), ScreenPos, get<2>(tuple)->Color, get<2>(tuple)->Rot, get<2>(tuple)->Scale, 0);
+		Vec4 color = get<2>(tuple)->Color;
+		color *= m_Alpha;
+		get<0>(tuple)->Render(get<1>(tuple), ScreenPos, color, get<2>(tuple)->Rot, get<2>(tuple)->Scale, 0);
 	}
 }

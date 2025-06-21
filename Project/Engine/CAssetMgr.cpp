@@ -2,6 +2,7 @@
 #include "CAssetMgr.h"
 
 #include "CPathMgr.h"
+#include "CLevelMgr.h"
 
 #include "CLevel.h"
 
@@ -256,13 +257,12 @@ void CAssetMgr::UpdateAsset()
 	{
 		if (file.is_regular_file())
 		{
-			CLevel Level;
 			std::wstring lvName = file.path().filename();
 			lvName = lvName.substr(0, lvName.find(L'.'));
 			std::wstring relativePath = L"Level\\" + lvName + L".level";
-			if (FAILED(Level.Load(relativePath)))
-				return;
-			Level.Save(lvName, true);
+			CLevel* pLevel = CLevelMgr::GetInst()->FindLevel(relativePath);
+			if (pLevel)
+				pLevel->Save(lvName, true);
 		}
 	}
 

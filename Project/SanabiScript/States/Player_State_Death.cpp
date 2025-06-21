@@ -38,9 +38,8 @@ void Player_State_Death::Tick()
 	if (m_Timer > 2.f && m_FlipFin)
 	{
 		m_FlipFin = false;
-		//PlayerScript* pPS = (PlayerScript*)m_Owner->GetOwner()->FindScript("class PlayerScript");
 		
-		CTaskMgr::GetInst()->AddTask(TASK_TYPE::CHANGE_LEVEL, (DWORD_PTR)CLevelMgr::GetInst()->GetPlayStartLevel(), (DWORD_PTR)false);
+		CTaskMgr::GetInst()->AddTask(TASK_TYPE::CHANGE_LEVEL, (DWORD_PTR)CLevelMgr::GetInst()->GetPlayStartLevel(), (DWORD_PTR)true);
 	}
 }
 

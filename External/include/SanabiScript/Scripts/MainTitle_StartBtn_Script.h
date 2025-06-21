@@ -13,6 +13,7 @@ public:
     CLONE(MainTitle_StartBtn_Script);
 private:
     bool m_Init;
+    float m_Timer;
 
 public:
     virtual void Tick();

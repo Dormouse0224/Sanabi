@@ -69,9 +69,18 @@ void CLevelMgr::SetPlayStartLevel(CLevel* _Level)
 
 CLevel* CLevelMgr::FindLevel(wstring _RelativePath)
 {
+	// 레벨을 저장해둔 컨테이너에서 검색, 찾으면 해당 레벨의 클론을 반환, 못찾으면 파일로부터 로드 시도
 	const auto iter = m_mapLevelList.find(_RelativePath);
 	if (iter == m_mapLevelList.end())
-		return nullptr;
+	{
+		CLevel* pLevel = new CLevel;
+		if (FAILED(pLevel->Load(_RelativePath)))
+		{
+			delete pLevel;
+		}
+		m_mapLevelList.insert(make_pair(_RelativePath, pLevel));
+		return pLevel->Clone();
+	}
 	else
 		return iter->second->Clone();
 }
@@ -107,7 +116,7 @@ void CLevelMgr::ChangeLevel(CLevel* _NextLevel, bool _Play)
 	CPhysxMgr::GetInst()->ClearScene();
 
 
-	if (m_CurLevel == _NextLevel)
+	if (m_CurLevel == _NextLevel || _NextLevel == nullptr)
 		return;
 
 	delete m_CurLevel;

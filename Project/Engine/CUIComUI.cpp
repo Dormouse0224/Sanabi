@@ -41,6 +41,14 @@ void CUIComUI::Render_Com()
 	}
 
 	ImGui::NewLine();
+	ImGui::Text("UI Alpha");
+	float alpha = m_TargetObj->UICom()->m_Alpha;
+	if (ImGui::DragFloat("##UIAlpha", &alpha, 0.01f))
+	{
+		m_TargetObj->UICom()->m_Alpha = alpha;
+	}
+
+	ImGui::NewLine();
     ImGui::Text("UI Text List");
     if (ImGui::BeginTable("##UITextList", 3, ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders))
 	{

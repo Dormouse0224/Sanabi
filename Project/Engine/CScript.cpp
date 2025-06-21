@@ -20,7 +20,8 @@ CScript::~CScript()
 
 void CScript::Render()
 {
-	if (ImGui::CollapsingHeader(to_str(GetName()).substr(6).c_str()))
+	string str = to_str(GetName()).substr(6);
+	if (ImGui::CollapsingHeader(str.c_str()))
 	{
 		Render_Script();
 		ImGui::Separator();

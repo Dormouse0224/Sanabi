@@ -33,6 +33,7 @@ private:
 
     Vec2            m_ScreenPosNDC;
     Vec2            m_Scale;
+    float           m_Alpha;
 
     bool            m_Active;
 
@@ -44,9 +45,15 @@ public:
 
     bool GetMouseHover() { return m_MouseHover; }
     bool GetClicked() { return m_Clicked; }
+    float GetAlpha() { return m_Alpha; }
+    bool GetActive() { return m_Active; }
+    wstring GetUIText(int _Idx);
 
     void SetClickEvent(UIEventFunc _Func) { m_ClickEvent = _Func; }
     void SetKeydownEvent(UIEventFunc _Func) { m_KeydownEvent = _Func; }
+    void SetAlpha(float _Alpha) { m_Alpha = _Alpha; }
+    void SetActive(bool _Active) { m_Active = _Active; }
+    void SetUIText(int _Idx, wstring _wstr);
 
     void AddUIText(AssetPtr<CFont> _Font, wstring _Text, tUITextDesc* _Option) { m_vecUIText.push_back(make_tuple(_Font, _Text, _Option)); }
     void Render();
