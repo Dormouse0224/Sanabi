@@ -9,13 +9,13 @@ public:
     CLONE_DISABLE(CFont);
 
 private:
-    SpriteBatch* m_SpriteBatch;
-    SpriteFont*  m_SpriteFont;
+    std::unique_ptr<SpriteBatch> m_SpriteBatch;
+    std::unique_ptr<SpriteFont>  m_SpriteFont;
 
 public:
 
     virtual int Save(const wstring& _FileName, bool _Update = false) { return S_OK; }
     virtual int Load(const wstring& _FilePath);
 
-    void Render(wstring _Text, Vec2 _Pos, Vec4 _Color, float _Rot, Vec2 _Origin, float _Scale, float _Depth);
+    void Render(wstring _Text, Vec2 _Pos, Vec4 _Color, float _Rot, float _Scale, float _Depth);
 };

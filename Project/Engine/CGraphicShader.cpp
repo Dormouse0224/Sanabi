@@ -174,6 +174,92 @@ int CGraphicShader::CreateGeometryShader(const wstring& _RelativePath, const str
 	return S_OK;
 }
 
+int CGraphicShader::CreateDomainShader(const wstring& _RelativePath, const string& _FuncName)
+{
+	wstring strFilePath = CPathMgr::GetContentDir() + _RelativePath;
+
+	UINT Flag = 0;
+
+#ifdef _DEBUG
+	Flag = D3DCOMPILE_DEBUG;
+#endif
+
+	if (FAILED(D3DCompileFromFile(strFilePath.c_str()
+		, nullptr
+		, D3D_COMPILE_STANDARD_FILE_INCLUDE
+		, _FuncName.c_str(), "gs_5_0", Flag, 0
+		, m_DSBlob.GetAddressOf()
+		, m_ErrBlob.GetAddressOf())))
+	{
+		// 컴파일 실패하면 메세지 박스에 컴파일 실패내용 띄우기
+		if (nullptr != m_ErrBlob)
+		{
+			char* pErrMsg = (char*)m_ErrBlob->GetBufferPointer();
+			MessageBoxA(nullptr, pErrMsg, "쉐이더 컴파일 실패", MB_OK);
+		}
+		else
+		{
+			MessageBoxA(nullptr, "쉐이더 파일 경로가 올바르지 않습니다.", "쉐이더 컴파일 실패", MB_OK);
+		}
+		return E_FAIL;
+	}
+
+	if (FAILED(DEVICE->CreateDomainShader(m_DSBlob->GetBufferPointer()
+		, m_DSBlob->GetBufferSize()
+		, nullptr
+		, m_DS.GetAddressOf())))
+	{
+		return E_FAIL;
+	}
+
+	m_ShaderName[DOMAIN_SHADER] = make_pair(_RelativePath, _FuncName);
+
+	return S_OK;
+}
+
+int CGraphicShader::CreateHullShader(const wstring& _RelativePath, const string& _FuncName)
+{
+	wstring strFilePath = CPathMgr::GetContentDir() + _RelativePath;
+
+	UINT Flag = 0;
+
+#ifdef _DEBUG
+	Flag = D3DCOMPILE_DEBUG;
+#endif
+
+	if (FAILED(D3DCompileFromFile(strFilePath.c_str()
+		, nullptr
+		, D3D_COMPILE_STANDARD_FILE_INCLUDE
+		, _FuncName.c_str(), "gs_5_0", Flag, 0
+		, m_HSBlob.GetAddressOf()
+		, m_ErrBlob.GetAddressOf())))
+	{
+		// 컴파일 실패하면 메세지 박스에 컴파일 실패내용 띄우기
+		if (nullptr != m_ErrBlob)
+		{
+			char* pErrMsg = (char*)m_ErrBlob->GetBufferPointer();
+			MessageBoxA(nullptr, pErrMsg, "쉐이더 컴파일 실패", MB_OK);
+		}
+		else
+		{
+			MessageBoxA(nullptr, "쉐이더 파일 경로가 올바르지 않습니다.", "쉐이더 컴파일 실패", MB_OK);
+		}
+		return E_FAIL;
+	}
+
+	if (FAILED(DEVICE->CreateHullShader(m_HSBlob->GetBufferPointer()
+		, m_HSBlob->GetBufferSize()
+		, nullptr
+		, m_HS.GetAddressOf())))
+	{
+		return E_FAIL;
+	}
+
+	m_ShaderName[HULL_SHADER] = make_pair(_RelativePath, _FuncName);
+
+	return S_OK;
+}
+
 int CGraphicShader::CreatePixelShader(const wstring& _RelativePath, const string& _FuncName)
 {
 	wstring strFilePath = CPathMgr::GetContentDir() + _RelativePath;
@@ -224,6 +310,8 @@ void CGraphicShader::Binding()
 
 	CONTEXT->VSSetShader(m_VS.Get(), nullptr, 0);
 	CONTEXT->GSSetShader(m_GS.Get(), nullptr, 0);
+	CONTEXT->DSSetShader(m_DS.Get(), nullptr, 0);
+	CONTEXT->HSSetShader(m_HS.Get(), nullptr, 0);
 	CONTEXT->PSSetShader(m_PS.Get(), nullptr, 0);
 
 	CONTEXT->RSSetState(CDevice::GetInst()->GetRSState(m_RSType).Get());

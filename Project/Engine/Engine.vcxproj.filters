@@ -247,9 +247,6 @@
     <Filter Include="09. ImguiObject\ComponentUI\04. FSMUI">
       <UniqueIdentifier>{b07d5837-44d1-4ba4-a13a-9aeb8023da5f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="07. Component\05. UICom">
-      <UniqueIdentifier>{0f4a5d8d-2e15-490e-b02a-3341e712fbf3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="08. Asset\03. Texture">
       <UniqueIdentifier>{afc9de93-8012-45e0-b1c9-3c191d68b750}</UniqueIdentifier>
     </Filter>
@@ -265,20 +262,32 @@
     <Filter Include="08. Asset\11. Font">
       <UniqueIdentifier>{99941234-b784-4eec-b5be-02f29587b163}</UniqueIdentifier>
     </Filter>
-    <Filter Include="09. ImguiObject\ComponentUI\05. UIComUI">
-      <UniqueIdentifier>{63ff8a32-4414-4ef8-902a-79226d36451f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="07. Component\06. Light">
-      <UniqueIdentifier>{10690b4c-b502-475a-8197-19c3e77a4a61}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. Manager\13. LightMgr">
       <UniqueIdentifier>{7a960db7-54b9-4144-b79f-e8dc108c2c98}</UniqueIdentifier>
     </Filter>
-    <Filter Include="09. ImguiObject\ComponentUI\06. Light">
-      <UniqueIdentifier>{51b380d4-b228-462d-9d96-99c5d176ed98}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Device\MRT">
       <UniqueIdentifier>{e905300b-98e9-4c1d-8521-ce235a217465}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07. Component\05. Light">
+      <UniqueIdentifier>{10690b4c-b502-475a-8197-19c3e77a4a61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07. Component\RenderComponent\09. UICom">
+      <UniqueIdentifier>{0f4a5d8d-2e15-490e-b02a-3341e712fbf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\05. Light">
+      <UniqueIdentifier>{51b380d4-b228-462d-9d96-99c5d176ed98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\RenderComponentUI\06. SkyBoxUI">
+      <UniqueIdentifier>{3a459744-06c8-4cba-8ae7-64685cb0a6dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\RenderComponentUI\07. DecalUI">
+      <UniqueIdentifier>{c0420b7f-e192-4af0-a572-f7331c29530a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\RenderComponentUI\08. Landscape">
+      <UniqueIdentifier>{20e3a47c-518f-432d-b0e4-77abfb4ecff8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. ImguiObject\ComponentUI\RenderComponentUI\09. UIComUI">
+      <UniqueIdentifier>{63ff8a32-4414-4ef8-902a-79226d36451f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -565,22 +574,22 @@
       <Filter>09. ImguiObject\ComponentUI\04. FSMUI</Filter>
     </ClInclude>
     <ClInclude Include="CUICom.h">
-      <Filter>07. Component\05. UICom</Filter>
+      <Filter>07. Component\RenderComponent\09. UICom</Filter>
     </ClInclude>
     <ClInclude Include="CFont.h">
       <Filter>08. Asset\11. Font</Filter>
     </ClInclude>
     <ClInclude Include="CUIComUI.h">
-      <Filter>09. ImguiObject\ComponentUI\05. UIComUI</Filter>
+      <Filter>09. ImguiObject\ComponentUI\RenderComponentUI\09. UIComUI</Filter>
     </ClInclude>
     <ClInclude Include="CLight.h">
-      <Filter>07. Component\06. Light</Filter>
+      <Filter>07. Component\05. Light</Filter>
     </ClInclude>
     <ClInclude Include="CLightMgr.h">
       <Filter>04. Manager\13. LightMgr</Filter>
     </ClInclude>
     <ClInclude Include="CLightUI.h">
-      <Filter>09. ImguiObject\ComponentUI\06. Light</Filter>
+      <Filter>09. ImguiObject\ComponentUI\05. Light</Filter>
     </ClInclude>
     <ClInclude Include="CMRT.h">
       <Filter>03. Device\MRT</Filter>
@@ -849,22 +858,22 @@
       <Filter>09. ImguiObject\ComponentUI\04. FSMUI</Filter>
     </ClCompile>
     <ClCompile Include="CUICom.cpp">
-      <Filter>07. Component\05. UICom</Filter>
+      <Filter>07. Component\RenderComponent\09. UICom</Filter>
     </ClCompile>
     <ClCompile Include="CFont.cpp">
       <Filter>08. Asset\11. Font</Filter>
     </ClCompile>
     <ClCompile Include="CUIComUI.cpp">
-      <Filter>09. ImguiObject\ComponentUI\05. UIComUI</Filter>
+      <Filter>09. ImguiObject\ComponentUI\RenderComponentUI\09. UIComUI</Filter>
     </ClCompile>
     <ClCompile Include="CLight.cpp">
-      <Filter>07. Component\06. Light</Filter>
+      <Filter>07. Component\05. Light</Filter>
     </ClCompile>
     <ClCompile Include="CLightMgr.cpp">
       <Filter>04. Manager\13. LightMgr</Filter>
     </ClCompile>
     <ClCompile Include="CLightUI.cpp">
-      <Filter>09. ImguiObject\ComponentUI\06. Light</Filter>
+      <Filter>09. ImguiObject\ComponentUI\05. Light</Filter>
     </ClCompile>
     <ClCompile Include="CMRT.cpp">
       <Filter>03. Device\MRT</Filter>

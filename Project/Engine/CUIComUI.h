@@ -1,7 +1,7 @@
 #pragma once
-#include "CComponentUI.h"
+#include "CRenderComponentUI.h"
 class CUIComUI :
-    public CComponentUI
+    public CRenderComponentUI
 {
 public:
     CUIComUI();

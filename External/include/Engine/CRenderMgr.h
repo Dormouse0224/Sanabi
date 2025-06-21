@@ -37,6 +37,8 @@ public:
 	CGameObject* GetEditorCam() { return m_EditorCam; }
 	CCamera* GetCurrentCam() { return m_CurrentCam; }
 
+	void UnbindShaders();
+
 public:
 	void Init();
 	void Tick();

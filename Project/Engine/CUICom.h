@@ -11,7 +11,6 @@ struct tUITextDesc
     Vec4    Color;
     float   Rot;
     float   Scale;
-    bool    Independent;
 };
 
 class CUICom :
@@ -29,13 +28,16 @@ private:
     UIEventFunc     m_KeydownEvent;
     bool            m_MouseHover;
     bool            m_Clicked;
+
     vector<tuple<AssetPtr<CFont>, wstring, tUITextDesc*>> m_vecUIText;
 
-    Vec2            m_ScreenLT;
-    Vec2            m_ScreenRB;
+    Vec2            m_ScreenPosNDC;
+    Vec2            m_Scale;
+
+    bool            m_Active;
 
 public:
-    virtual void FinalTick();
+    virtual void FinalTick() override;
 
     virtual int Save(fstream& _Stream);
     virtual int Load(fstream& _Stream);

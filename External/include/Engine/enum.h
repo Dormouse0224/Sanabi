@@ -49,31 +49,6 @@ enum class BS_TYPE
 // wstr 구조체 업데이트 할 것
 enum class COMPONENT_TYPE
 {
-	//TRANSFORM,
-	//CAMERA,
-	//PHYSXACTOR,
-	//FSM,
-	//UICOM,
-	//COLLIDER3D,
-	//BOUNDINGBOX,
-
-	//// Rendering Component
-	//MESHRENDER,			// 가장 기본적인 RenderComponent
-	//SPRITERENDER,		// Sprite 하나 렌더링하는 컴포넌트
-	//FLIPBOOKRENDER,		// Flipbook 재생 컴포넌트
-	//TILERENDER,			// 타일맵 렌더링
-	//PARTICLERENDER,		// 입자 렌더링
-	//SKYBOX,				// 3D 배경
-	//DECAL,				// 문신
-	//LANDSCAPE,			// 3D 지형
-
-	//// Additional
-	//LIGHT,
-
-	//COMPONENT_END,
-
-	//SCRIPT,				// 대본, 역할, 컨텐츠
-
 	TRANSFORM,
 	CAMERA,
 	PHYSXACTOR,

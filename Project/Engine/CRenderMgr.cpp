@@ -120,11 +120,11 @@ void CRenderMgr::Render()
 			m_vecCam[i]->Render();
 		}
 	}
-	UIRender();
 }
 
 void CRenderMgr::UIRender()
 {
+	m_arrMRT[MRT_TYPE::MERGE]->SetRenderTarget();
 	m_UICam->Camera()->Render();
 }
 
@@ -198,6 +198,9 @@ void CRenderMgr::MergeRender()
 
 	m_MergeMesh->Render();
 
+	// UI ·»´õ¸µ
+	UIRender();
+
 	// Debug ·»´õ¸µ
 	DebugRender();
 
@@ -218,4 +221,13 @@ void CRenderMgr::ClearMRT()
 		if (m_arrMRT[i])
 			m_arrMRT[i]->ClearTargets();
 	}
+}
+
+void CRenderMgr::UnbindShaders()
+{
+	CONTEXT->VSSetShader(nullptr, nullptr, 0);
+	CONTEXT->GSSetShader(nullptr, nullptr, 0);
+	CONTEXT->DSSetShader(nullptr, nullptr, 0);
+	CONTEXT->HSSetShader(nullptr, nullptr, 0);
+	CONTEXT->PSSetShader(nullptr, nullptr, 0);
 }

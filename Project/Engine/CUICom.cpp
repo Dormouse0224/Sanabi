@@ -3,6 +3,7 @@
 
 #include "CKeyMgr.h"
 #include "CEngine.h"
+#include "CAssetMgr.h"
 
 #include "CTransform.h"
 #include "CFont.h"
@@ -14,6 +15,9 @@ CUICom::CUICom()
 	, m_MouseHover(false)
 	, m_Clicked(false)
 	, m_vecUIText{}
+	, m_ScreenPosNDC()
+	, m_Scale()
+	, m_Active(false)
 {
 }
 
@@ -24,12 +28,14 @@ CUICom::CUICom(const CUICom& _Other)
 	, m_MouseHover(false)
 	, m_Clicked(false)
 	, m_vecUIText{}
+	, m_ScreenPosNDC(_Other.m_ScreenPosNDC)
+	, m_Scale(_Other.m_Scale)
+	, m_Active(false)
 {
 	for (int i = 0; i < _Other.m_vecUIText.size(); ++i)
 	{
 		tUITextDesc* pDesc = new tUITextDesc;
 		pDesc->Color = get<2>(_Other.m_vecUIText[i])->Color;
-		pDesc->Independent = get<2>(_Other.m_vecUIText[i])->Independent;
 		pDesc->Rot = get<2>(_Other.m_vecUIText[i])->Rot;
 		pDesc->Scale = get<2>(_Other.m_vecUIText[i])->Scale;
 		m_vecUIText.push_back(make_tuple(get<0>(_Other.m_vecUIText[i]), get<1>(_Other.m_vecUIText[i]), pDesc));
@@ -44,72 +50,165 @@ CUICom::~CUICom()
 
 void CUICom::FinalTick()
 {
-	// UI 의 화면상 위치 계산 후 마우스 커서의 호버링 체크
-	Vec4 wpos(Transform()->GetWorldTrans(), 1.f);
-	Vec3 scale = Transform()->GetWorldScale();
-	Vec2 cursor = CKeyMgr::GetInst()->GetMousePos();
+	// point mesh 로 고정
+	SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"EA_RectMesh", true));
 
-	Vec4 vpos = XMVector4Transform(wpos, g_Trans.matView);	// 뷰 변환 적용 이후 사각형 확장으로 빌보딩
-	Vec3 vposLT(vpos.x - scale.x * 0.5f, vpos.y + scale.y * 0.5f, vpos.z);
-	Vec3 vposRB(vpos.x + scale.x * 0.5f, vpos.y - scale.y * 0.5f, vpos.z);
+	if (m_Active)
+	{
+		// UI 의 화면상 위치 계산 후 마우스 커서의 호버링 체크
+		Vec2 cursor = CKeyMgr::GetInst()->GetMousePos();
+		Vec2 resolution = CEngine::GetInst()->GetResolution();
+		Vec2 ScreenPos(((m_ScreenPosNDC.x + 1) / 2.f) * resolution.x, ((1 - m_ScreenPosNDC.y) / 2.f) * resolution.y);
 
-	Vec4 pposLT = XMVector3Transform(vposLT, g_Trans.matProj);
-	Vec4 pposRB = XMVector3Transform(vposRB, g_Trans.matProj);
+		Vec2 ScreenLT(ScreenPos - Vec2(m_Scale / 2.f));
+		Vec2 ScreenRB(ScreenPos + Vec2(m_Scale / 2.f));
 
-	Vec2 NDCLT(pposLT.x / pposLT.w, pposLT.y / pposLT.w);
-	Vec2 NDCRB(pposRB.x / pposRB.w, pposRB.y / pposRB.w);
+		if (ScreenLT.x < cursor.x && ScreenLT.y < cursor.y && ScreenRB.x > cursor.x && ScreenRB.y > cursor.y)
+			m_MouseHover = true;
+		else
+			m_MouseHover = false;
 
-	m_ScreenLT = Vec2((NDCLT.x + 1.0f) * 0.5f * CEngine::GetInst()->GetResolution().x, (1.0f - NDCLT.y) * 0.5f * CEngine::GetInst()->GetResolution().y);
-	m_ScreenRB = Vec2((NDCRB.x + 1.0f) * 0.5f * CEngine::GetInst()->GetResolution().x, (1.0f - NDCRB.y) * 0.5f * CEngine::GetInst()->GetResolution().y);
+		// 마우스 좌클릭 이벤트 체크
+		if (CKeyMgr::GetInst()->GetKeyState(Keyboard::MOUSE_LBTN) == Key_state::TAP && m_MouseHover)
+			m_Clicked = true;
 
-	if (m_ScreenLT.x < cursor.x && m_ScreenLT.y < cursor.y && m_ScreenRB.x > cursor.x && m_ScreenRB.y > cursor.y)
-		m_MouseHover = true;
+		if (CKeyMgr::GetInst()->GetKeyState(Keyboard::MOUSE_LBTN) == Key_state::PRESSED && m_MouseHover && m_Clicked)
+		{
+			if (m_KeydownEvent)
+				m_KeydownEvent(GetOwner());
+		}
+
+		if (CKeyMgr::GetInst()->GetKeyState(Keyboard::MOUSE_LBTN) == Key_state::RELEASE && m_MouseHover && m_Clicked)
+		{
+			m_Clicked = false;
+			if (m_ClickEvent)
+				m_ClickEvent(GetOwner());
+		}
+
+		if (CKeyMgr::GetInst()->GetKeyState(Keyboard::MOUSE_LBTN) == Key_state::NONE)
+			m_Clicked = false;
+	}
 	else
+	{
 		m_MouseHover = false;
-
-	// 마우스 좌클릭 이벤트 체크
-	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::MOUSE_LBTN) == Key_state::TAP && m_MouseHover)
-		m_Clicked = true;
-
-	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::MOUSE_LBTN) == Key_state::PRESSED && m_MouseHover && m_Clicked)
-	{
-		if (m_KeydownEvent)
-			m_KeydownEvent(GetOwner());
-	}
-
-	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::MOUSE_LBTN) == Key_state::RELEASE && m_MouseHover && m_Clicked)
-	{
 		m_Clicked = false;
-		if (m_ClickEvent)
-			m_ClickEvent(GetOwner());
 	}
-
-	if (CKeyMgr::GetInst()->GetKeyState(Keyboard::MOUSE_LBTN) == Key_state::NONE)
-		m_Clicked = false;
 
 
 }
 
 int CUICom::Save(fstream& _Stream)
 {
-	return 0;
+	if (FAILED(CRenderComponent::RenderCom_Save(_Stream)))
+		return E_FAIL;
+
+	// 텍스트 정보 개수 저장
+	int count = m_vecUIText.size();
+	_Stream.write(reinterpret_cast<char*>(&count), sizeof(int));
+
+	for (int i = 0; i < count; ++i)
+	{
+		// 폰트 에셋을 이름으로 저장
+		std::wstring fontName = get<0>(m_vecUIText[i])->GetName();
+		int size = fontName.length();
+		_Stream.write(reinterpret_cast<char*>(&size), sizeof(int));
+		if (size > 0)
+		{
+			_Stream.write(reinterpret_cast<char*>(fontName.data()), sizeof(wchar_t) * size);
+		}
+
+		// 텍스트 저장
+		std::wstring text = get<1>(m_vecUIText[i]);
+		size = text.length();
+		_Stream.write(reinterpret_cast<char*>(&size), sizeof(int));
+		if (size > 0)
+		{
+			_Stream.write(reinterpret_cast<char*>(text.data()), sizeof(wchar_t) * size);
+		}
+
+		// 텍스트 디스크립션 저장
+		tUITextDesc* pTextDesc = get<2>(m_vecUIText[i]);
+		_Stream.write(reinterpret_cast<char*>(pTextDesc), sizeof(tUITextDesc));
+	}
+
+	_Stream.write(reinterpret_cast<char*>(&m_ScreenPosNDC), sizeof(Vec2));
+	_Stream.write(reinterpret_cast<char*>(&m_Scale), sizeof(Vec2));
+
+	return S_OK;
 }
 
 int CUICom::Load(fstream& _Stream)
 {
-	return 0;
+	if (FAILED(CRenderComponent::RenderCom_Load(_Stream)))
+		return E_FAIL;
+
+	// 텍스트 정보 개수 읽어오기
+	int count = 0;
+	_Stream.read(reinterpret_cast<char*>(&count), sizeof(int));
+
+	for (int i = 0; i < count; ++i)
+	{
+		// 저장된 이름으로 폰트 에셋 로드
+		int size = 0;
+		std::wstring fontName = {};
+		AssetPtr<CFont> pFont = nullptr;
+		_Stream.read(reinterpret_cast<char*>(&size), sizeof(int));
+		if (size > 0)
+		{
+			fontName.resize(size);
+			_Stream.read(reinterpret_cast<char*>(fontName.data()), sizeof(wchar_t) * size);
+			pFont = CAssetMgr::GetInst()->Load<CFont>(fontName);
+		}
+
+		// 저장된 텍스트 읽어오기
+		std::wstring text = {};
+		_Stream.read(reinterpret_cast<char*>(&size), sizeof(int));
+		if (size > 0)
+		{
+			text.resize(size);
+			_Stream.read(reinterpret_cast<char*>(text.data()), sizeof(wchar_t) * size);
+		}
+
+		// 저장된 텍스트 디스크립션 읽어오기
+		tUITextDesc* pTextDesc = new tUITextDesc;
+		_Stream.read(reinterpret_cast<char*>(pTextDesc), sizeof(tUITextDesc));
+
+		// 폰트가 성공적으로 로딩된 경우에만 텍스트 벡터에 저장
+		if (pFont.Get())
+		{
+			AddUIText(pFont, text, pTextDesc);
+		}
+	}
+
+	// UI 의 스크린상 위치와 스케일 읽어오기
+	_Stream.read(reinterpret_cast<char*>(&m_ScreenPosNDC), sizeof(Vec2));
+	_Stream.read(reinterpret_cast<char*>(&m_Scale), sizeof(Vec2));
+
+	return S_OK;
 }
 
 void CUICom::Render()
 {
+	// 위치정보 업데이트
+	Transform()->Binding();
+
+	// 사용할 쉐이더 바인딩
+	GetMaterial()->SetScalarParam(VEC2_0, m_ScreenPosNDC);
+	GetMaterial()->SetScalarParam(FLOAT_1, m_Scale.x);
+	GetMaterial()->SetScalarParam(FLOAT_2, m_Scale.y);
+	GetMaterial()->Binding();
+
+	// 렌더링 시작
+	GetMesh()->Render();
+
 	// 텍스트 렌더링 (렌더 컴포넌트 호출 후 별도로 호출됨)
-	Vec4 clip = XMVector3Transform(XMVector3Transform(Transform()->GetWorldTrans(), g_Trans.matView), g_Trans.matProj);
-	float depth = ((clip.z / clip.w) + 1) * 0.5f;
+	//Vec4 clip = XMVector3Transform(XMVector3Transform(Transform()->GetWorldTrans(), g_Trans.matView), g_Trans.matProj);
+	//float depth = ((clip.z / clip.w) + 1) * 0.5f;
+	Vec2 resolution = CEngine::GetInst()->GetResolution();
+	Vec2 ScreenPos(((m_ScreenPosNDC.x + 1) / 2.f) * resolution.x, ((1 - m_ScreenPosNDC.y) / 2.f) * resolution.y);
+	//Vec2 ScreenLT(ScreenPos - m_Scale);
 	for (auto& tuple : m_vecUIText)
 	{
-		float scale = 1 - depth;
-		if (get<2>(tuple)->Independent)
-			scale = get<2>(tuple)->Scale;
-		get<0>(tuple)->Render(get<1>(tuple), m_ScreenLT, get<2>(tuple)->Color, get<2>(tuple)->Rot, (m_ScreenLT + m_ScreenRB) / 2.f, scale, depth);
+		get<0>(tuple)->Render(get<1>(tuple), ScreenPos, get<2>(tuple)->Color, get<2>(tuple)->Rot, get<2>(tuple)->Scale, 0);
 	}
 }

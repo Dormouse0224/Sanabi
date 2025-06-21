@@ -5,6 +5,8 @@ enum SHADER_TYPE
 {
     VERTEX_SHADER,
     GEOMETRY_SHADER,
+    DOMAIN_SHADER,
+    HULL_SHADER,
     PIXEL_SHADER,
 
     SHADER_TYPE_END
@@ -23,10 +25,14 @@ public:
 private:
     ComPtr<ID3DBlob>                m_VSBlob;
     ComPtr<ID3DBlob>                m_GSBlob;
+    ComPtr<ID3DBlob>                m_DSBlob;
+    ComPtr<ID3DBlob>                m_HSBlob;
     ComPtr<ID3DBlob>                m_PSBlob;
 
     ComPtr<ID3D11VertexShader>      m_VS;
     ComPtr<ID3D11GeometryShader>    m_GS;
+    ComPtr<ID3D11DomainShader>      m_DS;
+    ComPtr<ID3D11HullShader>        m_HS;
     ComPtr<ID3D11PixelShader>       m_PS;
     pair<wstring, string>           m_ShaderName[SHADER_TYPE_END];  // 셰이더 파일 디렉토리와 셰이더 함수 이름
 
@@ -57,6 +63,8 @@ public:
 
     int CreateVertexShader(const wstring& _RelativePath, const string& _FuncName);
     int CreateGeometryShader(const wstring& _RelativePath, const string& _FuncName);
+    int CreateDomainShader(const wstring& _RelativePath, const string& _FuncName);
+    int CreateHullShader(const wstring& _RelativePath, const string& _FuncName);
     int CreatePixelShader(const wstring& _RelativePath, const string& _FuncName);
 
     void Binding();
