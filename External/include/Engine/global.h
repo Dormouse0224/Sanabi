@@ -13,6 +13,9 @@ using namespace std::filesystem;
 #include <wrl/client.h>
 using namespace Microsoft::WRL;
 
+//#include <VLD/vld.h>
+//#pragma comment(lib, "VLD/vld.lib")
+
 // DirectX 라이브러리 링크
 #include <d3d11.h>
 #include <d3dcompiler.h>

@@ -9,6 +9,7 @@
 #include "Engine/CTransform.h"
 #include "Engine/CPhysxActor.h"
 #include "Engine/CTimeMgr.h"
+#include "Engine/CAssetMgr.h"
 #include "Scripts/PlayerScript.h"
 
 Player_State_Climb::Player_State_Climb()
@@ -84,6 +85,11 @@ void Player_State_Climb::Begin()
 	m_bFlipPlay = false;
 	m_Owner->GetOwner()->FlipbookRender()->Pause(true);
 	m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Pause(true);
+
+	// È¿°úÀ½
+	AssetPtr<CSound> pBGM = CAssetMgr::GetInst()->Load<CSound>(L"Sound\\SFX_SNB_WallStick.wav");
+	if (pBGM.Get())
+		pBGM->Play(1, 0.05, true);
 }
 
 void Player_State_Climb::End()

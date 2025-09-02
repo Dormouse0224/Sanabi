@@ -9,6 +9,7 @@
 #include "Engine/CFlipbookRender.h"
 #include "Engine/CTransform.h"
 #include "Engine/CPhysxActor.h"
+#include "Engine/CAssetMgr.h"
 
 Player_State_Jump::Player_State_Jump()
 	: CFSM_State()
@@ -71,6 +72,11 @@ void Player_State_Jump::Begin()
 		m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Play(L"Flipbook\\SNBArm_FallStart.flip", 10, false);
 		m_bFallStart = true;
 	}
+
+	// È¿°úÀ½
+	AssetPtr<CSound> pBGM = CAssetMgr::GetInst()->Load<CSound>(L"Sound\\SFX_SNB_WallJump.wav");
+	if (pBGM.Get())
+		pBGM->Play(1, 0.05, true);
 }
 
 void Player_State_Jump::End()

@@ -24,6 +24,7 @@ Player_State_Jump
 Player_State_Run
 Player_State_Shoot
 Player_State_Swing
+Stage1_BGM
 Turret_State_Aiming
 Turret_State_Dead
 Turret_State_ExcHolded

@@ -4,6 +4,7 @@
 #include "Engine/CFSM.h"
 #include "Engine/CGameObject.h"
 #include "Engine/CFlipbookRender.h"
+#include "Engine/CAssetMgr.h"
 
 #include "Scripts/BattleGateScript.h"
 
@@ -49,6 +50,14 @@ void BattleGate_State_Open::Begin()
 	else
 	{
 		m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\BattlegateHoriz_Opening.flip", 10, false);
+	}
+
+	if (m_Owner->GetPrevState() != nullptr && m_Owner->GetPrevState()->GetName() == L"class BattleGate_State_Close")
+	{
+		// È¿°úÀ½
+		AssetPtr<CSound> pBGM = CAssetMgr::GetInst()->Load<CSound>(L"Sound\\SFX_Chap1_BattleGate_Open.wav");
+		if (pBGM.Get())
+			pBGM->Play(1, 0.05, true);
 	}
 }
 

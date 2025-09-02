@@ -181,22 +181,36 @@ void CFSM::SetInitState(string _StateName)
 
 void CFSM::AddCondition(const string& _Origin, const string& _Dest, const string& _FuncName)
 {
-	if (_Origin == _Dest)
-		return;
+	//if (_Origin == _Dest)
+	//	return;
 
 	TriggerFunc func = CFSMMgr::GetInst()->GetTriggerFunc(_FuncName);
 	CFSM_State* pOS = nullptr;
 	CFSM_State* pDS = nullptr;
 	auto iterOS = m_mapStates.find(_Origin);
 	if (iterOS == m_mapStates.end())
+	{
 		pOS = CFSMMgr::GetInst()->CreateState(_Origin);
+		pOS->SetOwner(this);
+		m_mapStates.insert(make_pair(_Origin, make_pair(pOS, 1)));
+	}
 	else
+	{
 		pOS = iterOS->second.first;
+		++(iterOS->second.second);
+	}
 	auto iterDS = m_mapStates.find(_Dest);
 	if (iterDS == m_mapStates.end())
+	{
 		pDS = CFSMMgr::GetInst()->CreateState(_Dest);
+		pDS->SetOwner(this);
+		m_mapStates.insert(make_pair(_Dest, make_pair(pDS, 1)));
+	}
 	else
+	{
 		pDS = iterDS->second.first;
+		++(iterDS->second.second);
+	}
 	if (func != nullptr && pOS != nullptr && pDS != nullptr)
 	{
 		FSM_Condition* pCond = new FSM_Condition;
@@ -206,25 +220,25 @@ void CFSM::AddCondition(const string& _Origin, const string& _Dest, const string
 		pCond->m_TriggerFunc = func;
 		m_vecCondition.push_back(pCond);
 		
-		if (iterOS != m_mapStates.end())
-		{
-			++(iterOS->second.second);
-		}
-		else
-		{
-			pOS->SetOwner(this);
-			m_mapStates.insert(make_pair(_Origin, make_pair(pOS, 1)));
-		}
+		//if (iterOS != m_mapStates.end())
+		//{
+		//	++(iterOS->second.second);
+		//}
+		//else
+		//{
+		//	pOS->SetOwner(this);
+		//	m_mapStates.insert(make_pair(_Origin, make_pair(pOS, 1)));
+		//}
 
-		if (iterDS != m_mapStates.end())
-		{
-			++(iterDS->second.second);
-		}
-		else
-		{
-			pDS->SetOwner(this);
-			m_mapStates.insert(make_pair(_Dest, make_pair(pDS, 1)));
-		}
+		//if (iterDS != m_mapStates.end())
+		//{
+		//	++(iterDS->second.second);
+		//}
+		//else
+		//{
+		//	pDS->SetOwner(this);
+		//	m_mapStates.insert(make_pair(_Dest, make_pair(pDS, 1)));
+		//}
 	}
 }
 
@@ -233,19 +247,25 @@ void CFSM::DeleteCondition(int _Idx)
 	if (_Idx < m_vecCondition.size())
 	{
 		auto iter = m_mapStates.find(typeid(*(m_vecCondition[_Idx]->m_OriginState)).name());
-		--(iter->second.second);
-		if (iter->second.second == 0)
+		if (iter != m_mapStates.end())
 		{
-			delete iter->second.first;
-			m_mapStates.erase(iter);
+			--(iter->second.second);
+			if (iter->second.second == 0)
+			{
+				delete iter->second.first;
+				m_mapStates.erase(iter);
+			}
 		}
 
 		iter = m_mapStates.find(typeid(*(m_vecCondition[_Idx]->m_DestState)).name());
-		--(iter->second.second);
-		if (iter->second.second == 0)
+		if (iter != m_mapStates.end())
 		{
-			delete iter->second.first;
-			m_mapStates.erase(iter);
+			--(iter->second.second);
+			if (iter->second.second == 0)
+			{
+				delete iter->second.first;
+				m_mapStates.erase(iter);
+			}
 		}
 
 		delete m_vecCondition[_Idx];

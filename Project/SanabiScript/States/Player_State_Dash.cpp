@@ -8,6 +8,7 @@
 #include "Engine/CKeyMgr.h"
 #include "Engine/CRenderMgr.h"
 #include "Engine/CPhysxActor.h"
+#include "Engine/CAssetMgr.h"
 
 #include "Scripts/PlayerScript.h"
 
@@ -63,6 +64,11 @@ void Player_State_Dash::Begin()
 
 	m_PS = (PlayerScript*)m_Owner->GetOwner()->FindScript("class PlayerScript");
 	m_PS->SetImmune(true);
+
+	// È¿°úÀ½
+	AssetPtr<CSound> pBGM = CAssetMgr::GetInst()->Load<CSound>(L"Sound\\SFX_SNB_Execute01.wav");
+	if (pBGM.Get())
+		pBGM->Play(1, 0.05, true);
 }
 
 void Player_State_Dash::End()

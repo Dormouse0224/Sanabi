@@ -60,7 +60,7 @@ int CSound::Play(int _iRoopCount, float _fVolume, bool _bOverlap)
 	return iIdx;
 }
 
-void CSound::Stop()
+void CSound::Stop(int _iChannelIdx)
 {
 	list<FMOD::Channel*>::iterator iter;
 
@@ -69,6 +69,61 @@ void CSound::Stop()
 		iter = m_listChannel.begin();
 		(*iter)->stop();
 	}
+
+	//if (_iChannelIdx == -1)
+	//{
+	//	while (!m_listChannel.empty())
+	//	{
+	//		iter = m_listChannel.begin();
+	//		(*iter)->stop();
+	//	}
+	//}
+	//else
+	//{
+	//	int iIdx = -1;
+	//	for (; iter != m_listChannel.end(); ++iter)
+	//	{
+	//		(*iter)->getIndex(&iIdx);
+	//		if (_iChannelIdx == iIdx)
+	//		{
+	//			(*iter)->stop();
+	//			return;
+	//		}
+	//	}
+	//}
+}
+
+bool CSound::IsPlaying(int _iChannelIdx)
+{
+	list<FMOD::Channel*>::iterator iter = m_listChannel.begin();
+
+	if (_iChannelIdx == -1)
+	{
+		for (; iter != m_listChannel.end(); ++iter)
+		{
+			bool b = false;
+			(*iter)->isPlaying(&b);
+			if (b)
+				return true;
+		}
+		return false;
+	}
+	else
+	{
+		int iIdx = -1;
+		for (; iter != m_listChannel.end(); ++iter)
+		{
+			(*iter)->getIndex(&iIdx);
+			if (_iChannelIdx == iIdx)
+			{
+				bool b = false;
+				(*iter)->isPlaying(&b);
+				return b;
+			}
+		}
+	}
+	
+	return false;
 }
 
 void CSound::SetVolume(float _f, int _iChannelIdx)

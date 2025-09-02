@@ -6,6 +6,7 @@
 #include "Engine/CFlipbookRender.h"
 #include "Engine/CPhysxActor.h"
 #include "Engine/CTransform.h"
+#include "Engine/CAssetMgr.h"
 
 #include "Scripts/BattleGateScript.h"
 
@@ -66,6 +67,11 @@ void BattleGate_State_Close::Begin()
 	desc.FilterLayer_Other = COLLISION_LAYER::ePLAYER | COLLISION_LAYER::eMONSTER | COLLISION_LAYER::ePARTICLE;
 	Vec3 scale = m_Owner->GetOwner()->Transform()->GetRelativeScale() / 2.f;
 	m_Collider = m_Owner->GetOwner()->PhysxActor()->AddCollider(desc, PxVec3(scale.x, scale.y, 10), PxVec3(0));
+
+	// È¿°úÀ½
+	AssetPtr<CSound> pBGM = CAssetMgr::GetInst()->Load<CSound>(L"Sound\\SFX_Chap1_BattleGate_Close.wav");
+	if (pBGM.Get())
+		pBGM->Play(1, 0.05, true);
 }
 
 void BattleGate_State_Close::End()

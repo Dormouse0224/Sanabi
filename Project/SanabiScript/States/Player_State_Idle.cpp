@@ -8,6 +8,7 @@
 #include "Engine/CFlipbookRender.h"
 #include "Engine/CTransform.h"
 #include "Engine/CPhysxActor.h"
+#include "Engine/CAssetMgr.h"
 
 Player_State_Idle::Player_State_Idle()
 	: CFSM_State()
@@ -65,6 +66,14 @@ void Player_State_Idle::Begin()
 		m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\SNB_Idle.flip", 10, true);
 		m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Play(L"Flipbook\\SNBArm_Idle.flip", 10, true);
 		m_bIdleflip = true;
+	}
+
+	if (m_Owner->GetPrevState() != nullptr && m_Owner->GetPrevState()->GetName() == L"class Player_State_Jump")
+	{
+		// 착지 효과음
+		AssetPtr<CSound> pBGM = CAssetMgr::GetInst()->Load<CSound>(L"Sound\\SFX_Land_SNB_Concrete 1.wav");
+		if (pBGM.Get())
+			pBGM->Play(1, 0.05, true);
 	}
 }
 

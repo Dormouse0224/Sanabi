@@ -6,6 +6,7 @@
 #include "Engine/CFlipbookRender.h"
 #include "Engine/CTransform.h"
 #include "Engine/CPhysxActor.h"
+#include "Engine/CAssetMgr.h"
 
 #include "Scripts/PlayerScript.h"
 
@@ -64,6 +65,11 @@ void Player_State_Damaged::Begin()
 	// 애니메이션
 	m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\SNB_Damaged.flip", 5, false);
 	m_Owner->GetOwner()->FindChild(L"Player_Arm")->FlipbookRender()->Play(L"Flipbook\\SNBArm_Damaged.flip", 5, false);
+
+	// 효과음
+	AssetPtr<CSound> pBGM = CAssetMgr::GetInst()->Load<CSound>(L"Sound\\SFX_SNB_Damaged.wav");
+	if (pBGM.Get())
+		pBGM->Play(1, 0.05, true);
 }
 
 void Player_State_Damaged::End()

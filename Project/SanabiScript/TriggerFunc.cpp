@@ -11,6 +11,16 @@
 #include "Scripts/MonsterScript.h"
 #include "Scripts/BulletScript.h"
 
+bool Always_True(CFSM_State* _Origin, CFSM_State* _Dest)
+{
+	return true;
+}
+
+bool Always_False(CFSM_State* _Origin, CFSM_State* _Dest)
+{
+	return false;
+}
+
 bool MainTitle_Bg_Start_Loop(CFSM_State* _Origin, CFSM_State* _Dest)
 {
 	float time = 1.f;

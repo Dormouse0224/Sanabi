@@ -117,6 +117,11 @@ void Player_State_Swing::Begin()
 	m_Joint->setDistanceJointFlag(PxDistanceJointFlag::eMAX_DISTANCE_ENABLED, true);
 
 	m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\SNB_Swing.flip", 10, false);
+
+	// È¿°úÀ½
+	AssetPtr<CSound> pBGM = CAssetMgr::GetInst()->Load<CSound>(L"Sound\\SFX_Grab_SNB_Concrete.wav");
+	if (pBGM.Get())
+		pBGM->Play(1, 0.05, true);
 }
 
 void Player_State_Swing::End()

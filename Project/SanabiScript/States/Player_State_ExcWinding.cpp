@@ -96,6 +96,11 @@ void Player_State_ExcWinding::Begin()
 
 	// 갈고리 객체 생성 및 플레이어에 자식으로 추가
 	m_Owner->GetOwner()->AddChild(m_Grab);
+
+	// 효과음
+	AssetPtr<CSound> pBGM = CAssetMgr::GetInst()->Load<CSound>(L"Sound\\SFX_Grab_SNB_Concrete.wav");
+	if (pBGM.Get())
+		pBGM->Play(1, 0.05, true);
 }
 
 void Player_State_ExcWinding::End()

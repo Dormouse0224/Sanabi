@@ -50,6 +50,7 @@
     <ClInclude Include="States\Player_State_Dash.h" />
     <ClInclude Include="Scripts\FarBackgroundScript.h" />
     <ClInclude Include="Scripts\ContainerScript.h" />
+    <ClInclude Include="States\Stage1_BGM.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -90,5 +91,6 @@
     <ClCompile Include="States\Player_State_Dash.cpp" />
     <ClCompile Include="Scripts\FarBackgroundScript.cpp" />
     <ClCompile Include="Scripts\ContainerScript.cpp" />
+    <ClCompile Include="States\Stage1_BGM.cpp" />
   </ItemGroup>
 </Project>

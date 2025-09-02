@@ -38,6 +38,7 @@
 #include "States\Player_State_Run.h"
 #include "States\Player_State_Shoot.h"
 #include "States\Player_State_Swing.h"
+#include "States\Stage1_BGM.h"
 #include "States\Turret_State_Aiming.h"
 #include "States\Turret_State_Dead.h"
 #include "States\Turret_State_ExcHolded.h"
@@ -77,6 +78,7 @@ void CScriptInit::FSMInit()
 	REGISTER_STATE(Player_State_Run);
 	REGISTER_STATE(Player_State_Shoot);
 	REGISTER_STATE(Player_State_Swing);
+	REGISTER_STATE(Stage1_BGM);
 	REGISTER_STATE(Turret_State_Aiming);
 	REGISTER_STATE(Turret_State_Dead);
 	REGISTER_STATE(Turret_State_ExcHolded);
@@ -84,6 +86,8 @@ void CScriptInit::FSMInit()
 	REGISTER_STATE(Turret_State_Shooting);
 	REGISTER_STATE(Turret_State_Sleep);
 
+	REGISTER_TRIGGER(Always_True);
+	REGISTER_TRIGGER(Always_False);
 	REGISTER_TRIGGER(MainTitle_Bg_Start_Loop);
 	REGISTER_TRIGGER(Player_Idle_Run);
 	REGISTER_TRIGGER(Player_Idle_Jump);

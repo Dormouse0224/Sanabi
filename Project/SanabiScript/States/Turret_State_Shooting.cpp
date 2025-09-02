@@ -73,6 +73,11 @@ void Turret_State_Shooting::Begin()
 {
 	m_Owner->GetOwner()->FlipbookRender()->Play(L"Flipbook\\TurretBody_Shooting.flip", 10, true);
 	m_Owner->GetOwner()->FindChild(L"TurretGun")->FlipbookRender()->Play(L"Flipbook\\TurretGun_Shooting.flip", 10, true);
+
+	// È¿°úÀ½
+	AssetPtr<CSound> pBGM = CAssetMgr::GetInst()->Load<CSound>(L"Sound\\SFX_Chap1_Turret_ShootLoop.wav");
+	if (pBGM.Get())
+		pBGM->Play(1, 0.05, true);
 }
 
 void Turret_State_Shooting::End()

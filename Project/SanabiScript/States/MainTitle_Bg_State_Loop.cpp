@@ -4,6 +4,7 @@
 #include "Engine/CEngine.h"
 #include "Engine/CFSM.h"
 #include "Engine/CFlipbookRender.h"
+#include "Engine/CAssetMgr.h"
 
 MainTitle_Bg_State_Loop::MainTitle_Bg_State_Loop()
 {
@@ -25,7 +26,12 @@ void MainTitle_Bg_State_Loop::Begin()
 
 void MainTitle_Bg_State_Loop::End()
 {
-	FMOD::ChannelGroup* master = nullptr;
-	CEngine::GetInst()->GetFMODSystem()->getMasterChannelGroup(&master);
-	master->stop();
+	// 배경 음악 종료
+	AssetPtr<CSound> pBGM = CAssetMgr::GetInst()->Load<CSound>(L"Sound\\BGM_Event_MainTheme.wav");
+	if (pBGM.Get())
+		pBGM->Stop();
+
+	//FMOD::ChannelGroup* master = nullptr;
+	//CEngine::GetInst()->GetFMODSystem()->getMasterChannelGroup(&master);
+	//master->stop();
 }

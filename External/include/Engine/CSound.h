@@ -18,7 +18,8 @@ public:
     // _iRoopCount : 0 (무한반복),  _fVolume : 0 ~ 1(Volume), _bOverlap : 소리 중첩 가능여부
     int Play(int _iRoopCount, float _fVolume, bool _bOverlap);
     void RemoveChannel(FMOD::Channel* _pTargetChannel);
-    void Stop();
+    void Stop(int _iChannelIdx = -1);
+    bool IsPlaying(int _iChannelIdx = -1);
 
     // 0 ~ 1
     void SetVolume(float _f, int _iChannelIdx);

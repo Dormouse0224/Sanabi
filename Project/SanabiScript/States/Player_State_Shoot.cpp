@@ -118,6 +118,11 @@ void Player_State_Shoot::Begin()
 	m_Owner->GetOwner()->AddChild(m_Grab);
 
 	m_CursorPos = CKeyMgr::GetInst()->GetMousePos();
+
+	// È¿°úÀ½
+	AssetPtr<CSound> pBGM = CAssetMgr::GetInst()->Load<CSound>(L"Sound\\SFX_SNB_Shoot.wav");
+	if (pBGM.Get())
+		pBGM->Play(1, 0.05, true);
 }
 
 void Player_State_Shoot::End()

@@ -2,6 +2,10 @@
 
 #include "Engine/CFSM_State.h"
 
+
+bool Always_True(CFSM_State* _Origin, CFSM_State* _Dest);
+bool Always_False(CFSM_State* _Origin, CFSM_State* _Dest);
+
 // Main Title
 bool MainTitle_Bg_Start_Loop(CFSM_State* _Origin, CFSM_State* _Dest);
 
